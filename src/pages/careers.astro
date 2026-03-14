@@ -73,12 +73,11 @@ const breadcrumbJsonLd = {
           { title: 'Lawn Care Technician', type: 'Full-time / Seasonal', desc: 'Apply fertilizer and weed control treatments. Must obtain or hold NYS DEC pesticide applicator certification.' },
           { title: 'Crew Leader', type: 'Full-time', desc: 'Lead a crew of 3-5 in daily landscape operations. 3+ years experience required. Valid driver\'s license required.' },
         ].map((job) => (
-          <div class="p-8 rounded-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-            style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
+          <div class="p-8 rounded-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-bg-light border border-border-light">
             <div>
               <h3 class="text-base mb-1">{job.title}</h3>
-              <p class="text-xs mb-2" style="color: var(--color-green-bright);">{job.type}</p>
-              <p class="text-sm" style="color: var(--color-text-muted);">{job.desc}</p>
+              <p class="text-xs mb-2" style="color: var(--color-green-primary);">{job.type}</p>
+              <p class="text-sm" style="color: var(--color-text-body-dark);">{job.desc}</p>
             </div>
             <a href={url('/contact')} class="btn btn-primary btn-sm shrink-0">Apply Now</a>
           </div>
@@ -86,7 +85,7 @@ const breadcrumbJsonLd = {
       </div>
 
       <div class="text-center mt-12">
-        <p class="text-sm mb-4" style="color: var(--color-text-muted);">
+        <p class="text-sm mb-4" style="color: var(--color-text-body-dark);">
           Don't see a position that fits? We're always interested in hearing from talented people.
         </p>
         <a href={url('/contact')} class="btn btn-outline btn-md">Send Us Your Resume</a>

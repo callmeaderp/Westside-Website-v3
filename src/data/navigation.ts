@@ -1,6 +1,7 @@
 /**
  * Site navigation structure — drives Header, Footer, and sitemap.
  * Single source of truth for all internal links.
+ * All hrefs include trailing slashes to match trailingSlash: 'always' config.
  */
 
 export interface NavItem {
@@ -13,38 +14,38 @@ export const mainNav: NavItem[] = [
   { label: 'Home', href: '/' },
   {
     label: 'Services',
-    href: '/services',
+    href: '/services/',
     children: [
-      { label: 'Landscape Design', href: '/services/landscape-design' },
-      { label: 'Maintenance', href: '/services/landscape-maintenance' },
-      { label: 'Fertilization & Weed Control', href: '/services/plant-health' },
-      { label: 'Hardscaping', href: '/services/hardscaping' },
-      { label: 'Water Features', href: '/services/water-features' },
-      { label: 'Snow & Ice Management', href: '/services/snow-ice-management' },
-      { label: 'Holiday Decorating', href: '/services/holiday-lighting' },
+      { label: 'Landscape Design', href: '/services/landscape-design/' },
+      { label: 'Maintenance', href: '/services/landscape-maintenance/' },
+      { label: 'Fertilization & Weed Control', href: '/services/plant-health/' },
+      { label: 'Hardscaping', href: '/services/hardscaping/' },
+      { label: 'Water Features', href: '/services/water-features/' },
+      { label: 'Snow & Ice Management', href: '/services/snow-ice-management/' },
+      { label: 'Holiday Decorating', href: '/services/holiday-lighting/' },
     ],
   },
-  { label: 'About', href: '/about' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'About', href: '/about/' },
+  { label: 'Gallery', href: '/gallery/' },
+  { label: 'Careers', href: '/careers/' },
+  { label: 'Contact', href: '/contact/' },
 ];
 
 export const footerServices: NavItem[] = [
-  { label: 'Landscape Design', href: '/services/landscape-design' },
-  { label: 'Maintenance', href: '/services/landscape-maintenance' },
-  { label: 'Fertilization & Weed Control', href: '/services/plant-health' },
-  { label: 'Hardscaping', href: '/services/hardscaping' },
-  { label: 'Water Features', href: '/services/water-features' },
-  { label: 'Snow Removal', href: '/services/snow-ice-management' },
-  { label: 'Holiday Decorating', href: '/services/holiday-lighting' },
+  { label: 'Landscape Design', href: '/services/landscape-design/' },
+  { label: 'Maintenance', href: '/services/landscape-maintenance/' },
+  { label: 'Fertilization & Weed Control', href: '/services/plant-health/' },
+  { label: 'Hardscaping', href: '/services/hardscaping/' },
+  { label: 'Water Features', href: '/services/water-features/' },
+  { label: 'Snow Removal', href: '/services/snow-ice-management/' },
+  { label: 'Holiday Decorating', href: '/services/holiday-lighting/' },
 ];
 
 export const footerCompany: NavItem[] = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Contact', href: '/contact' },
-  { label: '5-Step Program', href: '/services/plant-health' },
-  { label: 'Free Estimate', href: '/contact' },
+  { label: 'About Us', href: '/about/' },
+  { label: 'Gallery', href: '/gallery/' },
+  { label: 'Careers', href: '/careers/' },
+  { label: 'Contact', href: '/contact/' },
+  { label: '5-Step Program', href: '/services/plant-health/' },
+  { label: 'Free Estimate', href: '/contact/' },
 ];

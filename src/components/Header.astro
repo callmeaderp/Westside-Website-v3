@@ -74,7 +74,7 @@ function isActive(href: string): boolean {
           </div>
         ) : (
           <a
-            href={item.href}
+            href={url(item.href)}
             class:list={[
               'px-3 py-2 text-sm font-semibold uppercase tracking-wider transition-colors',
               isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
@@ -137,7 +137,7 @@ function isActive(href: string): boolean {
           </div>
         ) : (
           <a
-            href={item.href}
+            href={url(item.href)}
             class:list={[
               'py-3 text-base font-semibold uppercase tracking-wider',
               isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',

@@ -159,9 +159,33 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
   background-color: var(--color-bg-dark-alt);
 }
 
-.section-white {
+.section-accent {
   background-color: var(--color-bg-accent);
   color: var(--color-text-light);
+}
+
+.section-white {
+  background-color: var(--color-bg-white);
+  color: var(--color-text-dark);
+}
+
+.section-white h1, .section-white h2, .section-white h3, .section-white h4 {
+  color: var(--color-text-dark);
+}
+
+.section-white .section-subtitle {
+  color: var(--color-text-body-dark);
+}
+
+.section-white .btn-outline {
+  color: var(--color-text-dark);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.section-white .btn-outline:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.4);
+  color: var(--color-text-dark);
 }
 
 /* ═══ BUTTONS ═══ */
@@ -216,49 +240,51 @@ h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
   color: white;
 }
 
-/* ═══ SCROLL ANIMATIONS ═══ */
+/* ═══ SCROLL ANIMATIONS ═══
+   Scoped behind .js so content is visible without JavaScript (crawlers, a11y).
+   The BaseLayout script adds .js to <html> before any paint. */
 
-.fade-in,
-.fade-in-left,
-.fade-in-right {
+.js .fade-in,
+.js .fade-in-left,
+.js .fade-in-right {
   opacity: 0;
   transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
 }
 
-.fade-in { transform: translateY(20px); }
-.fade-in-left { transform: translateX(-30px); }
-.fade-in-right { transform: translateX(30px); }
+.js .fade-in { transform: translateY(20px); }
+.js .fade-in-left { transform: translateX(-30px); }
+.js .fade-in-right { transform: translateX(30px); }
 
-.fade-in.visible,
-.fade-in-left.visible,
-.fade-in-right.visible {
+.js .fade-in.visible,
+.js .fade-in-left.visible,
+.js .fade-in-right.visible {
   opacity: 1;
   transform: none;
 }
 
-.stagger-children > * {
+.js .stagger-children > * {
   opacity: 0;
   transform: translateY(15px);
   transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
 }
 
-.stagger-children.visible > * {
+.js .stagger-children.visible > * {
   opacity: 1;
   transform: none;
 }
 
-.stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; }
-.stagger-children.visible > *:nth-child(2) { transition-delay: 80ms; }
-.stagger-children.visible > *:nth-child(3) { transition-delay: 160ms; }
-.stagger-children.visible > *:nth-child(4) { transition-delay: 240ms; }
-.stagger-children.visible > *:nth-child(5) { transition-delay: 320ms; }
-.stagger-children.visible > *:nth-child(6) { transition-delay: 400ms; }
-.stagger-children.visible > *:nth-child(7) { transition-delay: 480ms; }
+.js .stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; }
+.js .stagger-children.visible > *:nth-child(2) { transition-delay: 80ms; }
+.js .stagger-children.visible > *:nth-child(3) { transition-delay: 160ms; }
+.js .stagger-children.visible > *:nth-child(4) { transition-delay: 240ms; }
+.js .stagger-children.visible > *:nth-child(5) { transition-delay: 320ms; }
+.js .stagger-children.visible > *:nth-child(6) { transition-delay: 400ms; }
+.js .stagger-children.visible > *:nth-child(7) { transition-delay: 480ms; }
 
 /* Respect motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .fade-in, .fade-in-left, .fade-in-right,
-  .stagger-children > * {
+  .js .fade-in, .js .fade-in-left, .js .fade-in-right,
+  .js .stagger-children > * {
     opacity: 1;
     transform: none;
     transition: none;

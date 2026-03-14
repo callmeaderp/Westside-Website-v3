@@ -1,0 +1,271 @@
+---
+/**
+ * Plant Health / Fertilization & Weed Control — standalone page.
+ * Has unique 5-step program timeline, pricing card, and additional services
+ * that don't fit the shared [slug].astro template.
+ */
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import { getServiceBySlug, services } from '@data/services';
+import { url } from '@lib/utils';
+
+const service = getServiceBySlug('plant-health')!;
+
+const programSteps = [
+  {
+    number: 1,
+    timing: 'March — April',
+    title: 'SPRING APPLICATION',
+    text: 'Jump-start your lawn out of winter dormancy with a balanced fertilizer that promotes strong root development. Pre-emergent crabgrass control creates an invisible barrier that stops crabgrass seeds before they germinate. Broadleaf weed control targets any weeds that survived winter.',
+    tags: ['Balanced Fertilizer', 'Pre-emergent Crabgrass', 'Weed Control'],
+  },
+  {
+    number: 2,
+    timing: 'May — June',
+    title: 'LATE SPRING APPLICATION',
+    text: 'A second round of balanced fertilization keeps your lawn thick and green as temperatures rise. Continued crabgrass control reinforces the spring barrier. Weed control targets new broadleaf weeds. Surface insect inspection identifies any emerging pest problems early.',
+    tags: ['Balanced Fertilizer', 'Crabgrass Control', 'Weed Control', 'Insect Inspection*'],
+  },
+  {
+    number: 3,
+    timing: 'June — July',
+    title: 'SUMMER APPLICATION',
+    text: 'The midsummer visit sustains growth during heat stress with balanced nutrition. Spot treatment addresses any crabgrass that broke through the barrier. Weed control continues through peak season.',
+    tags: ['Balanced Fertilizer', 'Crabgrass Spot Treatment', 'Weed Control', 'Insect Inspection*'],
+    freeCallout: 'Professional grub preventive application included with this visit (June/July). Helps prevent destructive grub damage — included at no extra charge.',
+  },
+  {
+    number: 4,
+    timing: 'August — September',
+    title: 'LATE SUMMER APPLICATION',
+    text: "As summer winds down, this application prepares your lawn for fall recovery. Balanced fertilizer supports continued growth. Broadleaf weed control hits any late-season invaders. Surface insect inspection ensures pest populations haven't established.",
+    tags: ['Balanced Fertilizer', 'Broadleaf Weed Control', 'Insect Inspection*'],
+  },
+  {
+    number: 5,
+    timing: 'October — November',
+    title: 'FALL APPLICATION',
+    text: 'The final visit is the most important of the season. A winterizing fertilizer promotes deep root growth that pays dividends come spring. Spot weed treatment addresses any remaining broadleaf weeds before dormancy sets in.',
+    tags: ['Balanced Fertilizer', 'Spot Weed Treatment', 'Winterization'],
+  },
+];
+
+const additionalServices = [
+  { title: 'DEEP ROOT FERTILIZATION', text: 'Direct nutrient injection into the root zone of trees and shrubs for maximum vitality.' },
+  { title: 'BED MAINTENANCE', text: 'Weekly weed control — both chemical and hand-picking — to keep your beds clean all season.' },
+  { title: 'AERATION', text: 'Core aeration relieves soil compaction, allowing water, nutrients, and air to reach grass roots.' },
+  { title: 'OVERSEEDING', text: 'Premium grass seed application to fill in thin spots and improve lawn density and color.' },
+  { title: 'LAWN REPAIR', text: 'Targeted repair of damaged areas from disease, insects, or wear and tear.' },
+  { title: 'DETHATCHING', text: 'Mechanical removal of excess thatch to restore water and nutrient penetration.' },
+];
+
+const pricingFeatures = [
+  '5 seasonal treatments',
+  'Balanced fertilization',
+  'Weed & crabgrass control',
+  'FREE grub control',
+  'Insect inspections',
+  'We stand behind our work',
+];
+---
+
+<ServiceLayout
+  service={service}
+  ctaHeading='START YOUR JOURNEY TO A <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">PERFECT LAWN</span>'
+  ctaText="Schedule your free lawn evaluation today. Our experts will assess your lawn and recommend the right program for your property."
+>
+
+  <!-- ═══ VALUE PROPS ═══ -->
+  <section class="py-12 section-dark-alt">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center stagger-children">
+        <div class="p-6">
+          <div class="text-4xl mb-2" style="font-family: var(--font-heading); color: var(--color-green-bright);">50%</div>
+          <div class="text-xs uppercase tracking-widest" style="color: var(--color-text-muted);">Off First Treatment</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl mb-2" style="font-family: var(--font-heading); color: var(--color-green-bright);">$116</div>
+          <div class="text-xs uppercase tracking-widest" style="color: var(--color-text-muted);">Per Treatment (Avg Lawn)</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl mb-2" style="font-family: var(--font-heading); color: var(--color-green-bright);">5</div>
+          <div class="text-xs uppercase tracking-widest" style="color: var(--color-text-muted);">Seasonal Visits</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl mb-2" style="font-family: var(--font-heading); color: #E8C84A;">FREE</div>
+          <div class="text-xs uppercase tracking-widest" style="color: var(--color-text-muted);">Grub Control Included</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 5-STEP PROGRAM ═══ -->
+  <section class="py-24 section-dark" id="program-details">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 fade-in">
+
+        <!-- Steps Column -->
+        <div>
+          <p class="section-label">The Program</p>
+          <h2 class="section-title">FIVE STEPS TO A <span style="color: var(--color-green-bright);">PERFECT LAWN</span></h2>
+          <p class="mb-10" style="color: var(--color-text-muted); line-height: 1.8;">
+            Each treatment is timed to match your lawn's growth cycle. Our <strong style="color: var(--color-text-light);">NYS DEC Certified Applicators</strong> use professional-grade products for results you simply can't get from store-bought alternatives.
+          </p>
+
+          {programSteps.map((step, i) => (
+            <div class="grid grid-cols-[64px_1fr] gap-8 py-8 relative" style={i < programSteps.length - 1 ? 'border-bottom: 1px solid var(--color-border-dark);' : ''}>
+              <div>
+                <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl relative z-10" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%); font-family: var(--font-heading);">
+                  {step.number}
+                </div>
+                {i < programSteps.length - 1 && (
+                  <div class="absolute left-[39px] top-[80px] bottom-0 w-0.5" style="background: linear-gradient(to bottom, var(--color-green-bright), var(--color-border-dark));"></div>
+                )}
+              </div>
+              <div>
+                <div class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">{step.timing}</div>
+                <h3 class="text-base mb-3" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">{step.title}</h3>
+                <p class="text-sm mb-4" style="color: var(--color-text-muted); line-height: 1.7;">{step.text}</p>
+                <div class="flex flex-wrap gap-2">
+                  {step.tags.map((tag) => (
+                    <span class="px-3 py-1 text-xs rounded-full" style="background: rgba(108, 197, 81, 0.1); border: 1px solid rgba(108, 197, 81, 0.2); color: var(--color-green-bright);">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                {step.freeCallout && (
+                  <div class="mt-4 p-4 rounded-lg flex items-center gap-4" style="background: rgba(232, 200, 74, 0.1); border: 1px solid rgba(232, 200, 74, 0.3);">
+                    <span class="shrink-0 px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-full" style="background: #E8C84A; color: var(--color-bg-dark);">FREE</span>
+                    <div>
+                      <strong style="color: var(--color-text-white);">FREE Grub Control</strong>
+                      <div class="text-xs mt-1" style="color: var(--color-text-muted);">{step.freeCallout}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+          <p class="text-xs italic mt-8" style="color: var(--color-text-muted);">* Surface insect inspection/treatment as needed. Treatment applied when pest populations are detected at actionable levels.</p>
+        </div>
+
+        <!-- Pricing Sidebar -->
+        <div>
+          <div class="rounded-xl p-8 text-center sticky top-24" style="background: var(--color-bg-dark-card); border: 2px solid var(--color-green-bright);">
+            <span class="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full mb-4" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%); color: white;">Most Popular</span>
+            <h3 class="text-sm mb-1" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700;">5-STEP PROGRAM</h3>
+            <div class="text-5xl mb-1" style="font-family: var(--font-heading); color: var(--color-green-bright); line-height: 1;">$116</div>
+            <div class="text-xs mb-4" style="color: var(--color-text-muted);">per treatment &middot; avg lawn</div>
+
+            <div class="rounded-lg p-3 mb-3" style="background: rgba(108, 197, 81, 0.1); border: 1px solid rgba(108, 197, 81, 0.3);">
+              <strong class="text-sm" style="color: var(--color-green-bright);">50% OFF First Treatment</strong>
+              <p class="text-xs mt-1" style="color: var(--color-text-muted);">Just <strong style="color: var(--color-green-bright);">$58</strong> for your first visit</p>
+            </div>
+
+            <div class="rounded-lg p-2 mb-4" style="background: rgba(232, 200, 74, 0.06); border: 1px solid rgba(232, 200, 74, 0.2);">
+              <strong class="text-xs" style="color: #E8C84A;">Prepay &amp; Save 5%</strong>
+            </div>
+
+            <ul class="text-left mb-6">
+              {pricingFeatures.map((f, i) => (
+                <li class="flex items-center gap-2 py-1.5 text-sm" style={`color: var(--color-text-light);${i < pricingFeatures.length - 1 ? ' border-bottom: 1px solid var(--color-border-dark);' : ''}`}>
+                  <span class="shrink-0" style={`color: ${f.includes('FREE') ? '#E8C84A' : 'var(--color-green-bright)'};`}>&#10003;</span>
+                  <span set:html={f.includes('FREE') ? `<strong style="color: #E8C84A;">${f}</strong>` : f} />
+                </li>
+              ))}
+            </ul>
+
+            <a href={url('/contact')} class="btn btn-primary btn-sm w-full mb-2">Get Started Today</a>
+            <a href={url('/contact')} class="btn btn-outline btn-sm w-full" style="border-color: var(--color-green-bright); color: var(--color-green-bright);">Free Evaluation</a>
+
+            <div class="mt-4 pt-4 flex items-center justify-center gap-1.5" style="border-top: 1px solid var(--color-border-dark);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-xs" style="color: var(--color-text-muted);">NYS DEC Certified Applicator</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ADDITIONAL SERVICES ═══ -->
+  <section class="py-24 section-white">
+    <div class="container">
+      <div class="text-center mb-16 fade-in">
+        <p class="section-label">Enhance Your Lawn</p>
+        <h2 class="section-title">ADDITIONAL SERVICES</h2>
+        <p class="section-subtitle mx-auto">Take your lawn to the next level with these add-on services, available individually or bundled with your 5-step program.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+        {additionalServices.map((svc) => (
+          <div class="p-8 rounded-xl text-center bg-bg-light border border-border-light">
+            <h3 class="text-sm mb-3" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">{svc.title}</h3>
+            <p class="text-sm" style="color: var(--color-text-body-dark);">{svc.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHY US ═══ -->
+  <section class="py-24 section-dark">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-xl overflow-hidden fade-in" style="border: 1px solid var(--color-border-dark);">
+        <div class="aspect-[4/3] lg:aspect-auto">
+          <img
+            src={url('/images/photos/lawn-lush-backyard.webp')}
+            alt="Lush backyard lawn treated by Westside Professional Landscape"
+            class="w-full h-full object-cover"
+            loading="lazy"
+            width="600"
+            height="400"
+          />
+        </div>
+        <div class="p-10 lg:p-12" style="background: var(--color-bg-dark-card);">
+          <p class="section-label">Why Westside</p>
+          <h2 class="text-2xl mb-4">PROFESSIONAL-GRADE <span style="color: var(--color-green-bright);">RESULTS</span></h2>
+          <p class="text-sm mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
+            Big-box store products and DIY approaches <em>can't match</em> the results of a professionally managed lawn care program. Here's why our clients trust us:
+          </p>
+          <ul class="flex flex-col gap-4">
+            {[
+              { strong: 'NYS DEC Certified Applicators', detail: 'Every technician is fully licensed and trained' },
+              { strong: 'Professional-Grade Products', detail: 'Not available at retail stores — more effective and longer lasting' },
+              { strong: 'Precisely Timed Treatments', detail: "Each visit is scheduled to match your lawn's growth cycle" },
+              { strong: 'We Stand Behind Our Work', detail: "Not satisfied with a treatment? Contact us and we'll make it right" },
+              { strong: '26+ Years Serving Rochester', detail: 'We know the local soil, climate, and grass types' },
+            ].map((item) => (
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <div>
+                  <strong class="text-sm" style="color: var(--color-text-white);">{item.strong}</strong>
+                  <span class="text-xs block mt-0.5" style="color: var(--color-text-muted);">{item.detail}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<style>
+  /* Smaller H1 to fit the longer service name */
+  :global(.hero h1) {
+    font-size: clamp(2.2rem, 4.2vw, 3.8rem) !important;
+  }
+  @media (max-width: 768px) {
+    :global(.hero h1) {
+      font-size: 1.7rem !important;
+    }
+  }
+  @media (max-width: 1024px) {
+    .sticky {
+      position: static !important;
+    }
+  }
+</style>

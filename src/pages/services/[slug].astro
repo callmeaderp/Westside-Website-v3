@@ -1,53 +1,156 @@
 ---
 /**
  * Dynamic service page — generates /services/landscape-design, /services/plant-health, etc.
- * Content comes from the typed services data file + per-service body content below.
+ * Content comes from the typed services data file + rich content from service-content.ts.
  */
 import ServiceLayout from '@layouts/ServiceLayout.astro';
 import { services, getServiceBySlug } from '@data/services';
+import { serviceContent } from '@data/service-content';
 import type { GetStaticPaths } from 'astro';
 import { url } from '@lib/utils';
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return services.map((service) => ({
-    params: { slug: service.slug },
-    props: { service },
-  }));
+  return services
+    .filter((s) => s.slug !== 'plant-health') // plant-health has its own page
+    .map((service) => ({
+      params: { slug: service.slug },
+      props: { service },
+    }));
 };
 
 const { service } = Astro.props;
+const content = serviceContent[service.slug];
+const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) => svc.slug === s)).filter(Boolean) ?? [];
 ---
 
-<ServiceLayout service={service}>
-  <!-- Service body — features list + description -->
-  <section class="py-24 section-dark-alt">
-    <div class="container">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-        <div class="fade-in-left">
-          <p class="section-label">{service.tagline}</p>
-          <h2 class="section-title">{service.name.toUpperCase()}</h2>
-          <p class="mb-8" style="color: var(--color-text-muted); line-height: 1.8;">
-            {service.description}
-          </p>
-          <a href={url('/contact')} class="btn btn-primary btn-md">{service.cta}</a>
-        </div>
+<ServiceLayout service={service} ctaHeading={content?.ctaHeading} ctaText={content?.ctaText}>
 
-        <div class="fade-in-right">
-          <div class="rounded-xl p-8" style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
-            <h3 class="text-lg mb-6">What's Included</h3>
-            <ul class="flex flex-col gap-4">
-              {service.features.map((feature) => (
-                <li class="flex items-start gap-3">
-                  <svg class="w-5 h-5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  <span class="text-sm" style="color: var(--color-text-light);">{feature}</span>
-                </li>
-              ))}
-            </ul>
+  <!-- ═══ INTRO SECTION ═══ -->
+  {content && (
+    <section class="py-24 section-dark">
+      <div class="container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-in">
+          <div>
+            <p class="section-label">{content.introLabel}</p>
+            <h2 class="section-title">{content.introTitle}</h2>
+            {content.introText.map((para) => (
+              <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
+                {para}
+              </p>
+            ))}
+            {content.introCta && (
+              <a href={url('/contact')} class="btn btn-primary btn-md">{content.introCta}</a>
+            )}
+          </div>
+          <div style="border-radius: var(--radius-lg, 12px); overflow: hidden; aspect-ratio: 4/3;">
+            <img
+              src={url(`/images/photos/${service.cardImage}`)}
+              alt={service.name}
+              class="w-full h-full object-cover"
+              loading="lazy"
+              width="600"
+              height="450"
+            />
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
+
+  <!-- ═══ DETAIL CARDS ═══ -->
+  {content?.detailCards && content.detailCards.length > 0 && (
+    <section class="py-24 section-dark-alt">
+      <div class="container">
+        <div class="text-center mb-16 fade-in">
+          {content.detailLabel && <p class="section-label">{content.detailLabel}</p>}
+          {content.detailTitle && <h2 class="section-title">{content.detailTitle}</h2>}
+          {content.detailSubtitle && <p class="section-subtitle mx-auto">{content.detailSubtitle}</p>}
+        </div>
+
+        <div class={`grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children`}>
+          {content.detailCards.map((card) => (
+            <div class="p-8 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+              <h3 class="text-base mb-4" set:html={card.title} />
+              <p class="text-sm mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
+                {card.text}
+              </p>
+              <ul class="flex flex-col gap-2">
+                {card.features.map((f) => (
+                  <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-light);">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ PROCESS STEPS ═══ -->
+  {content?.processSteps && content.processSteps.length > 0 && (
+    <section class="py-24 section-white">
+      <div class="container">
+        <div class="text-center mb-16 fade-in">
+          {content.processLabel && <p class="section-label">{content.processLabel}</p>}
+          {content.processTitle && <h2 class="section-title">{content.processTitle}</h2>}
+          {content.processSubtitle && <p class="section-subtitle mx-auto">{content.processSubtitle}</p>}
+        </div>
+
+        <div class={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${content.processSteps.length} gap-8 stagger-children`}>
+          {content.processSteps.map((step, i) => (
+            <div class="text-center p-8 rounded-xl bg-bg-light border border-border-light">
+              <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center font-bold text-xl text-white" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);">
+                {i + 1}
+              </div>
+              <h4 class="text-sm mb-3" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">{step.title}</h4>
+              <p class="text-sm" style="color: var(--color-text-body-dark);">{step.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ RELATED SERVICES ═══ -->
+  {relatedServices.length > 0 && (
+    <section class="py-24 section-dark-alt">
+      <div class="container">
+        <div class="text-center mb-16 fade-in">
+          <p class="section-label">Explore More</p>
+          <h2 class="section-title">RELATED SERVICES</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children">
+          {relatedServices.map((related) => (
+            <a
+              href={url(`/services/${related!.slug}/`)}
+              class="group block rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg"
+              style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
+            >
+              <div class="aspect-[16/10] overflow-hidden">
+                <img
+                  src={url(`/images/photos/${related!.cardImage}`)}
+                  alt={related!.name}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  width="480"
+                  height="300"
+                />
+              </div>
+              <div class="p-6">
+                <h3 class="text-base mb-2">{related!.shortName.toUpperCase()}</h3>
+                <p class="text-sm" style="color: var(--color-text-muted);">{related!.tagline}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
 </ServiceLayout>

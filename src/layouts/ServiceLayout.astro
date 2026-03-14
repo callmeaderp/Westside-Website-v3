@@ -12,9 +12,11 @@ import { url } from '@lib/utils';
 
 interface Props {
   service: Service;
+  ctaHeading?: string;
+  ctaText?: string;
 }
 
-const { service } = Astro.props;
+const { service, ctaHeading, ctaText } = Astro.props;
 
 // Build structured data for this service
 const serviceJsonLd = {
@@ -78,5 +80,5 @@ const serviceJsonLd = {
   <!-- Service body content (unique per page) -->
   <slot />
 
-  <CtaBanner />
+  <CtaBanner heading={ctaHeading} text={ctaText} />
 </BaseLayout>
