@@ -21,21 +21,22 @@ function isActive(href: string): boolean {
   <div class="header-inner max-w-[1400px] mx-auto px-8 h-[var(--header-height)] flex items-center justify-between">
 
     <!-- Logo -->
-    <div class="logo-group flex items-center gap-4">
-      <a href={url('/')} class="logo flex items-center gap-2">
+    <div class="logo-group flex items-center gap-5">
+      <a href={url('/')} class="logo flex flex-col items-start shrink-0 no-underline">
         <img
-          class="logo-mark h-10 w-auto"
+          class="logo-mark h-9 w-auto"
           src={url('/logo-cropped-white.png')}
           alt="Westside Professional Landscape"
           width="616"
           height="238"
         />
-        <span class="logo-tagline text-xs text-text-muted tracking-widest uppercase hidden sm:block"
-          style="font-family: var(--font-logo);">Professional Landscape</span>
+        <span class="logo-tagline text-xs font-semibold tracking-[2px] uppercase -mt-0.5 hidden sm:block"
+          style="font-family: var(--font-body); color: var(--color-green-bright);">Professional Landscape</span>
       </a>
       <a
         href="https://www.synlawn.com"
-        class="partner-logo hidden md:block opacity-60 hover:opacity-100 transition-opacity"
+        class="partner-logo hidden md:flex items-center opacity-60 hover:opacity-100 transition-opacity pl-5"
+        style="border-left: 1px solid rgba(255, 255, 255, 0.15);"
         target="_blank"
         rel="noopener"
         aria-label="Authorized SYNLawn Dealer"

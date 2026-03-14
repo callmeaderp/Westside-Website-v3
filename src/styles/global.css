@@ -59,54 +59,57 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ═══ BASE / RESET OVERRIDES ═══ */
+/* ═══ BASE / RESET OVERRIDES ═══
+   Wrapped in @layer base so Tailwind utilities (h-9, w-auto, etc.) can override. */
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--header-height);
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    background-color: var(--color-bg-dark);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  a {
+    color: var(--color-green-bright);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out);
+  }
+
+  a:hover {
+    color: var(--color-text-white);
+  }
+
+  /* ═══ TYPOGRAPHY ═══ */
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 400; /* Anton only has 400 */
+    text-transform: uppercase;
+    line-height: 1.1;
+    color: var(--color-text-white);
+  }
+
+  h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: 1px; }
+  h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+  h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+  h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
 }
-
-body {
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--color-text-light);
-  background-color: var(--color-bg-dark);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-a {
-  color: var(--color-green-bright);
-  text-decoration: none;
-  transition: color 0.2s var(--ease-out);
-}
-
-a:hover {
-  color: var(--color-text-white);
-}
-
-/* ═══ TYPOGRAPHY ═══ */
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 400; /* Anton only has 400 */
-  text-transform: uppercase;
-  line-height: 1.1;
-  color: var(--color-text-white);
-}
-
-h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: 1px; }
-h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
-h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
 
 /* ═══ UTILITY CLASSES ═══ */
 

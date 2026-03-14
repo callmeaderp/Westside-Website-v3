@@ -1,6 +1,7 @@
 ---
 /**
- * Gallery / Portfolio page — filterable grid with lightbox.
+ * Gallery / Portfolio page — filterable masonry grid with lightbox.
+ * Layout mirrors V2's dense grid with strategic spanning.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
@@ -32,7 +33,7 @@ const breadcrumbJsonLd = {
   />
 
   <section class="py-24 section-dark-alt">
-    <div class="container">
+    <div class="container-wide">
       <!-- Filter Buttons -->
       <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in">
         {galleryCategories.map((cat) => (
@@ -42,7 +43,6 @@ const breadcrumbJsonLd = {
               cat.value === 'all' ? 'active' : '',
             ]}
             data-filter={cat.value}
-            style="border: 1px solid var(--color-border-dark);"
           >
             {cat.label}
           </button>
@@ -50,26 +50,23 @@ const breadcrumbJsonLd = {
       </div>
 
       <!-- Gallery Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 stagger-children" id="gallery-grid">
+      <div class="gallery-grid stagger-children" id="gallery-grid">
         {gallery.map((item) => (
           <div
-            class={`gallery-item cursor-pointer overflow-hidden rounded-lg ${item.featured ? 'sm:col-span-2 sm:row-span-2' : ''}`}
+            class="gallery-item"
             data-category={item.category}
           >
-            <div class="relative group aspect-[4/3] overflow-hidden">
-              <img
-                src={url(`/images/photos/${item.image}`)}
-                alt={item.alt}
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-              {item.caption && (
-                <div class="gallery-caption absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p class="text-sm text-white">{item.caption}</p>
-                </div>
-              )}
+            <img
+              src={url(`/images/photos/${item.image}`)}
+              alt={item.alt}
+              class="gallery-image"
+              loading="lazy"
+              width="1200"
+              height="900"
+            />
+            <div class="gallery-overlay">
+              <div class="gallery-tag">{item.tag}</div>
+              <div class="gallery-caption">{item.caption}</div>
             </div>
           </div>
         ))}
@@ -77,11 +74,13 @@ const breadcrumbJsonLd = {
     </div>
   </section>
 
-  <!-- Lightbox (hidden by default) -->
-  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden items-center justify-center p-8">
-    <button class="lightbox-close absolute top-6 right-6 text-white text-3xl cursor-pointer hover:text-green-bright" aria-label="Close lightbox">&times;</button>
-    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-lg" />
-    <p id="lightbox-caption" class="absolute bottom-6 left-0 right-0 text-center text-sm text-white/80"></p>
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="" />
+      <p id="lightbox-caption"></p>
+    </div>
   </div>
 
   <CtaBanner />
@@ -90,6 +89,7 @@ const breadcrumbJsonLd = {
 <script>
   // Gallery filter
   const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryGrid = document.getElementById('gallery-grid');
   const galleryItems = document.querySelectorAll('.gallery-item');
 
   filterBtns.forEach((btn) => {
@@ -98,11 +98,18 @@ const breadcrumbJsonLd = {
       filterBtns.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
 
+      // Toggle filtered class to disable CSS nth-child spanning
+      if (filter === 'all') {
+        galleryGrid?.classList.remove('filtered');
+      } else {
+        galleryGrid?.classList.add('filtered');
+      }
+
       galleryItems.forEach((item) => {
         const el = item as HTMLElement;
         if (filter === 'all' || el.dataset.category === filter) {
           el.style.display = '';
-          setTimeout(() => (el.style.opacity = '1'), 10);
+          requestAnimationFrame(() => (el.style.opacity = '1'));
         } else {
           el.style.opacity = '0';
           setTimeout(() => (el.style.display = 'none'), 300);
@@ -119,45 +126,220 @@ const breadcrumbJsonLd = {
   galleryItems.forEach((item) => {
     item.addEventListener('click', () => {
       const img = item.querySelector('img');
-      const caption = item.querySelector('.gallery-caption p');
+      const caption = item.querySelector('.gallery-caption');
       if (img && lightboxImg) {
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt;
       }
       if (caption && lightboxCaption) lightboxCaption.textContent = caption.textContent;
-      lightbox?.classList.remove('hidden');
-      lightbox?.classList.add('flex');
+      lightbox?.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
   });
 
+  function closeLightbox() {
+    lightbox?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
   lightbox?.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (target === lightbox || target.classList.contains('lightbox-close')) {
-      lightbox.classList.add('hidden');
-      lightbox.classList.remove('flex');
-      document.body.style.overflow = '';
+      closeLightbox();
     }
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !lightbox?.classList.contains('hidden')) {
-      lightbox?.classList.add('hidden');
-      lightbox?.classList.remove('flex');
-      document.body.style.overflow = '';
+    if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
+      closeLightbox();
     }
   });
 </script>
 
 <style>
+  /* Filter buttons */
   .filter-btn {
     background: transparent;
     color: var(--color-text-muted);
+    border: 1px solid var(--color-border-dark);
   }
   .filter-btn:hover,
   .filter-btn.active {
-    background: var(--color-green-primary);
+    background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);
+    border-color: transparent;
     color: white;
-    border-color: var(--color-green-primary);
+  }
+
+  /* ═══ GALLERY GRID ═══
+     Dense masonry grid mirroring V2: auto-rows with strategic spanning. */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 260px;
+    grid-auto-flow: dense;
+    gap: 6px;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Strategic spanning — hero item 2×2, items 5 and 10 wide */
+  .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .gallery-item:nth-child(5) { grid-column: span 2; }
+  .gallery-item:nth-child(10) { grid-column: span 2; }
+
+  .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+  }
+
+  /* Overlay */
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+  }
+
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+  }
+
+  .gallery-tag {
+    font-size: 0.75rem;
+    color: var(--color-green-bright);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .gallery-caption {
+    font-weight: 600;
+    color: var(--color-text-white);
+    font-size: 0.95rem;
+  }
+
+  /* Touch devices — always show captions */
+  @media (hover: none) {
+    .gallery-overlay {
+      opacity: 1;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 65%);
+    }
+  }
+
+  /* When filtered, remove nth-child spanning */
+  .gallery-grid.filtered .gallery-item:nth-child(1),
+  .gallery-grid.filtered .gallery-item:nth-child(5),
+  .gallery-grid.filtered .gallery-item:nth-child(10) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 200px;
+      gap: 4px;
+    }
+    .gallery-item:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+    .gallery-item:nth-child(5),
+    .gallery-item:nth-child(10) {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      grid-auto-rows: 220px;
+    }
+    .gallery-item,
+    .gallery-item:nth-child(1),
+    .gallery-item:nth-child(5),
+    .gallery-item:nth-child(10) {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+  }
+
+  /* ═══ LIGHTBOX ═══ */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .lightbox.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: border-color 0.2s ease;
+  }
+
+  .lightbox-close:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .lightbox-content {
+    max-width: 90vw;
+    max-height: 85vh;
+    text-align: center;
+  }
+
+  .lightbox-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 8px;
+  }
+
+  #lightbox-caption {
+    color: var(--color-text-light);
+    margin-top: 1rem;
+    font-size: 1rem;
   }
 </style>
