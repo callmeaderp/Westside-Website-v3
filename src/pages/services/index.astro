@@ -7,6 +7,7 @@ import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import { services } from '@data/services';
+import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -27,7 +28,7 @@ const breadcrumbJsonLd = {
     label="Full-Service Solutions"
     heading="LANDSCAPING SERVICES IN ROCHESTER, NY"
     intro="From initial design through year-round maintenance, we provide every service your property needs to thrive."
-    image="/images/photos/hero-services.webp"
+    image={url('/images/photos/hero-services.webp')}
   />
 
   <section class="py-24 section-dark-alt">
@@ -37,7 +38,7 @@ const breadcrumbJsonLd = {
           <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
             <div class={`fade-in-${i % 2 === 0 ? 'left' : 'right'} ${i % 2 === 1 ? 'lg:col-start-2' : ''}`}>
               <img
-                src={`/images/photos/${service.cardImage}`}
+                src={url(`/images/photos/${service.cardImage}`)}
                 alt={service.name}
                 class="rounded-xl shadow-lg"
                 loading="lazy"
@@ -51,7 +52,7 @@ const breadcrumbJsonLd = {
               <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
                 {service.description}
               </p>
-              <a href={`/services/${service.slug}`} class="btn btn-primary btn-md">
+              <a href={url(`/services/${service.slug}`)} class="btn btn-primary btn-md">
                 Learn More
               </a>
             </div>

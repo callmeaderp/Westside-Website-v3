@@ -9,6 +9,7 @@ import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import { services } from '@data/services';
 import { testimonials } from '@data/testimonials';
+import { url } from '@lib/utils';
 
 // Build homepage JSON-LD (LocalBusiness + reviews + offer catalog)
 const homepageJsonLd = {
@@ -82,11 +83,11 @@ const homepageJsonLd = {
     label="Rochester's Premier Landscape Professionals"
     heading="ROCHESTER'S PROFESSIONAL LANDSCAPING EXPERTS"
     intro="Full-service landscaping, lawn care, and property management. Transforming outdoor spaces across Greater Rochester since 2000."
-    image="/images/photos/hero-home.webp"
+    image={url('/images/photos/hero-home.webp')}
     variant="full"
     buttons={[
-      { text: 'Get a Free Estimate', href: '/contact', style: 'primary' },
-      { text: 'Our Services', href: '/services', style: 'outline' },
+      { text: 'Get a Free Estimate', href: url('/contact'), style: 'primary' },
+      { text: 'Our Services', href: url('/services'), style: 'outline' },
     ]}
   />
 
@@ -104,13 +105,13 @@ const homepageJsonLd = {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
         {services.map((service) => (
           <a
-            href={`/services/${service.slug}`}
+            href={url(`/services/${service.slug}`)}
             class="group block rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg"
             style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
           >
             <div class="aspect-[16/10] overflow-hidden">
               <img
-                src={`/images/photos/${service.cardImage}`}
+                src={url(`/images/photos/${service.cardImage}`)}
                 alt={service.name}
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
@@ -143,13 +144,13 @@ const homepageJsonLd = {
             residential gardens to expansive commercial landscapes.
           </p>
           <div class="flex flex-wrap gap-4">
-            <a href="/about" class="btn btn-primary btn-md">Learn More</a>
-            <a href="/gallery" class="btn btn-outline btn-md">View Our Work</a>
+            <a href={url('/about')} class="btn btn-primary btn-md">Learn More</a>
+            <a href={url('/gallery')} class="btn btn-outline btn-md">View Our Work</a>
           </div>
         </div>
         <div class="fade-in-right">
           <img
-            src="/images/photos/about-company.webp"
+            src={url('/images/photos/about-company.webp')}
             alt="Westside Professional Landscape team"
             class="rounded-xl shadow-lg"
             loading="lazy"

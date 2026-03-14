@@ -3,6 +3,8 @@
  * Reusable hero section — supports full-height (homepage) and page-hero variants.
  * The hero-bg image gets parallax via client-side JS.
  */
+import { url } from '@lib/utils';
+
 interface Props {
   label?: string;
   heading: string;
@@ -25,7 +27,7 @@ const heroClasses = {
   {image && (
     <div
       class="hero-bg absolute inset-0 bg-cover bg-center"
-      style={`background-image: url(${image});`}
+      style={`background-image: url(${url(image)});`}
     >
       <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 100%);"></div>
     </div>
@@ -41,7 +43,7 @@ const heroClasses = {
     {buttons && buttons.length > 0 && (
       <div class="flex flex-wrap gap-4 mt-8">
         {buttons.map((btn) => (
-          <a href={btn.href} class={`btn btn-lg btn-${btn.style}`}>
+          <a href={url(btn.href)} class={`btn btn-lg btn-${btn.style}`}>
             {btn.text}
           </a>
         ))}

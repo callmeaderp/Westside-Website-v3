@@ -4,6 +4,7 @@
  * Props drive per-page customization; company data fills defaults.
  */
 import { company } from '@data/company';
+import { url } from '@lib/utils';
 import TrackingScripts from './TrackingScripts.astro';
 
 interface Props {
@@ -50,8 +51,8 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogIma
 <link rel="canonical" href={canonical} />
 
 <!-- Favicons -->
-<link rel="icon" href="/favicon.ico" sizes="48x48" />
-<link rel="icon" href="/leaf-green.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/manifest.json" />
+<link rel="icon" href={url('/favicon.ico')} sizes="48x48" />
+<link rel="icon" href={url('/leaf-green.svg')} type="image/svg+xml" />
+<link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
+<link rel="manifest" href={url('/manifest.json')} />
 <meta name="theme-color" content="#00863F" />

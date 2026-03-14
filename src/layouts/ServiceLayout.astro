@@ -8,6 +8,7 @@ import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import type { Service } from '@data/services';
+import { url } from '@lib/utils';
 
 interface Props {
   service: Service;
@@ -64,14 +65,14 @@ const serviceJsonLd = {
 <BaseLayout
   title={service.metaTitle}
   description={service.metaDescription}
-  ogImage={`/images/photos/${service.heroImage}`}
+  ogImage={url(`/images/photos/${service.heroImage}`)}
   jsonLd={serviceJsonLd}
 >
   <Hero
     label={service.heroLabel}
     heading={service.heroHeading}
     intro={service.heroIntro}
-    image={`/images/photos/${service.heroImage}`}
+    image={url(`/images/photos/${service.heroImage}`)}
   />
 
   <!-- Service body content (unique per page) -->

@@ -7,6 +7,7 @@ import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import { gallery, galleryCategories } from '@data/gallery';
+import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -27,7 +28,7 @@ const breadcrumbJsonLd = {
     label="Our Work"
     heading="ROCHESTER LANDSCAPING GALLERY"
     intro="Browse our portfolio of completed projects across Greater Rochester. From intimate gardens to expansive commercial properties."
-    image="/images/photos/gallery-show-garden.webp"
+    image={url('/images/photos/gallery-show-garden.webp')}
   />
 
   <section class="py-24 section-dark-alt">
@@ -57,7 +58,7 @@ const breadcrumbJsonLd = {
           >
             <div class="relative group aspect-[4/3] overflow-hidden">
               <img
-                src={`/images/photos/${item.image}`}
+                src={url(`/images/photos/${item.image}`)}
                 alt={item.alt}
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"

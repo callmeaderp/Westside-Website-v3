@@ -5,6 +5,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
+import { url } from '@lib/utils';
 
 const jsonLd = [
   {
@@ -73,7 +74,7 @@ const jsonLd = [
     label="Get in Touch"
     heading="REQUEST A FREE ESTIMATE IN ROCHESTER, NY"
     intro="Ready to transform your outdoor space? Get a free, no-obligation estimate from our team. We'd love to hear about your project."
-    image="/images/photos/hero-contact.webp"
+    image={url('/images/photos/hero-contact.webp')}
   />
 
   <section class="py-24 section-dark-alt">

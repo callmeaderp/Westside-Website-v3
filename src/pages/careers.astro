@@ -6,6 +6,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
+import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -26,7 +27,7 @@ const breadcrumbJsonLd = {
     label="Join Our Team"
     heading="BUILD YOUR CAREER IN LANDSCAPING"
     intro="We're always looking for hardworking, passionate people to join the Westside family. Competitive pay, room to grow, and the satisfaction of transforming outdoor spaces every day."
-    image="/images/photos/hero-about.webp"
+    image={url('/images/photos/hero-about.webp')}
   />
 
   <!-- Why Westside -->
@@ -79,7 +80,7 @@ const breadcrumbJsonLd = {
               <p class="text-xs mb-2" style="color: var(--color-green-bright);">{job.type}</p>
               <p class="text-sm" style="color: var(--color-text-muted);">{job.desc}</p>
             </div>
-            <a href="/contact" class="btn btn-primary btn-sm shrink-0">Apply Now</a>
+            <a href={url('/contact')} class="btn btn-primary btn-sm shrink-0">Apply Now</a>
           </div>
         ))}
       </div>
@@ -88,7 +89,7 @@ const breadcrumbJsonLd = {
         <p class="text-sm mb-4" style="color: var(--color-text-muted);">
           Don't see a position that fits? We're always interested in hearing from talented people.
         </p>
-        <a href="/contact" class="btn btn-outline btn-md">Send Us Your Resume</a>
+        <a href={url('/contact')} class="btn btn-outline btn-md">Send Us Your Resume</a>
       </div>
     </div>
   </section>

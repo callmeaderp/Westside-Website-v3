@@ -4,12 +4,15 @@
  * Active link is determined automatically from current URL.
  */
 import { mainNav } from '@data/navigation';
+import { url } from '@lib/utils';
 
 const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
 
 function isActive(href: string): boolean {
-  if (href === '/') return currentPath === '/';
-  return currentPath.startsWith(href);
+  const fullHref = url(href);
+  if (href === '/') return currentPath === base || currentPath === base.slice(0, -1);
+  return currentPath.startsWith(fullHref);
 }
 ---
 
@@ -19,10 +22,10 @@ function isActive(href: string): boolean {
 
     <!-- Logo -->
     <div class="logo-group flex items-center gap-4">
-      <a href="/" class="logo flex items-center gap-2">
+      <a href={url('/')} class="logo flex items-center gap-2">
         <img
           class="logo-mark h-10 w-auto"
-          src="/logo-cropped-white.png"
+          src={url('/logo-cropped-white.png')}
           alt="Westside Professional Landscape"
           width="616"
           height="238"
@@ -37,7 +40,7 @@ function isActive(href: string): boolean {
         rel="noopener"
         aria-label="Authorized SYNLawn Dealer"
       >
-        <img src="/synlawn-logo.svg" alt="SYNLawn" width="120" height="23" class="h-5 w-auto" />
+        <img src={url('/synlawn-logo.svg')} alt="SYNLawn" width="120" height="23" class="h-5 w-auto" />
       </a>
     </div>
 
@@ -47,7 +50,7 @@ function isActive(href: string): boolean {
         item.children ? (
           <div class="nav-dropdown relative group">
             <a
-              href={item.href}
+              href={url(item.href)}
               class:list={[
                 'px-3 py-2 text-sm font-semibold uppercase tracking-wider transition-colors',
                 isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
@@ -58,7 +61,7 @@ function isActive(href: string): boolean {
             <div class="dropdown-menu absolute top-full left-0 bg-bg-dark-elevated border border-border-dark rounded-lg py-2 min-w-[220px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-lg">
               {item.children.map((child) => (
                 <a
-                  href={child.href}
+                  href={url(child.href)}
                   class:list={[
                     'block px-4 py-2 text-sm transition-colors',
                     isActive(child.href) ? 'text-green-bright' : 'text-text-light hover:text-white hover:bg-white/5',
@@ -85,7 +88,7 @@ function isActive(href: string): boolean {
 
     <!-- Header CTA -->
     <div class="header-cta hidden lg:block">
-      <a href="/contact" class="btn btn-primary btn-sm">Get a Free Estimate</a>
+      <a href={url('/contact')} class="btn btn-primary btn-sm">Get a Free Estimate</a>
     </div>
 
     <!-- Mobile Menu Toggle -->
@@ -104,7 +107,7 @@ function isActive(href: string): boolean {
           <div class="mobile-dropdown">
             <div class="flex items-center justify-between">
               <a
-                href={item.href}
+                href={url(item.href)}
                 class:list={[
                   'py-3 text-base font-semibold uppercase tracking-wider',
                   isActive(item.href) ? 'text-green-bright' : 'text-text-light',
@@ -121,7 +124,7 @@ function isActive(href: string): boolean {
             <div class="mobile-submenu hidden pl-4 pb-2 flex flex-col gap-1">
               {item.children.map((child) => (
                 <a
-                  href={child.href}
+                  href={url(child.href)}
                   class:list={[
                     'py-2 text-sm',
                     isActive(child.href) ? 'text-green-bright' : 'text-text-muted hover:text-white',
@@ -144,7 +147,7 @@ function isActive(href: string): boolean {
           </a>
         )
       ))}
-      <a href="/contact" class="btn btn-primary btn-md mt-4 w-full text-center">Get a Free Estimate</a>
+      <a href={url('/contact')} class="btn btn-primary btn-md mt-4 w-full text-center">Get a Free Estimate</a>
     </div>
   </nav>
 </header>

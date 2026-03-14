@@ -6,6 +6,7 @@
 import ServiceLayout from '@layouts/ServiceLayout.astro';
 import { services, getServiceBySlug } from '@data/services';
 import type { GetStaticPaths } from 'astro';
+import { url } from '@lib/utils';
 
 export const getStaticPaths: GetStaticPaths = () => {
   return services.map((service) => ({
@@ -28,7 +29,7 @@ const { service } = Astro.props;
           <p class="mb-8" style="color: var(--color-text-muted); line-height: 1.8;">
             {service.description}
           </p>
-          <a href="/contact" class="btn btn-primary btn-md">{service.cta}</a>
+          <a href={url('/contact')} class="btn btn-primary btn-md">{service.cta}</a>
         </div>
 
         <div class="fade-in-right">

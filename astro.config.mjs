@@ -23,6 +23,5 @@ export default defineConfig({
     domains: [],
   },
 
-  // Clean URLs (no .html extensions)
-  trailingSlash: 'never',
+  trailingSlash: 'always',
 });

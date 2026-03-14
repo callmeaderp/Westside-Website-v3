@@ -6,6 +6,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
+import { url } from '@lib/utils';
 
 const areas = [
   { name: 'Rochester', desc: 'Our home base — serving the city of Rochester and all surrounding neighborhoods.' },
@@ -66,7 +67,7 @@ const jsonLd = {
     label="Greater Rochester, NY"
     heading="SERVICE AREAS IN ROCHESTER, NY"
     intro="Proudly serving Monroe County and surrounding communities with full-service landscaping, lawn care, hardscaping, and property management since 2000."
-    image="/images/photos/hero-services.webp"
+    image={url('/images/photos/hero-services.webp')}
   />
 
   <section class="py-24 section-dark-alt">
@@ -84,7 +85,7 @@ const jsonLd = {
         <p class="text-lg mb-6" style="color: var(--color-text-muted);">
           Don't see your area? We may still serve your location. Give us a call to find out.
         </p>
-        <a href="/contact" class="btn btn-primary btn-md">Contact Us</a>
+        <a href={url('/contact')} class="btn btn-primary btn-md">Contact Us</a>
       </div>
     </div>
   </section>

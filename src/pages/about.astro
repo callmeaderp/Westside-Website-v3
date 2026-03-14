@@ -7,6 +7,7 @@ import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import { team } from '@data/team';
+import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -27,7 +28,7 @@ const breadcrumbJsonLd = {
     label="Our Story"
     heading="ROCHESTER'S TRUSTED LANDSCAPING COMPANY SINCE 2000"
     intro="From a small Rochester startup to one of the region's most trusted landscape companies, our journey is defined by quality, integrity, and a passion for the outdoors."
-    image="/images/photos/hero-about.webp"
+    image={url('/images/photos/hero-about.webp')}
   />
 
   <!-- Company Story -->
@@ -49,7 +50,7 @@ const breadcrumbJsonLd = {
         </div>
         <div class="fade-in-right">
           <img
-            src="/images/photos/about-company.webp"
+            src={url('/images/photos/about-company.webp')}
             alt="Westside Professional Landscape projects"
             class="rounded-xl shadow-lg"
             loading="lazy"
@@ -101,7 +102,7 @@ const breadcrumbJsonLd = {
           <div class="text-center">
             <div class="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden" style="border: 3px solid var(--color-green-bright);">
               <img
-                src={`/images/photos/${member.image}`}
+                src={url(`/images/photos/${member.image}`)}
                 alt={member.name}
                 class="w-full h-full object-cover"
                 loading="lazy"

@@ -3,6 +3,7 @@
  * Custom 404 page
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { url } from '@lib/utils';
 ---
 
 <BaseLayout
@@ -18,8 +19,8 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         The page you're looking for doesn't exist or has been moved.
       </p>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="/" class="btn btn-primary btn-md">Go Home</a>
-        <a href="/contact" class="btn btn-outline btn-md">Contact Us</a>
+        <a href={url('/')} class="btn btn-primary btn-md">Go Home</a>
+        <a href={url('/contact')} class="btn btn-outline btn-md">Contact Us</a>
       </div>
     </div>
   </section>
