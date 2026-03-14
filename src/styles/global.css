@@ -1,0 +1,274 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Westside Professional Landscape — V3 Global Styles
+   Tailwind v4 + CSS custom properties for the dark premium theme
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import 'tailwindcss';
+@import './fonts.css';
+
+/* ═══ DESIGN TOKENS (CSS Custom Properties) ═══
+   These define the brand identity and are referenced throughout.
+   Tailwind utilities handle most layout/spacing; these cover brand values. */
+
+@theme {
+  /* Brand Colors */
+  --color-green-primary: #00863F;
+  --color-green-bright: #6CC551;
+  --color-green-dark: #005C2B;
+
+  /* Backgrounds */
+  --color-bg-dark: #111111;
+  --color-bg-dark-alt: #1a1a1a;
+  --color-bg-dark-card: #1a1a1a;
+  --color-bg-dark-elevated: #222222;
+  --color-bg-white: #ffffff;
+  --color-bg-light: #f8f9fa;
+  --color-bg-accent: #0f1f14;
+  --color-bg-accent-card: #152a1b;
+
+  /* Text */
+  --color-text-white: #ffffff;
+  --color-text-light: #e0e0e0;
+  --color-text-muted: #999999;
+  --color-text-dark: #111111;
+  --color-text-body-dark: #444444;
+  --color-text-green: #6CC551;
+
+  /* Borders */
+  --color-border-dark: #2a2a2a;
+  --color-border-light: #e0e0e0;
+  --color-border-accent: #1f3d26;
+
+  /* Typography */
+  --font-heading: 'Anton', 'Impact', sans-serif;
+  --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+  --font-logo: 'Merriweather', Georgia, serif;
+
+  /* Layout */
+  --container-max: 1200px;
+  --container-wide: 1400px;
+  --header-height: 80px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-green: 0 4px 20px rgba(108, 197, 81, 0.3);
+
+  /* Easing */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ═══ BASE / RESET OVERRIDES ═══ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-text-light);
+  background-color: var(--color-bg-dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-green-bright);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out);
+}
+
+a:hover {
+  color: var(--color-text-white);
+}
+
+/* ═══ TYPOGRAPHY ═══ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 400; /* Anton only has 400 */
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: var(--color-text-white);
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: 1px; }
+h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+
+/* ═══ UTILITY CLASSES ═══ */
+
+.section-label {
+  @apply text-sm font-semibold uppercase tracking-[3px] mb-4;
+  font-family: var(--font-body);
+  color: var(--color-green-bright);
+}
+
+.section-title {
+  @apply mb-6;
+}
+
+.section-subtitle {
+  @apply text-lg font-normal leading-relaxed max-w-xl;
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.text-green {
+  color: var(--color-green-bright);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══ CONTAINER ═══ */
+
+.container {
+  @apply w-full mx-auto px-8;
+  max-width: var(--container-max);
+}
+
+.container-wide {
+  @apply mx-auto px-8;
+  max-width: var(--container-wide);
+}
+
+/* ═══ SECTIONS ═══ */
+
+.section-dark {
+  background-color: var(--color-bg-dark);
+}
+
+.section-dark-alt {
+  background-color: var(--color-bg-dark-alt);
+}
+
+.section-white {
+  background-color: var(--color-bg-accent);
+  color: var(--color-text-light);
+}
+
+/* ═══ BUTTONS ═══ */
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 font-semibold rounded-lg
+         transition-all duration-200 cursor-pointer border-2 border-transparent;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-sm {
+  @apply px-5 py-2 text-sm;
+}
+
+.btn-md {
+  @apply px-7 py-3 text-base;
+}
+
+.btn-lg {
+  @apply px-8 py-4 text-base;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7DD662 0%, #009A4A 100%);
+  box-shadow: var(--shadow-green);
+  color: white;
+}
+
+.btn-dark {
+  @apply bg-white text-black;
+}
+
+.btn-dark:hover {
+  @apply bg-gray-100;
+}
+
+.btn-outline {
+  @apply bg-transparent text-white;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  @apply bg-white/10;
+  border-color: rgba(255, 255, 255, 0.6);
+  color: white;
+}
+
+/* ═══ SCROLL ANIMATIONS ═══ */
+
+.fade-in,
+.fade-in-left,
+.fade-in-right {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.fade-in { transform: translateY(20px); }
+.fade-in-left { transform: translateX(-30px); }
+.fade-in-right { transform: translateX(30px); }
+
+.fade-in.visible,
+.fade-in-left.visible,
+.fade-in-right.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+}
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 80ms; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 160ms; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 240ms; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 320ms; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 400ms; }
+.stagger-children.visible > *:nth-child(7) { transition-delay: 480ms; }
+
+/* Respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in, .fade-in-left, .fade-in-right,
+  .stagger-children > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ═══ RESPONSIVE ═══ */
+
+@media (max-width: 768px) {
+  .container, .container-wide {
+    @apply px-5;
+  }
+}

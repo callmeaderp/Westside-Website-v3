@@ -1,0 +1,81 @@
+---
+/**
+ * Shared layout for individual service pages.
+ * Wraps BaseLayout with service-specific hero, breadcrumbs, and CTA.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CtaBanner from '@components/CtaBanner.astro';
+import { company } from '@data/company';
+import type { Service } from '@data/services';
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+
+// Build structured data for this service
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: service.name,
+      description: service.description,
+      provider: {
+        '@type': 'LandscapingBusiness',
+        name: company.name,
+        url: company.url,
+        telephone: company.phoneTel,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: company.address.street,
+          addressLocality: company.address.city,
+          addressRegion: company.address.state,
+          postalCode: company.address.zip,
+          addressCountry: company.address.country,
+        },
+      },
+      areaServed: {
+        '@type': 'City',
+        name: 'Rochester',
+        containedInPlace: { '@type': 'State', name: 'New York' },
+      },
+      url: `${company.url}/services/${service.slug}`,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: `${company.url}/services` },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: service.shortName,
+          item: `${company.url}/services/${service.slug}`,
+        },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  ogImage={`/images/photos/${service.heroImage}`}
+  jsonLd={serviceJsonLd}
+>
+  <Hero
+    label={service.heroLabel}
+    heading={service.heroHeading}
+    intro={service.heroIntro}
+    image={`/images/photos/${service.heroImage}`}
+  />
+
+  <!-- Service body content (unique per page) -->
+  <slot />
+
+  <CtaBanner />
+</BaseLayout>

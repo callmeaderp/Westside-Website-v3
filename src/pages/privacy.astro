@@ -1,0 +1,114 @@
+---
+/**
+ * Privacy Policy page
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import { company } from '@data/company';
+---
+
+<BaseLayout
+  title="Privacy Policy | Westside Professional Landscape"
+  description="Privacy policy for Westside Professional Landscape. Learn how we collect, use, and protect your information."
+>
+  <Hero
+    label="Legal"
+    heading="PRIVACY POLICY"
+    variant="utility"
+  />
+
+  <section class="py-16 section-dark-alt">
+    <div class="container max-w-3xl">
+      <div class="prose-content">
+        <p class="text-sm mb-2" style="color: var(--color-text-muted);">Last updated: January 1, 2026</p>
+
+        <h2>Information We Collect</h2>
+        <p>When you use our website or contact us, we may collect:</p>
+        <ul>
+          <li>Name, email, phone number, and address (when you submit a form or contact us)</li>
+          <li>Information about your property and service needs</li>
+          <li>Usage data collected through cookies and analytics tools</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+          <li>Respond to your inquiries and provide estimates</li>
+          <li>Deliver and improve our landscaping services</li>
+          <li>Send relevant updates about our services (with your consent)</li>
+          <li>Improve our website and user experience</li>
+        </ul>
+
+        <h2>Analytics & Tracking</h2>
+        <p>
+          We use Google Analytics 4 and Meta Pixel to understand how visitors use our website. These tools use cookies
+          to collect anonymous usage data. You can opt out of Google Analytics by installing the
+          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out browser add-on</a>.
+        </p>
+
+        <h2>Information Sharing</h2>
+        <p>
+          We do not sell, trade, or otherwise transfer your personal information to third parties. We may share information
+          with trusted service providers who assist us in operating our website and conducting our business, as long as
+          those parties agree to keep this information confidential.
+        </p>
+
+        <h2>Data Security</h2>
+        <p>
+          We implement reasonable security measures to protect your personal information. However, no method of transmission
+          over the Internet is 100% secure.
+        </p>
+
+        <h2>Contact Us</h2>
+        <p>
+          If you have questions about this privacy policy, contact us at:
+        </p>
+        <p>
+          <strong>{company.name}</strong><br />
+          {company.address.street}<br />
+          {company.address.city}, {company.address.state} {company.address.zip}<br />
+          <a href={`mailto:${company.email}`}>{company.email}</a><br />
+          <a href={company.phoneHref}>{company.phone}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-content h2 {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: none;
+    color: var(--color-text-white);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose-content p {
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .prose-content ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-content li {
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin-bottom: 0.25rem;
+  }
+
+  .prose-content a {
+    color: var(--color-green-bright);
+  }
+
+  .prose-content a:hover {
+    color: var(--color-text-white);
+  }
+</style>

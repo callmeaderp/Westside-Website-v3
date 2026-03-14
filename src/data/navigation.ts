@@ -1,0 +1,50 @@
+/**
+ * Site navigation structure — drives Header, Footer, and sitemap.
+ * Single source of truth for all internal links.
+ */
+
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: NavItem[];
+}
+
+export const mainNav: NavItem[] = [
+  { label: 'Home', href: '/' },
+  {
+    label: 'Services',
+    href: '/services',
+    children: [
+      { label: 'Landscape Design', href: '/services/landscape-design' },
+      { label: 'Maintenance', href: '/services/landscape-maintenance' },
+      { label: 'Fertilization & Weed Control', href: '/services/plant-health' },
+      { label: 'Hardscaping', href: '/services/hardscaping' },
+      { label: 'Water Features', href: '/services/water-features' },
+      { label: 'Snow & Ice Management', href: '/services/snow-ice-management' },
+      { label: 'Holiday Decorating', href: '/services/holiday-lighting' },
+    ],
+  },
+  { label: 'About', href: '/about' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
+];
+
+export const footerServices: NavItem[] = [
+  { label: 'Landscape Design', href: '/services/landscape-design' },
+  { label: 'Maintenance', href: '/services/landscape-maintenance' },
+  { label: 'Fertilization & Weed Control', href: '/services/plant-health' },
+  { label: 'Hardscaping', href: '/services/hardscaping' },
+  { label: 'Water Features', href: '/services/water-features' },
+  { label: 'Snow Removal', href: '/services/snow-ice-management' },
+  { label: 'Holiday Decorating', href: '/services/holiday-lighting' },
+];
+
+export const footerCompany: NavItem[] = [
+  { label: 'About Us', href: '/about' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
+  { label: '5-Step Program', href: '/services/plant-health' },
+  { label: 'Free Estimate', href: '/contact' },
+];

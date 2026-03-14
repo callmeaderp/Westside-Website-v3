@@ -1,0 +1,104 @@
+---
+/**
+ * Base HTML layout — wraps every page.
+ * Provides: <html>, <head> (via BaseHead), <body>, Header, Footer, scroll animations.
+ */
+import '@styles/global.css';
+import BaseHead from '@components/BaseHead.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  /** Extra JSON-LD to inject in <head> */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, canonical, ogImage, ogType, noindex, jsonLd } = Astro.props;
+
+const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+    />
+    {jsonLdArray.map((ld) => (
+      <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    ))}
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Scroll animation observer -->
+    <script>
+      document.documentElement.classList.add('js');
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReducedMotion) {
+        const animated = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .stagger-children');
+        if (animated.length > 0) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
+          );
+          animated.forEach((el) => observer.observe(el));
+
+          // Catch elements already in viewport on load
+          requestAnimationFrame(() => {
+            animated.forEach((el) => {
+              if (!el.classList.contains('visible')) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                  el.classList.add('visible');
+                  observer.unobserve(el);
+                }
+              }
+            });
+          });
+        }
+
+        // Hero parallax
+        const heroBgs = document.querySelectorAll('.hero-bg');
+        if (heroBgs.length > 0) {
+          window.addEventListener(
+            'scroll',
+            () => {
+              heroBgs.forEach((bg) => {
+                const rect = bg.parentElement!.getBoundingClientRect();
+                if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                  (bg as HTMLElement).style.transform = `translateY(${-rect.top * 0.3}px)`;
+                }
+              });
+            },
+            { passive: true }
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+---
+/**
+ * Homepage — Westside Professional Landscape
+ * Full-height hero, service cards, testimonials, stats, CTA.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CtaBanner from '@components/CtaBanner.astro';
+import { company } from '@data/company';
+import { services } from '@data/services';
+import { testimonials } from '@data/testimonials';
+
+// Build homepage JSON-LD (LocalBusiness + reviews + offer catalog)
+const homepageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LandscapingBusiness',
+  '@id': `${company.url}/#business`,
+  name: company.name,
+  url: company.url,
+  telephone: company.phoneTel,
+  email: company.email,
+  description: company.description,
+  logo: `${company.url}/leaf-green.svg`,
+  image: `${company.url}/images/photos/hero-home.webp`,
+  priceRange: company.priceRange,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address.street,
+    addressLocality: company.address.city,
+    addressRegion: company.address.state,
+    postalCode: company.address.zip,
+    addressCountry: company.address.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: company.geo.latitude,
+    longitude: company.geo.longitude,
+  },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: company.hours.weekdays?.open,
+    closes: company.hours.weekdays?.close,
+  }],
+  foundingDate: String(company.foundingYear),
+  areaServed: company.areasServed.map((city) => ({
+    '@type': 'City',
+    name: city,
+    ...(city === 'Rochester' ? { containedInPlace: { '@type': 'State', name: 'New York' } } : {}),
+  })),
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5.0',
+    reviewCount: String(testimonials.length),
+    bestRating: '5',
+  },
+  review: testimonials.map((t) => ({
+    '@type': 'Review',
+    reviewRating: { '@type': 'Rating', ratingValue: String(t.rating) },
+    author: { '@type': 'Person', name: t.author },
+    reviewBody: t.text,
+  })),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Landscaping Services',
+    itemListElement: services.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.name },
+    })),
+  },
+  sameAs: Object.values(company.social),
+};
+---
+
+<BaseLayout
+  title="Westside Professional Landscape | Rochester NY Landscaping"
+  description={company.description}
+  jsonLd={homepageJsonLd}
+>
+  <!-- ═══ HERO ═══ -->
+  <Hero
+    label="Rochester's Premier Landscape Professionals"
+    heading="ROCHESTER'S PROFESSIONAL LANDSCAPING EXPERTS"
+    intro="Full-service landscaping, lawn care, and property management. Transforming outdoor spaces across Greater Rochester since 2000."
+    image="/images/photos/hero-home.webp"
+    variant="full"
+    buttons={[
+      { text: 'Get a Free Estimate', href: '/contact', style: 'primary' },
+      { text: 'Our Services', href: '/services', style: 'outline' },
+    ]}
+  />
+
+  <!-- ═══ SERVICES OVERVIEW ═══ -->
+  <section class="py-24 section-dark-alt">
+    <div class="container">
+      <div class="text-center mb-16 fade-in">
+        <p class="section-label">What We Do</p>
+        <h2 class="section-title">FULL-SERVICE LANDSCAPING SOLUTIONS</h2>
+        <p class="section-subtitle mx-auto">
+          From design through year-round maintenance, we handle every aspect of your outdoor space.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        {services.map((service) => (
+          <a
+            href={`/services/${service.slug}`}
+            class="group block rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg"
+            style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
+          >
+            <div class="aspect-[16/10] overflow-hidden">
+              <img
+                src={`/images/photos/${service.cardImage}`}
+                alt={service.name}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                width="480"
+                height="300"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg mb-2">{service.shortName}</h3>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">
+                {service.tagline}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT PREVIEW ═══ -->
+  <section class="py-24 section-white">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="fade-in-left">
+          <p class="section-label">Since 2000</p>
+          <h2 class="section-title">ROCHESTER'S MOST TRUSTED LANDSCAPE COMPANY</h2>
+          <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
+            For over two decades, Westside Professional Landscape has been transforming properties across Greater Rochester.
+            Our team of certified professionals brings expertise, creativity, and dedication to every project — from intimate
+            residential gardens to expansive commercial landscapes.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="/about" class="btn btn-primary btn-md">Learn More</a>
+            <a href="/gallery" class="btn btn-outline btn-md">View Our Work</a>
+          </div>
+        </div>
+        <div class="fade-in-right">
+          <img
+            src="/images/photos/about-company.webp"
+            alt="Westside Professional Landscape team"
+            class="rounded-xl shadow-lg"
+            loading="lazy"
+            width="600"
+            height="400"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="py-24 section-dark">
+    <div class="container">
+      <div class="text-center mb-16 fade-in">
+        <p class="section-label">Client Reviews</p>
+        <h2 class="section-title">WHAT OUR CLIENTS SAY</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        {testimonials.slice(0, 3).map((t) => (
+          <div
+            class="p-8 rounded-xl"
+            style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
+          >
+            <div class="flex gap-1 mb-4">
+              {Array.from({ length: t.rating }).map(() => (
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#6CC551"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              ))}
+            </div>
+            <p class="text-sm italic leading-relaxed mb-4" style="color: var(--color-text-light);">
+              "{t.text}"
+            </p>
+            <p class="text-sm font-semibold" style="color: var(--color-green-bright);">
+              — {t.author}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <CtaBanner />
+</BaseLayout>

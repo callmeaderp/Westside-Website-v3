@@ -1,0 +1,53 @@
+---
+/**
+ * Analytics and tracking scripts — included in BaseLayout <head>.
+ * GA4 + Meta Pixel. Centralized so tracking IDs are never scattered across pages.
+ */
+import { company } from '@data/company';
+---
+
+<!-- Google tag (gtag.js) -->
+<script
+  is:inline
+  async
+  src={`https://www.googletagmanager.com/gtag/js?id=${company.tracking.ga4}`}
+></script>
+<script is:inline define:vars={{ ga4Id: company.tracking.ga4 }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', ga4Id);
+</script>
+
+<!-- Meta Pixel Code -->
+<script is:inline define:vars={{ pixelId: company.tracking.metaPixel }}>
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', pixelId);
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img
+    height="1"
+    width="1"
+    style="display:none"
+    src={`https://www.facebook.com/tr?id=${company.tracking.metaPixel}&ev=PageView&noscript=1`}
+    alt=""
+  />
+</noscript>

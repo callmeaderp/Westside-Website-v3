@@ -1,0 +1,52 @@
+---
+/**
+ * Dynamic service page — generates /services/landscape-design, /services/plant-health, etc.
+ * Content comes from the typed services data file + per-service body content below.
+ */
+import ServiceLayout from '@layouts/ServiceLayout.astro';
+import { services, getServiceBySlug } from '@data/services';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+};
+
+const { service } = Astro.props;
+---
+
+<ServiceLayout service={service}>
+  <!-- Service body — features list + description -->
+  <section class="py-24 section-dark-alt">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div class="fade-in-left">
+          <p class="section-label">{service.tagline}</p>
+          <h2 class="section-title">{service.name.toUpperCase()}</h2>
+          <p class="mb-8" style="color: var(--color-text-muted); line-height: 1.8;">
+            {service.description}
+          </p>
+          <a href="/contact" class="btn btn-primary btn-md">{service.cta}</a>
+        </div>
+
+        <div class="fade-in-right">
+          <div class="rounded-xl p-8" style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
+            <h3 class="text-lg mb-6">What's Included</h3>
+            <ul class="flex flex-col gap-4">
+              {service.features.map((feature) => (
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span class="text-sm" style="color: var(--color-text-light);">{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

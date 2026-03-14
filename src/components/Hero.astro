@@ -1,0 +1,53 @@
+---
+/**
+ * Reusable hero section — supports full-height (homepage) and page-hero variants.
+ * The hero-bg image gets parallax via client-side JS.
+ */
+interface Props {
+  label?: string;
+  heading: string;
+  intro?: string;
+  image?: string;
+  variant?: 'full' | 'page' | 'utility';
+  buttons?: Array<{ text: string; href: string; style: 'primary' | 'dark' | 'outline' }>;
+}
+
+const { label, heading, intro, image, variant = 'page', buttons } = Astro.props;
+
+const heroClasses = {
+  full: 'min-h-screen flex items-center relative overflow-hidden',
+  page: 'pt-40 pb-24 relative overflow-hidden',
+  utility: 'pt-36 pb-16 relative overflow-hidden bg-bg-dark-alt',
+};
+---
+
+<section class:list={['hero', heroClasses[variant]]}>
+  {image && (
+    <div
+      class="hero-bg absolute inset-0 bg-cover bg-center"
+      style={`background-image: url(${image});`}
+    >
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 100%);"></div>
+    </div>
+  )}
+
+  <div class="accent-line-corner absolute top-0 left-0 w-px h-24 bg-gradient-to-b from-green-bright/60 to-transparent hidden md:block ml-8"></div>
+
+  <div class="container relative z-10">
+    {label && <p class="section-label">{label}</p>}
+    <h1 class="max-w-4xl mb-6" set:html={heading} />
+    {intro && <p class="section-subtitle max-w-2xl">{intro}</p>}
+
+    {buttons && buttons.length > 0 && (
+      <div class="flex flex-wrap gap-4 mt-8">
+        {buttons.map((btn) => (
+          <a href={btn.href} class={`btn btn-lg btn-${btn.style}`}>
+            {btn.text}
+          </a>
+        ))}
+      </div>
+    )}
+
+    <slot />
+  </div>
+</section>

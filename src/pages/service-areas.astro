@@ -1,0 +1,93 @@
+---
+/**
+ * Service Areas page — communities served in Greater Rochester.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CtaBanner from '@components/CtaBanner.astro';
+import { company } from '@data/company';
+
+const areas = [
+  { name: 'Rochester', desc: 'Our home base — serving the city of Rochester and all surrounding neighborhoods.' },
+  { name: 'Pittsford', desc: 'Premium landscaping services for one of Rochester\'s most desirable communities.' },
+  { name: 'Webster', desc: 'Full-service landscape solutions for Webster homes and businesses.' },
+  { name: 'Penfield', desc: 'Trusted landscape partner for Penfield families since 2000.' },
+  { name: 'Fairport', desc: 'Quality landscaping and lawn care for the Fairport community.' },
+  { name: 'Brighton', desc: 'Expert landscape services in the heart of Brighton.' },
+  { name: 'Greece', desc: 'Comprehensive landscaping for Greece\'s residential and commercial properties.' },
+  { name: 'Gates', desc: 'Reliable landscape maintenance and design for Gates homeowners.' },
+  { name: 'Chili', desc: 'Your neighborhood landscaping professionals in Chili.' },
+  { name: 'Henrietta', desc: 'Commercial and residential landscape services in Henrietta.' },
+  { name: 'Victor', desc: 'Premium landscape solutions for Victor\'s growing community.' },
+  { name: 'Spencerport', desc: 'Serving Spencerport with the same quality as all Greater Rochester.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'LandscapingBusiness',
+      name: company.name,
+      url: company.url,
+      telephone: company.phoneTel,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: company.address.street,
+        addressLocality: company.address.city,
+        addressRegion: company.address.state,
+        postalCode: company.address.zip,
+        addressCountry: company.address.country,
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: company.geo.latitude, longitude: company.geo.longitude },
+      areaServed: areas.map((a) => ({
+        '@type': 'City',
+        name: a.name,
+        containedInPlace: { '@type': 'State', name: 'New York' },
+      })),
+      foundingDate: String(company.foundingYear),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
+        { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${company.url}/service-areas` },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Service Areas | Greater Rochester NY Landscaping | Westside Professional Landscape"
+  description={`Westside Professional Landscape serves ${areas.map(a => a.name).join(', ')}. Call ${company.phone}.`}
+  jsonLd={jsonLd}
+>
+  <Hero
+    label="Greater Rochester, NY"
+    heading="SERVICE AREAS IN ROCHESTER, NY"
+    intro="Proudly serving Monroe County and surrounding communities with full-service landscaping, lawn care, hardscaping, and property management since 2000."
+    image="/images/photos/hero-services.webp"
+  />
+
+  <section class="py-24 section-dark-alt">
+    <div class="container">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        {areas.map((area) => (
+          <div class="p-6 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+            <h3 class="text-base mb-2">{area.name}</h3>
+            <p class="text-sm" style="color: var(--color-text-muted);">{area.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-16 fade-in">
+        <p class="text-lg mb-6" style="color: var(--color-text-muted);">
+          Don't see your area? We may still serve your location. Give us a call to find out.
+        </p>
+        <a href="/contact" class="btn btn-primary btn-md">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>

@@ -1,0 +1,194 @@
+---
+/**
+ * Site header with navigation, logo, services dropdown, and mobile menu.
+ * Active link is determined automatically from current URL.
+ */
+import { mainNav } from '@data/navigation';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+  style="background: rgba(17, 17, 17, 0.92);">
+  <div class="header-inner max-w-[1400px] mx-auto px-8 h-[var(--header-height)] flex items-center justify-between">
+
+    <!-- Logo -->
+    <div class="logo-group flex items-center gap-4">
+      <a href="/" class="logo flex items-center gap-2">
+        <img
+          class="logo-mark h-10 w-auto"
+          src="/logo-cropped-white.png"
+          alt="Westside Professional Landscape"
+          width="616"
+          height="238"
+        />
+        <span class="logo-tagline text-xs text-text-muted tracking-widest uppercase hidden sm:block"
+          style="font-family: var(--font-logo);">Professional Landscape</span>
+      </a>
+      <a
+        href="https://www.synlawn.com"
+        class="partner-logo hidden md:block opacity-60 hover:opacity-100 transition-opacity"
+        target="_blank"
+        rel="noopener"
+        aria-label="Authorized SYNLawn Dealer"
+      >
+        <img src="/synlawn-logo.svg" alt="SYNLawn" width="120" height="23" class="h-5 w-auto" />
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav hidden lg:flex items-center gap-1" id="main-nav">
+      {mainNav.map((item) => (
+        item.children ? (
+          <div class="nav-dropdown relative group">
+            <a
+              href={item.href}
+              class:list={[
+                'px-3 py-2 text-sm font-semibold uppercase tracking-wider transition-colors',
+                isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
+              ]}
+            >
+              {item.label}
+            </a>
+            <div class="dropdown-menu absolute top-full left-0 bg-bg-dark-elevated border border-border-dark rounded-lg py-2 min-w-[220px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-lg">
+              {item.children.map((child) => (
+                <a
+                  href={child.href}
+                  class:list={[
+                    'block px-4 py-2 text-sm transition-colors',
+                    isActive(child.href) ? 'text-green-bright' : 'text-text-light hover:text-white hover:bg-white/5',
+                  ]}
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={[
+              'px-3 py-2 text-sm font-semibold uppercase tracking-wider transition-colors',
+              isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
+            ]}
+          >
+            {item.label}
+          </a>
+        )
+      ))}
+    </nav>
+
+    <!-- Header CTA -->
+    <div class="header-cta hidden lg:block">
+      <a href="/contact" class="btn btn-primary btn-sm">Get a Free Estimate</a>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer" id="menu-toggle" aria-label="Toggle menu">
+      <span class="block w-6 h-0.5 bg-white transition-transform duration-200"></span>
+      <span class="block w-6 h-0.5 bg-white transition-opacity duration-200"></span>
+      <span class="block w-6 h-0.5 bg-white transition-transform duration-200"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Nav (hidden by default, toggled via JS) -->
+  <nav class="mobile-nav hidden lg:hidden bg-bg-dark border-t border-border-dark" id="mobile-nav">
+    <div class="max-w-[1400px] mx-auto px-8 py-6 flex flex-col gap-1">
+      {mainNav.map((item) => (
+        item.children ? (
+          <div class="mobile-dropdown">
+            <div class="flex items-center justify-between">
+              <a
+                href={item.href}
+                class:list={[
+                  'py-3 text-base font-semibold uppercase tracking-wider',
+                  isActive(item.href) ? 'text-green-bright' : 'text-text-light',
+                ]}
+              >
+                {item.label}
+              </a>
+              <button class="dropdown-arrow p-2 text-text-muted hover:text-white" aria-label="Toggle submenu">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+            </div>
+            <div class="mobile-submenu hidden pl-4 pb-2 flex flex-col gap-1">
+              {item.children.map((child) => (
+                <a
+                  href={child.href}
+                  class:list={[
+                    'py-2 text-sm',
+                    isActive(child.href) ? 'text-green-bright' : 'text-text-muted hover:text-white',
+                  ]}
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={[
+              'py-3 text-base font-semibold uppercase tracking-wider',
+              isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
+            ]}
+          >
+            {item.label}
+          </a>
+        )
+      ))}
+      <a href="/contact" class="btn btn-primary btn-md mt-4 w-full text-center">Get a Free Estimate</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = !mobileNav?.classList.contains('hidden');
+    mobileNav?.classList.toggle('hidden');
+    menuToggle.classList.toggle('active');
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+
+  // Mobile dropdown toggles
+  document.querySelectorAll('.dropdown-arrow').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const submenu = btn.closest('.mobile-dropdown')?.querySelector('.mobile-submenu');
+      submenu?.classList.toggle('hidden');
+      btn.querySelector('svg')?.classList.toggle('rotate-180');
+    });
+  });
+
+  // Close mobile nav on link click
+  mobileNav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileNav?.classList.add('hidden');
+      menuToggle?.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Header scroll effect
+  const header = document.querySelector('.site-header') as HTMLElement;
+  if (header) {
+    window.addEventListener(
+      'scroll',
+      () => {
+        header.style.background =
+          window.scrollY > 50 ? 'rgba(17, 17, 17, 0.98)' : 'rgba(17, 17, 17, 0.92)';
+      },
+      { passive: true }
+    );
+  }
+</script>

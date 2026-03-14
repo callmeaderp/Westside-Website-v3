@@ -1,0 +1,162 @@
+---
+/**
+ * Gallery / Portfolio page — filterable grid with lightbox.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CtaBanner from '@components/CtaBanner.astro';
+import { company } from '@data/company';
+import { gallery, galleryCategories } from '@data/gallery';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Gallery', item: `${company.url}/gallery` },
+  ],
+};
+---
+
+<BaseLayout
+  title="Landscaping Portfolio & Gallery | Rochester NY | Westside"
+  description="Browse our portfolio of landscape design, hardscaping, water features, and maintenance projects across Greater Rochester NY."
+  jsonLd={breadcrumbJsonLd}
+>
+  <Hero
+    label="Our Work"
+    heading="ROCHESTER LANDSCAPING GALLERY"
+    intro="Browse our portfolio of completed projects across Greater Rochester. From intimate gardens to expansive commercial properties."
+    image="/images/photos/gallery-show-garden.webp"
+  />
+
+  <section class="py-24 section-dark-alt">
+    <div class="container">
+      <!-- Filter Buttons -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in">
+        {galleryCategories.map((cat) => (
+          <button
+            class:list={[
+              'filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer',
+              cat.value === 'all' ? 'active' : '',
+            ]}
+            data-filter={cat.value}
+            style="border: 1px solid var(--color-border-dark);"
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 stagger-children" id="gallery-grid">
+        {gallery.map((item) => (
+          <div
+            class={`gallery-item cursor-pointer overflow-hidden rounded-lg ${item.featured ? 'sm:col-span-2 sm:row-span-2' : ''}`}
+            data-category={item.category}
+          >
+            <div class="relative group aspect-[4/3] overflow-hidden">
+              <img
+                src={`/images/photos/${item.image}`}
+                alt={item.alt}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                width="600"
+                height="450"
+              />
+              {item.caption && (
+                <div class="gallery-caption absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p class="text-sm text-white">{item.caption}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox (hidden by default) -->
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden items-center justify-center p-8">
+    <button class="lightbox-close absolute top-6 right-6 text-white text-3xl cursor-pointer hover:text-green-bright" aria-label="Close lightbox">&times;</button>
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-lg" />
+    <p id="lightbox-caption" class="absolute bottom-6 left-0 right-0 text-center text-sm text-white/80"></p>
+  </div>
+
+  <CtaBanner />
+</BaseLayout>
+
+<script>
+  // Gallery filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = (btn as HTMLElement).dataset.filter;
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      galleryItems.forEach((item) => {
+        const el = item as HTMLElement;
+        if (filter === 'all' || el.dataset.category === filter) {
+          el.style.display = '';
+          setTimeout(() => (el.style.opacity = '1'), 10);
+        } else {
+          el.style.opacity = '0';
+          setTimeout(() => (el.style.display = 'none'), 300);
+        }
+      });
+    });
+  });
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lightboxCaption = document.getElementById('lightbox-caption');
+
+  galleryItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img');
+      const caption = item.querySelector('.gallery-caption p');
+      if (img && lightboxImg) {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+      }
+      if (caption && lightboxCaption) lightboxCaption.textContent = caption.textContent;
+      lightbox?.classList.remove('hidden');
+      lightbox?.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  lightbox?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target === lightbox || target.classList.contains('lightbox-close')) {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lightbox?.classList.contains('hidden')) {
+      lightbox?.classList.add('hidden');
+      lightbox?.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+
+<style>
+  .filter-btn {
+    background: transparent;
+    color: var(--color-text-muted);
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--color-green-primary);
+    color: white;
+    border-color: var(--color-green-primary);
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+/**
+ * <head> metadata, OG, canonical, favicons — included in BaseLayout.
+ * Props drive per-page customization; company data fills defaults.
+ */
+import { company } from '@data/company';
+import TrackingScripts from './TrackingScripts.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage = '/images/photos/hero-home.webp',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogImage}`;
+---
+
+<TrackingScripts />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={company.name} />
+<meta property="og:image" content={ogImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonical} />
+
+<!-- Favicons -->
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" href="/leaf-green.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#00863F" />

@@ -1,0 +1,65 @@
+---
+/**
+ * Services hub page — overview of all service categories.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CtaBanner from '@components/CtaBanner.astro';
+import { company } from '@data/company';
+import { services } from '@data/services';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: `${company.url}/services` },
+  ],
+};
+---
+
+<BaseLayout
+  title="Landscaping Services in Rochester, NY | Westside Professional Landscape"
+  description="Full-service landscaping, lawn care, hardscaping, water features, and snow management in Rochester, NY. Serving Greater Rochester since 2000."
+  jsonLd={breadcrumbJsonLd}
+>
+  <Hero
+    label="Full-Service Solutions"
+    heading="LANDSCAPING SERVICES IN ROCHESTER, NY"
+    intro="From initial design through year-round maintenance, we provide every service your property needs to thrive."
+    image="/images/photos/hero-services.webp"
+  />
+
+  <section class="py-24 section-dark-alt">
+    <div class="container">
+      <div class="flex flex-col gap-20">
+        {services.map((service, i) => (
+          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
+            <div class={`fade-in-${i % 2 === 0 ? 'left' : 'right'} ${i % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+              <img
+                src={`/images/photos/${service.cardImage}`}
+                alt={service.name}
+                class="rounded-xl shadow-lg"
+                loading="lazy"
+                width="600"
+                height="400"
+              />
+            </div>
+            <div class={`fade-in-${i % 2 === 0 ? 'right' : 'left'}`}>
+              <p class="section-label">{service.tagline}</p>
+              <h2 class="text-2xl mb-4">{service.name.toUpperCase()}</h2>
+              <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
+                {service.description}
+              </p>
+              <a href={`/services/${service.slug}`} class="btn btn-primary btn-md">
+                Learn More
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
