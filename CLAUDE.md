@@ -20,6 +20,7 @@ Astro 6 rebuild of the Westside Professional Landscape website. Ported from v2 (
 - **Tailwind v4** uses the Vite plugin (`@tailwindcss/vite`) instead of `@astrojs/tailwind`. Design tokens go in `@theme {}` blocks in CSS, not `tailwind.config.js`.
 - **`@lucide/astro` doesn't support Astro 6** (peer dep conflict). Using inline SVGs for now. `lucide-static` is installed for SVG file access.
 - **Photos are in both `src/assets/photos/` and `public/images/photos/`** — currently using `public/` for direct serving. Migration to Astro `<Image />` pipeline is planned (would use `src/assets/` and remove `public/images/photos/`).
+- **`build.assets` is set to `'assets'`** (not the default `_astro`). Vite's preview server 404s underscore-prefixed asset directories when `base` is set — CSS/JS won't load in `astro preview` with the default `_astro` name.
 - **Form handler** still uses Web3Forms (client-side POST). API route migration planned but not yet implemented.
 - **Service URLs changed**: v2 `/plant-health.html` → v3 `/services/plant-health`. `_redirects` maps all old URLs.
 
