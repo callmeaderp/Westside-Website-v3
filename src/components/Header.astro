@@ -16,32 +16,32 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="site-header fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+<header class="site-header fixed top-0 left-0 right-0 z-50"
   style="background: rgba(17, 17, 17, 0.92);">
-  <div class="header-inner max-w-[1400px] mx-auto px-8 h-[var(--header-height)] flex items-center justify-between">
+  <div class="header-inner max-w-[1400px] mx-auto px-5 md:px-8 py-3 lg:py-5 flex items-center justify-between">
 
     <!-- Logo -->
-    <div class="logo-group flex items-center gap-5">
+    <div class="logo-group flex items-center gap-3 md:gap-5">
       <a href={url('/')} class="logo flex flex-col items-start shrink-0 no-underline">
         <img
-          class="logo-mark h-9 w-auto"
+          class="logo-mark h-7 sm:h-8 lg:h-9 w-auto"
           src={url('/logo-cropped-white.png')}
           alt="Westside Professional Landscape"
           width="616"
           height="238"
         />
-        <span class="logo-tagline text-xs font-semibold tracking-[2px] uppercase -mt-0.5 hidden sm:block"
+        <span class="logo-tagline text-[10px] sm:text-xs font-semibold tracking-[1.5px] sm:tracking-[2px] uppercase -mt-0.5"
           style="font-family: var(--font-body); color: var(--color-green-bright);">Professional Landscape</span>
       </a>
       <a
-        href="https://www.synlawn.com"
-        class="partner-logo hidden md:flex items-center opacity-60 hover:opacity-100 transition-opacity pl-5"
+        href="https://www.synlawn.com/location/western-new-york/"
+        class="partner-logo flex items-center opacity-60 hover:opacity-100 transition-opacity pl-3 md:pl-5"
         style="border-left: 1px solid rgba(255, 255, 255, 0.15);"
         target="_blank"
         rel="noopener"
         aria-label="Authorized SYNLawn Dealer"
       >
-        <img src={url('/synlawn-logo.svg')} alt="SYNLawn" width="120" height="23" class="h-7 w-auto" />
+        <img src={url('/synlawn-logo.svg')} alt="SYNLawn" width="120" height="23" class="h-4 sm:h-5 md:h-7 w-auto" />
       </a>
     </div>
 
@@ -93,7 +93,7 @@ function isActive(href: string): boolean {
     </div>
 
     <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer" id="menu-toggle" aria-label="Toggle menu">
+    <button type="button" class="menu-toggle lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer" id="menu-toggle" aria-label="Toggle menu">
       <span class="block w-6 h-0.5 bg-white transition-transform duration-200"></span>
       <span class="block w-6 h-0.5 bg-white transition-opacity duration-200"></span>
       <span class="block w-6 h-0.5 bg-white transition-transform duration-200"></span>
@@ -102,7 +102,7 @@ function isActive(href: string): boolean {
 
   <!-- Mobile Nav (hidden by default, toggled via JS) -->
   <nav class="mobile-nav hidden lg:hidden bg-bg-dark border-t border-border-dark" id="mobile-nav">
-    <div class="max-w-[1400px] mx-auto px-8 py-6 flex flex-col gap-1">
+    <div class="max-w-[1400px] mx-auto px-5 md:px-8 py-6 flex flex-col gap-1">
       {mainNav.map((item) => (
         item.children ? (
           <div class="mobile-dropdown">
@@ -116,7 +116,7 @@ function isActive(href: string): boolean {
               >
                 {item.label}
               </a>
-              <button class="dropdown-arrow flex-1 flex items-center justify-end py-3 px-4 -mr-4 text-text-muted hover:text-white active:text-white ml-4 rounded-r-lg transition-all duration-200 hover:bg-white/5 active:bg-white/10 active:scale-[0.97]" aria-label="Toggle submenu"
+              <button type="button" class="dropdown-arrow flex-1 flex items-center justify-end py-3 px-4 -mr-4 text-text-muted hover:text-white active:text-white ml-4 rounded-r-lg transition-all duration-200 hover:bg-white/5 active:bg-white/10 active:scale-[0.97]" aria-label="Toggle submenu"
                 style="border-left: 1px solid rgba(255,255,255,0.10); margin-top: 8px; margin-bottom: 8px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   class="transition-transform duration-300">
@@ -211,7 +211,6 @@ function isActive(href: string): boolean {
   }
 
   document.querySelectorAll('.mobile-dropdown').forEach((dropdown) => {
-    const parentLink = dropdown.querySelector(':scope > div > a') as HTMLAnchorElement;
     const submenu = dropdown.querySelector('.mobile-submenu') as HTMLElement;
     const arrow = dropdown.querySelector('.dropdown-arrow') as HTMLButtonElement;
 
@@ -236,7 +235,7 @@ function isActive(href: string): boolean {
     });
   });
 
-  // Header scroll effect
+  // Header scroll effect — solidify background on scroll
   const header = document.querySelector('.site-header') as HTMLElement;
   if (header) {
     window.addEventListener(

@@ -38,6 +38,7 @@ const breadcrumbJsonLd = {
       <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in">
         {galleryCategories.map((cat) => (
           <button
+            type="button"
             class:list={[
               'filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer',
               cat.value === 'all' ? 'active' : '',
@@ -55,6 +56,8 @@ const breadcrumbJsonLd = {
           <div
             class="gallery-item"
             data-category={item.category}
+            role="button"
+            tabindex="0"
           >
             <img
               src={url(`/images/photos/${item.image}`)}
@@ -76,9 +79,9 @@ const breadcrumbJsonLd = {
 
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox">
-    <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+    <button type="button" class="lightbox-close" aria-label="Close lightbox">&times;</button>
     <div class="lightbox-content">
-      <img id="lightbox-img" src="" alt="" />
+      <img id="lightbox-img" src="" alt="" width="1200" height="900" />
       <p id="lightbox-caption"></p>
     </div>
   </div>
@@ -123,17 +126,25 @@ const breadcrumbJsonLd = {
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
   const lightboxCaption = document.getElementById('lightbox-caption');
 
+  function openLightboxFor(item: Element) {
+    const img = item.querySelector('img');
+    const caption = item.querySelector('.gallery-caption');
+    if (img && lightboxImg) {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+    }
+    if (caption && lightboxCaption) lightboxCaption.textContent = caption.textContent;
+    lightbox?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
   galleryItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('img');
-      const caption = item.querySelector('.gallery-caption');
-      if (img && lightboxImg) {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
+    item.addEventListener('click', () => openLightboxFor(item));
+    item.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+        e.preventDefault();
+        openLightboxFor(item);
       }
-      if (caption && lightboxCaption) lightboxCaption.textContent = caption.textContent;
-      lightbox?.classList.add('active');
-      document.body.style.overflow = 'hidden';
     });
   });
 

@@ -21,8 +21,8 @@
   --color-bg-dark-alt: #1a1a1a;
   --color-bg-dark-card: #1a1a1a;
   --color-bg-dark-elevated: #222222;
-  --color-bg-white: #f0eee8;
-  --color-bg-light: #e8e6e0;
+  --color-bg-white: #eceae3;
+  --color-bg-light: #e3e1d9;
   --color-bg-accent: #0f1f14;
   --color-bg-accent-card: #152a1b;
 
@@ -74,7 +74,7 @@
     line-height: 1.6;
     color: var(--color-text-light);
     background-color: var(--color-bg-dark);
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -345,6 +345,12 @@
 }
 
 /* ═══ RESPONSIVE ═══ */
+
+@media (max-width: 1023px) {
+  :root {
+    --header-height: 64px;
+  }
+}
 
 @media (max-width: 768px) {
   .container, .container-wide {
