@@ -79,6 +79,17 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Prevent horizontal overflow from scroll animations (translateX) that
+     start elements off-screen before their IntersectionObserver fires.
+     Sections are always full-width blocks — they never overflow horizontally.
+     Using clip (not hidden) so we don't create a scroll container or break
+     position: sticky. Applied here, NOT on html, because html-level overflow
+     changes can suppress mobile address bar transitions (killing the header
+     bounce animation). */
+  section {
+    overflow-x: clip;
+  }
+
   img {
     max-width: 100%;
     height: auto;

@@ -99,8 +99,9 @@ function isActive(href: string): boolean {
     </button>
   </div>
 
-  <!-- Mobile Nav (hidden by default, toggled via JS) -->
-  <nav class="mobile-nav hidden lg:hidden bg-bg-dark border-t border-border-dark" id="mobile-nav">
+  <!-- Mobile Nav — hidden attr = display:none from first paint (no FOUC).
+       JS removes hidden + adds is-open to animate in; re-adds hidden on close. -->
+  <nav class="mobile-nav bg-bg-dark border-t border-border-dark" id="mobile-nav" hidden>
     <div class="max-w-[1400px] mx-auto px-5 md:px-8 py-6 flex flex-col gap-1">
       {mainNav.map((item) => (
         item.children ? (
@@ -155,17 +156,49 @@ function isActive(href: string): boolean {
   </nav>
 </header>
 
+<!-- Backdrop: visible when mobile nav is open. Sits below header (z-40 vs z-50)
+     but above page content. Tap closes the menu; scroll passes through to the page
+     because a non-scrollable fixed element doesn't capture scroll events. -->
+<div class="mobile-backdrop fixed inset-0 z-40" id="mobile-backdrop" hidden></div>
+
 <script>
   // Mobile menu toggle
   const menuToggle = document.getElementById('menu-toggle');
   const mobileNav = document.getElementById('mobile-nav');
+  const backdrop = document.getElementById('mobile-backdrop');
+
+  function openMenu() {
+    // Remove hidden (display:none) so the element enters the DOM layout
+    mobileNav?.removeAttribute('hidden');
+    backdrop?.removeAttribute('hidden');
+    // Force reflow — browser must compute the closed state (opacity:0,
+    // clip-path clipped) BEFORE we add is-open, or it batches both
+    // changes and skips the transition entirely.
+    mobileNav?.offsetHeight;
+    mobileNav?.classList.add('is-open');
+    backdrop?.classList.add('is-open');
+    menuToggle?.classList.add('active');
+  }
+
+  function closeMenu() {
+    mobileNav?.classList.remove('is-open');
+    backdrop?.classList.remove('is-open');
+    menuToggle?.classList.remove('active');
+    // Re-hide after the close animation finishes
+    mobileNav?.addEventListener('transitionend', () => {
+      if (!mobileNav?.classList.contains('is-open')) {
+        mobileNav?.setAttribute('hidden', '');
+        backdrop?.setAttribute('hidden', '');
+      }
+    }, { once: true });
+  }
 
   menuToggle?.addEventListener('click', () => {
-    const isOpen = !mobileNav?.classList.contains('hidden');
-    mobileNav?.classList.toggle('hidden');
-    menuToggle.classList.toggle('active');
-    document.body.style.overflow = isOpen ? '' : 'hidden';
+    mobileNav?.classList.contains('is-open') ? closeMenu() : openMenu();
   });
+
+  // Tap backdrop to close menu (scroll passes through naturally)
+  backdrop?.addEventListener('click', closeMenu);
 
   // Mobile dropdown: animated slide-down with staggered children
   function openSubmenu(submenu: HTMLElement, arrow: HTMLElement | null) {
@@ -228,9 +261,7 @@ function isActive(href: string): boolean {
   mobileNav?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (e) => {
       if (e.defaultPrevented) return;
-      mobileNav?.classList.add('hidden');
-      menuToggle?.classList.remove('active');
-      document.body.style.overflow = '';
+      closeMenu();
     });
   });
 
@@ -248,14 +279,11 @@ function isActive(href: string): boolean {
     syncHeaderScroll();
     window.addEventListener('scroll', syncHeaderScroll, { passive: true });
 
-    // Mobile visual viewport fix: when the address bar shows/hides, the
-    // visual viewport shifts relative to the layout viewport. sticky top:0
-    // anchors to the layout viewport — which can be above the visible area.
-    // We nudge `top` to track the visual viewport. CSS transition handles
-    // the smoothing with a spring curve, so only a minimal JS bridge is needed.
+    // Mobile visual viewport fix: track vv.offsetTop so the sticky header
+    // isn't clipped when the address bar shows/hides.
     const vv = window.visualViewport;
-    if (vv) {
-      const sync = () => { header!.style.top = `${vv!.offsetTop}px`; };
+    if (vv && window.matchMedia('(max-width: 1023px)').matches) {
+      const sync = () => { header!.style.top = `${Math.round(vv!.offsetTop)}px`; };
       vv.addEventListener('scroll', sync);
       vv.addEventListener('resize', sync);
     }
@@ -294,17 +322,12 @@ function isActive(href: string): boolean {
 </script>
 
 <style>
-  /* Header background + visual viewport spring transition.
-     The spring curve (overshoot at 1.35) gives the header a subtle
-     bounce-settle when the mobile address bar shows/hides. */
   .site-header {
     background-color: rgba(17, 17, 17, 0.92);
-    transition: top 500ms cubic-bezier(0.34, 1.8, 0.64, 1),
-                background-color 160ms ease;
+    transition: background-color 160ms ease;
   }
-  /* Dark shield above header — covers the gap when the header slides
-     down to track the visual viewport during address bar transitions.
-     Invisible at rest (above the viewport edge). */
+  /* Dark shield above header — covers the gap when the visual viewport
+     offset shifts during mobile address bar transitions. */
   .site-header::before {
     content: '';
     position: absolute;
@@ -317,8 +340,44 @@ function isActive(href: string): boolean {
   .site-header.is-scrolled {
     background-color: rgba(17, 17, 17, 0.98);
   }
+
+  /* ═══ Mobile nav: clip-path expand/collapse + backdrop fade ═══
+     clip-path reveals from top edge (where nav meets header) without
+     moving or distorting content. No translateY = no rising on close. */
+  .mobile-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+    transition: opacity 220ms ease,
+                clip-path 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mobile-nav.is-open {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    pointer-events: auto;
+    transition: opacity 200ms ease,
+                clip-path 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mobile-backdrop {
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+  }
+  .mobile-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  @media (min-width: 1024px) {
+    .mobile-nav, .mobile-backdrop { display: none !important; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .site-header { transition: none; }
+    .mobile-nav, .mobile-backdrop { transition: none; }
   }
 
   /* Active/hover green gradient underline on desktop nav links */
