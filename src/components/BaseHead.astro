@@ -7,6 +7,9 @@ import { company } from '@data/company';
 import { url } from '@lib/utils';
 import TrackingScripts from './TrackingScripts.astro';
 
+import sourceSansFont from '../fonts/source-sans-3.woff2';
+import antonFont from '../fonts/anton-400.woff2';
+
 interface Props {
   title: string;
   description: string;
@@ -32,8 +35,8 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogIma
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <!-- Preload critical fonts to prevent layout shift -->
-<link rel="preload" href={url('/fonts/source-sans-3.woff2')} as="font" type="font/woff2" crossorigin />
-<link rel="preload" href={url('/fonts/anton-400.woff2')} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={sourceSansFont} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={antonFont} as="font" type="font/woff2" crossorigin />
 
 <TrackingScripts />
 
@@ -59,4 +62,4 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogIma
 <link rel="icon" href={url('/leaf-green.svg')} type="image/svg+xml" />
 <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
 <link rel="manifest" href={url('/manifest.json')} />
-<meta name="theme-color" content="#00863F" />
+<meta name="theme-color" content="#111111" />

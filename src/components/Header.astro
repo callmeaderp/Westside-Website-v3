@@ -16,8 +16,7 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="site-header fixed top-0 left-0 right-0 z-50"
-  style="background: rgba(17, 17, 17, 0.92);">
+<header class="site-header sticky top-0 z-50 min-h-[var(--header-height)]">
   <div class="header-inner max-w-[1400px] mx-auto px-5 md:px-8 py-3 lg:py-5 flex items-center justify-between">
 
     <!-- Logo -->
@@ -235,21 +234,93 @@ function isActive(href: string): boolean {
     });
   });
 
-  // Header scroll effect — solidify background on scroll
+  // Header scroll effect — class toggle (avoids per-frame inline style recalc)
   const header = document.querySelector('.site-header') as HTMLElement;
+  let scrolled = false;
+  function syncHeaderScroll() {
+    const next = window.scrollY > 50;
+    if (next !== scrolled) {
+      scrolled = next;
+      header?.classList.toggle('is-scrolled', next);
+    }
+  }
   if (header) {
-    window.addEventListener(
-      'scroll',
-      () => {
-        header.style.background =
-          window.scrollY > 50 ? 'rgba(17, 17, 17, 0.98)' : 'rgba(17, 17, 17, 0.92)';
-      },
-      { passive: true }
-    );
+    syncHeaderScroll();
+    window.addEventListener('scroll', syncHeaderScroll, { passive: true });
+
+    // Mobile visual viewport fix: when the address bar shows/hides, the
+    // visual viewport shifts relative to the layout viewport. sticky top:0
+    // anchors to the layout viewport — which can be above the visible area.
+    // We nudge `top` to track the visual viewport. CSS transition handles
+    // the smoothing with a spring curve, so only a minimal JS bridge is needed.
+    const vv = window.visualViewport;
+    if (vv) {
+      const sync = () => { header!.style.top = `${vv!.offsetTop}px`; };
+      vv.addEventListener('scroll', sync);
+      vv.addEventListener('resize', sync);
+    }
+  }
+
+  // Enhanced debug overlay — ?debugHeader for comprehensive live metrics
+  // Positioned at BOTTOM to avoid being clipped by the same top-edge issue
+  if (header && location.search.includes('debugHeader')) {
+    // Red outline on header to show its actual CSS box bounds
+    header.style.outline = '2px solid red';
+    header.style.outlineOffset = '-2px';
+
+    const box = document.createElement('pre');
+    Object.assign(box.style, {
+      position: 'fixed', bottom: '0', left: '0', right: '0', zIndex: '9999',
+      padding: '6px 10px', background: 'rgba(0,0,0,.92)', color: '#7CFC00',
+      font: '11px/1.4 monospace', pointerEvents: 'none',
+    });
+    document.body.appendChild(box);
+    const vv = window.visualViewport;
+
+    // rAF loop — catches transient states that events miss
+    (function renderDebug() {
+      const hr = header.getBoundingClientRect();
+      const cs = getComputedStyle(header);
+      box.textContent = [
+        `scroll: ${Math.round(window.scrollY)}  |  pos: ${cs.position}  top-css: ${cs.top}`,
+        `innerH: ${window.innerHeight}  vv.h: ${vv ? vv.height.toFixed(0) : '-'}  diff: ${vv ? (window.innerHeight - vv.height).toFixed(0) : '-'}`,
+        `vv.offTop: ${vv ? vv.offsetTop.toFixed(1) : '-'}  vv.pageTop: ${vv ? vv.pageTop.toFixed(0) : '-'}`,
+        `hdr rect → top: ${hr.top.toFixed(1)}  bot: ${hr.bottom.toFixed(1)}  h: ${hr.height.toFixed(1)}`,
+        `body overflowX: ${getComputedStyle(document.body).overflowX}`,
+      ].join('\n');
+      requestAnimationFrame(renderDebug);
+    })();
   }
 </script>
 
 <style>
+  /* Header background + visual viewport spring transition.
+     The spring curve (overshoot at 1.35) gives the header a subtle
+     bounce-settle when the mobile address bar shows/hides. */
+  .site-header {
+    background-color: rgba(17, 17, 17, 0.92);
+    transition: top 500ms cubic-bezier(0.34, 1.8, 0.64, 1),
+                background-color 160ms ease;
+  }
+  /* Dark shield above header — covers the gap when the header slides
+     down to track the visual viewport during address bar transitions.
+     Invisible at rest (above the viewport edge). */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background-color: rgb(17, 17, 17);
+  }
+  .site-header.is-scrolled {
+    background-color: rgba(17, 17, 17, 0.98);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header { transition: none; }
+  }
+
   /* Active/hover green gradient underline on desktop nav links */
   .main-nav > a,
   .main-nav .nav-dropdown > a {

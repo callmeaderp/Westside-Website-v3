@@ -41,7 +41,7 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   </head>
   <body>
     <Header />
-    <main>
+    <main style="margin-top: calc(-1 * var(--header-height));">
       <slot />
     </main>
     <Footer />
@@ -97,18 +97,27 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
           }, { passive: true });
         }
 
-        // Hero parallax
+        // Hero parallax — desktop only (mobile address bar animation
+        // causes viewport resize that compounds jitter with per-frame transforms)
+        const enableParallax = window.matchMedia('(min-width: 1024px)').matches;
         const heroBgs = document.querySelectorAll('.hero-bg');
-        if (heroBgs.length > 0) {
+        if (enableParallax && heroBgs.length > 0) {
+          let ticking = false;
           window.addEventListener(
             'scroll',
             () => {
-              heroBgs.forEach((bg) => {
-                const rect = bg.parentElement!.getBoundingClientRect();
-                if (rect.bottom > 0 && rect.top < window.innerHeight) {
-                  (bg as HTMLElement).style.transform = `translateY(${-rect.top * 0.3}px)`;
-                }
-              });
+              if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(() => {
+                  heroBgs.forEach((bg) => {
+                    const rect = bg.parentElement!.getBoundingClientRect();
+                    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                      (bg as HTMLElement).style.transform = `translateY(${-rect.top * 0.3}px)`;
+                    }
+                  });
+                  ticking = false;
+                });
+              }
             },
             { passive: true }
           );
