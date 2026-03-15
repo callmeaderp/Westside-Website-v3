@@ -41,7 +41,7 @@ function isActive(href: string): boolean {
         rel="noopener"
         aria-label="Authorized SYNLawn Dealer"
       >
-        <img src={url('/synlawn-logo.svg')} alt="SYNLawn" width="120" height="23" class="h-5 w-auto" />
+        <img src={url('/synlawn-logo.svg')} alt="SYNLawn" width="120" height="23" class="h-7 w-auto" />
       </a>
     </div>
 
@@ -54,7 +54,7 @@ function isActive(href: string): boolean {
               href={url(item.href)}
               class:list={[
                 'px-3 py-2 text-sm font-semibold uppercase tracking-wider transition-colors',
-                isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
+                isActive(item.href) ? 'text-green-bright active-link' : 'text-text-light hover:text-white',
               ]}
             >
               {item.label}
@@ -78,7 +78,7 @@ function isActive(href: string): boolean {
             href={url(item.href)}
             class:list={[
               'px-3 py-2 text-sm font-semibold uppercase tracking-wider transition-colors',
-              isActive(item.href) ? 'text-green-bright' : 'text-text-light hover:text-white',
+              isActive(item.href) ? 'text-green-bright active-link' : 'text-text-light hover:text-white',
             ]}
           >
             {item.label}
@@ -215,15 +215,8 @@ function isActive(href: string): boolean {
     const submenu = dropdown.querySelector('.mobile-submenu') as HTMLElement;
     const arrow = dropdown.querySelector('.dropdown-arrow') as HTMLButtonElement;
 
-    // Parent link: first tap opens submenu, second tap navigates
-    parentLink?.addEventListener('click', (e) => {
-      if (!isSubmenuOpen(submenu)) {
-        e.preventDefault();
-        openSubmenu(submenu, arrow);
-      }
-    });
-
-    // Chevron (flex-1, covers all space the text doesn't) toggles submenu
+    // Parent link: always navigates to the Services page (no interception)
+    // Chevron area: toggles submenu open/closed
     arrow?.addEventListener('click', () => {
       if (isSubmenuOpen(submenu)) {
         closeSubmenu(submenu, arrow);
@@ -256,3 +249,30 @@ function isActive(href: string): boolean {
     );
   }
 </script>
+
+<style>
+  /* Active/hover green gradient underline on desktop nav links */
+  .main-nav > a,
+  .main-nav .nav-dropdown > a {
+    position: relative;
+  }
+
+  .main-nav > a::after,
+  .main-nav .nav-dropdown > a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);
+    transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .main-nav > a:hover::after,
+  .main-nav .nav-dropdown > a:hover::after,
+  .main-nav > a.active-link::after,
+  .main-nav .nav-dropdown > a.active-link::after {
+    width: 100%;
+  }
+</style>

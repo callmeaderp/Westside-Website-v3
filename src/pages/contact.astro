@@ -210,7 +210,7 @@ const jsonLd = [
         const response = await fetch(form.action, { method: 'POST', body: formData });
         const result = await response.json();
         if (result.success) {
-          if (typeof fbq === 'function') fbq('track', 'Lead');
+          if (typeof (window as any).fbq === 'function') (window as any).fbq('track', 'Lead');
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
           form.reset();

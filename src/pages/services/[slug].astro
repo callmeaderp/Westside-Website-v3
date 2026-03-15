@@ -4,7 +4,7 @@
  * Content comes from the typed services data file + rich content from service-content.ts.
  */
 import ServiceLayout from '@layouts/ServiceLayout.astro';
-import { services, getServiceBySlug } from '@data/services';
+import { services, type Service } from '@data/services';
 import { serviceContent } from '@data/service-content';
 import type { GetStaticPaths } from 'astro';
 import { url } from '@lib/utils';
@@ -18,7 +18,7 @@ export const getStaticPaths: GetStaticPaths = () => {
     }));
 };
 
-const { service } = Astro.props;
+const { service } = Astro.props as { service: Service };
 const content = serviceContent[service.slug];
 const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) => svc.slug === s)).filter(Boolean) ?? [];
 ---
@@ -32,7 +32,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center fade-in">
           <div>
             <p class="section-label">{content.introLabel}</p>
-            <h2 class="section-title">{content.introTitle}</h2>
+            <h2 class="section-title" set:html={content.introTitle} />
             {content.introText.map((para) => (
               <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
                 {para}
@@ -63,7 +63,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
       <div class="container">
         <div class="text-center mb-16 fade-in">
           {content.detailLabel && <p class="section-label">{content.detailLabel}</p>}
-          {content.detailTitle && <h2 class="section-title">{content.detailTitle}</h2>}
+          {content.detailTitle && <h2 class="section-title" set:html={content.detailTitle} />}
           {content.detailSubtitle && <p class="section-subtitle mx-auto">{content.detailSubtitle}</p>}
         </div>
 
@@ -97,7 +97,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
       <div class="container">
         <div class="text-center mb-16 fade-in">
           {content.processLabel && <p class="section-label">{content.processLabel}</p>}
-          {content.processTitle && <h2 class="section-title">{content.processTitle}</h2>}
+          {content.processTitle && <h2 class="section-title" set:html={content.processTitle} />}
           {content.processSubtitle && <p class="section-subtitle mx-auto">{content.processSubtitle}</p>}
         </div>
 

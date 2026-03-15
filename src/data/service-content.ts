@@ -36,14 +36,14 @@ export interface ServiceContent {
 export const serviceContent: Record<string, ServiceContent> = {
   'landscape-design': {
     introLabel: 'Your Vision, Our Expertise',
-    introTitle: 'TRANSFORMING OUTDOOR SPACES',
+    introTitle: 'TRANSFORMING <span class="text-green">OUTDOOR SPACES</span>',
     introText: [
       "For over 26 years, Westside Professional Landscape has been designing and building stunning outdoor environments for homeowners and businesses across Monroe County. Whether you're envisioning a complete property transformation or a targeted enhancement to your front entrance, our design team works closely with you to develop a plan that reflects your style, meets your functional needs, and respects your budget.",
       "Every project begins with a thorough site assessment. We evaluate your property's soil conditions, sun exposure, drainage patterns, and existing features. This allows us to recommend plants, materials, and layouts that will thrive in Rochester's unique four-season climate — from the humid summers to the harsh winters that define our region.",
     ],
     introCta: 'Request a Design Consultation',
     detailLabel: 'What We Offer',
-    detailTitle: 'DESIGN & INSTALLATION SERVICES',
+    detailTitle: 'DESIGN & INSTALLATION <span class="text-green">SERVICES</span>',
     detailSubtitle: 'Comprehensive landscape design solutions for residential and commercial properties throughout the Greater Rochester area.',
     detailCards: [
       {
@@ -68,7 +68,7 @@ export const serviceContent: Record<string, ServiceContent> = {
       },
     ],
     processLabel: 'How It Works',
-    processTitle: 'OUR DESIGN PROCESS',
+    processTitle: 'OUR DESIGN <span class="text-green">PROCESS</span>',
     processSubtitle: "A proven approach that turns your vision into a finished landscape you'll enjoy for years to come.",
     processSteps: [
       { title: 'CONSULTATION', text: 'We meet at your property, discuss your goals, assess existing conditions, and establish a budget range.' },
@@ -83,13 +83,13 @@ export const serviceContent: Record<string, ServiceContent> = {
 
   'landscape-maintenance': {
     introLabel: 'Protect Your Investment',
-    introTitle: 'PROFESSIONAL LANDSCAPE CARE',
+    introTitle: 'PROFESSIONAL <span class="text-green">LANDSCAPE CARE</span>',
     introText: [
       'A beautiful landscape is an investment — and like any investment, it needs ongoing care to maintain its value. Without regular maintenance, plantings become overgrown, lawns thin out, beds fill with weeds, and the curb appeal you worked hard to create gradually disappears.',
       "Westside Professional Landscape provides comprehensive maintenance programs for residential and commercial properties throughout the Greater Rochester area. Our trained crews deliver consistent, high-quality service on a predictable schedule — so your property always looks its best, whether it's a private home in Pittsford or a commercial campus in Henrietta.",
     ],
     detailLabel: 'What We Offer',
-    detailTitle: 'MAINTENANCE SERVICES',
+    detailTitle: 'MAINTENANCE <span class="text-green">SERVICES</span>',
     detailSubtitle: 'Comprehensive landscape maintenance solutions for residential and commercial properties.',
     detailCards: [
       {
@@ -131,13 +131,13 @@ export const serviceContent: Record<string, ServiceContent> = {
 
   'hardscaping': {
     introLabel: 'Craftsmanship That Endures',
-    introTitle: 'OUTDOOR SPACES BUILT FOR ROCHESTER',
+    introTitle: 'OUTDOOR SPACES BUILT FOR <span class="text-green">ROCHESTER</span>',
     introText: [
       "Rochester's freeze-thaw cycles put outdoor structures to the test. A patio or retaining wall that isn't built with proper base preparation and drainage will heave, crack, and fail within a few winters. At Westside Professional Landscape, we've been building hardscapes across Monroe County for over 26 years — and we build them to last.",
       "Our crews understand the engineering that goes into a durable installation: compacted aggregate bases, proper pitch for water drainage, polymeric sand for joint stability, and the right materials for our climate. Whether you're a homeowner in Pittsford looking for an elegant patio or a commercial property in Greece that needs a functional retaining wall, we bring the same level of precision to every project.",
     ],
     detailLabel: 'What We Build',
-    detailTitle: 'HARDSCAPING SERVICES',
+    detailTitle: 'HARDSCAPING <span class="text-green">SERVICES</span>',
     detailSubtitle: "Built to withstand Rochester's demanding four-season climate.",
     detailCards: [
       {
@@ -179,13 +179,13 @@ export const serviceContent: Record<string, ServiceContent> = {
 
   'water-features': {
     introLabel: 'Transform Your Outdoor Space',
-    introTitle: 'THE BEAUTY OF WATER',
+    introTitle: 'THE BEAUTY OF <span class="text-green">WATER</span>',
     introText: [
       'There is nothing quite like the sight and sound of moving water in a landscape. A well-designed water feature becomes the focal point of your outdoor space — a place that draws you outside, calms the mind, and adds a dimension that no other element can replicate.',
       "At Westside Professional Landscape, we design and build water features that are tailored to your property, your aesthetic, and your lifestyle. Whether you envision a naturalistic waterfall cascading over native stone, a tranquil koi pond, or a sleek modern fountain, our team has the expertise to bring it to life. We've been creating water features for homeowners across Pittsford, Brighton, Penfield, and the greater Rochester area for over 26 years.",
     ],
     detailLabel: 'What We Build',
-    detailTitle: 'WATER FEATURE SERVICES',
+    detailTitle: 'WATER FEATURE <span class="text-green">SERVICES</span>',
     detailSubtitle: 'Custom water feature design, installation, and year-round maintenance.',
     detailCards: [
       {
@@ -217,13 +217,13 @@ export const serviceContent: Record<string, ServiceContent> = {
 
   'snow-ice-management': {
     introLabel: "Rochester's Winters Demand More",
-    introTitle: 'PROFESSIONAL SNOW MANAGEMENT',
+    introTitle: 'PROFESSIONAL <span class="text-green">SNOW MANAGEMENT</span>',
     introText: [
       'Rochester averages nearly 100 inches of snowfall per year, making it one of the snowiest cities in the United States. For commercial property owners and managers across Monroe County, that means months of liability exposure, operational disruptions, and the constant threat of slip-and-fall incidents.',
       "Westside Professional Landscape provides comprehensive commercial snow and ice management that keeps your property safe and accessible around the clock. Our crews monitor weather conditions continuously and deploy proactively — often before the first flake hits the ground. With seasonal contracts, dedicated equipment, and a response team ready 24/7, we take the stress of winter off your plate.",
     ],
     detailLabel: 'Our Services',
-    detailTitle: 'SNOW & ICE SERVICES',
+    detailTitle: 'SNOW & ICE <span class="text-green">SERVICES</span>',
     detailSubtitle: 'Comprehensive winter services for commercial properties throughout Monroe County.',
     detailCards: [
       {
@@ -255,13 +255,13 @@ export const serviceContent: Record<string, ServiceContent> = {
 
   'holiday-lighting': {
     introLabel: 'Let Us Handle the Lights',
-    introTitle: 'PROFESSIONAL HOLIDAY DECORATING',
+    introTitle: 'PROFESSIONAL <span class="text-green">HOLIDAY DECORATING</span>',
     introText: [
       "The holiday season should be about enjoying time with family — not climbing ladders in the cold to untangle lights. At Westside Professional Landscape, we handle every aspect of your holiday decorating: design, installation, maintenance throughout the season, and takedown when the holidays are over.",
       "Whether you want a classic, elegant look for your home in Pittsford or an eye-catching commercial display for your business in Greece, our team creates custom designs that match your vision and your property's architecture. We've been adding seasonal magic to homes and businesses across the Greater Rochester area for years.",
     ],
     detailLabel: 'Our Services',
-    detailTitle: 'HOLIDAY DECORATING SERVICES',
+    detailTitle: 'HOLIDAY DECORATING <span class="text-green">SERVICES</span>',
     detailSubtitle: 'Full-service holiday decorating for homes and businesses across Greater Rochester.',
     detailCards: [
       {
@@ -286,7 +286,7 @@ export const serviceContent: Record<string, ServiceContent> = {
       },
     ],
     processLabel: 'How It Works',
-    processTitle: 'OUR HOLIDAY PROCESS',
+    processTitle: 'OUR HOLIDAY <span class="text-green">PROCESS</span>',
     processSubtitle: 'A hassle-free experience from your first call to the final takedown.',
     processSteps: [
       { title: 'CONSULTATION', text: 'We visit your property, discuss your vision and budget, and develop a custom design plan.' },

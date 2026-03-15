@@ -82,6 +82,21 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
           });
         }
 
+        // Scroll cue: show after paint, fade out on scroll
+        const scrollCue = document.querySelector('.scroll-cue') as HTMLElement;
+        if (scrollCue) {
+          requestAnimationFrame(() => scrollCue.classList.add('is-visible'));
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+              scrollCue.classList.add('is-hidden');
+              scrollCue.classList.remove('is-visible');
+            } else {
+              scrollCue.classList.remove('is-hidden');
+              scrollCue.classList.add('is-visible');
+            }
+          }, { passive: true });
+        }
+
         // Hero parallax
         const heroBgs = document.querySelectorAll('.hero-bg');
         if (heroBgs.length > 0) {

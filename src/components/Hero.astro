@@ -25,10 +25,15 @@ const heroClasses = {
 
 <section class:list={['hero', heroClasses[variant]]}>
   {image && (
-    <div
-      class="hero-bg absolute inset-0 bg-cover bg-center"
-      style={`background-image: url(${url(image)});`}
-    >
+    <div class="hero-bg absolute inset-0">
+      <img
+        src={url(image)}
+        alt=""
+        class="w-full h-full object-cover"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
+      />
       <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 100%);"></div>
     </div>
   )}
@@ -52,4 +57,14 @@ const heroClasses = {
 
     <slot />
   </div>
+
+  {variant === 'full' && (
+    <div class="scroll-cue absolute left-1/2 -translate-x-1/2 bottom-8 z-10 flex flex-col items-center gap-2 opacity-0 transition-opacity duration-500">
+      <span class="scroll-cue__label text-[0.65rem] font-semibold uppercase tracking-[0.28em]" style="color: var(--color-text-muted);">Scroll</span>
+      <span class="scroll-cue__icon flex flex-col items-center gap-0.5" aria-hidden="true">
+        <span class="block w-2.5 h-2.5 rotate-45 border-r-2 border-b-2" style="border-color: rgba(108, 197, 81, 0.92);"></span>
+        <span class="block w-2.5 h-2.5 -mt-1 rotate-45 border-r-2 border-b-2 opacity-70" style="border-color: rgba(108, 197, 81, 0.92);"></span>
+      </span>
+    </div>
+  )}
 </section>

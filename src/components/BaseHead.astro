@@ -28,10 +28,14 @@ const {
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogImage}`;
 ---
 
-<TrackingScripts />
-
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Preload critical fonts to prevent layout shift -->
+<link rel="preload" href={url('/fonts/source-sans-3.woff2')} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={url('/fonts/anton-400.woff2')} as="font" type="font/woff2" crossorigin />
+
+<TrackingScripts />
 
 <title>{title}</title>
 <meta name="description" content={description} />
