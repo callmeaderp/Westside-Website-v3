@@ -5,7 +5,9 @@
  * that don't fit the shared [slug].astro template.
  */
 import ServiceLayout from '@layouts/ServiceLayout.astro';
+import { Image } from 'astro:assets';
 import { getServiceBySlug } from '@data/services';
+import { getPhoto } from '@lib/images';
 import { url } from '@lib/utils';
 
 const service = getServiceBySlug('plant-health')!;
@@ -100,7 +102,7 @@ const pricingFeatures = [
 
   <!-- ═══ VALUE PROPS ═══ -->
   <section class="py-12 section-dark-alt">
-    <div class="container">
+    <div class="site-container">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center stagger-children">
         <div class="p-6">
           <div class="text-4xl mb-2" style="font-family: var(--font-heading); color: var(--color-green-bright);">50%</div>
@@ -124,7 +126,7 @@ const pricingFeatures = [
 
   <!-- ═══ 5-STEP PROGRAM ═══ -->
   <section class="py-24 section-dark" id="program-details">
-    <div class="container">
+    <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 fade-in">
 
         <!-- Steps Column -->
@@ -213,7 +215,7 @@ const pricingFeatures = [
 
   <!-- ═══ ADDITIONAL SERVICES ═══ -->
   <section class="py-24 section-accent">
-    <div class="container">
+    <div class="site-container">
       <div class="text-center mb-16 fade-in">
         <p class="section-label">Enhance Your Lawn</p>
         <h2 class="section-title">ADDITIONAL <span class="text-green">SERVICES</span></h2>
@@ -234,16 +236,16 @@ const pricingFeatures = [
 
   <!-- ═══ WHY US ═══ -->
   <section class="py-24 section-dark">
-    <div class="container">
+    <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-xl overflow-hidden fade-in" style="border: 1px solid var(--color-border-dark);">
         <div class="aspect-[4/3] lg:aspect-auto">
-          <img
-            src={url('/images/photos/lawn-lush-backyard.webp')}
+          <Image
+            src={getPhoto('lawn-lush-backyard.webp')}
             alt="Lush backyard lawn treated by Westside Professional Landscape"
             class="w-full h-full object-cover"
             loading="lazy"
-            width="600"
-            height="400"
+            widths={[600, 900]}
+            sizes="(max-width: 1024px) 100vw, 600px"
           />
         </div>
         <div class="p-10 lg:p-12" style="background: var(--color-bg-dark-card);">

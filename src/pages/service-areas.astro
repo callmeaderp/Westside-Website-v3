@@ -6,6 +6,8 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
 
 const areas = [
@@ -50,8 +52,8 @@ const jsonLd = {
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
-        { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${company.url}/service-areas` },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Service Areas', item: siteUrl('/service-areas') },
       ],
     },
   ],
@@ -67,11 +69,11 @@ const jsonLd = {
     label="Greater Rochester, NY"
     heading="SERVICE AREAS IN ROCHESTER, NY"
     intro="Proudly serving Monroe County and surrounding communities with full-service landscaping, lawn care, hardscaping, and property management since 2000."
-    image={url('/images/photos/hero-services.webp')}
+    image={getPhoto('hero-services.webp')}
   />
 
   <section class="py-24 section-dark-alt">
-    <div class="container">
+    <div class="site-container">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
         {areas.map((area) => (
           <div class="p-6 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">

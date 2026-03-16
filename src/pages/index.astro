@@ -6,23 +6,26 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
+import { Image } from 'astro:assets';
 import { company } from '@data/company';
 import { services } from '@data/services';
 import { testimonials } from '@data/testimonials';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
 
 // Build homepage JSON-LD (LocalBusiness + reviews + offer catalog)
 const homepageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LandscapingBusiness',
-  '@id': `${company.url}/#business`,
+  '@id': `${siteUrl('/')}#business`,
   name: company.name,
   url: company.url,
   telephone: company.phoneTel,
   email: company.email,
   description: company.description,
-  logo: `${company.url}/leaf-green.svg`,
-  image: `${company.url}/images/photos/hero-home.webp`,
+  logo: siteUrl('/leaf-green.svg'),
+  image: siteUrl(getPhoto('hero-home.webp').src),
   priceRange: company.priceRange,
   address: {
     '@type': 'PostalAddress',
@@ -55,7 +58,9 @@ const homepageJsonLd = {
     reviewCount: String(testimonials.length),
     bestRating: '5',
   },
-  review: testimonials.map((t) => ({
+  // Only mark up reviews that are visible on the page (Google requires
+  // structured data to match visible content)
+  review: testimonials.slice(0, 3).map((t) => ({
     '@type': 'Review',
     reviewRating: { '@type': 'Rating', ratingValue: String(t.rating) },
     author: { '@type': 'Person', name: t.author },
@@ -83,7 +88,7 @@ const homepageJsonLd = {
     label="Full-Service Landscaping Since 2000"
     heading='ROCHESTER&apos;S PROFESSIONAL <span class="text-green">LANDSCAPING EXPERTS</span>'
     intro="Full-service landscaping, lawn care, and property management. Transforming outdoor spaces across Greater Rochester since 2000."
-    image={url('/images/photos/hero-home.webp')}
+    image={getPhoto('hero-home.webp')}
     variant="full"
     buttons={[
       { text: 'Get a Free Estimate', href: url('/contact'), style: 'primary' },
@@ -93,7 +98,7 @@ const homepageJsonLd = {
 
   <!-- ═══ SERVICES OVERVIEW ═══ -->
   <section class="py-24 section-dark-alt">
-    <div class="container">
+    <div class="site-container">
       <div class="text-center mb-16 fade-in">
         <p class="section-label">What We Do</p>
         <h2 class="section-title">COMPREHENSIVE LANDSCAPE <span class="text-green">SOLUTIONS</span></h2>
@@ -110,13 +115,13 @@ const homepageJsonLd = {
             style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
           >
             <div class="aspect-[16/10] overflow-hidden">
-              <img
-                src={url(`/images/photos/${service.cardImage}`)}
+              <Image
+                src={getPhoto(service.cardImage)}
                 alt={service.name}
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
-                width="480"
-                height="300"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 100vw, 400px"
               />
             </div>
             <div class="p-6">
@@ -133,7 +138,7 @@ const homepageJsonLd = {
 
   <!-- ═══ ABOUT PREVIEW ═══ -->
   <section class="py-24 section-white">
-    <div class="container">
+    <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div class="fade-in-left">
           <p class="section-label">Since 2000</p>
@@ -149,13 +154,13 @@ const homepageJsonLd = {
           </div>
         </div>
         <div class="fade-in-right">
-          <img
-            src={url('/images/photos/about-company.webp')}
+          <Image
+            src={getPhoto('about-company.webp')}
             alt="Westside Professional Landscape team"
             class="rounded-xl shadow-lg"
             loading="lazy"
-            width="600"
-            height="400"
+            widths={[600, 900]}
+            sizes="(max-width: 1024px) 100vw, 600px"
           />
         </div>
       </div>
@@ -164,7 +169,7 @@ const homepageJsonLd = {
 
   <!-- ═══ TESTIMONIALS ═══ -->
   <section class="py-24 section-dark">
-    <div class="container">
+    <div class="site-container">
       <div class="text-center mb-16 fade-in">
         <p class="section-label">Client Reviews</p>
         <h2 class="section-title">WHAT OUR <span class="text-green">CLIENTS SAY</span></h2>

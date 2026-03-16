@@ -46,12 +46,9 @@
 /artificial-turf/       /gallery        301
 /synlawn/               /gallery        301
 
-# WordPress artifacts
-/wp-admin/*             /       301
-/wp-login.php           /       301
-/wp-content/*           /       301
-/feed/                  /       301
-/xmlrpc.php             /       301
+# WordPress artifacts — removed.
+# Redirecting platform cruft to / is treated as a soft 404 by Google.
+# These paths don't exist in V3, so Cloudflare Pages returns a natural 404.
 
 # Blog → homepage (removed)
 /blog/                  /       301

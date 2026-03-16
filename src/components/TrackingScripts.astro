@@ -2,6 +2,9 @@
 /**
  * Analytics and tracking scripts — included in BaseLayout <head>.
  * GA4 + Meta Pixel. Centralized so tracking IDs are never scattered across pages.
+ *
+ * NOTE: The Meta Pixel <noscript> fallback lives in BaseLayout.astro <body>,
+ * not here, because <noscript><img> is invalid inside <head> per HTML spec.
  */
 import { company } from '@data/company';
 ---
@@ -42,12 +45,3 @@ import { company } from '@data/company';
   fbq('init', pixelId);
   fbq('track', 'PageView');
 </script>
-<noscript>
-  <img
-    height="1"
-    width="1"
-    style="display:none"
-    src={`https://www.facebook.com/tr?id=${company.tracking.metaPixel}&ev=PageView&noscript=1`}
-    alt=""
-  />
-</noscript>

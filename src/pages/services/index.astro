@@ -5,16 +5,19 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
+import { Image } from 'astro:assets';
 import { company } from '@data/company';
 import { services } from '@data/services';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'Services', item: `${company.url}/services` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: siteUrl('/services') },
   ],
 };
 ---
@@ -28,22 +31,22 @@ const breadcrumbJsonLd = {
     label="Full-Service Solutions"
     heading="LANDSCAPING SERVICES IN ROCHESTER, NY"
     intro="From initial design through year-round maintenance, we provide every service your property needs to thrive."
-    image={url('/images/photos/hero-services.webp')}
+    image={getPhoto('hero-services.webp')}
   />
 
   <section class="py-24 section-dark-alt">
-    <div class="container">
+    <div class="site-container">
       <div class="flex flex-col gap-20">
         {services.map((service, i) => (
           <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
             <div class={`fade-in-${i % 2 === 0 ? 'left' : 'right'} ${i % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-              <img
-                src={url(`/images/photos/${service.cardImage}`)}
+              <Image
+                src={getPhoto(service.cardImage)}
                 alt={service.name}
                 class="rounded-xl shadow-lg"
                 loading="lazy"
-                width="600"
-                height="400"
+                widths={[600, 900]}
+                sizes="(max-width: 1024px) 100vw, 600px"
               />
             </div>
             <div class={`fade-in-${i % 2 === 0 ? 'right' : 'left'}`}>

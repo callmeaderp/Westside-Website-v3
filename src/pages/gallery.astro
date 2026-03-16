@@ -6,16 +6,18 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
+import { Image } from 'astro:assets';
 import { company } from '@data/company';
 import { gallery, galleryCategories } from '@data/gallery';
-import { url } from '@lib/utils';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'Gallery', item: `${company.url}/gallery` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+    { '@type': 'ListItem', position: 2, name: 'Gallery', item: siteUrl('/gallery') },
   ],
 };
 ---
@@ -29,11 +31,11 @@ const breadcrumbJsonLd = {
     label="Our Work"
     heading="ROCHESTER LANDSCAPING GALLERY"
     intro="Browse our portfolio of completed projects across Greater Rochester. From intimate gardens to expansive commercial properties."
-    image={url('/images/photos/gallery-show-garden.webp')}
+    image={getPhoto('gallery-show-garden.webp')}
   />
 
   <section class="py-24 section-dark-alt">
-    <div class="container-wide">
+    <div class="site-container-wide">
       <!-- Filter Buttons -->
       <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in">
         {galleryCategories.map((cat) => (
@@ -59,13 +61,13 @@ const breadcrumbJsonLd = {
             role="button"
             tabindex="0"
           >
-            <img
-              src={url(`/images/photos/${item.image}`)}
+            <Image
+              src={getPhoto(item.image)}
               alt={item.alt}
               class="gallery-image"
               loading="lazy"
-              width="1200"
-              height="900"
+              widths={[600, 900]}
+              sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
             />
             <div class="gallery-overlay">
               <div class="gallery-tag">{item.tag}</div>
@@ -78,7 +80,7 @@ const breadcrumbJsonLd = {
   </section>
 
   <!-- Lightbox -->
-  <div id="lightbox" class="lightbox">
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image lightbox">
     <button type="button" class="lightbox-close" aria-label="Close lightbox">&times;</button>
     <div class="lightbox-content">
       <img id="lightbox-img" src="" alt="" width="1200" height="900" />
@@ -90,10 +92,11 @@ const breadcrumbJsonLd = {
 </BaseLayout>
 
 <script>
-  // Gallery filter
+  // Gallery filter — with timeout tracking to prevent race conditions
   const filterBtns = document.querySelectorAll('.filter-btn');
   const galleryGrid = document.getElementById('gallery-grid');
   const galleryItems = document.querySelectorAll('.gallery-item');
+  const hideTimeouts = new WeakMap<Element, number>();
 
   filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -110,23 +113,33 @@ const breadcrumbJsonLd = {
 
       galleryItems.forEach((item) => {
         const el = item as HTMLElement;
+        // Cancel any pending hide timeout from a previous filter
+        const pending = hideTimeouts.get(el);
+        if (pending) { clearTimeout(pending); hideTimeouts.delete(el); }
+
         if (filter === 'all' || el.dataset.category === filter) {
           el.style.display = '';
           requestAnimationFrame(() => (el.style.opacity = '1'));
         } else {
           el.style.opacity = '0';
-          setTimeout(() => (el.style.display = 'none'), 300);
+          hideTimeouts.set(el, window.setTimeout(() => {
+            el.style.display = 'none';
+            hideTimeouts.delete(el);
+          }, 300));
         }
       });
     });
   });
 
-  // Lightbox
+  // Lightbox with focus management
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
   const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxClose = lightbox?.querySelector('.lightbox-close') as HTMLButtonElement;
+  let lastFocusedItem: Element | null = null;
 
   function openLightboxFor(item: Element) {
+    lastFocusedItem = item;
     const img = item.querySelector('img');
     const caption = item.querySelector('.gallery-caption');
     if (img && lightboxImg) {
@@ -136,6 +149,8 @@ const breadcrumbJsonLd = {
     if (caption && lightboxCaption) lightboxCaption.textContent = caption.textContent;
     lightbox?.classList.add('active');
     document.body.style.overflow = 'hidden';
+    // Move focus into the lightbox
+    requestAnimationFrame(() => lightboxClose?.focus());
   }
 
   galleryItems.forEach((item) => {
@@ -151,6 +166,11 @@ const breadcrumbJsonLd = {
   function closeLightbox() {
     lightbox?.classList.remove('active');
     document.body.style.overflow = '';
+    // Restore focus to the thumbnail that opened the lightbox
+    if (lastFocusedItem instanceof HTMLElement) {
+      lastFocusedItem.focus();
+      lastFocusedItem = null;
+    }
   }
 
   lightbox?.addEventListener('click', (e) => {
@@ -160,9 +180,17 @@ const breadcrumbJsonLd = {
     }
   });
 
+  // Keyboard: Escape to close, Tab to trap focus within lightbox
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
+    if (!lightbox?.classList.contains('active')) return;
+    if (e.key === 'Escape') {
       closeLightbox();
+      return;
+    }
+    // Focus trap — keep Tab within lightbox
+    if (e.key === 'Tab' && lightboxClose) {
+      e.preventDefault();
+      lightboxClose.focus();
     }
   });
 </script>
@@ -228,7 +256,8 @@ const breadcrumbJsonLd = {
     padding: 1.25rem;
   }
 
-  .gallery-item:hover .gallery-overlay {
+  .gallery-item:hover .gallery-overlay,
+  .gallery-item:focus-visible .gallery-overlay {
     opacity: 1;
   }
 

@@ -6,14 +6,16 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'Careers', item: `${company.url}/careers` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+    { '@type': 'ListItem', position: 2, name: 'Careers', item: siteUrl('/careers') },
   ],
 };
 ---
@@ -27,12 +29,12 @@ const breadcrumbJsonLd = {
     label="Join Our Team"
     heading="BUILD YOUR CAREER IN LANDSCAPING"
     intro="We're always looking for hardworking, passionate people to join the Westside family. Competitive pay, room to grow, and the satisfaction of transforming outdoor spaces every day."
-    image={url('/images/photos/hero-about.webp')}
+    image={getPhoto('hero-about.webp')}
   />
 
   <!-- Why Westside -->
   <section class="py-24 section-dark-alt">
-    <div class="container">
+    <div class="site-container">
       <div class="text-center mb-16 fade-in">
         <p class="section-label">Why Westside</p>
         <h2 class="section-title">MORE THAN JUST A <span class="text-green">JOB</span></h2>
@@ -61,7 +63,7 @@ const breadcrumbJsonLd = {
 
   <!-- Open Positions -->
   <section class="py-24 section-white">
-    <div class="container">
+    <div class="site-container">
       <div class="text-center mb-16 fade-in">
         <p class="section-label">Open Positions</p>
         <h2 class="section-title">CURRENT <span class="text-green">OPENINGS</span></h2>

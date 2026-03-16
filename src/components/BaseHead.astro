@@ -2,8 +2,13 @@
 /**
  * <head> metadata, OG, canonical, favicons — included in BaseLayout.
  * Props drive per-page customization; company data fills defaults.
+ *
+ * ogImage accepts ImageMetadata (from getPhoto / astro:assets import)
+ * or a URL string. Resolved to an absolute URL via Astro.site.
  */
+import type { ImageMetadata } from 'astro';
 import { company } from '@data/company';
+import { getPhoto } from '@lib/images';
 import { url } from '@lib/utils';
 import TrackingScripts from './TrackingScripts.astro';
 
@@ -14,7 +19,7 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
-  ogImage?: string;
+  ogImage?: ImageMetadata | string;
   ogType?: string;
   noindex?: boolean;
 }
@@ -23,12 +28,22 @@ const {
   title,
   description,
   canonical = Astro.url.href,
-  ogImage = '/images/photos/hero-home.webp',
+  ogImage,
   ogType = 'website',
   noindex = false,
 } = Astro.props;
 
-const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogImage}`;
+// Resolve OG image to absolute URL:
+// - ImageMetadata: use .src (already base-aware) + Astro.site origin
+// - URL string: resolve against Astro.site
+// - Default: hero-home from the image pipeline
+const resolvedImage = ogImage ?? getPhoto('hero-home.webp');
+const ogSrc = typeof resolvedImage === 'string'
+  ? resolvedImage
+  : resolvedImage.src;
+const ogImageUrl = ogSrc.startsWith('http')
+  ? ogSrc
+  : new URL(ogSrc, Astro.site).href;
 ---
 
 <meta charset="UTF-8" />
@@ -51,7 +66,10 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogIma
 <meta property="og:url" content={canonical} />
 <meta property="og:site_name" content={company.name} />
 <meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={`${company.name} — ${description.slice(0, 100)}`} />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
 
 <!-- Canonical -->
@@ -62,4 +80,5 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${company.url}${ogIma
 <link rel="icon" href={url('/leaf-green.svg')} type="image/svg+xml" />
 <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
 <link rel="manifest" href={url('/manifest.json')} />
+<link rel="sitemap" href={url('/sitemap-index.xml')} />
 <meta name="theme-color" content="#111111" />

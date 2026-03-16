@@ -3,13 +3,15 @@
  * Reusable hero section — supports full-height (homepage) and page-hero variants.
  * The hero-bg image gets parallax via client-side JS.
  */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { url } from '@lib/utils';
 
 interface Props {
   label?: string;
   heading: string;
   intro?: string;
-  image?: string;
+  image?: ImageMetadata;
   variant?: 'full' | 'page' | 'utility';
   buttons?: Array<{ text: string; href: string; style: 'primary' | 'dark' | 'outline' }>;
 }
@@ -26,12 +28,12 @@ const heroClasses = {
 <section class:list={['hero', heroClasses[variant]]}>
   {image && (
     <div class="hero-bg absolute inset-0">
-      <img
-        src={url(image)}
+      <Image
+        src={image}
         alt=""
         class="w-full h-full object-cover"
-        width="1536"
-        height="1024"
+        widths={[768, 1280, 1536]}
+        sizes="100vw"
         fetchpriority="high"
         loading="eager"
         decoding="async"
@@ -42,7 +44,7 @@ const heroClasses = {
 
   <div class="accent-line-corner absolute top-0 left-0 w-px h-24 bg-gradient-to-b from-green-bright/60 to-transparent hidden md:block ml-8"></div>
 
-  <div class="container relative z-10">
+  <div class="site-container relative z-10">
     {label && <p class="section-label">{label}</p>}
     <h1 class="max-w-4xl mb-6" set:html={heading} />
     {intro && <p class="section-subtitle max-w-2xl" set:html={intro} />}

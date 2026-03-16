@@ -4,8 +4,23 @@
  */
 import { z } from 'zod';
 
+/** All valid service slugs — used for type-safe routing and content lookups. */
+export const SERVICE_SLUGS = [
+  'landscape-design',
+  'landscape-maintenance',
+  'plant-health',
+  'hardscaping',
+  'water-features',
+  'snow-ice-management',
+  'artificial-grass',
+  'commercial-services',
+  'holiday-lighting',
+] as const;
+
+export type ServiceSlug = (typeof SERVICE_SLUGS)[number];
+
 const ServiceSchema = z.object({
-  slug: z.string(),
+  slug: z.enum(SERVICE_SLUGS),
   name: z.string(),
   shortName: z.string(),
   tagline: z.string(),
@@ -273,10 +288,10 @@ export const services: Service[] = [
 // Validate all services at import time
 services.forEach((s) => ServiceSchema.parse(s));
 
-export function getServiceBySlug(slug: string): Service | undefined {
+export function getServiceBySlug(slug: ServiceSlug): Service | undefined {
   return services.find((s) => s.slug === slug);
 }
 
-export function getServiceSlugs(): string[] {
+export function getServiceSlugs(): ServiceSlug[] {
   return services.map((s) => s.slug);
 }

@@ -1,8 +1,9 @@
 /**
  * Rich content for service pages — ported from V2.
  * Separated from services.ts to keep base service data (nav, cards, schema) lean.
- * Keyed by slug. Imported by [slug].astro and standalone service pages.
+ * Keyed by ServiceSlug. Imported by [slug].astro and standalone service pages.
  */
+import type { ServiceSlug } from './services';
 
 export interface DetailCard {
   title: string;
@@ -28,12 +29,12 @@ export interface ServiceContent {
   processTitle?: string;
   processSubtitle?: string;
   processSteps: ProcessStep[];
-  relatedSlugs: string[];
+  relatedSlugs: ServiceSlug[];
   ctaHeading: string;
   ctaText: string;
 }
 
-export const serviceContent: Record<string, ServiceContent> = {
+export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
   'landscape-design': {
     introLabel: 'Your Vision, Our Expertise',
     introTitle: 'TRANSFORMING <span class="text-green">OUTDOOR SPACES</span>',

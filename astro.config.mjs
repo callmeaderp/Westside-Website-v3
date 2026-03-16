@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -12,7 +11,6 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.includes('/404') && !page.includes('/api/'),
     }),
-    mdx(),
   ],
 
   vite: {

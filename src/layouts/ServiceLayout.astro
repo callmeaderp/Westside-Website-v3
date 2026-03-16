@@ -8,7 +8,8 @@ import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import type { Service } from '@data/services';
-import { url } from '@lib/utils';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 
 interface Props {
   service: Service;
@@ -45,18 +46,18 @@ const serviceJsonLd = {
         name: 'Rochester',
         containedInPlace: { '@type': 'State', name: 'New York' },
       },
-      url: `${company.url}/services/${service.slug}`,
+      url: siteUrl(`/services/${service.slug}`),
     },
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
-        { '@type': 'ListItem', position: 2, name: 'Services', item: `${company.url}/services` },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: siteUrl('/services') },
         {
           '@type': 'ListItem',
           position: 3,
           name: service.shortName,
-          item: `${company.url}/services/${service.slug}`,
+          item: siteUrl(`/services/${service.slug}`),
         },
       ],
     },
@@ -67,14 +68,14 @@ const serviceJsonLd = {
 <BaseLayout
   title={service.metaTitle}
   description={service.metaDescription}
-  ogImage={url(`/images/photos/${service.heroImage}`)}
+  ogImage={getPhoto(service.heroImage)}
   jsonLd={serviceJsonLd}
 >
   <Hero
     label={service.heroLabel}
     heading={service.heroHeading}
     intro={service.heroIntro}
-    image={url(`/images/photos/${service.heroImage}`)}
+    image={getPhoto(service.heroImage)}
   />
 
   <!-- Service body content (unique per page) -->

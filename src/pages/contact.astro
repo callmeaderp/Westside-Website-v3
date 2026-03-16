@@ -5,15 +5,16 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
-import { url } from '@lib/utils';
+import { getPhoto } from '@lib/images';
+import { siteUrl } from '@lib/site';
 
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${company.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Contact', item: `${company.url}/contact` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'Contact', item: siteUrl('/contact') },
     ],
   },
   {
@@ -74,11 +75,11 @@ const jsonLd = [
     label="Get in Touch"
     heading="REQUEST A FREE ESTIMATE IN ROCHESTER, NY"
     intro="Ready to transform your outdoor space? Get a free, no-obligation estimate from our team. We'd love to hear about your project."
-    image={url('/images/photos/hero-contact.webp')}
+    image={getPhoto('hero-contact.webp')}
   />
 
   <section class="py-24 section-dark-alt">
-    <div class="container">
+    <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Contact Form -->
         <div class="lg:col-span-2">
@@ -91,14 +92,14 @@ const jsonLd = [
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="first-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">First Name *</label>
-                <input type="text" id="first-name" name="first_name" required
+                <input type="text" id="first-name" name="first_name" required autocomplete="given-name"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
                 />
               </div>
               <div>
                 <label for="last-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Last Name *</label>
-                <input type="text" id="last-name" name="last_name" required
+                <input type="text" id="last-name" name="last_name" required autocomplete="family-name"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
                 />
@@ -108,14 +109,14 @@ const jsonLd = [
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Email *</label>
-                <input type="email" id="email" name="email" required
+                <input type="email" id="email" name="email" required autocomplete="email"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
                 />
               </div>
               <div>
                 <label for="phone" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Phone</label>
-                <input type="tel" id="phone" name="phone"
+                <input type="tel" id="phone" name="phone" autocomplete="tel"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
                 />
@@ -152,6 +153,7 @@ const jsonLd = [
             <button type="submit" class="btn btn-primary btn-lg self-start">
               Send Message
             </button>
+            <div id="form-status" role="status" aria-live="polite" class="text-sm mt-2" style="min-height: 1.5em;"></div>
           </form>
         </div>
 
@@ -192,11 +194,30 @@ const jsonLd = [
       </div>
     </div>
   </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="py-24 section-dark">
+    <div class="site-container">
+      <div class="text-center mb-16 fade-in">
+        <p class="section-label">Common Questions</p>
+        <h2 class="section-title">FREQUENTLY <span class="text-green">ASKED</span></h2>
+      </div>
+      <div class="max-w-3xl mx-auto flex flex-col gap-6 stagger-children">
+        {(jsonLd[1] as any).mainEntity.map((q: any) => (
+          <div class="p-6 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+            <h3 class="text-base mb-3" style="font-family: var(--font-body); font-weight: 700; text-transform: none; line-height: 1.4;">{q.name}</h3>
+            <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{q.acceptedAnswer.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <script>
   // Contact form submission handler
   const form = document.getElementById('contact-form') as HTMLFormElement;
+  const formStatus = document.getElementById('form-status');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -204,6 +225,7 @@ const jsonLd = [
       const originalText = btn.textContent;
       btn.textContent = 'Sending...';
       btn.disabled = true;
+      if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
 
       try {
         const formData = new FormData(form);
@@ -213,11 +235,13 @@ const jsonLd = [
           if (typeof (window as any).fbq === 'function') (window as any).fbq('track', 'Lead');
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
+          if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
           setTimeout(() => {
             btn.textContent = originalText;
             btn.style.background = '';
             btn.disabled = false;
+            if (formStatus) formStatus.textContent = '';
           }, 4000);
         } else {
           throw new Error(result.message || 'Submission failed');
@@ -225,10 +249,12 @@ const jsonLd = [
       } catch {
         btn.textContent = 'Error \u2014 Please Call Us';
         btn.style.background = '#c0392b';
+        if (formStatus) { formStatus.textContent = 'There was an error sending your message. Please call us instead.'; formStatus.style.color = '#c0392b'; }
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.background = '';
           btn.disabled = false;
+          if (formStatus) formStatus.textContent = '';
         }, 4000);
       }
     });
