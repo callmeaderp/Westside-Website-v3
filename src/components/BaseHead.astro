@@ -49,6 +49,10 @@ const ogImageUrl = ogSrc.startsWith('http')
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+{/* Domain verification tags — rendered only when codes are set in company.ts */}
+{company.verification.metaDomain && <meta name="facebook-domain-verification" content={company.verification.metaDomain} />}
+{company.verification.googleSiteVerification && <meta name="google-site-verification" content={company.verification.googleSiteVerification} />}
+
 <!-- Preload critical fonts to prevent layout shift -->
 <link rel="preload" href={sourceSansFont} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={antonFont} as="font" type="font/woff2" crossorigin />

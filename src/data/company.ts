@@ -55,6 +55,20 @@ export const company = {
   tracking: {
     ga4: 'G-60GGNQVGCD',
     metaPixel: '414143897932367',
+    /** Google Ads customer ID for conversion tracking. Set to '' to disable. */
+    googleAdsId: '',
+    /** Google Ads conversion label for form submit events. */
+    googleAdsConversionLabel: '',
+    /** Microsoft Clarity project ID for heatmaps/session recording. Set to '' to disable. */
+    clarity: 'vwt4d6u369',
+  },
+
+  // Domain verification codes (Meta Business, Google Search Console, etc.)
+  verification: {
+    /** Meta Business domain verification — get from Business Settings > Brand Safety > Domains */
+    metaDomain: 'n38rl71cy605xav3vlh7tk9jjqpkdb',
+    /** Google Search Console — get from Search Console > Settings > Ownership verification */
+    googleSiteVerification: '',
   },
 
   // Areas served

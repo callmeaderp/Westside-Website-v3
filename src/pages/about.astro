@@ -5,11 +5,10 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
-import { Image } from 'astro:assets';
 import { company } from '@data/company';
-import { team } from '@data/team';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
+import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -36,30 +35,18 @@ const breadcrumbJsonLd = {
   <!-- Company Story -->
   <section class="py-24 section-dark-alt">
     <div class="site-container">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="fade-in-left">
-          <p class="section-label">Our Journey</p>
-          <h2 class="section-title">BUILT ON QUALITY & <span class="text-green">INTEGRITY</span></h2>
-          <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
-            <strong>Founded in 2000</strong>, <strong>Westside Professional Landscape</strong> has grown from a small operation into a
-            full-service design-build landscape company. Our success is rooted in a simple philosophy: do exceptional
-            work, treat every property like our own, and build <em>lasting relationships</em> with our clients.
-          </p>
-          <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
-            Today, we serve residential and commercial properties across <strong>Greater Rochester</strong>, offering everything
-            from landscape design and installation to <em>year-round</em> maintenance, hardscaping, and snow management.
-          </p>
-        </div>
-        <div class="fade-in-right">
-          <Image
-            src={getPhoto('about-company.webp')}
-            alt="Westside Professional Landscape projects"
-            class="rounded-xl shadow-lg"
-            loading="lazy"
-            widths={[600, 900]}
-            sizes="(max-width: 1024px) 100vw, 600px"
-          />
-        </div>
+      <div class="max-w-3xl mx-auto fade-in">
+        <p class="section-label">Our Journey</p>
+        <h2 class="section-title">BUILT ON QUALITY & <span class="text-green">INTEGRITY</span></h2>
+        <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
+          <strong>Founded in 2000</strong>, <strong>Westside Professional Landscape</strong> has grown from a small operation into a
+          full-service design-build landscape company. Our success is rooted in a simple philosophy: do exceptional
+          work, treat every property like our own, and build <em>lasting relationships</em> with our clients.
+        </p>
+        <p style="color: var(--color-text-muted); line-height: 1.8;">
+          Today, we serve residential and commercial properties across <strong>Greater Rochester</strong>, offering everything
+          from landscape design and installation to <em>year-round</em> maintenance, hardscaping, and snow management.
+        </p>
       </div>
     </div>
   </section>
@@ -73,19 +60,19 @@ const breadcrumbJsonLd = {
         <div class="p-8 rounded-xl bg-bg-light border border-border-light">
           <h3 class="text-lg mb-3">NYS DEC Certified</h3>
           <p class="text-sm" style="color: var(--color-text-body-dark);">
-            Our plant health team includes <strong>New York State DEC Certified Commercial Pesticide Applicators</strong> — meaning your lawn treatments are applied safely, legally, and effectively.
+            Our plant health technicians hold <strong>New York State DEC Commercial Pesticide Applicator</strong> credentials — meaning your lawn treatments are applied safely, legally, and effectively.
           </p>
         </div>
         <div class="p-8 rounded-xl bg-bg-light border border-border-light">
           <h3 class="text-lg mb-3">SYNLawn Authorized Dealer</h3>
           <p class="text-sm" style="color: var(--color-text-body-dark);">
-            As an <strong>Authorized SYNLawn dealer</strong>, we install premium artificial turf backed by industry-leading warranties — a low-maintenance, year-round green alternative for residential and commercial properties.
+            As an <strong>Authorized SYNLawn dealer</strong>, we install premium artificial turf backed by manufacturer warranties — a low-maintenance, year-round green alternative for residential and commercial properties.
           </p>
         </div>
         <div class="p-8 rounded-xl bg-bg-light border border-border-light">
-          <h3 class="text-lg mb-3">Top 100 Fastest Growing</h3>
+          <h3 class="text-lg mb-3">Locally Owned Since 2000</h3>
           <p class="text-sm" style="color: var(--color-text-body-dark);">
-            Recognized as one of the <strong>Top 100 fastest growing companies in the area</strong> — reflecting over two decades of steady growth built on quality work and client trust.
+            Over <strong>two decades</strong> of steady growth built on quality work, word-of-mouth referrals, and lasting client relationships across the Greater Rochester area.
           </p>
         </div>
       </div>
@@ -95,28 +82,18 @@ const breadcrumbJsonLd = {
   <!-- Team -->
   <section class="py-24 section-dark">
     <div class="site-container">
-      <div class="text-center mb-16 fade-in">
-        <p class="section-label">Leadership</p>
-        <h2 class="section-title">MEET THE <span class="text-green">TEAM</span></h2>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 stagger-children">
-        {team.map((member) => (
-          <div class="text-center">
-            <div class="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden" style="border: 3px solid var(--color-green-bright);">
-              <Image
-                src={getPhoto(member.image)}
-                alt={member.name}
-                class="w-full h-full object-cover"
-                loading="lazy"
-                widths={[400, 600]}
-                sizes="(max-width: 768px) 50vw, 128px"
-              />
-            </div>
-            <h3 class="text-base mb-1">{member.name}</h3>
-            <p class="text-sm" style="color: var(--color-green-bright);">{member.role}</p>
-            <p class="text-xs mt-2" style="color: var(--color-text-muted);">{member.bio}</p>
-          </div>
-        ))}
+      <div class="max-w-3xl mx-auto text-center fade-in">
+        <p class="section-label">Our People</p>
+        <h2 class="section-title">A TEAM THAT <span class="text-green">CARES</span></h2>
+        <p class="text-sm mt-6" style="color: var(--color-text-muted); line-height: 1.8;">
+          Behind every project is a dedicated team of landscape professionals who take pride in their work.
+          From our certified applicators to our experienced crew leaders, everyone at Westside shares a
+          commitment to <strong style="color: var(--color-text-light);">quality, reliability, and treating every property like our own</strong>.
+        </p>
+        <p class="text-sm mt-4" style="color: var(--color-text-muted); line-height: 1.8;">
+          We're a locally owned company — and you'll notice the difference in every interaction.
+        </p>
+        <a href={url('/contact')} class="btn btn-primary btn-md mt-8">Get in Touch</a>
       </div>
     </div>
   </section>

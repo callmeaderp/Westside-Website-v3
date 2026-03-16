@@ -1,12 +1,20 @@
 ---
 /**
  * Analytics and tracking scripts — included in BaseLayout <head>.
- * GA4 + Meta Pixel. Centralized so tracking IDs are never scattered across pages.
+ * GA4 + Google Ads + Meta Pixel. Centralized so tracking IDs are never
+ * scattered across pages.
+ *
+ * Google Ads conversion tracking loads alongside GA4 via the same gtag
+ * instance — just an additional `gtag('config', 'AW-...')` call. When
+ * `company.tracking.googleAdsId` is empty, no Ads code is emitted.
  *
  * NOTE: The Meta Pixel <noscript> fallback lives in BaseLayout.astro <body>,
  * not here, because <noscript><img> is invalid inside <head> per HTML spec.
  */
 import { company } from '@data/company';
+
+const googleAdsId = company.tracking.googleAdsId;
+const clarityId = company.tracking.clarity;
 ---
 
 <!-- Google tag (gtag.js) -->
@@ -15,13 +23,14 @@ import { company } from '@data/company';
   async
   src={`https://www.googletagmanager.com/gtag/js?id=${company.tracking.ga4}`}
 ></script>
-<script is:inline define:vars={{ ga4Id: company.tracking.ga4 }}>
+<script is:inline define:vars={{ ga4Id: company.tracking.ga4, adsId: googleAdsId }}>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
   }
   gtag('js', new Date());
   gtag('config', ga4Id);
+  if (adsId) gtag('config', adsId);
 </script>
 
 <!-- Meta Pixel Code -->
@@ -44,4 +53,33 @@ import { company } from '@data/company';
   })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', pixelId);
   fbq('track', 'PageView');
+</script>
+
+{/* Microsoft Clarity — heatmaps + session recording (free) */}
+{clarityId && (
+<script is:inline define:vars={{ cid: clarityId }}>
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+    t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, 'clarity', 'script', cid);
+</script>
+)}
+
+<!-- Phone call click tracking — fires GA4 + Meta events on any tel: link -->
+<script is:inline>
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="tel:"]');
+    if (!link) return;
+    var phone = link.getAttribute('href').replace('tel:', '');
+    if (typeof gtag === 'function') {
+      gtag('event', 'phone_call_click', {
+        event_category: 'engagement',
+        phone_number: phone,
+      });
+    }
+    if (typeof fbq === 'function') {
+      fbq('track', 'Contact');
+    }
+  });
 </script>

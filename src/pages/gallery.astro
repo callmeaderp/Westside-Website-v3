@@ -143,8 +143,13 @@ const breadcrumbJsonLd = {
     const img = item.querySelector('img');
     const caption = item.querySelector('.gallery-caption');
     if (img && lightboxImg) {
+      // Hide stale image immediately to prevent flash of previous photo
+      lightboxImg.classList.remove('loaded');
+      lightboxImg.onload = () => lightboxImg.classList.add('loaded');
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
+      // If already cached, onload may not fire — check immediately
+      if (lightboxImg.complete) lightboxImg.classList.add('loaded');
     }
     if (caption && lightboxCaption) lightboxCaption.textContent = caption.textContent;
     lightbox?.classList.add('active');
@@ -375,6 +380,12 @@ const breadcrumbJsonLd = {
     max-width: 100%;
     max-height: 80vh;
     border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .lightbox-content img.loaded {
+    opacity: 1;
   }
 
   #lightbox-caption {

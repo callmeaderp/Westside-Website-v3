@@ -225,7 +225,7 @@ export const services: Service[] = [
       'Pet-friendly turf options',
       'Putting greens & sport turf',
       'Professional base preparation',
-      'Industry-leading warranties',
+      'Manufacturer-backed warranties',
     ],
     cta: 'Get a Free Estimate',
   },
@@ -238,7 +238,7 @@ export const services: Service[] = [
       'Full-service commercial landscape maintenance, snow management, and property care for businesses across Greater Rochester.',
     metaTitle: 'Commercial Landscaping Services in Rochester, NY | Westside Professional Landscape',
     metaDescription:
-      'Commercial landscape maintenance, snow removal, and grounds management in Rochester, NY. Well-trained uniformed crews serving businesses across Monroe County since 2000. Call (585) 594-8420.',
+      'Commercial landscape maintenance, snow removal, and grounds management in Rochester, NY. Experienced crews serving businesses across Monroe County since 2000. Call (585) 594-8420.',
     heroLabel: 'Commercial Grounds Management',
     heroHeading: 'COMMERCIAL LANDSCAPING IN ROCHESTER, NY',
     heroIntro:

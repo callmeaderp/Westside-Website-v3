@@ -221,7 +221,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introTitle: 'PROFESSIONAL <span class="text-green">SNOW MANAGEMENT</span>',
     introText: [
       'Rochester averages <strong>nearly 100 inches of snowfall per year</strong>, making it one of the snowiest cities in the United States. For commercial property owners and managers across Monroe County, that means months of liability exposure, operational disruptions, and the constant threat of slip-and-fall incidents.',
-      "Westside Professional Landscape provides comprehensive commercial snow and ice management that keeps your property safe and accessible around the clock. Our crews monitor weather conditions continuously and deploy proactively — often <em>before the first flake hits the ground</em>. With seasonal contracts, dedicated equipment, and a response team ready <strong>24/7</strong>, we take the stress of winter off your plate.",
+      "Westside Professional Landscape provides comprehensive commercial snow and ice management designed to keep your property safe and accessible. Our crews monitor weather conditions and aim to deploy proactively. With seasonal contracts, dedicated equipment, and a <strong>responsive team</strong>, we take the stress of winter off your plate.",
     ],
     detailLabel: 'Our Services',
     detailTitle: 'SNOW & ICE <span class="text-green">SERVICES</span>',
@@ -251,7 +251,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     processSteps: [],
     relatedSlugs: ['landscape-maintenance', 'hardscaping', 'holiday-lighting'],
     ctaHeading: "DON'T WAIT FOR THE FIRST <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">STORM</span>",
-    ctaText: "Secure your snow management contract now. Properties that plan ahead get priority response when Rochester's winters arrive.",
+    ctaText: "Secure your snow management contract before winter. Planning ahead means you're covered when Rochester's weather arrives.",
   },
 
   'artificial-grass': {
@@ -259,7 +259,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introTitle: 'YEAR-ROUND <span class="text-green">GREEN</span>',
     introText: [
       "As an <strong>Authorized SYNLawn dealer</strong>, Westside Professional Landscape installs premium artificial turf for homeowners and businesses across Greater Rochester. Synthetic turf eliminates mowing, watering, fertilizing, and weed control — giving you a consistently green lawn <em>every day of the year</em>, even through Rochester's long winters.",
-      "SYNLawn products are crafted from advanced synthetic fibers designed to replicate the look and feel of natural grass. Backed by <strong>industry-leading warranties</strong> and engineered for durability, they're built to handle foot traffic, pets, and our four-season climate without fading, matting, or deteriorating.",
+      "SYNLawn products are crafted from advanced synthetic fibers designed to replicate the look and feel of natural grass. Backed by <strong>manufacturer warranties</strong> and engineered for durability, they're built to handle foot traffic, pets, and our four-season climate.",
     ],
     introCta: 'Request a Free Consultation',
     detailLabel: 'Applications',
@@ -306,7 +306,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introTitle: 'COMMERCIAL <span class="text-green">LANDSCAPE SERVICES</span>',
     introText: [
       "<strong>Westside Professional Landscape</strong> provides full-service grounds management for commercial properties across Greater Rochester. From weekly landscape maintenance to seasonal snow and ice management, we give property managers and business owners <em>a single point of contact</em> for all exterior property care.",
-      "Our commercial crews are <strong>well-trained and uniformed</strong>, and we bring over two decades of experience maintaining office parks, retail centers, medical facilities, HOA communities, and industrial properties throughout Monroe County. As members of industry trade associations, we hold ourselves to professional standards of service, safety, and continuing education.",
+      "Our commercial crews bring over <strong>two decades of experience</strong> maintaining office parks, retail centers, medical facilities, HOA communities, and industrial properties throughout Monroe County. We hold ourselves to professional standards of service, safety, and quality.",
     ],
     introCta: 'Request a Commercial Proposal',
     detailLabel: 'What We Offer',
@@ -377,12 +377,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     processSubtitle: 'A hassle-free experience from your first call to the final takedown.',
     processSteps: [
       { title: 'CONSULTATION', text: 'We visit your property, discuss your vision and budget, and develop a custom design plan.' },
-      { title: 'INSTALLATION', text: 'Our experienced crew installs lights and decorations with care — <em>no damage to your property</em>.' },
+      { title: 'INSTALLATION', text: 'Our experienced crew installs lights and decorations with care — <em>treating your property with respect</em>.' },
       { title: 'MAINTENANCE', text: "If a bulb goes out or a strand needs adjustment, one call and we're there to fix it." },
       { title: 'REMOVAL', text: 'After the holidays, we remove everything, inspect it, and store it for next year.' },
     ],
     relatedSlugs: ['landscape-design', 'snow-ice-management', 'landscape-maintenance'],
     ctaHeading: 'MAKE YOUR PROPERTY SHINE THIS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEASON</span>',
-    ctaText: "Book your holiday decorating early — <strong>reservations fill up fast</strong>. Let us handle the lights while you enjoy the holidays.",
+    ctaText: "Book your holiday decorating early — <strong>the best time to plan is now</strong>. Let us handle the lights while you enjoy the holidays.",
   },
 };

@@ -4,8 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://callmeaderp.github.io',
-  base: '/Westside-Website-v3',
+  site: 'https://westsideprolandscape.com',
 
   integrations: [
     sitemap({

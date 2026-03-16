@@ -1,6 +1,6 @@
 ---
 /**
- * Careers page — job listings, culture, application CTA.
+ * Careers page — general interest CTA (no specific listings).
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
@@ -21,14 +21,14 @@ const breadcrumbJsonLd = {
 ---
 
 <BaseLayout
-  title="Landscaping Jobs & Careers | Rochester, NY | Westside Professional Landscape"
-  description="Join the Westside Professional Landscape team. Now hiring landscapers, lawn care technicians, and crew leaders in Rochester NY. Competitive pay, growth opportunities, year-round work."
+  title="Careers at Westside Professional Landscape | Rochester, NY"
+  description="Interested in a career in landscaping? Westside Professional Landscape is always looking for hardworking, passionate people to join our team in Rochester, NY."
   jsonLd={breadcrumbJsonLd}
 >
   <Hero
     label="Join Our Team"
     heading="BUILD YOUR CAREER IN LANDSCAPING"
-    intro="We're always looking for hardworking, passionate people to join the Westside family. Competitive pay, room to grow, and the satisfaction of transforming outdoor spaces every day."
+    intro="We're a locally owned landscape company that's been growing since 2000 — and we're always looking for good people."
     image={getPhoto('hero-about.webp')}
   />
 
@@ -45,12 +45,12 @@ const breadcrumbJsonLd = {
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
         {[
-          { title: 'Competitive Pay', desc: '<strong>Competitive wages</strong> based on experience, with performance bonuses and overtime opportunities.' },
-          { title: 'Year-Round Work', desc: 'Landscaping in spring/summer/fall, snow management in winter — <strong>steady employment</strong>.' },
-          { title: 'Growth Opportunities', desc: 'Clear advancement paths from crew member to crew leader to management.' },
-          { title: 'Training & Certification', desc: 'We invest in your skills — <strong>paid training</strong>, certifications, and professional development.' },
+          { title: 'Competitive Pay', desc: '<strong>Competitive wages</strong> based on your experience and role.' },
+          { title: 'Year-Round Work', desc: 'Landscaping in spring, summer, and fall. Snow management in winter — <strong>steady employment</strong>.' },
+          { title: 'Growth Opportunities', desc: 'Room to advance as you build your skills and take on more responsibility.' },
+          { title: 'Invest in Your Skills', desc: 'We support professional development and help team members build their expertise.' },
           { title: 'Team Culture', desc: 'A supportive, respectful workplace where <em>your work matters</em> and your voice is heard.' },
-          { title: 'Equipment & Tools', desc: 'Top-quality equipment maintained to professional standards. No bringing your own gear.' },
+          { title: 'Quality Equipment', desc: 'Professional-grade equipment maintained to high standards. We provide what you need to do the job right.' },
         ].map((benefit) => (
           <div class="p-8 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
             <h3 class="text-base mb-3">{benefit.title}</h3>
@@ -61,42 +61,31 @@ const breadcrumbJsonLd = {
     </div>
   </section>
 
-  <!-- Open Positions -->
+  <!-- General Interest -->
   <section class="py-24 section-white">
     <div class="site-container">
-      <div class="text-center mb-16 fade-in">
-        <p class="section-label">Open Positions</p>
-        <h2 class="section-title">CURRENT <span class="text-green">OPENINGS</span></h2>
-      </div>
-
-      <div class="max-w-3xl mx-auto flex flex-col gap-6 stagger-children">
-        {[
-          { title: 'Landscape Crew Member', type: 'Full-time', desc: 'Install and maintain residential and commercial landscapes. Experience preferred but <em>will train motivated candidates</em>.' },
-          { title: 'Lawn Care Technician', type: 'Full-time / Seasonal', desc: 'Apply fertilizer and weed control treatments. Must obtain or hold <strong>NYS DEC pesticide applicator certification</strong>.' },
-          { title: 'Crew Leader', type: 'Full-time', desc: 'Lead a crew of <strong>3-5</strong> in daily landscape operations. 3+ years experience required. Valid driver\'s license required.' },
-        ].map((job) => (
-          <div class="p-8 rounded-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-bg-light border border-border-light">
-            <div>
-              <h3 class="text-base mb-1">{job.title}</h3>
-              <p class="text-xs mb-2" style="color: var(--color-green-primary);">{job.type}</p>
-              <p class="text-sm" style="color: var(--color-text-body-dark);" set:html={job.desc} />
-            </div>
-            <a href={url('/contact')} class="btn btn-primary btn-sm shrink-0">Apply Now</a>
-          </div>
-        ))}
-      </div>
-
-      <div class="text-center mt-12">
-        <p class="text-sm mb-4" style="color: var(--color-text-body-dark);">
-          Don't see a position that fits? We're <em>always interested</em> in hearing from talented people.
+      <div class="max-w-2xl mx-auto text-center fade-in">
+        <p class="section-label">Opportunities</p>
+        <h2 class="section-title">THINK YOU'RE <span class="text-green">WESTSIDE MATERIAL?</span></h2>
+        <p class="mt-6 mb-4" style="color: var(--color-text-body-dark); line-height: 1.8;">
+          Whether you're an experienced landscaper, a certified applicator, or someone who's eager to
+          learn and work hard outdoors — we'd like to hear from you.
         </p>
-        <a href={url('/contact')} class="btn btn-outline btn-md">Send Us Your Resume</a>
+        <p class="mb-8" style="color: var(--color-text-body-dark); line-height: 1.8;">
+          Send us your resume and a few words about yourself. We'll reach out if there's a fit.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href={url('/contact')} class="btn btn-primary btn-lg">Send Us Your Resume</a>
+          <a href={`tel:${company.phoneTel}`} class="btn btn-outline btn-md">
+            Or Call {company.phone}
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <CtaBanner
     heading="READY TO JOIN THE TEAM?"
-    text="Apply today and start building your career with a <strong>locally owned landscape company</strong> that invests in its people."
+    text="Reach out today. We're a <strong>locally owned company</strong> that values hard work, reliability, and a good attitude."
   />
 </BaseLayout>
