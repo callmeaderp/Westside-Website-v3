@@ -8,6 +8,13 @@ import { company } from '@data/company';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
 
+/** Format 24h "HH:MM" to "H:MM AM/PM" */
+function formatTime(t: string): string {
+  const [h, m] = t.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${String(m).padStart(2, '0')} ${period}`;
+}
+
 const googleAdsId = company.tracking.googleAdsId;
 const googleAdsConversionLabel = company.tracking.googleAdsConversionLabel;
 
@@ -139,6 +146,8 @@ const jsonLd = [
                 <option>Hardscaping</option>
                 <option>Water Features</option>
                 <option>Snow & Ice Management</option>
+                <option>Artificial Grass</option>
+                <option>Commercial Services</option>
                 <option>Holiday Decorating</option>
                 <option>Other</option>
               </select>
@@ -183,13 +192,15 @@ const jsonLd = [
           <div class="rounded-xl p-8" style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
             <h3 class="text-lg mb-4">Office Hours</h3>
             <div class="flex flex-col gap-2 text-sm" style="color: var(--color-text-muted);">
+              {company.hours.weekdays && (
+                <div class="flex justify-between">
+                  <span>Monday – Friday</span>
+                  <span>{formatTime(company.hours.weekdays.open)} – {formatTime(company.hours.weekdays.close)}</span>
+                </div>
+              )}
               <div class="flex justify-between">
-                <span>Monday - Friday</span>
-                <span>8:30 AM - 4:00 PM</span>
-              </div>
-              <div class="flex justify-between">
-                <span>Saturday - Sunday</span>
-                <span>Closed</span>
+                <span>Saturday – Sunday</span>
+                <span>{company.hours.saturday ? `${formatTime(company.hours.saturday.open)} – ${formatTime(company.hours.saturday.close)}` : 'Closed'}</span>
               </div>
             </div>
           </div>

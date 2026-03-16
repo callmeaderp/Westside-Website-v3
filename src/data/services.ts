@@ -292,6 +292,3 @@ export function getServiceBySlug(slug: ServiceSlug): Service | undefined {
   return services.find((s) => s.slug === slug);
 }
 
-export function getServiceSlugs(): ServiceSlug[] {
-  return services.map((s) => s.slug);
-}

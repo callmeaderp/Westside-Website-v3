@@ -34,9 +34,3 @@ export function getPhoto(filename: string): ImageMetadata {
   return mod.default;
 }
 
-/**
- * Check if a photo exists without throwing.
- */
-export function hasPhoto(filename: string): boolean {
-  return `/src/images/photos/${filename}` in photoModules;
-}

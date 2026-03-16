@@ -84,6 +84,7 @@ export const company = {
     'Chili',
     'Henrietta',
     'Victor',
+    'Spencerport',
   ],
 } as const;
 

@@ -4,6 +4,9 @@
  * Keyed by ServiceSlug. Imported by [slug].astro and standalone service pages.
  */
 import type { ServiceSlug } from './services';
+import { company } from './company';
+
+const yearsInBusiness = new Date().getFullYear() - company.foundingYear;
 
 export interface DetailCard {
   title: string;
@@ -39,7 +42,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Your Vision, Our Expertise',
     introTitle: 'TRANSFORMING <span class="text-green">OUTDOOR SPACES</span>',
     introText: [
-      "For over <strong>26 years</strong>, <strong>Westside Professional Landscape</strong> has been designing and building <em>stunning outdoor environments</em> for homeowners and businesses across Monroe County. Whether you're envisioning a complete property transformation or a targeted enhancement to your front entrance, our design team works closely with you to develop a plan that reflects your style, meets your functional needs, and respects your budget.",
+      `For over <strong>${yearsInBusiness} years</strong>, <strong>Westside Professional Landscape</strong> has been designing and building <em>stunning outdoor environments</em> for homeowners and businesses across Monroe County. Whether you\u2019re envisioning a complete property transformation or a targeted enhancement to your front entrance, our design team works closely with you to develop a plan that reflects your style, meets your functional needs, and respects your budget.`,
       "Every project begins with a thorough site assessment. We evaluate your property's soil conditions, sun exposure, drainage patterns, and existing features. This allows us to recommend plants, materials, and layouts that will thrive in Rochester's unique four-season climate — from the humid summers to the harsh winters that define our region.",
     ],
     introCta: 'Request a Design Consultation',
@@ -134,7 +137,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Craftsmanship That Endures',
     introTitle: 'OUTDOOR SPACES BUILT FOR <span class="text-green">ROCHESTER</span>',
     introText: [
-      "Rochester's <strong>freeze-thaw cycles</strong> put outdoor structures to the test. A patio or retaining wall that isn't built with proper base preparation and drainage will heave, crack, and fail within a few winters. At Westside Professional Landscape, we've been building hardscapes across Monroe County for over 26 years — and <strong>we build them to last</strong>.",
+      `Rochester\u2019s <strong>freeze-thaw cycles</strong> put outdoor structures to the test. A patio or retaining wall that isn\u2019t built with proper base preparation and drainage will heave, crack, and fail within a few winters. At Westside Professional Landscape, we\u2019ve been building hardscapes across Monroe County for over ${yearsInBusiness} years \u2014 and <strong>we build them to last</strong>.`,
       "Our crews understand the engineering that goes into a durable installation: compacted aggregate bases, proper pitch for water drainage, polymeric sand for joint stability, and the right materials for our climate. Whether you're a homeowner in Pittsford looking for an elegant patio or a commercial property in Greece that needs a functional retaining wall, we bring the same level of precision to every project.",
     ],
     detailLabel: 'What We Build',
@@ -183,7 +186,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introTitle: 'THE BEAUTY OF <span class="text-green">WATER</span>',
     introText: [
       'There is <em>nothing quite like</em> the sight and sound of moving water in a landscape. A well-designed water feature becomes the <strong>focal point</strong> of your outdoor space — a place that draws you outside, calms the mind, and adds a dimension that no other element can replicate.',
-      "At Westside Professional Landscape, we design and build water features that are tailored to your property, your aesthetic, and your lifestyle. Whether you envision a naturalistic waterfall cascading over native stone, a tranquil koi pond, or a sleek modern fountain, our team has the expertise to bring it to life. We've been creating water features for homeowners across Pittsford, Brighton, Penfield, and the greater Rochester area for over 26 years.",
+      `At Westside Professional Landscape, we design and build water features that are tailored to your property, your aesthetic, and your lifestyle. Whether you envision a naturalistic waterfall cascading over native stone, a tranquil koi pond, or a sleek modern fountain, our team has the expertise to bring it to life. We\u2019ve been creating water features for homeowners across Pittsford, Brighton, Penfield, and the greater Rochester area for over ${yearsInBusiness} years.`,
     ],
     detailLabel: 'What We Build',
     detailTitle: 'WATER FEATURE <span class="text-green">SERVICES</span>',

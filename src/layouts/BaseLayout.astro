@@ -50,7 +50,7 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <Header />
-    <main id="main-content" style="margin-top: calc(-1 * var(--header-height));">
+    <main id="main-content" tabindex="-1" style="margin-top: calc(-1 * var(--header-height));">
       <slot />
     </main>
     <Footer />

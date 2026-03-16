@@ -15,6 +15,7 @@
   --color-green-primary: #00863F;
   --color-green-bright: #6CC551;
   --color-green-dark: #005C2B;
+  --color-green-on-light: #2B7530; /* AA-accessible on warm white backgrounds (4.73:1 on #eceae3) */
 
   /* Backgrounds */
   --color-bg-dark: #111111;
@@ -191,8 +192,21 @@
   color: var(--color-text-body-dark);
 }
 
+.section-white .section-label {
+  color: var(--color-green-on-light);
+}
+
 .section-white .text-green {
-  color: var(--color-green-bright);
+  color: var(--color-green-on-light);
+}
+
+.section-white .btn-primary {
+  background: linear-gradient(135deg, #3B8132 0%, #00863F 100%);
+}
+
+.section-white .btn-primary:hover {
+  background: linear-gradient(135deg, #458E3A 0%, #009A4A 100%);
+  box-shadow: 0 4px 20px rgba(59, 129, 50, 0.3);
 }
 
 .section-white .btn-outline {

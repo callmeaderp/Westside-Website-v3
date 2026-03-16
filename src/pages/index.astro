@@ -52,20 +52,9 @@ const homepageJsonLd = {
     name: city,
     ...(city === 'Rochester' ? { containedInPlace: { '@type': 'State', name: 'New York' } } : {}),
   })),
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '5.0',
-    reviewCount: String(testimonials.length),
-    bestRating: '5',
-  },
-  // Only mark up reviews that are visible on the page (Google requires
-  // structured data to match visible content)
-  review: testimonials.slice(0, 3).map((t) => ({
-    '@type': 'Review',
-    reviewRating: { '@type': 'Rating', ratingValue: String(t.rating) },
-    author: { '@type': 'Person', name: t.author },
-    reviewBody: t.text,
-  })),
+  // Note: review/aggregateRating intentionally omitted — Google excludes
+  // self-serving LocalBusiness reviews from rich results, and these
+  // testimonials are on the business's own site.
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Landscaping Services',

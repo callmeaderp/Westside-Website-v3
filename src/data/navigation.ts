@@ -39,7 +39,7 @@ export const footerServices: NavItem[] = [
   { label: 'Fertilization & Weed Control', href: '/services/plant-health/' },
   { label: 'Hardscaping', href: '/services/hardscaping/' },
   { label: 'Water Features', href: '/services/water-features/' },
-  { label: 'Snow Removal', href: '/services/snow-ice-management/' },
+  { label: 'Snow & Ice Management', href: '/services/snow-ice-management/' },
   { label: 'Holiday Decorating', href: '/services/holiday-lighting/' },
   { label: 'Artificial Grass', href: '/services/artificial-grass/' },
   { label: 'Commercial Services', href: '/services/commercial-services/' },

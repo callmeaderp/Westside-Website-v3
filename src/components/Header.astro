@@ -60,11 +60,10 @@ function isActive(href: string): boolean {
             >
               {item.label}
             </a>
-            <div class="dropdown-menu absolute top-full left-0 bg-bg-dark-elevated border border-border-dark rounded-lg py-2 min-w-[220px] transition-all duration-200 shadow-lg" role="menu">
+            <div class="dropdown-menu absolute top-full left-0 bg-bg-dark-elevated border border-border-dark rounded-lg py-2 min-w-[220px] transition-all duration-200 shadow-lg">
               {item.children.map((child) => (
                 <a
                   href={url(child.href)}
-                  role="menuitem"
                   class:list={[
                     'block px-4 py-2 text-sm transition-colors',
                     isActive(child.href) ? 'text-green-bright' : 'text-text-light hover:text-white hover:bg-white/5',
@@ -185,6 +184,11 @@ function isActive(href: string): boolean {
     menuToggle?.classList.add('active');
     menuToggle?.setAttribute('aria-expanded', 'true');
     menuToggle?.setAttribute('aria-label', 'Close menu');
+    // Move focus to first link in the menu
+    requestAnimationFrame(() => {
+      const firstLink = mobileNav?.querySelector('a') as HTMLElement | null;
+      firstLink?.focus();
+    });
   }
 
   function closeMenu() {
@@ -193,6 +197,8 @@ function isActive(href: string): boolean {
     menuToggle?.classList.remove('active');
     menuToggle?.setAttribute('aria-expanded', 'false');
     menuToggle?.setAttribute('aria-label', 'Open menu');
+    // Restore focus to the toggle button
+    menuToggle?.focus();
     // Re-hide after the close animation finishes
     mobileNav?.addEventListener('transitionend', () => {
       if (!mobileNav?.classList.contains('is-open')) {
@@ -208,6 +214,13 @@ function isActive(href: string): boolean {
 
   // Tap backdrop to close menu (scroll passes through naturally)
   backdrop?.addEventListener('click', closeMenu);
+
+  // Escape key closes mobile menu
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav?.classList.contains('is-open')) {
+      closeMenu();
+    }
+  });
 
   // Mobile dropdown: animated slide-down with staggered children
   function openSubmenu(submenu: HTMLElement, arrow: HTMLElement | null) {

@@ -1,50 +1,51 @@
 # Cloudflare Pages redirects
 # Maps old WordPress URLs + V2 .html URLs to V3 clean URLs
+# All destinations use trailing slashes to match trailingSlash: 'always'
 
 # V2 .html → V3 clean URLs
 /index.html             /               301
-/about.html             /about          301
-/contact.html           /contact        301
-/services.html          /services       301
-/gallery.html           /gallery        301
-/careers.html           /careers        301
-/privacy.html           /privacy        301
-/service-areas.html     /service-areas  301
-/plant-health.html      /services/plant-health      301
-/landscape-design.html  /services/landscape-design  301
-/landscape-maintenance.html /services/landscape-maintenance 301
-/hardscaping.html       /services/hardscaping       301
-/water-features.html    /services/water-features    301
-/snow-ice-management.html /services/snow-ice-management 301
-/holiday-lighting.html  /services/holiday-lighting  301
+/about.html             /about/         301
+/contact.html           /contact/       301
+/services.html          /services/      301
+/gallery.html           /gallery/       301
+/careers.html           /careers/       301
+/privacy.html           /privacy/       301
+/service-areas.html     /service-areas/ 301
+/plant-health.html      /services/plant-health/      301
+/landscape-design.html  /services/landscape-design/  301
+/landscape-maintenance.html /services/landscape-maintenance/ 301
+/hardscaping.html       /services/hardscaping/       301
+/water-features.html    /services/water-features/    301
+/snow-ice-management.html /services/snow-ice-management/ 301
+/holiday-lighting.html  /services/holiday-lighting/  301
 
 # WordPress page slugs → new pages
-/landscaping-services/  /services       301
-/landscape-services/    /services       301
-/about-us/              /about          301
-/contact-us/            /contact        301
-/portfolio/             /gallery        301
-/our-work/              /gallery        301
+/landscaping-services/  /services/      301
+/landscape-services/    /services/      301
+/about-us/              /about/         301
+/contact-us/            /contact/       301
+/portfolio/             /gallery/       301
+/our-work/              /gallery/       301
 
 # Service-specific WordPress slugs
-/plant-health/          /services/plant-health      301
-/plant-health-care/     /services/plant-health      301
-/lawn-care/             /services/plant-health      301
-/lawn-care-program/     /services/plant-health      301
-/hardscaping/           /services/hardscaping       301
-/hardscape/             /services/hardscaping       301
-/landscape-design/      /services/landscape-design  301
-/holiday-lighting/      /services/holiday-lighting  301
-/holiday-lights/        /services/holiday-lighting  301
-/snow-removal/          /services/snow-ice-management 301
-/snow-ice-management/   /services/snow-ice-management 301
-/water-features/        /services/water-features    301
-/landscape-maintenance/ /services/landscape-maintenance 301
-/maintenance/           /services/landscape-maintenance 301
-/service-areas/         /service-areas  301
-/areas-served/          /service-areas  301
-/artificial-turf/       /gallery        301
-/synlawn/               /gallery        301
+/plant-health/          /services/plant-health/      301
+/plant-health-care/     /services/plant-health/      301
+/lawn-care/             /services/plant-health/      301
+/lawn-care-program/     /services/plant-health/      301
+/hardscaping/           /services/hardscaping/       301
+/hardscape/             /services/hardscaping/       301
+/landscape-design/      /services/landscape-design/  301
+/holiday-lighting/      /services/holiday-lighting/  301
+/holiday-lights/        /services/holiday-lighting/  301
+/snow-removal/          /services/snow-ice-management/ 301
+/snow-ice-management/   /services/snow-ice-management/ 301
+/water-features/        /services/water-features/    301
+/landscape-maintenance/ /services/landscape-maintenance/ 301
+/maintenance/           /services/landscape-maintenance/ 301
+/service-areas/         /service-areas/ 301
+/areas-served/          /service-areas/ 301
+/artificial-turf/       /gallery/       301
+/synlawn/               /gallery/       301
 
 # WordPress artifacts — removed.
 # Redirecting platform cruft to / is treated as a soft 404 by Google.

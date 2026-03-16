@@ -6,11 +6,19 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { company } from '@data/company';
 import { gallery, galleryCategories } from '@data/gallery';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
+
+// Pre-generate larger lightbox versions of each gallery image
+const galleryWithFull = await Promise.all(
+  gallery.map(async (item) => {
+    const full = await getImage({ src: getPhoto(item.image), width: 1600 });
+    return { ...item, fullSrc: full.src };
+  })
+);
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -46,6 +54,7 @@ const breadcrumbJsonLd = {
               cat.value === 'all' ? 'active' : '',
             ]}
             data-filter={cat.value}
+            aria-pressed={cat.value === 'all' ? 'true' : 'false'}
           >
             {cat.label}
           </button>
@@ -54,12 +63,12 @@ const breadcrumbJsonLd = {
 
       <!-- Gallery Grid -->
       <div class="gallery-grid stagger-children" id="gallery-grid">
-        {gallery.map((item) => (
-          <div
+        {galleryWithFull.map((item) => (
+          <button
+            type="button"
             class="gallery-item"
             data-category={item.category}
-            role="button"
-            tabindex="0"
+            data-full={item.fullSrc}
           >
             <Image
               src={getPhoto(item.image)}
@@ -73,7 +82,7 @@ const breadcrumbJsonLd = {
               <div class="gallery-tag">{item.tag}</div>
               <div class="gallery-caption">{item.caption}</div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
@@ -101,8 +110,9 @@ const breadcrumbJsonLd = {
   filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const filter = (btn as HTMLElement).dataset.filter;
-      filterBtns.forEach((b) => b.classList.remove('active'));
+      filterBtns.forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
 
       // Toggle filtered class to disable CSS nth-child spanning
       if (filter === 'all') {
@@ -142,11 +152,13 @@ const breadcrumbJsonLd = {
     lastFocusedItem = item;
     const img = item.querySelector('img');
     const caption = item.querySelector('.gallery-caption');
+    const fullSrc = (item as HTMLElement).dataset.full;
     if (img && lightboxImg) {
       // Hide stale image immediately to prevent flash of previous photo
       lightboxImg.classList.remove('loaded');
       lightboxImg.onload = () => lightboxImg.classList.add('loaded');
-      lightboxImg.src = img.src;
+      // Use pre-generated 1600px version for lightbox, fall back to thumbnail
+      lightboxImg.src = fullSrc || img.src;
       lightboxImg.alt = img.alt;
       // If already cached, onload may not fire — check immediately
       if (lightboxImg.complete) lightboxImg.classList.add('loaded');
@@ -158,14 +170,9 @@ const breadcrumbJsonLd = {
     requestAnimationFrame(() => lightboxClose?.focus());
   }
 
+  // Native <button> elements fire click on Enter/Space — no keydown handler needed
   galleryItems.forEach((item) => {
     item.addEventListener('click', () => openLightboxFor(item));
-    item.addEventListener('keydown', (e) => {
-      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
-        e.preventDefault();
-        openLightboxFor(item);
-      }
-    });
   });
 
   function closeLightbox() {
@@ -230,6 +237,14 @@ const breadcrumbJsonLd = {
     overflow: hidden;
     cursor: pointer;
     transition: opacity 0.3s ease;
+    /* Reset button defaults */
+    appearance: none;
+    border: none;
+    padding: 0;
+    background: none;
+    text-align: left;
+    color: inherit;
+    font: inherit;
   }
 
   /* Strategic spanning — hero item 2×2, items 5 and 10 wide */
