@@ -9,18 +9,18 @@ import { company } from '@data/company';
 import { url } from '@lib/utils';
 
 const areas = [
-  { name: 'Rochester', desc: 'Our home base — serving the city of Rochester and all surrounding neighborhoods.' },
-  { name: 'Pittsford', desc: 'Premium landscaping services for one of Rochester\'s most desirable communities.' },
-  { name: 'Webster', desc: 'Full-service landscape solutions for Webster homes and businesses.' },
-  { name: 'Penfield', desc: 'Trusted landscape partner for Penfield families since 2000.' },
-  { name: 'Fairport', desc: 'Quality landscaping and lawn care for the Fairport community.' },
-  { name: 'Brighton', desc: 'Expert landscape services in the heart of Brighton.' },
-  { name: 'Greece', desc: 'Comprehensive landscaping for Greece\'s residential and commercial properties.' },
-  { name: 'Gates', desc: 'Reliable landscape maintenance and design for Gates homeowners.' },
-  { name: 'Chili', desc: 'Your neighborhood landscaping professionals in Chili.' },
-  { name: 'Henrietta', desc: 'Commercial and residential landscape services in Henrietta.' },
-  { name: 'Victor', desc: 'Premium landscape solutions for Victor\'s growing community.' },
-  { name: 'Spencerport', desc: 'Serving Spencerport with the same quality as all Greater Rochester.' },
+  { name: 'Rochester', desc: 'Our home base on Buffalo Road. From Park Avenue to Charlotte, we know Rochester\'s neighborhoods, soil conditions, and what grows well here.' },
+  { name: 'Pittsford', desc: 'Landscape design, maintenance, and hardscaping for Pittsford\'s established homes and properties. Many of our longest-running maintenance clients are here.' },
+  { name: 'Webster', desc: 'Full-service landscaping for Webster\'s residential neighborhoods and commercial corridors along Route 104 and Empire Boulevard.' },
+  { name: 'Penfield', desc: 'Serving Penfield homeowners since 2000 with landscape design, lawn care programs, and seasonal maintenance throughout the Four Corners area and beyond.' },
+  { name: 'Fairport', desc: 'Landscape maintenance, hardscaping, and lawn treatment programs for Fairport\'s village neighborhoods and surrounding communities along the canal.' },
+  { name: 'Brighton', desc: 'From Twelve Corners to Westfall Road, we provide landscape design, maintenance, and plant health services for Brighton\'s residential properties.' },
+  { name: 'Greece', desc: 'Commercial and residential landscaping across Greece — including snow and ice management for businesses along Ridge Road and West Ridge.' },
+  { name: 'Gates', desc: 'Just down the road from our office. Landscape maintenance, lawn care, and hardscaping for Gates homeowners and the businesses along Buffalo Road.' },
+  { name: 'Chili', desc: 'Neighboring our home base in Gates, we provide the full range of landscape services to Chili\'s residential and commercial properties.' },
+  { name: 'Henrietta', desc: 'Commercial landscape maintenance and snow management for Henrietta\'s business parks, retail centers, and the properties along Jefferson Road.' },
+  { name: 'Victor', desc: 'Serving Victor\'s growing residential communities with landscape design, installation, and year-round property maintenance.' },
+  { name: 'Spencerport', desc: 'Lawn care, landscape maintenance, and seasonal services for Spencerport families in western Monroe County.' },
 ];
 
 const jsonLd = {
@@ -83,7 +83,7 @@ const jsonLd = {
 
       <div class="text-center mt-16 fade-in">
         <p class="text-lg mb-6" style="color: var(--color-text-muted);">
-          Don't see your area? We may still serve your location. Give us a call to find out.
+          Don't see your area? We may <em>still</em> serve your location. Give us a call to find out.
         </p>
         <a href={url('/contact')} class="btn btn-primary btn-md">Contact Us</a>
       </div>

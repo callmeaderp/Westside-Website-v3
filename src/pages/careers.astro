@@ -37,22 +37,22 @@ const breadcrumbJsonLd = {
         <p class="section-label">Why Westside</p>
         <h2 class="section-title">MORE THAN JUST A <span class="text-green">JOB</span></h2>
         <p class="section-subtitle mx-auto">
-          At Westside, you're not just an employee — you're part of a team that takes pride in every project.
+          At <strong>Westside</strong>, you're not just an employee — you're part of a team that takes pride in every project.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
         {[
-          { title: 'Competitive Pay', desc: 'Above-market wages with performance bonuses and overtime opportunities.' },
-          { title: 'Year-Round Work', desc: 'Landscaping in spring/summer/fall, snow management in winter — steady employment.' },
+          { title: 'Competitive Pay', desc: '<strong>Competitive wages</strong> based on experience, with performance bonuses and overtime opportunities.' },
+          { title: 'Year-Round Work', desc: 'Landscaping in spring/summer/fall, snow management in winter — <strong>steady employment</strong>.' },
           { title: 'Growth Opportunities', desc: 'Clear advancement paths from crew member to crew leader to management.' },
-          { title: 'Training & Certification', desc: 'We invest in your skills — paid training, certifications, and professional development.' },
-          { title: 'Team Culture', desc: 'A supportive, respectful workplace where your work matters and your voice is heard.' },
+          { title: 'Training & Certification', desc: 'We invest in your skills — <strong>paid training</strong>, certifications, and professional development.' },
+          { title: 'Team Culture', desc: 'A supportive, respectful workplace where <em>your work matters</em> and your voice is heard.' },
           { title: 'Equipment & Tools', desc: 'Top-quality equipment maintained to professional standards. No bringing your own gear.' },
         ].map((benefit) => (
           <div class="p-8 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
             <h3 class="text-base mb-3">{benefit.title}</h3>
-            <p class="text-sm" style="color: var(--color-text-muted);">{benefit.desc}</p>
+            <p class="text-sm" style="color: var(--color-text-muted);" set:html={benefit.desc} />
           </div>
         ))}
       </div>
@@ -69,15 +69,15 @@ const breadcrumbJsonLd = {
 
       <div class="max-w-3xl mx-auto flex flex-col gap-6 stagger-children">
         {[
-          { title: 'Landscape Crew Member', type: 'Full-time', desc: 'Install and maintain residential and commercial landscapes. Experience preferred but will train motivated candidates.' },
-          { title: 'Lawn Care Technician', type: 'Full-time / Seasonal', desc: 'Apply fertilizer and weed control treatments. Must obtain or hold NYS DEC pesticide applicator certification.' },
-          { title: 'Crew Leader', type: 'Full-time', desc: 'Lead a crew of 3-5 in daily landscape operations. 3+ years experience required. Valid driver\'s license required.' },
+          { title: 'Landscape Crew Member', type: 'Full-time', desc: 'Install and maintain residential and commercial landscapes. Experience preferred but <em>will train motivated candidates</em>.' },
+          { title: 'Lawn Care Technician', type: 'Full-time / Seasonal', desc: 'Apply fertilizer and weed control treatments. Must obtain or hold <strong>NYS DEC pesticide applicator certification</strong>.' },
+          { title: 'Crew Leader', type: 'Full-time', desc: 'Lead a crew of <strong>3-5</strong> in daily landscape operations. 3+ years experience required. Valid driver\'s license required.' },
         ].map((job) => (
           <div class="p-8 rounded-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-bg-light border border-border-light">
             <div>
               <h3 class="text-base mb-1">{job.title}</h3>
               <p class="text-xs mb-2" style="color: var(--color-green-primary);">{job.type}</p>
-              <p class="text-sm" style="color: var(--color-text-body-dark);">{job.desc}</p>
+              <p class="text-sm" style="color: var(--color-text-body-dark);" set:html={job.desc} />
             </div>
             <a href={url('/contact')} class="btn btn-primary btn-sm shrink-0">Apply Now</a>
           </div>
@@ -86,7 +86,7 @@ const breadcrumbJsonLd = {
 
       <div class="text-center mt-12">
         <p class="text-sm mb-4" style="color: var(--color-text-body-dark);">
-          Don't see a position that fits? We're always interested in hearing from talented people.
+          Don't see a position that fits? We're <em>always interested</em> in hearing from talented people.
         </p>
         <a href={url('/contact')} class="btn btn-outline btn-md">Send Us Your Resume</a>
       </div>
@@ -95,6 +95,6 @@ const breadcrumbJsonLd = {
 
   <CtaBanner
     heading="READY TO JOIN THE TEAM?"
-    text="Apply today and start building your career with Rochester's most trusted landscape company."
+    text="Apply today and start building your career with a <strong>locally owned landscape company</strong> that invests in its people."
   />
 </BaseLayout>

@@ -16,11 +16,23 @@ import { url } from '@lib/utils';
       <p class="text-8xl font-bold mb-4" style="font-family: var(--font-heading); color: var(--color-green-bright);">404</p>
       <h1 class="text-2xl mb-4">PAGE NOT FOUND</h1>
       <p class="text-lg mb-8 max-w-md mx-auto" style="color: var(--color-text-muted);">
-        The page you're looking for doesn't exist or has been moved.
+        The page you're looking for doesn't exist or has been moved. Let's get you back on track.
       </p>
-      <div class="flex flex-wrap justify-center gap-4">
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
         <a href={url('/')} class="btn btn-primary btn-md">Go Home</a>
         <a href={url('/contact')} class="btn btn-outline btn-md">Contact Us</a>
+      </div>
+
+      <div class="max-w-2xl mx-auto">
+        <p class="text-sm uppercase tracking-widest mb-6" style="color: var(--color-green-bright);">Popular Pages</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <a href={url('/services')} class="p-4 rounded-lg text-sm transition-colors hover:bg-bg-dark" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark); color: var(--color-text-light);">Our Services</a>
+          <a href={url('/services/plant-health')} class="p-4 rounded-lg text-sm transition-colors hover:bg-bg-dark" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark); color: var(--color-text-light);">5-Step Program</a>
+          <a href={url('/gallery')} class="p-4 rounded-lg text-sm transition-colors hover:bg-bg-dark" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark); color: var(--color-text-light);">Gallery</a>
+          <a href={url('/about')} class="p-4 rounded-lg text-sm transition-colors hover:bg-bg-dark" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark); color: var(--color-text-light);">About Us</a>
+          <a href={url('/service-areas')} class="p-4 rounded-lg text-sm transition-colors hover:bg-bg-dark" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark); color: var(--color-text-light);">Service Areas</a>
+          <a href={url('/careers')} class="p-4 rounded-lg text-sm transition-colors hover:bg-bg-dark" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark); color: var(--color-text-light);">Careers</a>
+        </div>
       </div>
     </div>
   </section>

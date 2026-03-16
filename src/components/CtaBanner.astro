@@ -12,14 +12,14 @@ interface Props {
 
 const {
   heading = 'READY TO TRANSFORM YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">LANDSCAPE?</span>',
-  text = "Get a free, no-obligation estimate from Rochester's most trusted landscape professionals.",
+  text = "Get a free, no-obligation estimate from Rochester's <strong>experienced landscape professionals</strong>.",
 } = Astro.props;
 ---
 
 <section class="py-24" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);">
   <div class="container fade-in text-center">
     <h2 class="mb-4" set:html={heading} />
-    <p class="text-lg text-white/80 max-w-2xl mx-auto mb-8">{text}</p>
+    <p class="text-lg text-white/80 max-w-2xl mx-auto mb-8" set:html={text} />
     <div class="flex flex-wrap justify-center gap-4">
       <a href={url('/contact')} class="btn btn-dark btn-lg">Request Free Estimate</a>
       <a href={company.phoneHref} class="btn btn-outline btn-lg" style="border-color: rgba(255,255,255,0.5);">

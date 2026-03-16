@@ -23,6 +23,8 @@ export const mainNav: NavItem[] = [
       { label: 'Water Features', href: '/services/water-features/' },
       { label: 'Snow & Ice Management', href: '/services/snow-ice-management/' },
       { label: 'Holiday Decorating', href: '/services/holiday-lighting/' },
+      { label: 'Artificial Grass', href: '/services/artificial-grass/' },
+      { label: 'Commercial Services', href: '/services/commercial-services/' },
     ],
   },
   { label: 'About', href: '/about/' },
@@ -39,6 +41,8 @@ export const footerServices: NavItem[] = [
   { label: 'Water Features', href: '/services/water-features/' },
   { label: 'Snow Removal', href: '/services/snow-ice-management/' },
   { label: 'Holiday Decorating', href: '/services/holiday-lighting/' },
+  { label: 'Artificial Grass', href: '/services/artificial-grass/' },
+  { label: 'Commercial Services', href: '/services/commercial-services/' },
 ];
 
 export const footerCompany: NavItem[] = [

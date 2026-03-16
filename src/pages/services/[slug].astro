@@ -34,9 +34,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
             <p class="section-label">{content.introLabel}</p>
             <h2 class="section-title" set:html={content.introTitle} />
             {content.introText.map((para) => (
-              <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
-                {para}
-              </p>
+              <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;" set:html={para} />
             ))}
             {content.introCta && (
               <a href={url('/contact')} class="btn btn-primary btn-md">{content.introCta}</a>
@@ -64,16 +62,14 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
         <div class="text-center mb-16 fade-in">
           {content.detailLabel && <p class="section-label">{content.detailLabel}</p>}
           {content.detailTitle && <h2 class="section-title" set:html={content.detailTitle} />}
-          {content.detailSubtitle && <p class="section-subtitle mx-auto">{content.detailSubtitle}</p>}
+          {content.detailSubtitle && <p class="section-subtitle mx-auto" set:html={content.detailSubtitle} />}
         </div>
 
         <div class={`grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children`}>
           {content.detailCards.map((card) => (
             <div class="p-8 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
               <h3 class="text-base mb-4" set:html={card.title} />
-              <p class="text-sm mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
-                {card.text}
-              </p>
+              <p class="text-sm mb-6" style="color: var(--color-text-muted); line-height: 1.8;" set:html={card.text} />
               <ul class="flex flex-col gap-2">
                 {card.features.map((f) => (
                   <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-light);">
@@ -98,7 +94,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
         <div class="text-center mb-16 fade-in">
           {content.processLabel && <p class="section-label">{content.processLabel}</p>}
           {content.processTitle && <h2 class="section-title" set:html={content.processTitle} />}
-          {content.processSubtitle && <p class="section-subtitle mx-auto">{content.processSubtitle}</p>}
+          {content.processSubtitle && <p class="section-subtitle mx-auto" set:html={content.processSubtitle} />}
         </div>
 
         <div class={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${content.processSteps.length} gap-8 stagger-children`}>
@@ -108,7 +104,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
                 {i + 1}
               </div>
               <h4 class="text-sm mb-3" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">{step.title}</h4>
-              <p class="text-sm" style="color: var(--color-text-body-dark);">{step.text}</p>
+              <p class="text-sm" style="color: var(--color-text-body-dark);" set:html={step.text} />
             </div>
           ))}
         </div>
@@ -144,7 +140,7 @@ const relatedServices = content?.relatedSlugs?.map((s) => services.find((svc) =>
               </div>
               <div class="p-6">
                 <h3 class="text-base mb-2">{related!.shortName.toUpperCase()}</h3>
-                <p class="text-sm" style="color: var(--color-text-muted);">{related!.tagline}</p>
+                <p class="text-sm" style="color: var(--color-text-muted);" set:html={related!.tagline} />
               </div>
             </a>
           ))}

@@ -15,7 +15,7 @@ const programSteps = [
     number: 1,
     timing: 'March — April',
     title: 'SPRING APPLICATION',
-    text: 'Jump-start your lawn out of winter dormancy with a balanced fertilizer that promotes strong root development. Pre-emergent crabgrass control creates an invisible barrier that stops crabgrass seeds before they germinate. Broadleaf weed control targets any weeds that survived winter.',
+    text: 'Jump-start your lawn out of winter dormancy with a balanced fertilizer that promotes strong root development. <strong>Pre-emergent crabgrass control</strong> creates an invisible barrier that stops crabgrass seeds before they germinate. Broadleaf weed control targets any weeds that survived winter.',
     tags: ['Balanced Fertilizer', 'Pre-emergent Crabgrass', 'Weed Control'],
   },
   {
@@ -29,7 +29,7 @@ const programSteps = [
     number: 3,
     timing: 'June — July',
     title: 'SUMMER APPLICATION',
-    text: 'The midsummer visit sustains growth during heat stress with balanced nutrition. Spot treatment addresses any crabgrass that broke through the barrier. Weed control continues through peak season.',
+    text: 'The midsummer visit sustains growth during <em>heat stress</em> with balanced nutrition. Spot treatment addresses any crabgrass that broke through the barrier. Weed control continues through peak season.',
     tags: ['Balanced Fertilizer', 'Crabgrass Spot Treatment', 'Weed Control', 'Insect Inspection*'],
     freeCallout: 'Professional grub preventive application included with this visit (June/July). Helps prevent destructive grub damage — included at no extra charge.',
   },
@@ -44,7 +44,7 @@ const programSteps = [
     number: 5,
     timing: 'October — November',
     title: 'FALL APPLICATION',
-    text: 'The final visit is the most important of the season. A winterizing fertilizer promotes deep root growth that pays dividends come spring. Spot weed treatment addresses any remaining broadleaf weeds before dormancy sets in.',
+    text: 'The final visit is <strong>the most important of the season</strong>. A winterizing fertilizer promotes deep root growth that pays dividends come spring. Spot weed treatment addresses any remaining broadleaf weeds before dormancy sets in.',
     tags: ['Balanced Fertilizer', 'Spot Weed Treatment', 'Winterization'],
   },
 ];
@@ -52,7 +52,7 @@ const programSteps = [
 const additionalServices = [
   {
     title: 'DEEP ROOT FERTILIZATION',
-    text: 'Direct nutrient injection into the root zone of trees and shrubs for maximum vitality.',
+    text: 'Direct nutrient injection into the <strong>root zone</strong> of trees and shrubs for maximum vitality.',
     icon: '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="1.5" aria-hidden="true"><path d="M7 20h10M12 20V10m0 0c0-4.5 3.5-8 8-8-1 3-2.5 5.5-4 7m-4 1c0-4.5-3.5-8-8-8 1 3 2.5 5.5 4 7"/></svg>',
   },
   {
@@ -94,8 +94,8 @@ const pricingFeatures = [
 
 <ServiceLayout
   service={service}
-  ctaHeading='START YOUR JOURNEY TO A <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">PERFECT LAWN</span>'
-  ctaText="Schedule your free lawn evaluation today. Our experts will assess your lawn and recommend the right program for your property."
+  ctaHeading='START YOUR JOURNEY TO A <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">HEALTHIER LAWN</span>'
+  ctaText="Schedule your <strong>free lawn evaluation</strong> today. Our experts will assess your lawn and recommend the right program for your property."
 >
 
   <!-- ═══ VALUE PROPS ═══ -->
@@ -130,9 +130,9 @@ const pricingFeatures = [
         <!-- Steps Column -->
         <div>
           <p class="section-label">The Program</p>
-          <h2 class="section-title">FIVE STEPS TO A <span style="color: var(--color-green-bright);">PERFECT LAWN</span></h2>
+          <h2 class="section-title">FIVE STEPS TO A <span style="color: var(--color-green-bright);">HEALTHIER LAWN</span></h2>
           <p class="mb-10" style="color: var(--color-text-muted); line-height: 1.8;">
-            Each treatment is timed to match your lawn's growth cycle. Our <strong style="color: var(--color-text-light);">NYS DEC Certified Applicators</strong> use professional-grade products for results you simply can't get from store-bought alternatives.
+            <strong>Each treatment is timed</strong> to match your lawn's growth cycle. Our <strong style="color: var(--color-text-light);">NYS DEC Certified Applicators</strong> use professional-grade products that go beyond what's available at retail stores.
           </p>
 
           {programSteps.map((step, i) => (
@@ -148,7 +148,7 @@ const pricingFeatures = [
               <div>
                 <div class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">{step.timing}</div>
                 <h3 class="text-base mb-3" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">{step.title}</h3>
-                <p class="text-sm mb-4" style="color: var(--color-text-muted); line-height: 1.7;">{step.text}</p>
+                <p class="text-sm mb-4" style="color: var(--color-text-muted); line-height: 1.7;" set:html={step.text} />
                 <div class="flex flex-wrap gap-2">
                   {step.tags.map((tag) => (
                     <span class="px-3 py-1 text-xs rounded-full" style="background: rgba(108, 197, 81, 0.1); border: 1px solid rgba(108, 197, 81, 0.2); color: var(--color-green-bright);">
@@ -217,7 +217,7 @@ const pricingFeatures = [
       <div class="text-center mb-16 fade-in">
         <p class="section-label">Enhance Your Lawn</p>
         <h2 class="section-title">ADDITIONAL <span class="text-green">SERVICES</span></h2>
-        <p class="section-subtitle mx-auto">Take your lawn to the next level with these add-on services, available individually or bundled with your 5-step program.</p>
+        <p class="section-subtitle mx-auto">Take your lawn to the next level with these <strong>add-on services</strong>, available individually or bundled with your 5-step program.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
@@ -225,7 +225,7 @@ const pricingFeatures = [
           <div class="p-8 rounded-xl text-center" style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
             <div class="mb-4 flex justify-center" set:html={svc.icon} />
             <h3 class="text-sm mb-3" style="font-family: var(--font-body); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; color: var(--color-text-white);">{svc.title}</h3>
-            <p class="text-sm" style="color: var(--color-text-muted);">{svc.text}</p>
+            <p class="text-sm" style="color: var(--color-text-muted);" set:html={svc.text} />
           </div>
         ))}
       </div>
@@ -250,11 +250,11 @@ const pricingFeatures = [
           <p class="section-label">Why Westside</p>
           <h2 class="text-2xl mb-4">PROFESSIONAL-GRADE <span style="color: var(--color-green-bright);">RESULTS</span></h2>
           <p class="text-sm mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
-            Big-box store products and DIY approaches <em>can't match</em> the results of a professionally managed lawn care program. Here's why our clients trust us:
+            There's a real difference between DIY lawn care and a <strong>professionally managed program</strong>. Here's why our clients choose Westside:
           </p>
           <ul class="flex flex-col gap-4">
             {[
-              { strong: 'NYS DEC Certified Applicators', detail: 'Every technician is fully licensed and trained' },
+              { strong: 'NYS DEC Certified Applicators', detail: 'Our technicians are properly certified and trained' },
               { strong: 'Professional-Grade Products', detail: 'Not available at retail stores — more effective and longer lasting' },
               { strong: 'Precisely Timed Treatments', detail: "Each visit is scheduled to match your lawn's growth cycle" },
               { strong: 'We Stand Behind Our Work', detail: "Not satisfied with a treatment? Contact us and we'll make it right" },
