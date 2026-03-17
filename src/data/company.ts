@@ -53,7 +53,7 @@ export const company = {
 
   // Tracking IDs
   tracking: {
-    ga4: 'G-60GGNQVGCD',
+    ga4: 'G-HQYE7MKZ9P',
     metaPixel: '414143897932367',
     /** Google Ads customer ID for conversion tracking. Set to '' to disable. */
     googleAdsId: '',
