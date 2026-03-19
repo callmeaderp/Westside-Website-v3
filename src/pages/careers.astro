@@ -4,7 +4,6 @@
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
-import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
@@ -75,7 +74,7 @@ const breadcrumbJsonLd = {
           Send us your resume and a few words about yourself. We'll reach out if there's a fit.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href={url('/contact')} class="btn btn-primary btn-lg">Send Us Your Resume</a>
+          <a href={url('/contact/?service=careers')} class="btn btn-primary btn-lg">Send Us Your Resume</a>
           <a href={`tel:${company.phoneTel}`} class="btn btn-outline btn-md">
             Or Call {company.phone}
           </a>
@@ -84,8 +83,4 @@ const breadcrumbJsonLd = {
     </div>
   </section>
 
-  <CtaBanner
-    heading="READY TO JOIN THE TEAM?"
-    text="Reach out today. We're a <strong>locally owned company</strong> that values hard work, reliability, and a good attitude."
-  />
 </BaseLayout>

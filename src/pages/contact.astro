@@ -83,7 +83,7 @@ const jsonLd = [
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Contact Form -->
         <div class="lg:col-span-2">
-          <form id="contact-form" class="flex flex-col gap-6" action="https://api.web3forms.com/submit" method="POST" data-ads-send-to={adsFormSendTo}>
+          <form id="contact-form" class="flex flex-col gap-6" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" data-ads-send-to={adsFormSendTo}>
             <input type="hidden" name="access_key" value="09190d0a-b84d-4b09-a79f-f2e35c675816" />
             <input type="hidden" name="subject" value="New Estimate Request — Westside Website" />
             <input type="hidden" name="from_name" value="Westside Website Contact Form" />
@@ -139,6 +139,37 @@ const jsonLd = [
                 <option>Artificial Grass</option>
                 <option>Commercial Services</option>
                 <option>Holiday Decorating</option>
+                <option value="Career Inquiry">Career Inquiry / Employment</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div id="resume-upload-group" class="hidden">
+              <label for="resume" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Attach Resume <span class="font-normal" style="color: var(--color-text-muted);">(optional)</span></label>
+              <input type="file" id="resume" name="attachment"
+                accept=".pdf,.doc,.docx"
+                class="w-full px-4 py-3 rounded-lg text-white text-sm cursor-pointer"
+                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+              />
+              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX — 10 MB max</p>
+            </div>
+
+            <div>
+              <label for="how-heard" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">How Did You Hear About Us?</label>
+              <select id="how-heard" name="how_heard"
+                class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+              >
+                <option value="">Select...</option>
+                <option>Google Search</option>
+                <option>Neighbor / Word of Mouth</option>
+                <option>Saw Your Work in My Neighborhood</option>
+                <option>Door Hanger / Mailer</option>
+                <option>Facebook / Instagram</option>
+                <option>NextDoor</option>
+                <option>Yard Sign</option>
+                <option>Drove Past a Job Site</option>
+                <option>Returning Customer</option>
                 <option>Other</option>
               </select>
             </div>
@@ -228,7 +259,38 @@ const jsonLd = [
 </BaseLayout>
 
 <script>
-  // Contact form submission handler
+  // --- Resume upload toggle + careers pre-selection ---
+  const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
+  const resumeGroup = document.getElementById('resume-upload-group');
+  const subjectField = document.querySelector<HTMLInputElement>('input[name="subject"]');
+
+  function syncCareerFields() {
+    if (!serviceSelect) return;
+    const isCareer = serviceSelect.value === 'Career Inquiry';
+    resumeGroup?.classList.toggle('hidden', !isCareer);
+    if (subjectField) {
+      subjectField.value = isCareer
+        ? 'Career Inquiry — Westside Website'
+        : 'New Estimate Request — Westside Website';
+    }
+  }
+
+  serviceSelect?.addEventListener('change', syncCareerFields);
+
+  // Pre-select Career Inquiry when arriving from /careers/ (?service=careers)
+  if (serviceSelect) {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('service') === 'careers') {
+      serviceSelect.value = 'Career Inquiry';
+      syncCareerFields();
+      const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
+      if (messageEl && !messageEl.value) {
+        messageEl.placeholder = 'Tell us a bit about yourself, your experience, and what kind of role you\u2019re interested in...';
+      }
+    }
+  }
+
+  // --- Contact form submission handler ---
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const formStatus = document.getElementById('form-status');
   if (form) {
@@ -237,7 +299,7 @@ const jsonLd = [
       const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
       const originalText = btn.textContent;
 
-      // If Turnstile is present, verify the user completed the challenge
+      // Client-side Turnstile gate
       const turnstileWidget = form.querySelector('.cf-turnstile') as HTMLElement | null;
       if (turnstileWidget) {
         const token = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value;
@@ -250,12 +312,60 @@ const jsonLd = [
         }
       }
 
-      btn.textContent = 'Sending...';
+      // Client-side file size check
+      const fileInput = form.querySelector<HTMLInputElement>('[name="attachment"]');
+      const hasFile = !!(fileInput?.files?.[0] && fileInput.files[0].size > 0);
+      if (hasFile && fileInput!.files![0].size > 5 * 1024 * 1024) {
+        if (formStatus) {
+          formStatus.textContent = 'Resume is too large. Please upload a file under 5 MB.';
+          formStatus.style.color = '#e67e22';
+        }
+        return;
+      }
+
+      btn.textContent = hasFile ? 'Uploading resume...' : 'Sending...';
       btn.disabled = true;
-      if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
+      if (formStatus) { formStatus.textContent = hasFile ? 'Uploading your resume...' : 'Sending your message...'; formStatus.style.color = ''; }
 
       try {
+        let resumeUrl = '';
+
+        // Step 1: If a file is attached, upload it to our R2 endpoint first
+        if (hasFile) {
+          const file = fileInput!.files![0];
+          const tsToken = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value || '';
+
+          // Send file as raw binary — bypasses Pages Functions multipart parsing issue
+          const uploadRes = await fetch('/api/upload/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': file.type,
+              'X-Filename': file.name,
+              'X-Turnstile-Token': tsToken,
+            },
+            body: file,
+          });
+          const uploadResult = await uploadRes.json();
+          console.log('[upload] Response:', uploadResult);
+          if (!uploadResult.success) {
+            throw new Error(uploadResult.message || 'Resume upload failed.');
+          }
+          resumeUrl = uploadResult.url;
+          btn.textContent = 'Sending...';
+          if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
+        }
+
+        // Step 2: Submit text fields to Web3Forms (browser → Web3Forms directly)
         const formData = new FormData(form);
+        // Strip file and Turnstile token — Web3Forms free plan rejects both
+        formData.delete('attachment');
+        formData.delete('cf-turnstile-response');
+        // Append resume download link to message
+        if (resumeUrl) {
+          const msg = (formData.get('message') as string) || '';
+          formData.set('message', `${msg}\n\n📎 Resume attached: ${resumeUrl}`);
+        }
+
         const response = await fetch(form.action, { method: 'POST', body: formData });
         const result = await response.json();
         if (result.success) {
@@ -271,11 +381,10 @@ const jsonLd = [
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
-          // Reset the Turnstile widget for potential re-submission
+          syncCareerFields();
           if (turnstileWidget && typeof (window as any).turnstile?.reset === 'function') {
             (window as any).turnstile.reset(turnstileWidget);
           }
-          // Re-enable button after delay; status message persists until next submission
           setTimeout(() => {
             btn.textContent = originalText;
             btn.style.background = '';
@@ -284,11 +393,14 @@ const jsonLd = [
         } else {
           throw new Error(result.message || 'Submission failed');
         }
-      } catch {
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : '';
         btn.textContent = 'Error \u2014 Please Call Us';
         btn.style.background = '#c0392b';
-        if (formStatus) { formStatus.textContent = 'There was an error sending your message. Please call us instead.'; formStatus.style.color = '#c0392b'; }
-        // Re-enable button after delay; error message persists until next submission
+        if (formStatus) {
+          formStatus.textContent = msg || 'There was an error sending your message. Please call us instead.';
+          formStatus.style.color = '#c0392b';
+        }
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.background = '';

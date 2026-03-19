@@ -16,7 +16,7 @@ export const company = {
   phone: '(585) 594-8420',
   phoneTel: '+1-585-594-8420',
   phoneHref: 'tel:+15855948420',
-  email: 'info@westsideprolandscape.com',
+  email: 'office@westsideprolandscape.com',
 
   // Address
   address: {

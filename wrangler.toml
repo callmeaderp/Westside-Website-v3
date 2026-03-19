@@ -1,0 +1,10 @@
+# Cloudflare Pages project config
+# R2 bucket binding for resume uploads
+# Secrets (TURNSTILE_SECRET, WEB3FORMS_KEY) are set via `wrangler pages secret put`
+
+name = "westside-website"
+pages_build_output_dir = "dist"
+
+[[r2_buckets]]
+binding = "RESUMES"
+bucket_name = "westside-resumes"

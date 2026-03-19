@@ -64,6 +64,24 @@
    Wrapped in @layer base so Tailwind utilities (h-9, w-auto, etc.) can override. */
 
 @layer base {
+  /* File-input button styling (resume upload) */
+  input[type="file"]::file-selector-button {
+    background: var(--color-green-primary);
+    color: #fff;
+    border: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: background 0.15s ease;
+  }
+  input[type="file"]::file-selector-button:hover {
+    background: var(--color-green-dark);
+  }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: var(--header-height);
