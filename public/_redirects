@@ -45,6 +45,7 @@
 /service-areas/         /service-areas/ 301
 /areas-served/          /service-areas/ 301
 /artificial-turf/       /gallery/       301
+/artificial-grass/      /services/artificial-grass/ 301
 /synlawn/               /gallery/       301
 
 # WordPress artifacts — no redirect needed.

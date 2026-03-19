@@ -104,7 +104,7 @@ export const services: Service[] = [
     metaTitle: 'Lawn Fertilization & Weed Control in Rochester, NY | Westside Professional Landscape',
     metaDescription:
       "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. Fertilization, weed control, grub protection included. NYS DEC certified. Rochester, NY.",
-    heroLabel: '',
+    heroLabel: 'Lawn Care Program',
     heroHeading: 'LAWN FERTILIZATION & WEED CONTROL IN ROCHESTER, NY',
     heroIntro:
       'Five precisely timed seasonal applications for a lush, healthy lawn you can be proud of. 50% off your first treatment — just $58 for the average lawn.',

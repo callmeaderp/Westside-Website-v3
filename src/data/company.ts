@@ -32,11 +32,11 @@ export const company = {
     longitude: -77.7239414,
   },
 
-  // Hours
+  // Hours (null = closed; typed as union so ternary narrowing works with `as const`)
   hours: {
     weekdays: { open: '08:30', close: '16:00' },
-    saturday: null,
-    sunday: null,
+    saturday: null as { open: string; close: string } | null,
+    sunday: null as { open: string; close: string } | null,
   },
 
   // URLs
