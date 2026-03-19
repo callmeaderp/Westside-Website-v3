@@ -87,6 +87,7 @@ const jsonLd = [
             <input type="hidden" name="access_key" value="09190d0a-b84d-4b09-a79f-f2e35c675816" />
             <input type="hidden" name="subject" value="New Estimate Request — Westside Website" />
             <input type="hidden" name="from_name" value="Westside Website Contact Form" />
+            <input type="hidden" name="Received (Eastern)" id="submitted-at" />
             <div class="hidden"><input type="checkbox" name="botcheck" /></div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,7 +152,7 @@ const jsonLd = [
                 class="w-full px-4 py-3 rounded-lg text-white text-sm cursor-pointer"
                 style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
               />
-              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX — 10 MB max</p>
+              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX — 5 MB max</p>
             </div>
 
             <div>
@@ -346,7 +347,6 @@ const jsonLd = [
             body: file,
           });
           const uploadResult = await uploadRes.json();
-          console.log('[upload] Response:', uploadResult);
           if (!uploadResult.success) {
             throw new Error(uploadResult.message || 'Resume upload failed.');
           }
@@ -360,6 +360,22 @@ const jsonLd = [
         // Strip file and Turnstile token — Web3Forms free plan rejects both
         formData.delete('attachment');
         formData.delete('cf-turnstile-response');
+
+        // Stamp Eastern Time as a separate column (Web3Forms' built-in "Submitted At" is always UTC)
+        formData.set('Received (Eastern)', new Date().toLocaleString('en-US', {
+          timeZone: 'America/New_York',
+          month: 'short', day: 'numeric', year: 'numeric',
+          hour: 'numeric', minute: '2-digit', hour12: true,
+        }));
+
+        // Format phone to (XXX) XXX-XXXX before sending
+        const rawPhone = (formData.get('phone') as string || '').replace(/\D/g, '');
+        if (rawPhone.length === 10) {
+          formData.set('phone', `(${rawPhone.slice(0,3)}) ${rawPhone.slice(3,6)}-${rawPhone.slice(6)}`);
+        } else if (rawPhone.length === 11 && rawPhone.startsWith('1')) {
+          formData.set('phone', `(${rawPhone.slice(1,4)}) ${rawPhone.slice(4,7)}-${rawPhone.slice(7)}`);
+        }
+
         // Append resume download link to message
         if (resumeUrl) {
           const msg = (formData.get('message') as string) || '';

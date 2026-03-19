@@ -33,7 +33,7 @@ function isActive(href: string): boolean {
           style="font-family: var(--font-body); color: var(--color-green-bright);">Professional Landscape</span>
       </a>
       <a
-        href="https://www.synlawn.com/location/western-new-york/"
+        href="https://synlawnwesternnewyork.com/"
         class="partner-logo flex items-center opacity-60 hover:opacity-100 transition-opacity pl-3 md:pl-5"
         style="border-left: 1px solid rgba(255, 255, 255, 0.15);"
         target="_blank"
@@ -323,36 +323,6 @@ function isActive(href: string): boolean {
     }
   }
 
-  // Enhanced debug overlay — ?debugHeader for comprehensive live metrics
-  // Positioned at BOTTOM to avoid being clipped by the same top-edge issue
-  if (header && location.search.includes('debugHeader')) {
-    // Red outline on header to show its actual CSS box bounds
-    header.style.outline = '2px solid red';
-    header.style.outlineOffset = '-2px';
-
-    const box = document.createElement('pre');
-    Object.assign(box.style, {
-      position: 'fixed', bottom: '0', left: '0', right: '0', zIndex: '9999',
-      padding: '6px 10px', background: 'rgba(0,0,0,.92)', color: '#7CFC00',
-      font: '11px/1.4 monospace', pointerEvents: 'none',
-    });
-    document.body.appendChild(box);
-    const vv = window.visualViewport;
-
-    // rAF loop — catches transient states that events miss
-    (function renderDebug() {
-      const hr = header.getBoundingClientRect();
-      const cs = getComputedStyle(header);
-      box.textContent = [
-        `scroll: ${Math.round(window.scrollY)}  |  pos: ${cs.position}  top-css: ${cs.top}`,
-        `innerH: ${window.innerHeight}  vv.h: ${vv ? vv.height.toFixed(0) : '-'}  diff: ${vv ? (window.innerHeight - vv.height).toFixed(0) : '-'}`,
-        `vv.offTop: ${vv ? vv.offsetTop.toFixed(1) : '-'}  vv.pageTop: ${vv ? vv.pageTop.toFixed(0) : '-'}`,
-        `hdr rect → top: ${hr.top.toFixed(1)}  bot: ${hr.bottom.toFixed(1)}  h: ${hr.height.toFixed(1)}`,
-        `body overflowX: ${getComputedStyle(document.body).overflowX}`,
-      ].join('\n');
-      requestAnimationFrame(renderDebug);
-    })();
-  }
 </script>
 
 <style>

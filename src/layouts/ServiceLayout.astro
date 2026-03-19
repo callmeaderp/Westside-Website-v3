@@ -28,7 +28,7 @@ const serviceJsonLd = {
       name: service.name,
       description: service.description,
       provider: {
-        '@type': 'LandscapingBusiness',
+        '@type': 'HomeAndConstructionBusiness',
         name: company.name,
         url: company.url,
         telephone: company.phoneTel,
@@ -41,11 +41,11 @@ const serviceJsonLd = {
           addressCountry: company.address.country,
         },
       },
-      areaServed: {
+      areaServed: company.areasServed.map((city) => ({
         '@type': 'City',
-        name: 'Rochester',
-        containedInPlace: { '@type': 'State', name: 'New York' },
-      },
+        name: city,
+        ...(city === 'Rochester' ? { containedInPlace: { '@type': 'State', name: 'New York' } } : {}),
+      })),
       url: siteUrl(`/services/${service.slug}`),
     },
     {
@@ -56,7 +56,7 @@ const serviceJsonLd = {
         {
           '@type': 'ListItem',
           position: 3,
-          name: service.shortName,
+          name: service.name,
           item: siteUrl(`/services/${service.slug}`),
         },
       ],

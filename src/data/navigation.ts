@@ -47,6 +47,7 @@ export const footerServices: NavItem[] = [
 
 export const footerCompany: NavItem[] = [
   { label: 'About Us', href: '/about/' },
+  { label: 'Service Areas', href: '/service-areas/' },
   { label: 'Gallery', href: '/gallery/' },
   { label: 'Careers', href: '/careers/' },
   { label: 'Contact', href: '/contact/' },

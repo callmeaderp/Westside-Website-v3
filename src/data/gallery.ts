@@ -43,7 +43,7 @@ export const gallery: GalleryItem[] = [
   {
     id: 'show-garden',
     image: 'gallery-show-garden.webp',
-    alt: 'Award-winning landscape design with water feature',
+    alt: 'Custom landscape design with water feature',
     category: 'landscape-design',
     tag: 'Landscape Design',
     caption: 'Show Garden Display',

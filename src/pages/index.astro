@@ -17,7 +17,7 @@ import { url } from '@lib/utils';
 // Build homepage JSON-LD (LocalBusiness + reviews + offer catalog)
 const homepageJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'LandscapingBusiness',
+  '@type': 'HomeAndConstructionBusiness',
   '@id': `${siteUrl('/')}#business`,
   name: company.name,
   url: company.url,
@@ -181,6 +181,9 @@ const homepageJsonLd = {
             <p class="text-sm font-semibold" style="color: var(--color-green-bright);">
               — {t.author}
             </p>
+            {t.role && (
+              <p class="text-xs mt-1" style="color: var(--color-text-muted);">{t.role}</p>
+            )}
           </div>
         ))}
       </div>

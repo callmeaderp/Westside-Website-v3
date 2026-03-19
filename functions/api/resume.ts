@@ -29,6 +29,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     headers.set('Content-Disposition', object.httpMetadata.contentDisposition);
   }
   headers.set('Cache-Control', 'private, max-age=3600');
+  headers.set('X-Robots-Tag', 'noindex, noarchive, nosnippet');
 
   return new Response(object.body, { headers });
 };

@@ -5,7 +5,6 @@
  * Each product links to its manufacturer Label and SDS (Safety Data Sheet) PDFs,
  * self-hosted in /public/documents/{category}/.
  *
- * TODO: Replace placeholder product list with Westside's actual products once confirmed.
  */
 
 export interface ProductDocument {

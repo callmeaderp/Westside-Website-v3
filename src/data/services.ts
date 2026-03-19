@@ -101,11 +101,11 @@ export const services: Service[] = [
     tagline: 'Science-backed lawn care',
     description:
       "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. NYS DEC certified applicators.",
-    metaTitle: '5-Step Fertilization & Weed Control Program | Westside Professional Landscape',
+    metaTitle: 'Lawn Fertilization & Weed Control in Rochester, NY | Westside Professional Landscape',
     metaDescription:
       "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. Fertilization, weed control, grub protection included. NYS DEC certified. Rochester, NY.",
     heroLabel: '',
-    heroHeading: '5-STEP FERTILIZATION & WEED CONTROL PROGRAM',
+    heroHeading: 'LAWN FERTILIZATION & WEED CONTROL IN ROCHESTER, NY',
     heroIntro:
       'Five precisely timed seasonal applications for a lush, healthy lawn you can be proud of. 50% off your first treatment — just $58 for the average lawn.',
     heroImage: 'hero-plant-health.webp',
@@ -291,4 +291,3 @@ services.forEach((s) => ServiceSchema.parse(s));
 export function getServiceBySlug(slug: ServiceSlug): Service | undefined {
   return services.find((s) => s.slug === slug);
 }
-
