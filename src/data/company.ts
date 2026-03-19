@@ -55,10 +55,12 @@ export const company = {
   tracking: {
     ga4: 'G-HQYE7MKZ9P',
     metaPixel: '414143897932367',
-    /** Google Ads customer ID for conversion tracking. Set to '' to disable. */
-    googleAdsId: '',
-    /** Google Ads conversion label for form submit events. */
-    googleAdsConversionLabel: '',
+    /** Google Ads conversion ID (AW-XXXXXXXXX). Set to '' to disable. */
+    googleAdsId: 'AW-994077980',
+    /** Conversion label for contact form submissions ($50 value). */
+    googleAdsFormLabel: 'X0m7CO2BkYscEJzagdoD',
+    /** Conversion label for phone number clicks ($25 value). */
+    googleAdsPhoneLabel: 'TrMECPSIkYscEJzagdoD',
     /** Microsoft Clarity project ID for heatmaps/session recording. Set to '' to disable. */
     clarity: 'vwt4d6u369',
   },

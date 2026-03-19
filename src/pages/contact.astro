@@ -8,6 +8,10 @@ import { company } from '@data/company';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
 
+const adsFormSendTo = company.tracking.googleAdsId && company.tracking.googleAdsFormLabel
+  ? `${company.tracking.googleAdsId}/${company.tracking.googleAdsFormLabel}`
+  : '';
+
 /** Format 24h "HH:MM" to "H:MM AM/PM" */
 function formatTime(t: string): string {
   const [h, m] = t.split(':').map(Number);
@@ -91,7 +95,7 @@ const jsonLd = [
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Contact Form -->
         <div class="lg:col-span-2">
-          <form id="contact-form" class="flex flex-col gap-6" action="https://api.web3forms.com/submit" method="POST">
+          <form id="contact-form" class="flex flex-col gap-6" action="https://api.web3forms.com/submit" method="POST" data-ads-send-to={adsFormSendTo}>
             <input type="hidden" name="access_key" value="09190d0a-b84d-4b09-a79f-f2e35c675816" />
             <input type="hidden" name="subject" value="New Estimate Request — Westside Website" />
             <input type="hidden" name="from_name" value="Westside Website Contact Form" />
@@ -244,7 +248,14 @@ const jsonLd = [
         const response = await fetch(form.action, { method: 'POST', body: formData });
         const result = await response.json();
         if (result.success) {
-          if (typeof (window as any).fbq === 'function') (window as any).fbq('track', 'Lead');
+          if (!(window as any).__wplInternal) {
+            if (typeof (window as any).gtag === 'function') {
+              (window as any).gtag('event', 'form_submit', { event_category: 'engagement', form_name: 'contact' });
+              var sendTo = form.dataset.adsSendTo;
+              if (sendTo) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });
+            }
+            if (typeof (window as any).fbq === 'function') (window as any).fbq('track', 'Lead');
+          }
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
