@@ -12,6 +12,8 @@ const adsFormSendTo = company.tracking.googleAdsId && company.tracking.googleAds
   ? `${company.tracking.googleAdsId}/${company.tracking.googleAdsFormLabel}`
   : '';
 
+const turnstileSiteKey = company.tracking.turnstileSiteKey || '';
+
 /** Format 24h "HH:MM" to "H:MM AM/PM" */
 function formatTime(t: string): string {
   const [h, m] = t.split(':').map(Number);
@@ -19,6 +21,29 @@ function formatTime(t: string): string {
   return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${String(m).padStart(2, '0')} ${period}`;
 }
 
+/** FAQ items — single source for both the UI cards and FAQPage JSON-LD. */
+const faqItems: { question: string; answer: string }[] = [
+  {
+    question: 'How do I get a free estimate?',
+    answer: "Fill out the form above, give us a call, or send an email. We'll schedule an on-site visit to assess your property and provide a detailed, no-obligation estimate within 1-2 business days.",
+  },
+  {
+    question: 'What areas do you serve?',
+    answer: 'We serve the entire Greater Rochester area including Pittsford, Webster, Penfield, Fairport, Brighton, Greece, Gates, Chili, Henrietta, Victor, and surrounding communities.',
+  },
+  {
+    question: 'Can I sign up for the 5-Step Lawn Care Program mid-season?',
+    answer: "Yes! While the best results come from starting in spring, we can customize a program based on where you are in the season. Contact us and we'll recommend the best approach for your lawn.",
+  },
+  {
+    question: 'Do you offer commercial services?',
+    answer: 'Absolutely. We serve HOAs, commercial properties, office parks, and retail locations with comprehensive landscape maintenance, snow management, and seasonal services.',
+  },
+  {
+    question: 'Are your technicians certified?',
+    answer: 'Yes. Our plant health technicians hold NYS DEC Certified Commercial Pesticide Applicator credentials, and our company is licensed and insured.',
+  },
+];
 
 const jsonLd = [
   {
@@ -32,48 +57,11 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'How do I get a free estimate?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: "Fill out the form above, give us a call, or send an email. We'll schedule an on-site visit to assess your property and provide a detailed, no-obligation estimate within 1-2 business days.",
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'What areas do you serve?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'We serve the entire Greater Rochester area including Pittsford, Webster, Penfield, Fairport, Brighton, Greece, Gates, Chili, Henrietta, Victor, and surrounding communities.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Can I sign up for the 5-Step Lawn Care Program mid-season?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: "Yes! While the best results come from starting in spring, we can customize a program based on where you are in the season. Contact us and we'll recommend the best approach for your lawn.",
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Do you offer commercial services?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Absolutely. We serve HOAs, commercial properties, office parks, and retail locations with comprehensive landscape maintenance, snow management, and seasonal services.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Are your technicians certified?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Our plant health technicians hold NYS DEC Certified Commercial Pesticide Applicator credentials, and our company is licensed and insured.',
-        },
-      },
-    ],
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
   },
 ];
 ---
@@ -164,6 +152,10 @@ const jsonLd = [
               ></textarea>
             </div>
 
+            {turnstileSiteKey && (
+              <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark"></div>
+            )}
+
             <button type="submit" class="btn btn-primary btn-lg self-start">
               Send Message
             </button>
@@ -219,15 +211,20 @@ const jsonLd = [
         <h2 class="section-title">FREQUENTLY <span class="text-green">ASKED</span></h2>
       </div>
       <div class="max-w-3xl mx-auto flex flex-col gap-6 stagger-children">
-        {(jsonLd[1] as any).mainEntity.map((q: any) => (
+        {faqItems.map((faq) => (
           <div class="p-6 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
-            <h3 class="text-base mb-3" style="font-family: var(--font-body); font-weight: 700; text-transform: none; line-height: 1.4;">{q.name}</h3>
-            <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{q.acceptedAnswer.text}</p>
+            <h3 class="text-base mb-3" style="font-family: var(--font-body); font-weight: 700; text-transform: none; line-height: 1.4;">{faq.question}</h3>
+            <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{faq.answer}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
+
+  {/* Turnstile API — only loaded when site key is configured */}
+  {turnstileSiteKey && (
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
 </BaseLayout>
 
 <script>
@@ -239,6 +236,20 @@ const jsonLd = [
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
       const originalText = btn.textContent;
+
+      // If Turnstile is present, verify the user completed the challenge
+      const turnstileWidget = form.querySelector('.cf-turnstile') as HTMLElement | null;
+      if (turnstileWidget) {
+        const token = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value;
+        if (!token) {
+          if (formStatus) {
+            formStatus.textContent = 'Please complete the verification challenge above.';
+            formStatus.style.color = '#e67e22';
+          }
+          return;
+        }
+      }
+
       btn.textContent = 'Sending...';
       btn.disabled = true;
       if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
@@ -251,7 +262,7 @@ const jsonLd = [
           if (!(window as any).__wplInternal) {
             if (typeof (window as any).gtag === 'function') {
               (window as any).gtag('event', 'form_submit', { event_category: 'engagement', form_name: 'contact' });
-              var sendTo = form.dataset.adsSendTo;
+              const sendTo = form.dataset.adsSendTo;
               if (sendTo) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });
             }
             if (typeof (window as any).fbq === 'function') (window as any).fbq('track', 'Lead');
@@ -260,11 +271,15 @@ const jsonLd = [
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
+          // Reset the Turnstile widget for potential re-submission
+          if (turnstileWidget && typeof (window as any).turnstile?.reset === 'function') {
+            (window as any).turnstile.reset(turnstileWidget);
+          }
+          // Re-enable button after delay; status message persists until next submission
           setTimeout(() => {
             btn.textContent = originalText;
             btn.style.background = '';
             btn.disabled = false;
-            if (formStatus) formStatus.textContent = '';
           }, 4000);
         } else {
           throw new Error(result.message || 'Submission failed');
@@ -273,11 +288,11 @@ const jsonLd = [
         btn.textContent = 'Error \u2014 Please Call Us';
         btn.style.background = '#c0392b';
         if (formStatus) { formStatus.textContent = 'There was an error sending your message. Please call us instead.'; formStatus.style.color = '#c0392b'; }
+        // Re-enable button after delay; error message persists until next submission
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.background = '';
           btn.disabled = false;
-          if (formStatus) formStatus.textContent = '';
         }, 4000);
       }
     });

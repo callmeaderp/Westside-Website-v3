@@ -47,15 +47,10 @@
 /artificial-turf/       /gallery/       301
 /synlawn/               /gallery/       301
 
-# WordPress artifacts — removed.
-# Redirecting platform cruft to / is treated as a soft 404 by Google.
-# These paths don't exist in V3, so Cloudflare Pages returns a natural 404.
-
-# Blog → homepage (removed)
-/blog/                  /       301
-/blog/*                 /       301
-/category/*             /       301
-/tag/*                  /       301
+# WordPress artifacts — no redirect needed.
+# /blog/*, /category/*, /tag/* → Cloudflare Pages returns natural 404.
+# Redirecting to / would be a soft-404 (Google treats it as a signal of
+# thin content). Letting them 404 cleanly is the correct SEO response.
 
 # Common typos
 /index.php              /       301

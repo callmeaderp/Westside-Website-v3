@@ -6,8 +6,8 @@
  * responsive sizing, width/height inference, and content hashing.
  *
  * Usage:
- *   import { getImage } from '@lib/images';
- *   const img = getImage('hero-home.webp');  // returns ImageMetadata
+ *   import { getPhoto } from '@lib/images';
+ *   const img = getPhoto('hero-home.webp');  // returns ImageMetadata
  */
 import type { ImageMetadata } from 'astro';
 

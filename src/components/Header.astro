@@ -128,7 +128,7 @@ function isActive(href: string): boolean {
                 </svg>
               </button>
             </div>
-            <div class="mobile-submenu pl-4 pt-1 pb-2 flex flex-col gap-1 overflow-hidden"
+            <div class="mobile-submenu pl-4 pt-1 pb-2 flex flex-col gap-1 overflow-hidden" hidden
               style="max-height: 0; opacity: 0; transition: max-height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease; mask-image: linear-gradient(to bottom, transparent, black 10px, black calc(100% - 10px), transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 10px, black calc(100% - 10px), transparent);">
               {item.children.map((child) => (
                 <a
@@ -225,12 +225,16 @@ function isActive(href: string): boolean {
   // Mobile dropdown: animated slide-down with staggered children
   function openSubmenu(submenu: HTMLElement, arrow: HTMLElement | null) {
     const items = submenu.querySelectorAll(':scope > a') as NodeListOf<HTMLElement>;
+    // Remove hidden so the element enters layout (display:none → block)
+    submenu.removeAttribute('hidden');
     // Reset children before measuring
     items.forEach((item) => {
       item.style.opacity = '0';
       item.style.transform = 'translateY(-8px)';
       item.style.transition = 'none';
     });
+    // Force reflow so browser computes the collapsed state before animating
+    submenu.offsetHeight;
     // Set transition to bouncy spring for expansion
     submenu.style.transition = 'max-height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease';
     submenu.style.maxHeight = submenu.scrollHeight + 'px';
@@ -260,6 +264,12 @@ function isActive(href: string): boolean {
     submenu.style.opacity = '0';
     arrow?.setAttribute('aria-expanded', 'false');
     arrow?.querySelector('svg')?.classList.remove('rotate-180');
+    // Re-hide after collapse animation so links are not tabbable
+    submenu.addEventListener('transitionend', (e) => {
+      if (e.target === submenu && !isSubmenuOpen(submenu)) {
+        submenu.setAttribute('hidden', '');
+      }
+    }, { once: true });
   }
 
   function isSubmenuOpen(submenu: HTMLElement): boolean {

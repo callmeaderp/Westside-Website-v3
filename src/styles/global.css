@@ -107,6 +107,19 @@
     color: var(--color-text-white);
   }
 
+  /* ═══ FOCUS RING ═══
+     Visible on keyboard nav (:focus-visible) but not on click.
+     2px green outline offset from the element for clarity. */
+  :focus-visible {
+    outline: 2px solid var(--color-green-bright);
+    outline-offset: 2px;
+  }
+
+  /* Skip-link already has its own focus treatment */
+  .skip-link:focus-visible {
+    outline: none;
+  }
+
   /* ═══ TYPOGRAPHY ═══ */
 
   h1, h2, h3, h4, h5, h6 {

@@ -63,6 +63,9 @@ export const company = {
     googleAdsPhoneLabel: 'TrMECPSIkYscEJzagdoD',
     /** Microsoft Clarity project ID for heatmaps/session recording. Set to '' to disable. */
     clarity: 'vwt4d6u369',
+    /** Cloudflare Turnstile site key for contact form CAPTCHA. Set to '' to disable.
+     *  Create a widget at: Cloudflare Dashboard → Turnstile → Add widget → set domain. */
+    turnstileSiteKey: '0x4AAAAAACtQFQUXq4idMeWu',
   },
 
   // Domain verification codes (Meta Business, Google Search Console, etc.)
@@ -70,7 +73,7 @@ export const company = {
     /** Meta Business domain verification — get from Business Settings > Brand Safety > Domains */
     metaDomain: 'n38rl71cy605xav3vlh7tk9jjqpkdb',
     /** Google Search Console — get from Search Console > Settings > Ownership verification */
-    googleSiteVerification: '',
+    googleSiteVerification: 'o8V0gG8CkDJ0oGu14-9rGA8s1QpZfbSGuJ7M3JOvVvU',
   },
 
   // Areas served
