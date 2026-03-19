@@ -51,5 +51,6 @@ export const footerCompany: NavItem[] = [
   { label: 'Careers', href: '/careers/' },
   { label: 'Contact', href: '/contact/' },
   { label: '5-Step Program', href: '/services/plant-health/' },
+  { label: 'Labels & SDS', href: '/labels-sds/' },
   { label: 'Free Estimate', href: '/contact/' },
 ];

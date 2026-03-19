@@ -1,0 +1,313 @@
+---
+/**
+ * Product Labels & Safety Data Sheets
+ *
+ * Public resource page listing product documentation for lawn care,
+ * tree & shrub, and landscape maintenance programs. Required by
+ * NY DEC regulations for commercial pesticide applicators.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CtaBanner from '@components/CtaBanner.astro';
+import { company } from '@data/company';
+import { productCategories, totalProducts } from '@data/product-documents';
+import { siteUrl } from '@lib/site';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+    { '@type': 'ListItem', position: 2, name: 'Labels & SDS', item: siteUrl('/labels-sds') },
+  ],
+};
+---
+
+<BaseLayout
+  title="Product Labels & Safety Data Sheets | Westside Professional Landscape"
+  description="Download product labels and safety data sheets (SDS) for lawn care, tree & shrub, and landscape maintenance products used by Westside Professional Landscape."
+  jsonLd={breadcrumbJsonLd}
+>
+  <Hero
+    label="Product Safety"
+    heading="LABELS & SAFETY <span class='text-green'>DATA SHEETS</span>"
+    intro="Download product labels and safety data sheets for the products used in professional lawn care, tree &amp; shrub, and landscape maintenance services."
+    variant="utility"
+  />
+
+  <!-- Intro -->
+  <section class="py-16 section-dark-alt">
+    <div class="site-container">
+      <div class="max-w-3xl mx-auto text-center fade-in">
+        <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full mb-6" style="background: rgba(108, 197, 81, 0.1); border: 1px solid rgba(108, 197, 81, 0.2);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-green-bright)" stroke-width="2" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span class="text-sm font-medium" style="color: var(--color-green-bright);">Product Documentation</span>
+        </div>
+        <p style="color: var(--color-text-muted); line-height: 1.8;">
+          Product labels and Safety Data Sheets (SDS) are available below for reference.
+          These are <strong style="color: var(--color-text-white);">manufacturer-provided documents</strong> for
+          products commonly used in professional lawn care and plant health services.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Navigation -->
+  <section class="py-6 sticky top-[72px] z-30" style="background: var(--color-bg-dark); border-bottom: 1px solid var(--color-border-dark);">
+    <div class="site-container">
+      <nav class="flex flex-wrap justify-center gap-3" aria-label="Product categories">
+        {productCategories.map((category) => (
+          <a
+            href={`#${category.slug}`}
+            class="cat-link px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            {category.name}
+            <span class="cat-count ml-1.5">{category.products.length}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- Product Categories -->
+  {productCategories.map((category) => (
+    <section id={category.slug} class:list={['py-20 scroll-mt-32', productCategories.indexOf(category) % 2 === 0 ? 'section-dark' : 'section-dark-alt']}>
+      <div class="site-container">
+        <div class="mb-12 fade-in">
+          <p class="section-label">{category.name}</p>
+          <h2 class="section-title mb-4">
+            {category.name.toUpperCase().split(' ').slice(0, -1).join(' ')}{' '}
+            <span class="text-green">{category.name.toUpperCase().split(' ').pop()}</span>
+          </h2>
+          <p class="max-w-2xl" style="color: var(--color-text-muted); line-height: 1.7;">
+            {category.description}
+          </p>
+        </div>
+
+        <div class="product-grid stagger-children">
+          {category.products.map((product) => (
+            <div class="product-card">
+              <div class="product-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+              </div>
+
+              <h3 class="product-name">{product.name}</h3>
+
+              <div class="product-links">
+                <a
+                  href={product.labelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="doc-link"
+                  title={`Download ${product.name} product label`}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Label
+                </a>
+                {product.sdsUrl && (
+                  <a
+                    href={product.sdsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="doc-link doc-link-sds"
+                    title={`Download ${product.name} safety data sheet`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    SDS
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Disclaimer -->
+  <section class="py-12 section-dark-alt">
+    <div class="site-container">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-xs" style="color: var(--color-text-muted); line-height: 1.8;">
+          Product labels and safety data sheets are provided by their respective manufacturers.
+          Always read and follow label directions. For questions about specific products used on
+          your property, contact us at
+          <a href={company.phoneHref} style="color: var(--color-green-bright);">{company.phone}</a> or
+          <a href={`mailto:${company.email}`} style="color: var(--color-green-bright);">{company.email}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner
+    heading="QUESTIONS ABOUT OUR <span style='text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;'>PRODUCTS?</span>"
+    text="Our certified applicators are happy to discuss the products we use and answer any safety questions."
+  />
+</BaseLayout>
+
+<style>
+  /* Category navigation links */
+  .cat-link {
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border-dark);
+  }
+
+  .cat-link:hover {
+    color: var(--color-text-white);
+    background: rgba(108, 197, 81, 0.08);
+    border-color: rgba(108, 197, 81, 0.3);
+  }
+
+  .cat-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.375rem;
+    height: 1.375rem;
+    padding: 0 0.375rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text-muted);
+  }
+
+  .cat-link:hover .cat-count {
+    background: rgba(108, 197, 81, 0.15);
+    color: var(--color-green-bright);
+  }
+
+  /* Product grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+
+  /* Product card */
+  .product-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--color-border-dark);
+    transition: all 0.2s ease;
+  }
+
+  .product-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(108, 197, 81, 0.2);
+  }
+
+  .product-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    background: rgba(108, 197, 81, 0.08);
+    color: var(--color-green-bright);
+  }
+
+  .product-name {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-white);
+    text-transform: none;
+    letter-spacing: 0;
+    min-width: 0;
+  }
+
+  .product-links {
+    display: flex;
+    gap: 0.375rem;
+    flex-shrink: 0;
+  }
+
+  /* Download links */
+  .doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    background: rgba(108, 197, 81, 0.1);
+    color: var(--color-green-bright);
+    border: 1px solid rgba(108, 197, 81, 0.2);
+    transition: all 0.15s ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .doc-link:hover {
+    background: rgba(108, 197, 81, 0.2);
+    border-color: rgba(108, 197, 81, 0.4);
+    color: var(--color-text-white);
+  }
+
+  .doc-link-sds {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-muted);
+    border-color: var(--color-border-dark);
+  }
+
+  .doc-link-sds:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-white);
+  }
+
+  /* Responsive: stack product cards on small screens */
+  @media (max-width: 480px) {
+    .product-card {
+      flex-wrap: wrap;
+      gap: 0.625rem;
+    }
+
+    .product-links {
+      width: 100%;
+      padding-left: 3.125rem; /* align with name (icon width + gap) */
+    }
+
+    .doc-link {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style>
