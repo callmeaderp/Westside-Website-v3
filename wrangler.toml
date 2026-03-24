@@ -1,10 +1,15 @@
 # Cloudflare Pages project config
-# R2 bucket binding for resume uploads
-# Secrets (TURNSTILE_SECRET, WEB3FORMS_KEY) are set via `wrangler pages secret put`
+# Secrets set via `wrangler pages secret put`:
+#   TURNSTILE_SECRET          — Cloudflare Turnstile server-side secret
+#   AZURE_TENANT_ID           — Entra ID tenant for MS Graph sendMail
+#   AZURE_CLIENT_ID           — "Westside Website Contact Form" app registration
+#   AZURE_CLIENT_SECRET       — Client secret (expires 2028-03-24)
 
 name = "westside-website"
 pages_build_output_dir = "dist"
 
+# R2 bucket kept during transition — old resume download URLs still work until
+# objects auto-expire (90-day lifecycle). Remove after April 2026.
 [[r2_buckets]]
 binding = "RESUMES"
 bucket_name = "westside-resumes"

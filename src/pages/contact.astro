@@ -83,12 +83,7 @@ const jsonLd = [
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Contact Form -->
         <div class="lg:col-span-2">
-          <form id="contact-form" class="flex flex-col gap-6" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" data-ads-send-to={adsFormSendTo}>
-            <input type="hidden" name="access_key" value="09190d0a-b84d-4b09-a79f-f2e35c675816" />
-            <input type="hidden" name="subject" value="New Estimate Request — Westside Website" />
-            <input type="hidden" name="from_name" value="Westside Website Contact Form" />
-            <input type="hidden" name="Received (Eastern)" id="submitted-at" />
-            <div class="hidden"><input type="checkbox" name="botcheck" /></div>
+          <form id="contact-form" class="flex flex-col gap-6" data-ads-send-to={adsFormSendTo}>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -263,17 +258,11 @@ const jsonLd = [
   // --- Resume upload toggle + careers pre-selection ---
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
   const resumeGroup = document.getElementById('resume-upload-group');
-  const subjectField = document.querySelector<HTMLInputElement>('input[name="subject"]');
 
   function syncCareerFields() {
     if (!serviceSelect) return;
     const isCareer = serviceSelect.value === 'Career Inquiry';
     resumeGroup?.classList.toggle('hidden', !isCareer);
-    if (subjectField) {
-      subjectField.value = isCareer
-        ? 'Career Inquiry — Westside Website'
-        : 'New Estimate Request — Westside Website';
-    }
   }
 
   serviceSelect?.addEventListener('change', syncCareerFields);
@@ -291,6 +280,20 @@ const jsonLd = [
     }
   }
 
+  // --- Helper: read file as base64 ---
+  function fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Strip the data URL prefix, keep only the base64 payload
+        resolve(result.includes(',') ? result.split(',')[1] : result);
+      };
+      reader.onerror = () => reject(new Error('Failed to read file.'));
+      reader.readAsDataURL(file);
+    });
+  }
+
   // --- Contact form submission handler ---
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const formStatus = document.getElementById('form-status');
@@ -299,24 +302,22 @@ const jsonLd = [
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
       const originalText = btn.textContent;
+      const turnstileWidget = form.querySelector('.cf-turnstile') as HTMLElement | null;
 
       // Client-side Turnstile gate
-      const turnstileWidget = form.querySelector('.cf-turnstile') as HTMLElement | null;
-      if (turnstileWidget) {
-        const token = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value;
-        if (!token) {
-          if (formStatus) {
-            formStatus.textContent = 'Please complete the verification challenge above.';
-            formStatus.style.color = '#e67e22';
-          }
-          return;
+      const turnstileToken = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value || '';
+      if (turnstileWidget && !turnstileToken) {
+        if (formStatus) {
+          formStatus.textContent = 'Please complete the verification challenge above.';
+          formStatus.style.color = '#e67e22';
         }
+        return;
       }
 
       // Client-side file size check
       const fileInput = form.querySelector<HTMLInputElement>('[name="attachment"]');
-      const hasFile = !!(fileInput?.files?.[0] && fileInput.files[0].size > 0);
-      if (hasFile && fileInput!.files![0].size > 5 * 1024 * 1024) {
+      const file = fileInput?.files?.[0] && fileInput.files[0].size > 0 ? fileInput.files[0] : null;
+      if (file && file.size > 5 * 1024 * 1024) {
         if (formStatus) {
           formStatus.textContent = 'Resume is too large. Please upload a file under 5 MB.';
           formStatus.style.color = '#e67e22';
@@ -324,67 +325,41 @@ const jsonLd = [
         return;
       }
 
-      btn.textContent = hasFile ? 'Uploading resume...' : 'Sending...';
+      btn.textContent = 'Sending...';
       btn.disabled = true;
-      if (formStatus) { formStatus.textContent = hasFile ? 'Uploading your resume...' : 'Sending your message...'; formStatus.style.color = ''; }
+      if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
 
       try {
-        let resumeUrl = '';
+        // Build JSON payload
+        const payload: Record<string, unknown> = {
+          firstName: (form.querySelector<HTMLInputElement>('[name="first_name"]')?.value || '').trim(),
+          lastName: (form.querySelector<HTMLInputElement>('[name="last_name"]')?.value || '').trim(),
+          email: (form.querySelector<HTMLInputElement>('[name="email"]')?.value || '').trim(),
+          phone: (form.querySelector<HTMLInputElement>('[name="phone"]')?.value || '').trim(),
+          service: (form.querySelector<HTMLSelectElement>('[name="service_interest"]')?.value || '').trim(),
+          howHeard: (form.querySelector<HTMLSelectElement>('[name="how_heard"]')?.value || '').trim(),
+          message: (form.querySelector<HTMLTextAreaElement>('[name="message"]')?.value || '').trim(),
+          turnstileToken,
+        };
 
-        // Step 1: If a file is attached, upload it to our R2 endpoint first
-        if (hasFile) {
-          const file = fileInput!.files![0];
-          const tsToken = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value || '';
-
-          // Send file as raw binary — bypasses Pages Functions multipart parsing issue
-          const uploadRes = await fetch('/api/upload/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': file.type,
-              'X-Filename': file.name,
-              'X-Turnstile-Token': tsToken,
-            },
-            body: file,
-          });
-          const uploadResult = await uploadRes.json();
-          if (!uploadResult.success) {
-            throw new Error(uploadResult.message || 'Resume upload failed.');
-          }
-          resumeUrl = uploadResult.url;
-          btn.textContent = 'Sending...';
-          if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
+        // Attach resume as base64 if present
+        if (file) {
+          payload.resume = {
+            name: file.name,
+            type: file.type,
+            data: await fileToBase64(file),
+          };
         }
 
-        // Step 2: Submit text fields to Web3Forms (browser → Web3Forms directly)
-        const formData = new FormData(form);
-        // Strip file and Turnstile token — Web3Forms free plan rejects both
-        formData.delete('attachment');
-        formData.delete('cf-turnstile-response');
-
-        // Stamp Eastern Time as a separate column (Web3Forms' built-in "Submitted At" is always UTC)
-        formData.set('Received (Eastern)', new Date().toLocaleString('en-US', {
-          timeZone: 'America/New_York',
-          month: 'short', day: 'numeric', year: 'numeric',
-          hour: 'numeric', minute: '2-digit', hour12: true,
-        }));
-
-        // Format phone to (XXX) XXX-XXXX before sending
-        const rawPhone = (formData.get('phone') as string || '').replace(/\D/g, '');
-        if (rawPhone.length === 10) {
-          formData.set('phone', `(${rawPhone.slice(0,3)}) ${rawPhone.slice(3,6)}-${rawPhone.slice(6)}`);
-        } else if (rawPhone.length === 11 && rawPhone.startsWith('1')) {
-          formData.set('phone', `(${rawPhone.slice(1,4)}) ${rawPhone.slice(4,7)}-${rawPhone.slice(7)}`);
-        }
-
-        // Append resume download link to message
-        if (resumeUrl) {
-          const msg = (formData.get('message') as string) || '';
-          formData.set('message', `${msg}\n\n📎 Resume attached: ${resumeUrl}`);
-        }
-
-        const response = await fetch(form.action, { method: 'POST', body: formData });
+        const response = await fetch('/api/contact/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
         const result = await response.json();
+
         if (result.success) {
+          // Fire tracking events (skip for internal traffic)
           if (!(window as any).__wplInternal) {
             if (typeof (window as any).gtag === 'function') {
               (window as any).gtag('event', 'form_submit', { event_category: 'engagement', form_name: 'contact' });
