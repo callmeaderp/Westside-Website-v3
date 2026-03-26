@@ -7,7 +7,7 @@
  * 1. Validates Turnstile server-side
  * 2. Validates resume file if present (magic bytes, size, type)
  * 3. Exchanges Azure AD client credentials for Graph token
- * 4. Sends HTML notification email to office@ with resume attached
+ * 4. Sends HTML notification email to office@ + brad@ with resume attached
  * 5. Sends branded confirmation email to customer
  *
  * Environment secrets (set via wrangler pages secret put):
@@ -50,9 +50,13 @@ const MAGIC_BYTES: Record<string, number[]> = {
 };
 
 const SENDER = 'website@westsideprolandscape.com';
-// Heather's mailbox — handles incoming leads. Switch to website@ shared mailbox
-// once the new-tenant outbound reputation issue resolves (expected ~March 26).
-const OFFICE = 'office@westsideprolandscape.com';
+// Who gets notified when a form comes in
+const NOTIFY = [
+  'office@westsideprolandscape.com',  // Heather
+  'brad@westsideprolandscape.com',    // Brad
+];
+// Where customer replies go (shared mailbox — visible to all staff added as members)
+const REPLY_TO = 'website@westsideprolandscape.com';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
@@ -190,7 +194,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         message: {
           subject,
           body: { contentType: 'HTML', content: notificationHtml },
-          toRecipients: [{ emailAddress: { address: OFFICE } }],
+          toRecipients: NOTIFY.map((addr) => ({ emailAddress: { address: addr } })),
           replyTo: [{ emailAddress: { address: email.trim(), name: `${firstName.trim()} ${lastName.trim()}` } }],
           attachments,
           categories: [service],
@@ -227,7 +231,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           : 'We received your request — Westside Professional Landscape',
         body: { contentType: 'HTML', content: confirmationHtml },
         toRecipients: [{ emailAddress: { address: email.trim(), name: `${firstName.trim()} ${lastName.trim()}` } }],
-        replyTo: [{ emailAddress: { address: OFFICE, name: 'Westside Professional Landscape' } }],
+        replyTo: [{ emailAddress: { address: REPLY_TO, name: 'Westside Professional Landscape' } }],
       },
       saveToSentItems: false,
     }),
