@@ -6,6 +6,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
+import FinancingBanner from '@components/FinancingBanner.astro';
 import { Image } from 'astro:assets';
 import { company } from '@data/company';
 import { services } from '@data/services';
@@ -155,6 +156,9 @@ const homepageJsonLd = {
       </div>
     </div>
   </section>
+
+  <!-- ═══ FINANCING ═══ -->
+  <FinancingBanner variant="full" />
 
   <!-- ═══ TESTIMONIALS ═══ -->
   <section class="py-24 section-dark">

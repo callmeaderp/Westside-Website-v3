@@ -8,6 +8,8 @@ import { Image } from 'astro:assets';
 import { services, type Service } from '@data/services';
 import { serviceContent } from '@data/service-content';
 import type { GetStaticPaths } from 'astro';
+import FinancingBanner from '@components/FinancingBanner.astro';
+import { company } from '@data/company';
 import { getPhoto } from '@lib/images';
 import { url } from '@lib/utils';
 
@@ -25,6 +27,7 @@ const content = serviceContent[service.slug];
 const relatedServices = (content?.relatedSlugs ?? [])
   .map((s) => services.find((svc) => svc.slug === s))
   .filter((s): s is Service => s !== undefined);
+const showFinancing = company.financing.eligibleServices.includes(service.slug);
 ---
 
 <ServiceLayout service={service} ctaHeading={content?.ctaHeading} ctaText={content?.ctaText}>
@@ -120,6 +123,9 @@ const relatedServices = (content?.relatedSlugs ?? [])
       </div>
     </section>
   )}
+
+  <!-- ═══ FINANCING ═══ -->
+  {showFinancing && <FinancingBanner variant="compact" />}
 
   <!-- ═══ RELATED SERVICES ═══ -->
   {relatedServices.length > 0 && (

@@ -51,6 +51,15 @@ export const company = {
   // Certifications
   certifications: ['NYS DEC Certified Commercial Pesticide Applicator', 'SYNLawn Authorized Dealer'],
 
+  // Financing
+  financing: {
+    provider: 'Wells Fargo',
+    program: 'Buy Today, Pay Over Time',
+    url: 'https://retailservices.wellsfargo.com/pl/0033053059',
+    /** Service slugs that should show the financing banner */
+    eligibleServices: ['landscape-design', 'hardscaping', 'artificial-grass', 'water-features'] as string[],
+  },
+
   // Tracking IDs
   tracking: {
     ga4: 'G-HQYE7MKZ9P',

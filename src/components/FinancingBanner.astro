@@ -1,0 +1,90 @@
+---
+/**
+ * Financing banner — Wells Fargo "Buy Today, Pay Over Time" callout.
+ * Used on the homepage and high-ticket service pages.
+ *
+ * Two variants:
+ *   "full"   — headline + subtext + CTA button (homepage)
+ *   "compact" — single-line callout with inline link (service pages)
+ */
+import { company } from '@data/company';
+
+interface Props {
+  variant?: 'full' | 'compact';
+}
+
+const { variant = 'full' } = Astro.props;
+const { financing } = company;
+---
+
+{variant === 'full' ? (
+  <section class="py-16 section-accent">
+    <div class="site-container fade-in">
+      <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+
+        {/* Icon */}
+        <div class="shrink-0 w-16 h-16 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <line x1="2" y1="10" x2="22" y2="10" />
+          </svg>
+        </div>
+
+        {/* Copy */}
+        <div class="flex-1 text-center lg:text-left">
+          <h2 class="text-xl md:text-2xl mb-2">FLEXIBLE <span class="text-green">FINANCING AVAILABLE</span></h2>
+          <p class="text-sm md:text-base" style="color: var(--color-text-muted); line-height: 1.7; font-family: var(--font-body);">
+            Make your dream landscape a reality. We offer financing through
+            <strong style="color: var(--color-text-light);">{financing.provider}</strong> to
+            help you manage project costs with convenient payment options.
+          </p>
+        </div>
+
+        {/* CTA */}
+        <div class="shrink-0 flex flex-col items-center gap-2">
+          <a
+            href={financing.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary btn-md"
+          >
+            Apply Now
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+            </svg>
+          </a>
+          <span class="text-xs" style="color: var(--color-text-muted); font-family: var(--font-body);">
+            via {financing.provider}
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="py-10 section-accent">
+    <div class="site-container fade-in">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </svg>
+        <p style="color: var(--color-text-light); font-family: var(--font-body);" class="text-sm md:text-base">
+          <strong>Financing available</strong> &mdash; make this project affordable with convenient payment options.
+          <a
+            href={financing.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 font-semibold"
+            style="color: var(--color-green-bright);"
+          >
+            Learn more
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+            </svg>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+)}
