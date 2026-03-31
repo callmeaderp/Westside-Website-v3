@@ -119,6 +119,23 @@ const jsonLd = [
               </div>
             </div>
 
+            <div class="relative">
+              <label for="address" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Property Address</label>
+              <input type="text" id="address" name="address" autocomplete="off"
+                class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                placeholder="Start typing your address..."
+                role="combobox"
+                aria-expanded="false"
+                aria-autocomplete="list"
+                aria-controls="address-suggestions"
+              />
+              <ul id="address-suggestions" class="absolute z-50 w-full mt-1 rounded-lg overflow-hidden shadow-lg hidden"
+                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark); max-height: 280px; overflow-y: auto;"
+                role="listbox"
+              ></ul>
+            </div>
+
             <div>
               <label for="service" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Service Interest</label>
               <select id="service" name="service_interest"
@@ -254,6 +271,24 @@ const jsonLd = [
   )}
 </BaseLayout>
 
+<style is:global>
+  #address-suggestions li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    border-bottom: 1px solid var(--color-border-dark);
+    transition: background-color 0.15s;
+  }
+  #address-suggestions li:last-child {
+    border-bottom: none;
+  }
+  #address-suggestions li:hover,
+  #address-suggestions li[aria-selected="true"] {
+    background: var(--color-bg-dark-card);
+  }
+</style>
+
 <script>
   // --- Resume upload toggle + careers pre-selection ---
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
@@ -278,6 +313,114 @@ const jsonLd = [
         messageEl.placeholder = 'Tell us a bit about yourself, your experience, and what kind of role you\u2019re interested in...';
       }
     }
+  }
+
+  // --- Address autocomplete via Google Places ---
+  const addressInput = document.getElementById('address') as HTMLInputElement | null;
+  const suggestionsEl = document.getElementById('address-suggestions') as HTMLUListElement | null;
+
+  if (addressInput && suggestionsEl) {
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    let sessionToken = crypto.randomUUID();
+    let activeIndex = -1;
+
+    function escHtml(s: string) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function escAttr(s: string) { return escHtml(s).replace(/"/g, '&quot;'); }
+
+    async function fetchSuggestions(input: string) {
+      try {
+        const res = await fetch('/api/address-suggest/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ input, sessionToken }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        renderSuggestions(data.suggestions || []);
+      } catch {
+        hideSuggestions();
+      }
+    }
+
+    function renderSuggestions(suggestions: any[]) {
+      if (!suggestions.length) { hideSuggestions(); return; }
+      activeIndex = -1;
+      suggestionsEl!.innerHTML = suggestions.slice(0, 5).map((s: any, i: number) => {
+        const pred = s.placePrediction;
+        const main = pred?.structuredFormat?.mainText?.text || pred?.text?.text || '';
+        const secondary = pred?.structuredFormat?.secondaryText?.text || '';
+        const full = pred?.text?.text || main;
+        return `<li role="option" id="addr-opt-${i}" data-value="${escAttr(full)}">${escHtml(main)}${secondary ? `<span style="display:block;font-size:0.75rem;margin-top:2px;color:var(--color-text-muted);">${escHtml(secondary)}</span>` : ''}</li>`;
+      }).join('');
+      suggestionsEl!.classList.remove('hidden');
+      addressInput!.setAttribute('aria-expanded', 'true');
+    }
+
+    function selectSuggestion(value: string) {
+      addressInput!.value = value;
+      hideSuggestions();
+      sessionToken = crypto.randomUUID();
+    }
+
+    function hideSuggestions() {
+      suggestionsEl!.classList.add('hidden');
+      suggestionsEl!.innerHTML = '';
+      activeIndex = -1;
+      addressInput?.setAttribute('aria-expanded', 'false');
+      addressInput?.removeAttribute('aria-activedescendant');
+    }
+
+    function updateActive() {
+      const items = suggestionsEl!.querySelectorAll('li');
+      items.forEach((li, i) => {
+        if (i === activeIndex) {
+          li.setAttribute('aria-selected', 'true');
+          addressInput?.setAttribute('aria-activedescendant', li.id);
+        } else {
+          li.removeAttribute('aria-selected');
+        }
+      });
+    }
+
+    addressInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      const query = addressInput.value.trim();
+      if (query.length < 3) { hideSuggestions(); return; }
+      debounceTimer = setTimeout(() => fetchSuggestions(query), 300);
+    });
+
+    suggestionsEl.addEventListener('click', (e: Event) => {
+      const li = (e.target as HTMLElement).closest('li');
+      if (li) selectSuggestion(li.dataset.value || '');
+    });
+
+    addressInput.addEventListener('keydown', (e: KeyboardEvent) => {
+      const items = suggestionsEl!.querySelectorAll('li');
+      if (!items.length || suggestionsEl!.classList.contains('hidden')) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeIndex = Math.min(activeIndex + 1, items.length - 1);
+        updateActive();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeIndex = Math.max(activeIndex - 1, -1);
+        updateActive();
+      } else if (e.key === 'Enter' && activeIndex >= 0) {
+        e.preventDefault();
+        selectSuggestion((items[activeIndex] as HTMLElement).dataset.value || '');
+      } else if (e.key === 'Escape') {
+        hideSuggestions();
+      }
+    });
+
+    document.addEventListener('click', (e: Event) => {
+      if (!addressInput.contains(e.target as Node) && !suggestionsEl.contains(e.target as Node)) {
+        hideSuggestions();
+      }
+    });
+
+    // Expose reset for form clear
+    (window as any).__resetAddressAutocomplete = () => { sessionToken = crypto.randomUUID(); };
   }
 
   // --- Helper: read file as base64 ---
@@ -336,6 +479,7 @@ const jsonLd = [
           lastName: (form.querySelector<HTMLInputElement>('[name="last_name"]')?.value || '').trim(),
           email: (form.querySelector<HTMLInputElement>('[name="email"]')?.value || '').trim(),
           phone: (form.querySelector<HTMLInputElement>('[name="phone"]')?.value || '').trim(),
+          address: (form.querySelector<HTMLInputElement>('[name="address"]')?.value || '').trim(),
           service: (form.querySelector<HTMLSelectElement>('[name="service_interest"]')?.value || '').trim(),
           howHeard: (form.querySelector<HTMLSelectElement>('[name="how_heard"]')?.value || '').trim(),
           message: (form.querySelector<HTMLTextAreaElement>('[name="message"]')?.value || '').trim(),
@@ -373,6 +517,7 @@ const jsonLd = [
           if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
           syncCareerFields();
+          if (typeof (window as any).__resetAddressAutocomplete === 'function') (window as any).__resetAddressAutocomplete();
           if (turnstileWidget && typeof (window as any).turnstile?.reset === 'function') {
             (window as any).turnstile.reset(turnstileWidget);
           }

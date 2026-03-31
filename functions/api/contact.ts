@@ -26,6 +26,7 @@ interface ContactPayload {
   lastName: string;
   email: string;
   phone?: string;
+  address?: string;
   service?: string;
   howHeard?: string;
   message: string;
@@ -124,6 +125,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   // --- Format fields ---
   const phone = formatPhone(payload.phone || '');
+  const address = payload.address?.trim() || '';
   const service = payload.service?.trim() || 'Not specified';
   const howHeard = payload.howHeard?.trim() || 'Not specified';
   const isCareer = service === 'Career Inquiry';
@@ -173,6 +175,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     lastName: lastName.trim(),
     email: email.trim(),
     phone,
+    address,
     service,
     howHeard,
     message: message.trim(),
@@ -281,6 +284,7 @@ interface NotificationData {
   lastName: string;
   email: string;
   phone: string;
+  address: string;
   service: string;
   howHeard: string;
   message: string;
@@ -313,6 +317,8 @@ function buildNotificationEmail(data: NotificationData): string {
           <td style="padding:8px 0;border-bottom:1px solid #eee;"><a href="mailto:${esc(data.email)}" style="color:#00863F;">${esc(data.email)}</a></td></tr>
       <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Phone</td>
           <td style="padding:8px 0;border-bottom:1px solid #eee;">${data.phone ? `<a href="tel:${esc(data.phone.replace(/\D/g, ''))}" style="color:#00863F;">${esc(data.phone)}</a>` : '<span style="color:#999;">Not provided</span>'}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Address</td>
+          <td style="padding:8px 0;border-bottom:1px solid #eee;">${data.address ? esc(data.address) : '<span style="color:#999;">Not provided</span>'}</td></tr>
       <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Service</td>
           <td style="padding:8px 0;border-bottom:1px solid #eee;">${esc(data.service)}</td></tr>
       <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">How Heard</td>
