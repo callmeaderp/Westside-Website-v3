@@ -19,6 +19,11 @@ export interface ProcessStep {
   text: string;
 }
 
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 export interface ServiceContent {
   introLabel: string;
   introTitle: string;
@@ -32,6 +37,7 @@ export interface ServiceContent {
   processTitle?: string;
   processSubtitle?: string;
   processSteps: ProcessStep[];
+  faqs?: FaqItem[];
   relatedSlugs: ServiceSlug[];
   ctaHeading: string;
   ctaText: string;
@@ -79,6 +85,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       { title: 'DESIGN', text: 'Our team creates a detailed landscape plan with plant selections, material specifications, and layout drawings.' },
       { title: 'INSTALLATION', text: 'Our experienced crews bring the design to life with precision, care, and attention to every detail.' },
       { title: 'CARE', text: 'Ongoing maintenance programs protect your investment and keep your landscape thriving season after season.' },
+    ],
+    faqs: [
+      {
+        question: 'How much does landscape design cost in Rochester?',
+        answer: 'Costs vary based on the scope of the project, property size, and materials selected. We provide free on-site consultations and detailed estimates so you know exactly what to expect before any work begins. Most residential projects in the Greater Rochester area range from a few thousand dollars for targeted enhancements to significantly more for full property transformations.',
+      },
+      {
+        question: 'What is the best time of year to start a landscaping project?',
+        answer: "In Rochester, spring (April\u2013June) and fall (September\u2013October) are the ideal windows for planting and installation. Cooler temperatures and reliable rainfall help new plants establish roots. However, hardscape work and design consultations can happen year-round \u2014 starting the design process in winter means you're ready to break ground as soon as the season opens.",
+      },
+      {
+        question: 'Do you work with existing landscaping or only start from scratch?',
+        answer: "Both. Many of our projects involve enhancing or renovating existing landscapes rather than starting over. During the site assessment, we evaluate what's working, what can be preserved, and what should be replaced \u2014 then build a plan that makes the most of your property's existing features.",
+      },
+      {
+        question: 'How long does a typical landscape installation take?',
+        answer: 'Timeline depends on the project scope. A targeted front-entry redesign might take a few days, while a full property transformation with hardscaping, planting, and grading can take several weeks. We provide a detailed timeline during the proposal phase so you can plan accordingly.',
+      },
     ],
     relatedSlugs: ['hardscaping', 'water-features', 'landscape-maintenance'],
     ctaHeading: 'READY TO DESIGN YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">DREAM LANDSCAPE?</span>',
@@ -128,9 +152,110 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
     ],
     processSteps: [],
+    faqs: [
+      {
+        question: 'How often should my lawn be mowed in Rochester?',
+        answer: "During the growing season (typically April through October), weekly mowing is standard for most Rochester-area lawns. In peak growth periods during spring and early summer, some properties benefit from twice-weekly service. We adjust mowing height seasonally \u2014 higher in summer to reduce heat stress, shorter in spring and fall.",
+      },
+      {
+        question: "What's included in a landscape maintenance program?",
+        answer: "Our maintenance programs typically include weekly mowing and edging, string trimming, spring and fall cleanups, mulching, bed maintenance, pruning, and seasonal color rotations. Programs are customized to your property's needs and budget \u2014 you choose the services that matter most to you.",
+      },
+      {
+        question: 'Do you offer one-time services or only seasonal contracts?',
+        answer: "We offer both. Seasonal contracts provide the most consistent results and predictable pricing, but we also handle one-time projects like spring cleanups, mulch installation, or pruning. For ongoing lawn health, a regular program delivers far better results than occasional service.",
+      },
+      {
+        question: 'When should spring cleanup happen in Rochester?',
+        answer: "Spring cleanup in the Rochester area typically begins in late March or early April, once the snow has melted and the ground is firm enough to work. We remove winter debris, cut back dead perennials, clean out beds, and prepare your landscape for the growing season. Booking early ensures you're first on the schedule.",
+      },
+    ],
     relatedSlugs: ['plant-health', 'landscape-design', 'snow-ice-management'],
     ctaHeading: 'KEEP YOUR PROPERTY LOOKING ITS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">BEST</span>',
     ctaText: 'Get a customized maintenance quote for your property. Consistent care, predictable costs, exceptional results.',
+  },
+
+  'lawn-care': {
+    introLabel: 'Complete Lawn Care',
+    introTitle: 'A THICKER, GREENER LAWN IN <span class="text-green">ROCHESTER</span>',
+    introText: [
+      `For over <strong>${yearsInBusiness} years</strong>, <strong>Westside Professional Landscape</strong> has been caring for lawns across Monroe County — from shaded yards in Brighton to sun-baked corner lots in Gates. A healthy lawn isn't the result of one service; it's the product of <em>mowing, feeding, weed control, aeration, and timely repair</em> all working together across the season.`,
+      'We handle every part of that program in-house. Our crews mow on a consistent schedule, our <strong>NYS DEC certified applicators</strong> run the 5-step fertilization and weed control program, and our specialists handle aeration, overseeding, grub protection, and lawn repair. One company, one point of contact, one thick green lawn.',
+    ],
+    introCta: 'Get a Free Lawn Care Quote',
+    detailLabel: 'Every Part of the Program',
+    detailTitle: 'OUR LAWN CARE <span class="text-green">SERVICES</span>',
+    detailSubtitle: 'Pick the services your lawn needs, or bundle the whole program for the best results.',
+    detailCards: [
+      {
+        title: 'WEEKLY MOWING & EDGING',
+        text: "Consistent mowing is the foundation of a great-looking lawn. Our crews mow on a <strong>predictable weekly schedule</strong> with sharp blades, clean edges along walkways and beds, and careful string-trimming around obstacles. We adjust height seasonally — taller in summer heat, closer in spring and fall — so grass stays healthy, not just cut. Mowing is delivered as part of our full <a href=\"/services/landscape-maintenance/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">landscape maintenance program</a>.",
+        features: ['Weekly visits, same crew', 'Sharp blades & clean edges', 'Seasonal height adjustments'],
+      },
+      {
+        title: 'FERTILIZATION & WEED CONTROL',
+        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is a precisely timed sequence of applications designed for Western New York\'s climate and soils. Balanced fertilizer, pre- and post-emergent weed control, and a <em>grub-control application included</em> — all applied by NYS DEC certified technicians. <strong>50% off your first treatment — just $58 for the average Rochester lawn.</strong> Full details on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
+        features: ['5 precisely timed visits', 'Crabgrass & broadleaf weed control', 'Grub prevention included'],
+      },
+      {
+        title: 'CORE AERATION & OVERSEEDING',
+        text: "Rochester's clay-heavy soils compact under foot traffic, mower weight, and freeze-thaw cycles. <strong>Core aeration</strong> pulls small plugs of soil from your lawn, opening pathways for water, air, and nutrients to reach the root zone. Pair aeration with <strong>overseeding</strong> — a premium seed blend worked into fresh aeration holes — to thicken thin spots, crowd out weeds, and refresh older lawns. Early fall is the ideal window in Monroe County.",
+        features: ['Best performed in early fall', 'Relieves compaction & thatch', 'Fills thin spots with premium seed'],
+      },
+      {
+        title: 'GRUB CONTROL',
+        text: 'Grubs — the larval stage of Japanese beetles, European chafers, and similar pests — are among <strong>the most destructive lawn pests</strong> in the Rochester area. They feed on grass roots and can kill large sections of lawn in a single season. We apply <strong>preventive grub control</strong> as part of our 5-step program and handle curative treatments when active infestations are found. Preventing grub damage costs a fraction of repairing it.',
+        features: ['Preventive application included in 5-step', 'Curative treatment for active infestations', 'Targets Japanese beetle & chafer grubs'],
+      },
+      {
+        title: 'LAWN REPAIR & RENOVATION',
+        text: "Grub damage, pet spots, dog tracks, heavy-equipment ruts, and general thin or bare areas — we repair all of it. <strong>Slit-seeding, topdressing, and spot repair</strong> for targeted areas; <strong>full renovation</strong> (dethatching, aeration, overseeding, starter fertilizer) for lawns that need a reset. For projects where seed just won't do, we also install <strong>sod</strong>. Most Rochester lawns benefit from a repair pass every few years.",
+        features: ['Spot repair & slit-seeding', 'Full lawn renovation', 'Sod installation available'],
+      },
+      {
+        title: 'SPRING & FALL CLEANUPS',
+        text: 'A lawn care program works best on a <em>clean canvas</em>. Our <strong>spring cleanup</strong> removes winter debris, matted leaves, and dead growth so your grass wakes up cleanly and first-round fertilizer reaches the soil. Our <strong>fall cleanup</strong> clears leaves before they smother the turf, cuts back perennials, and prepares beds for winter. Both are critical in Rochester\'s four-season climate.',
+        features: ['Winter debris & leaf removal', 'Bed & edge preparation', 'Bundles with mowing contracts'],
+      },
+    ],
+    processLabel: 'How It Works',
+    processTitle: 'YOUR PATH TO A <span class="text-green">BETTER LAWN</span>',
+    processSubtitle: "A straightforward approach — we assess, we recommend, we deliver.",
+    processSteps: [
+      { title: 'LAWN EVALUATION', text: "We walk your property, check soil and sun conditions, identify weed pressure, and listen to what you want from your lawn." },
+      { title: 'CUSTOM PROGRAM', text: "We recommend the mix of services your lawn actually needs — nothing you don't, everything you do. Clear, itemized pricing." },
+      { title: 'CONSISTENT SERVICE', text: 'Mowing crews run on a predictable schedule. Applications hit the right windows. You get visit notifications and application details in writing.' },
+      { title: 'ONGOING RESULTS', text: "We monitor your lawn as the season progresses, catch issues early, and adjust the program where needed. Year after year, the lawn keeps improving." },
+    ],
+    faqs: [
+      {
+        question: 'How much does professional lawn care cost in Rochester?',
+        answer: "It depends on lawn size and which services you include. Weekly mowing typically runs a flat seasonal or per-visit rate based on property size. The 5-Step Fertilization & Weed Control program averages around $58 per treatment for a typical Rochester lawn (with 50% off your first treatment). Aeration, overseeding, and lawn repair are quoted as one-time services. We provide <strong>free on-site estimates</strong> — you'll see itemized pricing before any work starts.",
+      },
+      {
+        question: 'Do I need to sign up for every service, or can I pick and choose?',
+        answer: "Pick what your lawn needs. Many clients start with just the 5-Step Fertilization & Weed Control program, then add mowing or aeration as the lawn improves and they see the difference. Others want the full program from day one. There's no requirement to bundle — though bundling does simplify scheduling and often delivers better overall results because the services are timed to work together.",
+      },
+      {
+        question: "What's the difference between 'lawn care' and 'landscape maintenance'?",
+        answer: "'<strong>Lawn care</strong>' focuses specifically on the turf — mowing, fertilization, weed control, aeration, grub protection, and repair. '<strong>Landscape maintenance</strong>' is broader and includes beds, shrubs, mulch, pruning, seasonal cleanups, and flower rotations in addition to lawn work. Most Rochester homeowners need both. Our <a href=\"/services/landscape-maintenance/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">landscape maintenance program</a> bundles them, or you can work with us on lawn care only.",
+      },
+      {
+        question: 'When should I start lawn care service?',
+        answer: "In Rochester, the earlier the better. <strong>Early spring</strong> (March/April) is the window for pre-emergent crabgrass control and the first fertilizer application — miss it and weeds are harder to manage all year. Mowing contracts are set up before the growing season ramps in late April. Aeration and overseeding are best in <strong>early fall</strong> (late August through September). That said, we can start a program mid-season and still deliver strong results — just contact us and we'll design the right approach for where you are in the year.",
+      },
+      {
+        question: 'Are your lawn care products safe for kids and pets?',
+        answer: "Yes. Our <strong>NYS DEC Commercial Pesticide Applicators</strong> use products at precisely calibrated rates and follow all safety guidelines. After an application, we recommend staying off treated areas until the products have dried or been watered in (typically a few hours). All <a href=\"/labels-sds/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">product labels and safety data sheets</a> are publicly available on our site so you can review exactly what we use.",
+      },
+      {
+        question: 'Do you service my area?',
+        answer: "We serve Rochester and the surrounding communities throughout Monroe County — including Pittsford, Brighton, Penfield, Webster, Fairport, Greece, Gates, Chili, Spencerport, Henrietta, and more. See our full <a href=\"/service-areas/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">service areas page</a> for the complete list. If you're not sure, just call — if we can get there, we'll service you.",
+      },
+    ],
+    relatedSlugs: ['plant-health', 'landscape-maintenance', 'artificial-grass'],
+    ctaHeading: 'READY FOR A LAWN YOU\'RE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">PROUD OF?</span>',
+    ctaText: "Get a <strong>free on-site lawn evaluation</strong>. We'll walk your property, tell you honestly what it needs, and give you a clear itemized quote.",
   },
 
   'hardscaping': {
@@ -176,6 +301,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
     ],
     processSteps: [],
+    faqs: [
+      {
+        question: "How long do pavers last in Rochester's climate?",
+        answer: "Properly installed pavers last 25\u201350 years or more, even in Rochester's demanding freeze-thaw climate. The key is proper base preparation \u2014 a compacted aggregate base with correct depth, adequate drainage, and polymeric sand joints. We engineer every installation for our specific climate conditions.",
+      },
+      {
+        question: 'Do I need a permit for a patio or retaining wall?',
+        answer: "In most Rochester-area municipalities, standard patios don't require a building permit. Retaining walls over a certain height (typically 4 feet) often do, and some towns require permits for structures near property lines. We handle the permitting process and ensure your project meets all local codes.",
+      },
+      {
+        question: "What's the best patio material for Rochester?",
+        answer: "Concrete pavers and natural stone are the most durable options for our climate. Pavers flex with freeze-thaw movement rather than cracking like poured concrete. Natural flagstone offers a timeless look. We help you choose materials based on your aesthetic preference, budget, and how you plan to use the space.",
+      },
+      {
+        question: 'Can hardscape work be done in the fall or winter?',
+        answer: "Fall is actually an excellent time for hardscaping in Rochester \u2014 cooler weather is easier on crews, and you avoid the spring rush. We can install pavers and walls into November as long as the ground isn't frozen. Winter is ideal for planning and design so you're ready to build when the season opens.",
+      },
+    ],
     relatedSlugs: ['landscape-design', 'water-features', 'holiday-lighting'],
     ctaHeading: "LET'S BUILD SOMETHING <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">BEAUTIFUL</span>",
     ctaText: 'Every great outdoor space starts with a conversation. Tell us about your project and we\'ll make it happen.',
@@ -214,6 +357,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
     ],
     processSteps: [],
+    faqs: [
+      {
+        question: 'How much maintenance does a pond require?',
+        answer: "A well-built pond needs regular but manageable maintenance: filter cleaning, skimming debris, monitoring water quality, and seasonal plant care. We offer maintenance programs that handle all of this for you. Spring startup and fall winterization are the two most important service visits \u2014 they protect your investment through Rochester's harsh winters.",
+      },
+      {
+        question: "Can a water feature run through Rochester's winter?",
+        answer: "Most water features are winterized and shut down for the season to prevent freeze damage to pumps and plumbing. Some waterfall features can be run through early winter for a dramatic iced-over look, but ponds and fountains should be properly winterized before hard freezes set in. We handle the entire winterization process.",
+      },
+      {
+        question: 'Do water features attract mosquitoes?',
+        answer: "Moving water doesn't attract mosquitoes \u2014 they breed in stagnant water. Our water features are designed with recirculating pumps that keep water constantly moving. Ponds with fish (especially koi and goldfish) have a built-in mosquito control system, since fish eat mosquito larvae.",
+      },
+      {
+        question: 'How much space do I need for a backyard water feature?',
+        answer: "Water features can be designed for almost any space. A bubbling rock or small fountain fits in a courtyard or corner garden. Larger properties can accommodate full ponds, waterfalls, and streams. During the design consultation, we assess your space, discuss your vision, and recommend features that fit both the property and your budget.",
+      },
+    ],
     relatedSlugs: ['landscape-design', 'hardscaping', 'landscape-maintenance'],
     ctaHeading: 'ADD THE BEAUTY OF WATER TO YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">LANDSCAPE</span>',
     ctaText: 'Schedule a consultation and let us design a water feature that transforms your outdoor space.',
@@ -252,6 +413,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
     ],
     processSteps: [],
+    faqs: [
+      {
+        question: 'What triggers a snow plowing visit?',
+        answer: "Trigger depths are established in your contract \u2014 typically 1\u20132 inches for commercial properties. Once accumulation hits the trigger, our crews deploy automatically. You don't need to call us. We monitor weather conditions around the clock and aim to have your property cleared before your business opens.",
+      },
+      {
+        question: 'Do you offer residential snow removal?',
+        answer: "Our snow and ice management services are focused on commercial properties, HOAs, and multi-unit residential complexes where liability and access are critical. For large residential estates or properties with specific needs, contact us to discuss options.",
+      },
+      {
+        question: 'How does a seasonal snow contract work?',
+        answer: "A seasonal contract covers all snow and ice services for the entire winter season (typically November through April) at a fixed price. No per-push charges, no surprises regardless of how many storms hit. Your budget is locked in before the first flake falls. We also offer per-event pricing for properties that prefer it.",
+      },
+      {
+        question: 'What de-icing products do you use?',
+        answer: "We use a combination of rock salt, treated salt, and liquid de-icers, selected based on the specific conditions of each storm. Pre-treatment before storms is standard for high-traffic areas. Application rates are calibrated to be effective while minimizing environmental impact on surrounding landscaping and waterways.",
+      },
+    ],
     relatedSlugs: ['landscape-maintenance', 'hardscaping', 'holiday-lighting'],
     ctaHeading: "DON'T WAIT FOR THE FIRST <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">STORM</span>",
     ctaText: "Secure your snow management contract before winter. Planning ahead means you're covered when Rochester's weather arrives.",
@@ -299,6 +478,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       { title: 'TURF INSTALLATION', text: 'SYNLawn turf is precisely cut, fitted, and secured. Infill material is applied and brushed for a natural look.' },
       { title: 'FINAL INSPECTION', text: 'We walk the installation with you to ensure everything meets our standards and your expectations.' },
     ],
+    faqs: [
+      {
+        question: 'How long does artificial grass last?',
+        answer: "Premium SYNLawn turf typically lasts 15\u201320 years with normal use. The fibers are UV-stabilized to resist fading, and the backing is engineered for drainage and durability. Most installations come with a manufacturer warranty. Actual lifespan depends on foot traffic, use, and maintenance.",
+      },
+      {
+        question: 'Is artificial turf safe for pets?',
+        answer: "Yes. SYNLawn's pet-specific products feature antimicrobial backing that inhibits bacteria and odor, plus excellent drainage for easy cleanup. No fertilizers or pesticides means a chemical-free surface for your animals. Many pet owners choose artificial turf specifically because it eliminates mud, brown spots, and the maintenance cycle that comes with natural grass in pet areas.",
+      },
+      {
+        question: "Does artificial grass get hot in the summer?",
+        answer: "Artificial turf can get warm on very hot, sunny days, similar to a deck or patio surface. SYNLawn products incorporate cooling technology that reduces surface temperatures compared to standard synthetic turf. Shaded areas stay comfortable, and the turf cools quickly once the sun moves. For play areas, we can recommend products with enhanced cooling properties.",
+      },
+      {
+        question: "How does artificial grass handle Rochester's snow?",
+        answer: "Artificial turf handles snow well. Snow can be shoveled or blown off without damaging the fibers, and it melts and drains through the turf quickly thanks to the permeable backing. Unlike natural grass, there's no mud season, no dormancy, and no spring recovery period \u2014 your lawn looks green the moment the snow clears.",
+      },
+    ],
     relatedSlugs: ['landscape-design', 'hardscaping', 'landscape-maintenance'],
     ctaHeading: 'READY FOR A LAWN THAT\'S ALWAYS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">GREEN?</span>',
     ctaText: "Schedule a <strong>free consultation</strong>. We'll assess your property and show you how SYNLawn can transform your outdoor space.",
@@ -338,6 +535,20 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
     ],
     processSteps: [],
+    faqs: [
+      {
+        question: 'Do you offer bundled year-round commercial services?',
+        answer: "Yes. Many of our commercial clients bundle landscape maintenance, snow management, and seasonal enhancements into a single annual contract with one point of contact. Bundling simplifies vendor management, often reduces overall costs, and ensures seamless transitions between seasons \u2014 the same team that maintains your landscape in summer handles your snow in winter.",
+      },
+      {
+        question: 'How do you handle emergency snow events?',
+        answer: "Our commercial snow contracts include 24/7 response capability. We monitor weather forecasts continuously and pre-deploy equipment and materials before major storms. During multi-day events, our crews cycle through client properties around the clock. Emergency re-service requests are handled the same day.",
+      },
+      {
+        question: 'Can you manage multiple properties for the same company?',
+        answer: "Absolutely. We manage portfolios of commercial properties for several clients across Monroe County. Multi-site contracts are coordinated through a single account manager, with service schedules and reporting customized for each location. This is one of our core strengths as a commercial landscape partner.",
+      },
+    ],
     relatedSlugs: ['landscape-maintenance', 'snow-ice-management', 'plant-health'],
     ctaHeading: "LET'S TALK ABOUT YOUR <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">PROPERTY</span>",
     ctaText: "Get a <strong>customized commercial proposal</strong>. We'll walk your property, understand your needs, and build a plan that fits your budget and standards.",
@@ -383,6 +594,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       { title: 'INSTALLATION', text: 'Our experienced crew installs lights and decorations with care — <em>treating your property with respect</em>.' },
       { title: 'MAINTENANCE', text: "If a bulb goes out or a strand needs adjustment, one call and we're there to fix it." },
       { title: 'REMOVAL', text: 'After the holidays, we remove everything, inspect it, and store it for next year.' },
+    ],
+    faqs: [
+      {
+        question: 'When should I book holiday lighting installation?',
+        answer: "The earlier the better \u2014 our schedule fills up fast. We begin consultations in September and start installations in late October through early November. Booking by mid-October ensures your preferred installation date and gives us time to design and source materials. Last-minute requests are accommodated when possible but availability is limited.",
+      },
+      {
+        question: 'Do you provide the lights or do I supply them?',
+        answer: "We provide everything: commercial-grade LED lights, extension cords, clips, timers, wreaths, garland, and all hardware. Our lights are more durable and energy-efficient than retail options. Everything is included in the price \u2014 you don't need to purchase, store, or maintain any equipment.",
+      },
+      {
+        question: 'What happens if a light burns out during the season?',
+        answer: "One call and we're there. Our service includes maintenance visits throughout the holiday season. If a bulb goes out, a strand fails, or a decoration needs adjustment, we handle it promptly at no extra charge. That's the advantage of professional installation \u2014 you don't climb a ladder in December.",
+      },
+      {
+        question: 'Do you decorate commercial properties?',
+        answer: "Yes. We design and install commercial-grade displays for storefronts, office buildings, retail centers, restaurants, and HOA common areas throughout Monroe County. Commercial displays include timers and automated controls for hassle-free operation. We work with your budget and brand to create a display that attracts attention and creates a welcoming atmosphere.",
+      },
     ],
     relatedSlugs: ['landscape-design', 'snow-ice-management', 'landscape-maintenance'],
     ctaHeading: 'MAKE YOUR PROPERTY SHINE THIS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEASON</span>',

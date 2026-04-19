@@ -18,6 +18,7 @@ export const mainNav: NavItem[] = [
     children: [
       { label: 'Landscape Design', href: '/services/landscape-design/' },
       { label: 'Maintenance', href: '/services/landscape-maintenance/' },
+      { label: 'Lawn Care', href: '/services/lawn-care/' },
       { label: 'Fertilization & Weed Control', href: '/services/plant-health/' },
       { label: 'Hardscaping', href: '/services/hardscaping/' },
       { label: 'Water Features', href: '/services/water-features/' },
@@ -36,6 +37,7 @@ export const mainNav: NavItem[] = [
 export const footerServices: NavItem[] = [
   { label: 'Landscape Design', href: '/services/landscape-design/' },
   { label: 'Maintenance', href: '/services/landscape-maintenance/' },
+  { label: 'Lawn Care', href: '/services/lawn-care/' },
   { label: 'Fertilization & Weed Control', href: '/services/plant-health/' },
   { label: 'Hardscaping', href: '/services/hardscaping/' },
   { label: 'Water Features', href: '/services/water-features/' },

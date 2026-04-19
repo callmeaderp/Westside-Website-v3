@@ -8,6 +8,7 @@ import { z } from 'zod';
 export const SERVICE_SLUGS = [
   'landscape-design',
   'landscape-maintenance',
+  'lawn-care',
   'plant-health',
   'hardscaping',
   'water-features',
@@ -93,6 +94,33 @@ export const services: Service[] = [
       'Seasonal flower rotations',
     ],
     cta: 'Get a Free Estimate',
+  },
+  {
+    slug: 'lawn-care',
+    name: 'Lawn Care',
+    shortName: 'Lawn Care',
+    tagline: 'Complete lawn care for Rochester homes',
+    description:
+      'Mowing, fertilization, weed control, aeration, overseeding, grub protection, and lawn repair — a full lawn care program for Greater Rochester properties.',
+    metaTitle: 'Lawn Care in Rochester, NY | Westside Professional Landscape',
+    metaDescription:
+      'Complete lawn care in Rochester, NY — mowing, 5-step fertilization, weed control, aeration, overseeding, grub control, and lawn repair. Serving Monroe County since 2000. Call (585) 594-8420.',
+    heroLabel: 'Complete Lawn Care',
+    heroHeading: 'LAWN CARE IN ROCHESTER, NY',
+    heroIntro:
+      'Mowing, fertilization, weed control, aeration, and repair — everything your lawn needs to stay thick, green, and healthy through every Rochester season.',
+    heroImage: 'lawn-lush-backyard.webp',
+    cardImage: 'lawn-lush-backyard.webp',
+    icon: 'Sprout',
+    features: [
+      'Weekly mowing, edging & trimming',
+      '5-step fertilization & weed control',
+      'Core aeration & overseeding',
+      'Grub prevention & treatment',
+      'Spring & fall cleanups',
+      'Lawn repair & renovation',
+    ],
+    cta: 'Get a Free Lawn Care Quote',
   },
   {
     slug: 'plant-health',

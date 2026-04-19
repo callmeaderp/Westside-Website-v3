@@ -145,6 +145,7 @@ const jsonLd = [
                 <option value="">Select a service...</option>
                 <option>Landscape Design</option>
                 <option>Landscape Maintenance</option>
+                <option>Lawn Care</option>
                 <option>Fertilization & Weed Control</option>
                 <option>Hardscaping</option>
                 <option>Water Features</option>
@@ -503,15 +504,15 @@ const jsonLd = [
         const result = await response.json();
 
         if (result.success) {
-          // Fire tracking events (skip for internal traffic)
-          if (!(window as any).__wplInternal) {
-            if (typeof (window as any).gtag === 'function') {
-              (window as any).gtag('event', 'form_submit', { event_category: 'engagement', form_name: 'contact' });
-              const sendTo = form.dataset.adsSendTo;
-              if (sendTo) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });
-            }
-            if (typeof (window as any).fbq === 'function') (window as any).fbq('track', 'Lead');
+          // GA4 form_submit always fires (internal traffic filtered via data filter)
+          if (typeof (window as any).gtag === 'function') {
+            (window as any).gtag('event', 'form_submit', { event_category: 'engagement', form_name: 'contact' });
+            // Google Ads conversion — blocked for internal traffic
+            const sendTo = form.dataset.adsSendTo;
+            if (sendTo && !(window as any).__wplInternal) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });
           }
+          // Meta event — blocked for internal traffic
+          if (typeof (window as any).fbq === 'function' && !(window as any).__wplInternal) (window as any).fbq('track', 'Lead');
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
