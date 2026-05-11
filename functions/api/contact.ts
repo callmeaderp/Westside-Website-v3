@@ -9,16 +9,33 @@
  * 3. Exchanges Azure AD client credentials for Graph token
  * 4. Sends HTML notification email to office@ + brad@ with resume attached
  * 5. Sends branded confirmation email to customer
+ * 6. Fires a Meta CAPI `Lead` event server-side (dedupes with browser pixel
+ *    via shared `event_id`). Failure is logged and swallowed.
  *
  * Environment secrets (set via wrangler pages secret put):
- *   TURNSTILE_SECRET, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+ *   TURNSTILE_SECRET, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
+ *   META_ACCESS_TOKEN
  */
+
+import {
+  buildUserData,
+  extractCity,
+  extractClientIp,
+  extractStateCode,
+  extractZip,
+  readCookie,
+  sendCapiEvent,
+} from '../_lib/meta-capi';
 
 interface Env {
   TURNSTILE_SECRET: string;
   AZURE_TENANT_ID: string;
   AZURE_CLIENT_ID: string;
   AZURE_CLIENT_SECRET: string;
+  /** Meta system-user access token (never expires). Optional — missing token logs and skips CAPI. */
+  META_ACCESS_TOKEN?: string;
+  /** Meta Events Manager test code (optional). When set, server events show up only in the Test Events tab. */
+  META_TEST_EVENT_CODE?: string;
 }
 
 interface ContactPayload {
@@ -31,6 +48,8 @@ interface ContactPayload {
   howHeard?: string;
   message: string;
   turnstileToken?: string;
+  /** UUID generated client-side and reused by the browser fbq Lead event for dedup. */
+  eventId?: string;
   resume?: {
     name: string;
     type: string;
@@ -239,6 +258,46 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       saveToSentItems: false,
     }),
   }).catch((err) => console.error('Confirmation email failed:', err));
+
+  // --- Meta Conversions API — server-side Lead event ---
+  // Mirrors the browser-side fbq('track','Lead', ..., {eventID}) so Meta can
+  // dedupe via the shared event_id (sent in payload.eventId) and recover
+  // signal lost to ad blockers / ITP / iOS opt-outs. Failure is logged and
+  // swallowed — CAPI is supplementary and must never break the form response.
+  try {
+    const fullAddress = address;
+    const userData = await buildUserData({
+      email: email.trim(),
+      phone: payload.phone, // raw — buildUserData strips to digits before hashing
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      city: fullAddress ? extractCity(fullAddress) : undefined,
+      state: fullAddress ? extractStateCode(fullAddress) : undefined,
+      zip: fullAddress ? extractZip(fullAddress) : undefined,
+      country: 'us',
+      clientIp: extractClientIp(request),
+      userAgent: request.headers.get('user-agent') || undefined,
+      fbc: readCookie(request, '_fbc') || undefined,
+      fbp: readCookie(request, '_fbp') || undefined,
+    });
+
+    await sendCapiEvent({
+      accessToken: env.META_ACCESS_TOKEN || '',
+      eventName: 'Lead',
+      eventId: payload.eventId,
+      eventSourceUrl: request.headers.get('referer') || undefined,
+      userData,
+      customData: {
+        service_interest: service,
+        how_heard: howHeard,
+        lead_source: 'website',
+        form_type: isCareer ? 'career_inquiry' : 'estimate_request',
+      },
+      testEventCode: env.META_TEST_EVENT_CODE,
+    });
+  } catch (err) {
+    console.error('Meta CAPI Lead dispatch threw:', err);
+  }
 
   return json(200, { success: true });
 };

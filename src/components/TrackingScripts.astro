@@ -2,19 +2,32 @@
 /**
  * Analytics and tracking scripts — included in BaseLayout <head>.
  *
- * Performance strategy: ALL third-party scripts use delayed initialization.
- * Nothing loads until the browser is idle (requestIdleCallback) or the user
- * interacts (click/scroll/keydown/touch), with a 3.5s hard timeout fallback.
- * This pushes tracking work past Lighthouse's TBT measurement window,
- * achieving 0ms TBT and 100 Performance on mobile.
+ * Loading strategy: gtag.js and fbevents.js load IMMEDIATELY via async
+ * <script> injection. This ensures:
+ *   1. Google's Ads tag detector sees the tag on its first crawl (a 5s delay
+ *      was invisible to non-JS and short-timeout crawlers → PMax and smart
+ *      bidding got flagged as "Missing Google tag" and throttled serving).
+ *   2. Fast bouncers (under 1-2s dwell, no interaction) still fire page_view
+ *      and conversion events.
  *
- * Stub queues for gtag() and fbq() are created immediately so conversion
- * calls from the contact form and tel-click handler are never lost — they
- * queue up and replay once the real scripts load.
+ * Stub queues for gtag() and fbq() are created immediately so any conversion
+ * calls from the contact form or tel-click handler that fire before the real
+ * scripts finish downloading are never lost — they queue and replay.
  *
- * Internal traffic filtering: A Cloudflare Transform Rule sets a
- * `_wpl_internal=1` cookie when the visitor IP matches the Westside office.
- * When that cookie is present, ALL tracking is suppressed.
+ * Perf tradeoff: async scripts don't block render but do add parse work.
+ * Typical impact: Lighthouse mobile Performance ~92-96 (vs. 100 with delay).
+ * That's an acceptable cost when the alternative is ad campaigns stuck at
+ * zero impressions due to missing tag detection.
+ *
+ * Internal traffic filtering (two layers):
+ *   1. Cloudflare Transform Rule sets `_wpl_internal=1` cookie for known
+ *      internal IPs (Westside office + Joshua home). Meta Pixel and Google
+ *      Ads tracking are completely blocked when this cookie is present.
+ *   2. GA4 events still fire for internal traffic, but are tagged with
+ *      `traffic_type=internal`. A GA4 Data Filter (configured in the GA4
+ *      admin UI) excludes these from reports. This second layer catches
+ *      any internal traffic that slips past the cookie (new IPs, cleared
+ *      cookies, etc.) and allows viewing internal vs. external separately.
  *
  * NOTE: The Meta Pixel <noscript> fallback lives in BaseLayout.astro <body>,
  * not here, because <noscript><img> is invalid inside <head> per HTML spec.
@@ -50,10 +63,13 @@ const metaPixelId = company.tracking.metaPixel;
     n.queue = [];
   }
 
+  // GA4 always initializes — internal traffic tagged for GA4 data filter
+  if (window.__wplInternal) gtag('set', { 'traffic_type': 'internal' });
+  gtag('js', new Date());
+  gtag('config', ga4Id);
+
+  // Google Ads + Meta Pixel: completely blocked for internal traffic
   if (!window.__wplInternal) {
-    // Queue the initial config/pageview calls — they'll replay when scripts load
-    gtag('js', new Date());
-    gtag('config', ga4Id);
     if (googleAdsId) gtag('config', googleAdsId);
     if (metaPixelId) {
       fbq('init', metaPixelId);
@@ -62,72 +78,84 @@ const metaPixelId = company.tracking.metaPixel;
   }
 </script>
 
-<!-- Delayed script loader — all third-party JS deferred until idle/interaction -->
-<script is:inline define:vars={{ ga4Id, googleAdsId, metaPixelId }}>
+<!-- Immediate async script loader — gtag.js + fbevents.js load right away.
+     Async means no render blocking. Firing immediately means Google's tag
+     detector sees the tag on first crawl, and fast bouncers still register
+     conversion events. -->
+<script is:inline define:vars={{ ga4Id, metaPixelId }}>
   (function () {
-    if (window.__wplInternal) return;
+    // GA4 — always loaded (internal traffic filtered via GA4 data filter).
+    // Script URL carries the GA4 ID; Google Ads config runs from the inline
+    // stub above and is picked up by gtag.js via dataLayer replay.
+    var gtagScript = document.createElement('script');
+    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4Id;
+    gtagScript.async = true;
+    document.head.appendChild(gtagScript);
 
-    function loadScripts() {
-      // GA4 + Google Ads — single gtag.js instance handles both
-      var gtagScript = document.createElement('script');
-      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4Id;
-      gtagScript.async = true;
-      document.head.appendChild(gtagScript);
-
-      // Meta Pixel
-      if (metaPixelId) {
-        var fbScript = document.createElement('script');
-        fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
-        fbScript.async = true;
-        document.head.appendChild(fbScript);
-      }
+    // Meta Pixel — blocked for internal traffic
+    if (metaPixelId && !window.__wplInternal) {
+      var fbScript = document.createElement('script');
+      fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      fbScript.async = true;
+      document.head.appendChild(fbScript);
     }
-
-    // Load once: after 5s timeout or first user interaction — whichever first.
-    // 5s ensures scripts land well past Lighthouse's TBT window (FCP→TTI),
-    // while interaction trigger ensures no delay for engaged users.
-    // (requestIdleCallback fires too early on fast connections, pulling
-    // scripts into the TBT window and costing 200-400ms.)
-    var loaded = false;
-    function loadOnce() {
-      if (loaded) return;
-      loaded = true;
-      loadScripts();
-    }
-
-    setTimeout(loadOnce, 5000);
-
-    var events = ['click', 'scroll', 'keydown', 'touchstart'];
-    function onInteraction() {
-      loadOnce();
-      events.forEach(function (e) {
-        document.removeEventListener(e, onInteraction, { capture: true });
-      });
-    }
-    events.forEach(function (e) {
-      document.addEventListener(e, onInteraction, { capture: true, passive: true });
-    });
   })();
 </script>
 
-<!-- Phone call click tracking — fires GA4 + Google Ads + Meta events on any tel: link -->
+<!-- Phone call click tracking — fires GA4 + Google Ads + Meta events on any tel: link.
+     Meta Contact event is mirrored server-side via /api/track-call/ for CAPI dedup
+     (browser pixel + server event share an event_id so Meta counts them as one). -->
 <script is:inline define:vars={{ adsPhoneSendTo: googleAdsPhoneLabel }}>
+  function __wplReadCookie(name) {
+    var parts = document.cookie ? document.cookie.split(';') : [];
+    for (var i = 0; i < parts.length; i++) {
+      var kv = parts[i].trim().split('=');
+      if (kv[0] === name) return decodeURIComponent(kv.slice(1).join('=')) || '';
+    }
+    return '';
+  }
+
   document.addEventListener('click', function (e) {
-    if (window.__wplInternal) return;
     var link = e.target.closest('a[href^="tel:"]');
     if (!link) return;
     var phone = link.getAttribute('href').replace('tel:', '');
+    // GA4 event always fires (internal traffic filtered via data filter)
     if (typeof gtag === 'function') {
       gtag('event', 'phone_call_click', {
         event_category: 'engagement',
         phone_number: phone,
       });
-      if (adsPhoneSendTo) {
+      // Google Ads conversion — blocked for internal traffic
+      if (adsPhoneSendTo && !window.__wplInternal) {
         gtag('event', 'conversion', { send_to: adsPhoneSendTo, value: 25.0, currency: 'USD' });
       }
     }
-    if (typeof fbq === 'function') {
-      fbq('track', 'Contact');
+    // Meta event — blocked for internal traffic
+    if (!window.__wplInternal) {
+      // Shared event_id used by both the browser pixel and the server CAPI call
+      var eventId = (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : 'call-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+
+      if (typeof fbq === 'function') {
+        fbq('track', 'Contact', {}, { eventID: eventId });
+      }
+
+      // Mirror server-side via CAPI; keepalive ensures the request survives the
+      // tel: navigation that's about to interrupt the page.
+      try {
+        fetch('/api/track-call/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+          body: JSON.stringify({
+            event_id: eventId,
+            url: window.location.href,
+            fbp: __wplReadCookie('_fbp'),
+            fbc: __wplReadCookie('_fbc'),
+          }),
+        }).catch(function () { /* swallow — CAPI is supplementary */ });
+      } catch (_) { /* ignore */ }
     }
   });
 </script>

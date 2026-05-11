@@ -473,6 +473,11 @@ const jsonLd = [
       btn.disabled = true;
       if (formStatus) { formStatus.textContent = 'Sending your message...'; formStatus.style.color = ''; }
 
+      // Shared event_id for Meta browser pixel + server CAPI dedup
+      const leadEventId = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+        ? crypto.randomUUID()
+        : `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
       try {
         // Build JSON payload
         const payload: Record<string, unknown> = {
@@ -485,6 +490,7 @@ const jsonLd = [
           howHeard: (form.querySelector<HTMLSelectElement>('[name="how_heard"]')?.value || '').trim(),
           message: (form.querySelector<HTMLTextAreaElement>('[name="message"]')?.value || '').trim(),
           turnstileToken,
+          eventId: leadEventId,
         };
 
         // Attach resume as base64 if present
@@ -504,15 +510,33 @@ const jsonLd = [
         const result = await response.json();
 
         if (result.success) {
-          // GA4 form_submit always fires (internal traffic filtered via data filter)
+          // GA4 form_submit always fires (internal traffic filtered via data filter).
+          // Keep these parameter names aligned with GA4 custom dimensions.
           if (typeof (window as any).gtag === 'function') {
-            (window as any).gtag('event', 'form_submit', { event_category: 'engagement', form_name: 'contact' });
+            const serviceInterest = String(payload.service || 'Not specified');
+            const howHeard = String(payload.howHeard || 'Not specified');
+            const formType = serviceInterest === 'Career Inquiry' ? 'career_inquiry' : 'estimate_request';
+            (window as any).gtag('event', 'form_submit', {
+              event_category: 'engagement',
+              form_name: 'contact',
+              form_type: formType,
+              service_interest: serviceInterest,
+              how_heard: howHeard,
+            });
             // Google Ads conversion — blocked for internal traffic
             const sendTo = form.dataset.adsSendTo;
             if (sendTo && !(window as any).__wplInternal) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });
           }
-          // Meta event — blocked for internal traffic
-          if (typeof (window as any).fbq === 'function' && !(window as any).__wplInternal) (window as any).fbq('track', 'Lead');
+          // Meta event — blocked for internal traffic.
+          // eventID matches the server-side CAPI Lead payload for dedup.
+          if (typeof (window as any).fbq === 'function' && !(window as any).__wplInternal) {
+            (window as any).fbq(
+              'track',
+              'Lead',
+              { service_interest: String(payload.service || 'Not specified') },
+              { eventID: leadEventId },
+            );
+          }
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
