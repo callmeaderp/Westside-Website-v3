@@ -303,15 +303,38 @@ const jsonLd = [
 
   serviceSelect?.addEventListener('change', syncCareerFields);
 
-  // Pre-select Career Inquiry when arriving from /careers/ (?service=careers)
+  // Pre-select Service Interest based on ?service=<slug> URL param. Slugs come
+  // from internal links (careers page) and external paid-ad destination URLs
+  // (Meta/Google ads point to /contact/?service=hardscaping etc.). The slug
+  // values mirror the ServiceSlug union in src/data/services.ts plus the
+  // 'careers' alias for the Career Inquiry option.
   if (serviceSelect) {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('service') === 'careers') {
-      serviceSelect.value = 'Career Inquiry';
-      syncCareerFields();
-      const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
-      if (messageEl && !messageEl.value) {
-        messageEl.placeholder = 'Tell us a bit about yourself, your experience, and what kind of role you\u2019re interested in...';
+    const serviceParam = params.get('service');
+    if (serviceParam) {
+      const slugToOption: Record<string, string> = {
+        'landscape-design': 'Landscape Design',
+        'landscape-maintenance': 'Landscape Maintenance',
+        'lawn-care': 'Lawn Care',
+        'plant-health': 'Fertilization & Weed Control',
+        'hardscaping': 'Hardscaping',
+        'water-features': 'Water Features',
+        'snow-ice-management': 'Snow & Ice Management',
+        'artificial-grass': 'Artificial Grass',
+        'commercial-services': 'Commercial Services',
+        'holiday-lighting': 'Holiday Decorating',
+        'careers': 'Career Inquiry',
+      };
+      const targetOption = slugToOption[serviceParam];
+      if (targetOption) {
+        serviceSelect.value = targetOption;
+        syncCareerFields();
+        if (serviceParam === 'careers') {
+          const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
+          if (messageEl && !messageEl.value) {
+            messageEl.placeholder = 'Tell us a bit about yourself, your experience, and what kind of role you\u2019re interested in...';
+          }
+        }
       }
     }
   }
