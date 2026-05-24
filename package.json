@@ -10,9 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "lint": "biome check src/",
-    "lint:fix": "biome check --write src/",
-    "format": "biome format --write src/",
+    "lint": "biome lint --config-path ./biome.json --diagnostic-level=error src/",
+    "lint:fix": "biome lint --config-path ./biome.json --diagnostic-level=error --write src/",
+    "format": "biome format --config-path ./biome.json --write src/",
     "test": "playwright test",
     "test:a11y": "playwright test tests/a11y/",
     "astro": "astro"

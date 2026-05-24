@@ -314,7 +314,9 @@ export const services: Service[] = [
 ];
 
 // Validate all services at import time
-services.forEach((s) => ServiceSchema.parse(s));
+services.forEach((s) => {
+  ServiceSchema.parse(s);
+});
 
 export function getServiceBySlug(slug: ServiceSlug): Service | undefined {
   return services.find((s) => s.slug === slug);
