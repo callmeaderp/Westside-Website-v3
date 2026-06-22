@@ -81,7 +81,6 @@ const REPLY_TO = 'website@westsideprolandscape.com';
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
-  // --- Parse JSON body ---
   let payload: ContactPayload;
   try {
     payload = await request.json();
@@ -94,7 +93,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(400, { success: false, message: 'First name, last name, email, and message are required.' });
   }
 
-  // --- Turnstile server-side validation ---
   if (!turnstileToken) {
     return json(400, { success: false, message: 'Missing verification token.' });
   }
@@ -113,7 +111,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(403, { success: false, message: 'Verification failed.' });
   }
 
-  // --- Validate resume if present ---
   let resumeBytes: Uint8Array | null = null;
   if (payload.resume) {
     const { name, type, data } = payload.resume;
@@ -135,14 +132,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return json(400, { success: false, message: `File too large (${(resumeBytes.byteLength / 1024 / 1024).toFixed(1)} MB). Max 5 MB.` });
     }
 
-    // Magic bytes check
     const expected = MAGIC_BYTES[type];
     if (expected && !expected.every((b, i) => resumeBytes![i] === b)) {
       return json(400, { success: false, message: 'File content does not match its type.' });
     }
   }
 
-  // --- Format fields ---
   const phone = formatPhone(payload.phone || '');
   const address = payload.address?.trim() || '';
   const service = payload.service?.trim() || 'Not specified';
@@ -154,7 +149,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     hour: 'numeric', minute: '2-digit', hour12: true,
   });
 
-  // --- Get Azure AD token ---
   const tokenRes = await fetch(
     `https://login.microsoftonline.com/${env.AZURE_TENANT_ID}/oauth2/v2.0/token`,
     {
@@ -175,7 +169,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
   const graphToken = tokenData.access_token;
 
-  // --- Build notification email ---
   const inquiryType = isCareer ? 'Career Inquiry' : 'Estimate Request';
   const subject = `[${inquiryType}] ${firstName.trim()} ${lastName.trim()} — ${service}`;
 
@@ -203,7 +196,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     hasResume: !!payload.resume,
   });
 
-  // Send notification to office
   const sendRes = await fetch(
     `https://graph.microsoft.com/v1.0/users/${SENDER}/sendMail`,
     {
@@ -232,7 +224,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(500, { success: false, message: 'Unable to send your message. Please call us instead.' });
   }
 
-  // --- Send confirmation email to customer ---
   const confirmationHtml = buildConfirmationEmail({
     firstName: firstName.trim(),
     service,
@@ -302,8 +293,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   return json(200, { success: true });
 };
 
-// === Helpers ===
-
 function json(status: number, body: Record<string, unknown>): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -335,8 +324,6 @@ function formatPhone(raw: string): string {
   }
   return raw.trim(); // return as-is if not a standard US number
 }
-
-// === Email Templates ===
 
 interface NotificationData {
   firstName: string;

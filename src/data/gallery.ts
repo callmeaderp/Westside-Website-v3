@@ -21,7 +21,7 @@ export const galleryCategories = [
 ] as const;
 
 export const gallery: GalleryItem[] = [
-  // 1 — hero span (2×2)
+  // Hero span (2×2).
   {
     id: 'landscape-tudor',
     image: 'svc-landscape-design.webp',
@@ -30,7 +30,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Landscape Design',
     caption: 'Tudor Home Landscape Renovation',
   },
-  // 2
   {
     id: 'night-lighting',
     image: 'hero-home.webp',
@@ -39,7 +38,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Landscape Design',
     caption: 'Night Landscape Lighting Design',
   },
-  // 3
   {
     id: 'show-garden',
     image: 'gallery-show-garden.webp',
@@ -48,7 +46,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Landscape Design',
     caption: 'Show Garden Display',
   },
-  // 4
   {
     id: 'pondless-waterfall',
     image: 'gallery-pondless-waterfall.webp',
@@ -57,7 +54,7 @@ export const gallery: GalleryItem[] = [
     tag: 'Landscape Design',
     caption: 'Pondless Waterfall & Stream',
   },
-  // 5 — wide span (2 cols)
+  // Wide span (2 cols).
   {
     id: 'outdoor-kitchen',
     image: 'svc-hardscape.webp',
@@ -66,7 +63,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Hardscaping',
     caption: 'Outdoor Kitchen & Patio',
   },
-  // 6
   {
     id: 'drone-patio',
     image: 'gallery-drone-patio.webp',
@@ -75,7 +71,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Hardscaping',
     caption: 'Dusk Aerial — Custom Patio',
   },
-  // 7
   {
     id: 'lit-patio',
     image: 'gallery-lit-patio.webp',
@@ -84,7 +79,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Hardscaping',
     caption: 'Accent-Lit Seat Wall & Patio',
   },
-  // 8
   {
     id: 'commercial-striping',
     image: 'svc-maintenance.webp',
@@ -93,7 +87,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Maintenance',
     caption: 'Commercial Lawn Striping',
   },
-  // 9
   {
     id: 'striped-colonial',
     image: 'gallery-striped-colonial.webp',
@@ -102,7 +95,7 @@ export const gallery: GalleryItem[] = [
     tag: 'Maintenance',
     caption: 'Residential Lawn Care',
   },
-  // 10 — wide span (2 cols)
+  // Wide span (2 cols).
   {
     id: 'holiday-display',
     image: 'svc-holiday-lighting.webp',
@@ -111,7 +104,6 @@ export const gallery: GalleryItem[] = [
     tag: 'Holiday Lighting',
     caption: 'Professional Holiday Display',
   },
-  // 11
   {
     id: 'holiday-festive',
     image: 'gallery-holiday-festive.webp',

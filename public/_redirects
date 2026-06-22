@@ -32,26 +32,174 @@
 /plant-health-care/     /services/plant-health/      301
 /lawn-care/             /services/plant-health/      301
 /lawn-care-program/     /services/plant-health/      301
+/all-year-lawn-care     /services/lawn-care/         301
+/all-year-lawn-care/    /services/lawn-care/         301
+/new-year-new-lawn      /services/lawn-care/         301
+/new-year-new-lawn/     /services/lawn-care/         301
+/professional-turf-care /services/lawn-care/         301
+/professional-turf-care/ /services/lawn-care/        301
 /hardscaping/           /services/hardscaping/       301
 /hardscape/             /services/hardscaping/       301
+/hardscape-design       /services/hardscaping/       301
+/hardscape-design/      /services/hardscaping/       301
+/services/hardscape-design /services/hardscaping/    301
+/services/hardscape-design/ /services/hardscaping/   301
 /landscape-design/      /services/landscape-design/  301
+/garden-trends          /services/landscape-design/  301
+/garden-trends/         /services/landscape-design/  301
+/summer-landscaping     /services/landscape-design/  301
+/summer-landscaping/    /services/landscape-design/  301
+/update-the-outside     /services/landscape-design/  301
+/update-the-outside/    /services/landscape-design/  301
 /holiday-lighting/      /services/holiday-lighting/  301
 /holiday-lights/        /services/holiday-lighting/  301
+/one-call-we-clear-it-all /services/snow-ice-management/ 301
+/one-call-we-clear-it-all/ /services/snow-ice-management/ 301
 /snow-removal/          /services/snow-ice-management/ 301
 /snow-ice-management/   /services/snow-ice-management/ 301
 /water-features/        /services/water-features/    301
 /landscape-maintenance/ /services/landscape-maintenance/ 301
 /maintenance/           /services/landscape-maintenance/ 301
-/service-areas/         /service-areas/ 301
+/services/professional-maintenance /services/landscape-maintenance/ 301
+/services/professional-maintenance/ /services/landscape-maintenance/ 301
+/spring-maintenance     /services/landscape-maintenance/ 301
+/spring-maintenance/    /services/landscape-maintenance/ 301
+/fall-cleanup           /services/landscape-maintenance/ 301
+/fall-cleanup/          /services/landscape-maintenance/ 301
+/lawn-projects-for-fall /services/landscape-maintenance/ 301
+/lawn-projects-for-fall/ /services/landscape-maintenance/ 301
+/commercial-maintenance /services/commercial-services/ 301
+/commercial-maintenance/ /services/commercial-services/ 301
+/commercial-services    /services/commercial-services/ 301
+/commercial-services/   /services/commercial-services/ 301
 /areas-served/          /service-areas/ 301
 /artificial-turf/       /gallery/       301
 /artificial-grass/      /services/artificial-grass/ 301
+/artificial-grass-summer-2023 /services/artificial-grass/ 301
+/artificial-grass-summer-2023/ /services/artificial-grass/ 301
 /synlawn/               /gallery/       301
 
-# WordPress artifacts — no redirect needed.
-# /blog/*, /category/*, /tag/* → Cloudflare Pages returns natural 404.
-# Redirecting to / would be a soft-404 (Google treats it as a signal of
-# thin content). Letting them 404 cleanly is the correct SEO response.
+# Old WordPress blog posts & pages still indexed in Google
+# Targeted redirects for legacy URLs with traffic/search impressions
+/reviews                /about/         301
+/reviews/               /about/         301
+/landscaping-jobs       /careers/       301
+/landscaping-jobs/      /careers/       301
+/beyond-ordinary        /about/         301
+/beyond-ordinary/       /about/         301
+/beyond-ordinary-2      /about/         301
+/beyond-ordinary-2/     /about/         301
+/beyond-ordinary-3      /about/         301
+/beyond-ordinary-3/     /about/         301
+/our-2021-wrap-up       /about/         301
+/our-2021-wrap-up/      /about/         301
+/our-2023-landscaping-recap /about/     301
+/our-2023-landscaping-recap/ /about/    301
+/whats-new              /about/         301
+/whats-new/             /about/         301
+/news                   /about/         301
+/news/                  /about/         301
+/news/*                 /about/         301
+/easy-indoor-plants/    /services/plant-health/      301
+/did-you-know           /services/plant-health/      301
+/did-you-know/          /services/plant-health/      301
+/seasonal-transition    /services/plant-health/      301
+/seasonal-transition/   /services/plant-health/      301
+/book-early-for-spring  /services/landscape-design/  301
+/book-early-for-spring/ /services/landscape-design/  301
+/love-your-landscape    /services/landscape-design/  301
+/love-your-landscape/   /services/landscape-design/  301
+/nightscapes            /services/landscape-design/  301
+/nightscapes/           /services/landscape-design/  301
+/summer-hardscaping     /services/hardscaping/       301
+/summer-hardscaping/    /services/hardscaping/       301
+/keep-your-business-functioning-this-winter /services/snow-ice-management/ 301
+/keep-your-business-functioning-this-winter/ /services/snow-ice-management/ 301
+
+# Blog posts — topically mapped to closest V3 service page
+/blog/winterize                     /services/plant-health/          301
+/blog/winterize/                    /services/plant-health/          301
+/blog/spring-garden-ideas           /services/landscape-design/      301
+/blog/spring-garden-ideas/          /services/landscape-design/      301
+/blog/summer-landscaping-ideas      /services/landscape-maintenance/ 301
+/blog/summer-landscaping-ideas/     /services/landscape-maintenance/ 301
+/blog/nightscapes                   /services/landscape-design/      301
+/blog/nightscapes/                  /services/landscape-design/      301
+/blog/hardscape-design              /services/hardscaping/           301
+/blog/hardscape-design/             /services/hardscaping/           301
+/blog/hardscaping-2                 /services/hardscaping/           301
+/blog/hardscaping-2/                /services/hardscaping/           301
+/blog/hardscaping                   /services/hardscaping/           301
+/blog/hardscaping/                  /services/hardscaping/           301
+/blog/hardscaping-trends-of-2023    /services/hardscaping/           301
+/blog/hardscaping-trends-of-2023/   /services/hardscaping/           301
+/blog/commercial-snow-removal-benefits /services/snow-ice-management/ 301
+/blog/commercial-snow-removal-benefits/ /services/snow-ice-management/ 301
+/blog/ice-management                /services/snow-ice-management/   301
+/blog/ice-management/               /services/snow-ice-management/   301
+/blog/seasonal-transition           /services/plant-health/          301
+/blog/seasonal-transition/          /services/plant-health/          301
+/blog/fall-landscaping-trends       /services/landscape-maintenance/ 301
+/blog/fall-landscaping-trends/      /services/landscape-maintenance/ 301
+/blog/winter-landcaping             /services/plant-health/          301
+/blog/winter-landcaping/            /services/plant-health/          301
+/blog/winter-prep                   /services/plant-health/          301
+/blog/winter-prep/                  /services/plant-health/          301
+/blog/spring                        /services/                       301
+/blog/spring/                       /services/                       301
+/blog/professional-maintenance      /services/landscape-maintenance/ 301
+/blog/professional-maintenance/     /services/landscape-maintenance/ 301
+/blog/landscaping                   /services/                       301
+/blog/landscaping/                  /services/                       301
+/blog/landscape-design              /services/landscape-design/      301
+/blog/landscape-design/             /services/landscape-design/      301
+/blog/questions-to-ask-your-landscaper /services/                    301
+/blog/questions-to-ask-your-landscaper/ /services/                   301
+/blog/landscaping-services-from-westside-professional-landscaping /services/ 301
+/blog/landscaping-services-from-westside-professional-landscaping/ /services/ 301
+/blog/beyond-ordinary-2             /about/                          301
+/blog/beyond-ordinary-2/            /about/                          301
+/blog/create-an-outdoor-oasis       /services/landscape-design/      301
+/blog/create-an-outdoor-oasis/      /services/landscape-design/      301
+/blog/holiday-lighting              /services/holiday-lighting/      301
+/blog/holiday-lighting/             /services/holiday-lighting/      301
+/blog/love-your-landscape           /services/landscape-design/      301
+/blog/love-your-landscape/          /services/landscape-design/      301
+/blog/new-year-new-lawn             /services/lawn-care/             301
+/blog/new-year-new-lawn/            /services/lawn-care/             301
+/blog/professional-landscaping-services /services/                   301
+/blog/professional-landscaping-services/ /services/                  301
+/blog/remembering-landscaping-design-history /about/                 301
+/blog/remembering-landscaping-design-history/ /about/                301
+/blog/did-you-know                  /services/plant-health/          301
+/blog/did-you-know/                 /services/plant-health/          301
+/blog/prepare-for-autumn            /services/landscape-maintenance/ 301
+/blog/prepare-for-autumn/           /services/landscape-maintenance/ 301
+/blog/our-professional-lawn-maintenance/feed /services/lawn-care/    301
+/blog/our-professional-lawn-maintenance/feed/ /services/lawn-care/   301
+
+# Blog categories/tags → home
+/blog/category/*        /               301
+/blog/tag/*             /               301
+
+# Catch-all for unmapped blog URLs — send to services (MUST be AFTER specific /blog/ rules above)
+/blog/*                 /services/      301
+/blog                   /services/      301
+
+# Other WordPress legacy URL patterns
+/tag/*                  /               301
+/author/*               /               301
+/feed                   /               301
+/feed/*                 /               301
+/comments/feed          /               301
+/comments/feed/*        /               301
+# Query-string variant /?feed=rss2 is handled by a zone-level Cloudflare
+# Redirect Rule, NOT here — Pages _redirects cannot match on query strings,
+# and any attempt ("/?feed=*") is parsed as "/" and creates a loop. See
+# memory/cloudflare-redirect-rules.md for the rule definition.
+
+# Old V2 dev paths (somehow indexed)
+/Westside-Website-Project-v2/*  /       301
 
 # Common typos
 /index.php              /       301

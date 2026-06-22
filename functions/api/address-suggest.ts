@@ -10,7 +10,6 @@
 
 const PLACES_API_KEY = 'AIzaSyAWvCy3qmk0g_1A27OJYFftXn73941ac4Q';
 
-/** Rochester, NY center — biases results toward the service area. */
 const LOCATION_BIAS = {
   circle: {
     center: { latitude: 43.1566, longitude: -77.6088 },

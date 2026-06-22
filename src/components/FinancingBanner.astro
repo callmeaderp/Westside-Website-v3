@@ -1,12 +1,4 @@
 ---
-/**
- * Financing banner — Wells Fargo "Buy Today, Pay Over Time" callout.
- * Used on the homepage and high-ticket service pages.
- *
- * Two variants:
- *   "full"   — headline + subtext + CTA button (homepage)
- *   "compact" — single-line callout with inline link (service pages)
- */
 import { company } from '@data/company';
 
 interface Props {
@@ -22,7 +14,6 @@ const { financing } = company;
     <div class="site-container fade-in">
       <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
 
-        {/* Icon */}
         <div class="shrink-0 w-16 h-16 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%);">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -30,7 +21,6 @@ const { financing } = company;
           </svg>
         </div>
 
-        {/* Copy */}
         <div class="flex-1 text-center lg:text-left">
           <h2 class="text-xl md:text-2xl mb-2">FLEXIBLE <span class="text-green">FINANCING AVAILABLE</span></h2>
           <p class="text-sm md:text-base" style="color: var(--color-text-muted); line-height: 1.7; font-family: var(--font-body);">
@@ -40,7 +30,6 @@ const { financing } = company;
           </p>
         </div>
 
-        {/* CTA */}
         <div class="shrink-0 flex flex-col items-center gap-2">
           <a
             href={financing.url}

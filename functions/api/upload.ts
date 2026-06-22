@@ -31,7 +31,6 @@ const MAGIC_BYTES: Record<string, number[]> = {
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
-  // --- Turnstile server-side validation ---
   const token = request.headers.get('X-Turnstile-Token');
   if (!token) {
     return json(400, { success: false, message: 'Missing verification token.' });
@@ -51,7 +50,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(403, { success: false, message: 'Verification failed.' });
   }
 
-  // --- Read raw binary body ---
   const contentType = request.headers.get('Content-Type') || '';
   const filename = request.headers.get('X-Filename') || 'resume';
   const body = await request.arrayBuffer();
@@ -68,14 +66,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(400, { success: false, message: `Invalid file type: ${contentType}. PDF, DOC, or DOCX only.` });
   }
 
-  // Magic bytes check
   const bytes = new Uint8Array(body.slice(0, 4));
   const expected = MAGIC_BYTES[contentType];
   if (expected && !expected.every((b, i) => bytes[i] === b)) {
     return json(400, { success: false, message: 'File content does not match its type.' });
   }
 
-  // --- Store in R2 ---
   const id = crypto.randomUUID();
   const key = `${id}${ext}`;
 

@@ -1,8 +1,4 @@
 ---
-/**
- * Site header with navigation, logo, services dropdown, and mobile menu.
- * Active link is determined automatically from current URL.
- */
 import { mainNav } from '@data/navigation';
 import { url } from '@lib/utils';
 
@@ -19,7 +15,6 @@ function isActive(href: string): boolean {
 <header class="site-header sticky top-0 z-50 min-h-[var(--header-height)]">
   <div class="header-inner max-w-[1400px] mx-auto px-5 md:px-8 py-3 lg:py-5 flex items-center justify-between">
 
-    <!-- Logo -->
     <div class="logo-group flex items-center gap-3 md:gap-5">
       <a href={url('/')} class="logo flex flex-col items-start shrink-0 no-underline">
         <img
@@ -44,7 +39,6 @@ function isActive(href: string): boolean {
       </a>
     </div>
 
-    <!-- Navigation -->
     <nav class="main-nav hidden lg:flex items-center gap-1" id="main-nav">
       {mainNav.map((item) => (
         item.children ? (
@@ -90,12 +84,10 @@ function isActive(href: string): boolean {
       ))}
     </nav>
 
-    <!-- Header CTA -->
     <div class="header-cta hidden lg:block">
       <a href={url('/contact')} class="btn btn-primary btn-sm">Get a Free Estimate</a>
     </div>
 
-    <!-- Mobile Menu Toggle -->
     <button type="button" class="menu-toggle lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
       <span class="block w-6 h-0.5 bg-white transition-transform duration-200"></span>
       <span class="block w-6 h-0.5 bg-white transition-opacity duration-200"></span>
@@ -166,7 +158,6 @@ function isActive(href: string): boolean {
 <div class="mobile-backdrop fixed inset-0 z-40" id="mobile-backdrop" hidden></div>
 
 <script>
-  // Mobile menu toggle
   const menuToggle = document.getElementById('menu-toggle');
   const mobileNav = document.getElementById('mobile-nav');
   const backdrop = document.getElementById('mobile-backdrop');
@@ -184,7 +175,6 @@ function isActive(href: string): boolean {
     menuToggle?.classList.add('active');
     menuToggle?.setAttribute('aria-expanded', 'true');
     menuToggle?.setAttribute('aria-label', 'Close menu');
-    // Move focus to first link in the menu
     requestAnimationFrame(() => {
       const firstLink = mobileNav?.querySelector('a') as HTMLElement | null;
       firstLink?.focus();
@@ -197,9 +187,8 @@ function isActive(href: string): boolean {
     menuToggle?.classList.remove('active');
     menuToggle?.setAttribute('aria-expanded', 'false');
     menuToggle?.setAttribute('aria-label', 'Open menu');
-    // Restore focus to the toggle button
     menuToggle?.focus();
-    // Re-hide after the close animation finishes
+    // Re-hide after the close animation finishes.
     mobileNav?.addEventListener('transitionend', () => {
       if (!mobileNav?.classList.contains('is-open')) {
         mobileNav?.setAttribute('hidden', '');
@@ -212,22 +201,18 @@ function isActive(href: string): boolean {
     mobileNav?.classList.contains('is-open') ? closeMenu() : openMenu();
   });
 
-  // Tap backdrop to close menu (scroll passes through naturally)
   backdrop?.addEventListener('click', closeMenu);
 
-  // Escape key closes mobile menu
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && mobileNav?.classList.contains('is-open')) {
       closeMenu();
     }
   });
 
-  // Mobile dropdown: animated slide-down with staggered children
   function openSubmenu(submenu: HTMLElement, arrow: HTMLElement | null) {
     const items = submenu.querySelectorAll(':scope > a') as NodeListOf<HTMLElement>;
     // Remove hidden so the element enters layout (display:none → block)
     submenu.removeAttribute('hidden');
-    // Reset children before measuring
     items.forEach((item) => {
       item.style.opacity = '0';
       item.style.transform = 'translateY(-8px)';
@@ -235,13 +220,11 @@ function isActive(href: string): boolean {
     });
     // Force reflow so browser computes the collapsed state before animating
     submenu.offsetHeight;
-    // Set transition to bouncy spring for expansion
     submenu.style.transition = 'max-height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease';
     submenu.style.maxHeight = submenu.scrollHeight + 'px';
     submenu.style.opacity = '1';
     arrow?.setAttribute('aria-expanded', 'true');
     arrow?.querySelector('svg')?.classList.add('rotate-180');
-    // Stagger children in
     requestAnimationFrame(() => {
       items.forEach((item, i) => {
         item.style.transition = `opacity 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 35}ms, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 35}ms`;
@@ -258,7 +241,6 @@ function isActive(href: string): boolean {
       item.style.opacity = '0';
       item.style.transform = 'translateY(-4px)';
     });
-    // Snappy retract — faster ease-out, no bounce
     submenu.style.transition = 'max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease';
     submenu.style.maxHeight = '0';
     submenu.style.opacity = '0';
@@ -291,7 +273,6 @@ function isActive(href: string): boolean {
     });
   });
 
-  // Close mobile nav on link click (skip parent links that are opening their submenu)
   mobileNav?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (e) => {
       if (e.defaultPrevented) return;
@@ -299,7 +280,6 @@ function isActive(href: string): boolean {
     });
   });
 
-  // Header scroll effect — class toggle (avoids per-frame inline style recalc)
   const header = document.querySelector('.site-header') as HTMLElement;
   let scrolled = false;
   function syncHeaderScroll() {

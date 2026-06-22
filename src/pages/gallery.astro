@@ -1,8 +1,4 @@
 ---
-/**
- * Gallery / Portfolio page — filterable masonry grid with lightbox.
- * Layout mirrors V2's dense grid with strategic spanning.
- */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
@@ -44,7 +40,6 @@ const breadcrumbJsonLd = {
 
   <section class="py-24 section-dark-alt">
     <div class="site-container-wide">
-      <!-- Filter Buttons -->
       <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in">
         {galleryCategories.map((cat) => (
           <button
@@ -61,7 +56,6 @@ const breadcrumbJsonLd = {
         ))}
       </div>
 
-      <!-- Gallery Grid -->
       <div class="gallery-grid stagger-children" id="gallery-grid">
         {galleryWithFull.map((item) => (
           <button
@@ -88,7 +82,6 @@ const breadcrumbJsonLd = {
     </div>
   </section>
 
-  <!-- Lightbox -->
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image lightbox">
     <button type="button" class="lightbox-close" aria-label="Close lightbox">&times;</button>
     <div class="lightbox-content">
@@ -208,7 +201,6 @@ const breadcrumbJsonLd = {
 </script>
 
 <style>
-  /* Filter buttons */
   .filter-btn {
     background: transparent;
     color: var(--color-text-muted);
@@ -263,7 +255,6 @@ const breadcrumbJsonLd = {
     transform: scale(1.05);
   }
 
-  /* Overlay */
   .gallery-overlay {
     position: absolute;
     inset: 0;
@@ -311,7 +302,6 @@ const breadcrumbJsonLd = {
     grid-row: span 1;
   }
 
-  /* ═══ RESPONSIVE ═══ */
   @media (max-width: 768px) {
     .gallery-grid {
       grid-template-columns: 1fr 1fr;
@@ -342,7 +332,6 @@ const breadcrumbJsonLd = {
     }
   }
 
-  /* ═══ LIGHTBOX ═══ */
   .lightbox {
     position: fixed;
     inset: 0;

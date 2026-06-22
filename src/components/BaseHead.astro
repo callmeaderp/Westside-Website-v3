@@ -53,7 +53,6 @@ const ogImageUrl = ogSrc.startsWith('http')
 {company.verification.metaDomain && <meta name="facebook-domain-verification" content={company.verification.metaDomain} />}
 {company.verification.googleSiteVerification && <meta name="google-site-verification" content={company.verification.googleSiteVerification} />}
 
-<!-- Preload critical fonts to prevent layout shift -->
 <link rel="preload" href={sourceSansFont} as="font" type="font/woff2" crossorigin />
 <link rel="preload" href={antonFont} as="font" type="font/woff2" crossorigin />
 
@@ -63,7 +62,6 @@ const ogImageUrl = ogSrc.startsWith('http')
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-<!-- Open Graph -->
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content={ogType} />
@@ -76,10 +74,8 @@ const ogImageUrl = ogSrc.startsWith('http')
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
 
-<!-- Canonical -->
 <link rel="canonical" href={canonical} />
 
-<!-- Favicons -->
 <link rel="icon" href={url('/favicon.ico')} sizes="48x48" />
 <link rel="icon" href={url('/leaf-green.svg')} type="image/svg+xml" />
 <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />

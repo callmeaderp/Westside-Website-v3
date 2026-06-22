@@ -1,8 +1,4 @@
 ---
-/**
- * Homepage — Westside Professional Landscape
- * Full-height hero, service cards, testimonials, stats, CTA.
- */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
@@ -69,11 +65,10 @@ const homepageJsonLd = {
 ---
 
 <BaseLayout
-  title="Westside Professional Landscape | Rochester NY Landscaping"
-  description={company.description}
+  title="Landscaping Company in Rochester, NY | Patios, Design & Lawn Care"
+  description="Rochester, NY's full-service landscaping company since 2000 — landscape design, patios & hardscaping, lawn care, and maintenance. Free estimate: (585) 594-8420."
   jsonLd={homepageJsonLd}
 >
-  <!-- ═══ HERO ═══ -->
   <Hero
     label="Full-Service Landscaping Since 2000"
     heading='ROCHESTER&apos;S PROFESSIONAL <span class="text-green">LANDSCAPING EXPERTS</span>'
@@ -86,7 +81,6 @@ const homepageJsonLd = {
     ]}
   />
 
-  <!-- ═══ SERVICES OVERVIEW ═══ -->
   <section class="py-24 section-dark-alt">
     <div class="site-container">
       <div class="text-center mb-16 fade-in">
@@ -126,7 +120,6 @@ const homepageJsonLd = {
     </div>
   </section>
 
-  <!-- ═══ ABOUT PREVIEW ═══ -->
   <section class="py-24 section-white">
     <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -157,10 +150,8 @@ const homepageJsonLd = {
     </div>
   </section>
 
-  <!-- ═══ FINANCING ═══ -->
   <FinancingBanner variant="full" />
 
-  <!-- ═══ TESTIMONIALS ═══ -->
   <section class="py-24 section-dark">
     <div class="site-container">
       <div class="text-center mb-16 fade-in">
@@ -194,6 +185,5 @@ const homepageJsonLd = {
     </div>
   </section>
 
-  <!-- ═══ CTA ═══ -->
   <CtaBanner />
 </BaseLayout>

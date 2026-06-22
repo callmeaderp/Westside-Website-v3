@@ -248,7 +248,6 @@ const jsonLd = [
     </div>
   </section>
 
-  <!-- ═══ FAQ ═══ -->
   <section class="py-24 section-dark">
     <div class="site-container">
       <div class="text-center mb-16 fade-in">
@@ -291,7 +290,6 @@ const jsonLd = [
 </style>
 
 <script>
-  // --- Resume upload toggle + careers pre-selection ---
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
   const resumeGroup = document.getElementById('resume-upload-group');
 
@@ -339,7 +337,6 @@ const jsonLd = [
     }
   }
 
-  // --- Address autocomplete via Google Places ---
   const addressInput = document.getElementById('address') as HTMLInputElement | null;
   const suggestionsEl = document.getElementById('address-suggestions') as HTMLUListElement | null;
 
@@ -447,7 +444,6 @@ const jsonLd = [
     (window as any).__resetAddressAutocomplete = () => { sessionToken = crypto.randomUUID(); };
   }
 
-  // --- Helper: read file as base64 ---
   function fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -461,7 +457,6 @@ const jsonLd = [
     });
   }
 
-  // --- Contact form submission handler ---
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const formStatus = document.getElementById('form-status');
   if (form) {
@@ -502,7 +497,6 @@ const jsonLd = [
         : `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
       try {
-        // Build JSON payload
         const payload: Record<string, unknown> = {
           firstName: (form.querySelector<HTMLInputElement>('[name="first_name"]')?.value || '').trim(),
           lastName: (form.querySelector<HTMLInputElement>('[name="last_name"]')?.value || '').trim(),
@@ -516,7 +510,6 @@ const jsonLd = [
           eventId: leadEventId,
         };
 
-        // Attach resume as base64 if present
         if (file) {
           payload.resume = {
             name: file.name,

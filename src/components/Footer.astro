@@ -1,7 +1,4 @@
 ---
-/**
- * Site footer — 4-column grid with logo, services, company links, and contact.
- */
 import { company } from '@data/company';
 import { footerServices, footerCompany } from '@data/navigation';
 import { url } from '@lib/utils';
@@ -11,7 +8,6 @@ import { url } from '@lib/utils';
   <div class="site-container">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
 
-      <!-- About Column -->
       <div class="footer-about">
         <a href={url('/')} class="logo flex flex-col items-start shrink-0 no-underline mb-6">
           <img class="h-14 w-auto" src={url('/logo-cropped-white.png')} alt={company.name} width="616" height="238" />
@@ -43,7 +39,6 @@ import { url } from '@lib/utils';
         </div>
       </div>
 
-      <!-- Services Column -->
       <div class="footer-col">
         <h3 class="footer-heading">Services</h3>
         <ul class="flex flex-col gap-2.5">
@@ -53,7 +48,6 @@ import { url } from '@lib/utils';
         </ul>
       </div>
 
-      <!-- Company Column -->
       <div class="footer-col">
         <h3 class="footer-heading">Company</h3>
         <ul class="flex flex-col gap-2.5">
@@ -63,7 +57,6 @@ import { url } from '@lib/utils';
         </ul>
       </div>
 
-      <!-- Contact Column -->
       <div class="footer-col">
         <h3 class="footer-heading">Contact Us</h3>
         <div class="flex flex-col gap-4">
@@ -85,7 +78,6 @@ import { url } from '@lib/utils';
       </div>
     </div>
 
-    <!-- Bottom Bar -->
     <div class="footer-bottom border-t border-border-dark pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-xs" style="color: var(--color-text-muted);">
         &copy; {new Date().getFullYear()} {company.legalName}. All rights reserved.
@@ -98,7 +90,6 @@ import { url } from '@lib/utils';
 </footer>
 
 <style>
-  /* Footer headings */
   .footer-heading {
     font-family: var(--font-body);
     font-size: 0.85rem;
@@ -109,7 +100,6 @@ import { url } from '@lib/utils';
     color: var(--color-text-white);
   }
 
-  /* Footer links — hover to green like V2 */
   .footer-link {
     color: var(--color-text-muted);
     font-size: 0.9rem;
@@ -120,7 +110,6 @@ import { url } from '@lib/utils';
     color: var(--color-green-bright);
   }
 
-  /* Social icons — bordered circles with gradient hover */
   .social-icon {
     width: 44px;
     height: 44px;
@@ -139,7 +128,6 @@ import { url } from '@lib/utils';
     color: var(--color-text-white);
   }
 
-  /* Contact items */
   .footer-col .flex.items-start span {
     color: var(--color-text-muted);
     font-size: 0.9rem;

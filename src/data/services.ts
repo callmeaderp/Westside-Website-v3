@@ -48,9 +48,9 @@ export const services: Service[] = [
     tagline: 'From concept to completion',
     description:
       'Custom landscape architecture tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
-    metaTitle: 'Landscape Design & Installation in Rochester, NY | Westside Professional Landscape',
+    metaTitle: 'Landscape Design & Architects in Rochester, NY | Westside',
     metaDescription:
-      'Custom landscape design and installation in Rochester, NY. From concept sketches to full installations — patios, plantings, grading, and lighting. Serving Monroe County since 2000. Call (585) 594-8420.',
+      'Rochester landscape design & landscape architects — residential & commercial. Plantings, patios, grading, lighting, concept to full install. Call (585) 594-8420.',
     heroLabel: 'Design & Installation',
     heroHeading: 'LANDSCAPE DESIGN IN ROCHESTER, NY',
     heroIntro:
@@ -129,7 +129,7 @@ export const services: Service[] = [
     tagline: 'Science-backed lawn care',
     description:
       "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. NYS DEC certified applicators.",
-    metaTitle: 'Lawn Fertilization & Weed Control in Rochester, NY | Westside Professional Landscape',
+    metaTitle: 'Lawn Fertilization & Weed Control in Rochester, NY | 50% Off',
     metaDescription:
       "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. Fertilization, weed control, grub protection included. NYS DEC certified. Rochester, NY.",
     heroLabel: 'Lawn Care Program',
@@ -156,9 +156,9 @@ export const services: Service[] = [
     tagline: 'Built to last',
     description:
       'Patios, retaining walls, walkways, fire pits, and outdoor kitchens — designed and built by experienced craftsmen.',
-    metaTitle: 'Hardscaping & Outdoor Living in Rochester, NY | Westside Professional Landscape',
+    metaTitle: 'Patios, Walkways & Retaining Walls in Rochester, NY | Westside',
     metaDescription:
-      'Expert hardscaping services in Rochester, NY — patios, retaining walls, walkways, outdoor kitchens, fire pits, and driveways. Built to last by Westside Professional Landscape. Call (585) 594-8420.',
+      'Paver patios, walkways, retaining walls, fire pits & outdoor kitchens in Rochester, NY. Custom-built to last by Westside since 2000. Call (585) 594-8420.',
     heroLabel: 'Built to Last',
     heroHeading: 'HARDSCAPING & OUTDOOR LIVING IN ROCHESTER',
     heroIntro:
@@ -237,7 +237,7 @@ export const services: Service[] = [
     tagline: 'Year-round green, zero maintenance',
     description:
       'Authorized SYNLawn dealer — premium artificial turf installation for residential and commercial properties in Rochester, NY.',
-    metaTitle: 'Artificial Grass Installation in Rochester, NY | SYNLawn Dealer | Westside Professional Landscape',
+    metaTitle: 'Artificial Grass & Turf Installation in Rochester, NY | SYNLawn',
     metaDescription:
       'Authorized SYNLawn dealer serving Rochester, NY. Premium artificial turf installation for lawns, pet areas, putting greens, and commercial landscapes. Call (585) 594-8420.',
     heroLabel: 'SYNLawn Authorized Dealer',
@@ -264,9 +264,9 @@ export const services: Service[] = [
     tagline: 'Grounds management for business',
     description:
       'Full-service commercial landscape maintenance, snow management, and property care for businesses across Greater Rochester.',
-    metaTitle: 'Commercial Landscaping Services in Rochester, NY | Westside Professional Landscape',
+    metaTitle: 'Commercial Landscaping Company in Rochester, NY | Westside',
     metaDescription:
-      'Commercial landscape maintenance, snow removal, and grounds management in Rochester, NY. Experienced crews serving businesses across Monroe County since 2000. Call (585) 594-8420.',
+      'Commercial landscaping company in Rochester, NY: landscape maintenance, snow & ice management, and grounds care for Monroe County businesses since 2000. (585) 594-8420.',
     heroLabel: 'Commercial Grounds Management',
     heroHeading: 'COMMERCIAL LANDSCAPING IN ROCHESTER, NY',
     heroIntro:

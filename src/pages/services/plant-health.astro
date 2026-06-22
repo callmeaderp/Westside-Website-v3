@@ -1,16 +1,36 @@
 ---
-/**
- * Plant Health / Fertilization & Weed Control — standalone page.
- * Has unique 5-step program timeline, pricing card, and additional services
- * that don't fit the shared [slug].astro template.
- */
 import ServiceLayout from '@layouts/ServiceLayout.astro';
+import FaqSection from '@components/FaqSection.astro';
 import { Image } from 'astro:assets';
 import { getServiceBySlug } from '@data/services';
+import type { FaqItem } from '@data/service-content';
 import { getPhoto } from '@lib/images';
 import { url } from '@lib/utils';
 
 const service = getServiceBySlug('plant-health')!;
+
+const faqs: FaqItem[] = [
+  {
+    question: 'When is the best time to start a lawn care program?',
+    answer: "Early spring (March\u2013April) is the ideal time to start, since the first application includes pre-emergent crabgrass control that needs to go down before soil temperatures rise. However, you can join the program mid-season \u2014 we'll customize the remaining treatments based on where you are in the calendar.",
+  },
+  {
+    question: 'Is the lawn care program safe for kids and pets?',
+    answer: "We follow all NYS DEC guidelines for product application and safety. After each treatment, we recommend staying off treated areas until the product has dried (typically 1\u20132 hours). Our technicians are NYS DEC Certified Commercial Pesticide Applicators who apply products at labeled rates using professional equipment.",
+  },
+  {
+    question: 'How long before I see results from fertilization?',
+    answer: "You'll typically see greening and improved density within 1\u20132 weeks of the first application. Full results develop over the season as the program builds on itself \u2014 each treatment is timed to your lawn's growth cycle. Most clients see a dramatic difference by the end of the first full season.",
+  },
+  {
+    question: "What's the difference between professional lawn care and doing it myself?",
+    answer: "Professional programs use commercial-grade products that aren't available at retail stores, applied by certified technicians at precisely calibrated rates. Timing matters \u2014 our treatments are scheduled to match your lawn's growth cycle, not a weekend schedule. The result is more consistent coverage, better weed control, and healthier turf with less product waste.",
+  },
+  {
+    question: 'Why is grub control included for free?',
+    answer: "Grubs are one of the most destructive lawn pests in the Rochester area \u2014 they feed on grass roots and can destroy large sections of lawn in a single season. We include preventive grub control with our Step 3 summer application because treating proactively is far more effective (and less expensive) than repairing grub damage after the fact.",
+  },
+];
 
 const programSteps = [
   {
@@ -98,9 +118,9 @@ const pricingFeatures = [
   service={service}
   ctaHeading='START YOUR JOURNEY TO A <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">HEALTHIER LAWN</span>'
   ctaText="Schedule your <strong>free lawn evaluation</strong> today. Our experts will assess your lawn and recommend the right program for your property."
+  faqs={faqs}
 >
 
-  <!-- ═══ VALUE PROPS ═══ -->
   <section class="py-12 section-dark-alt">
     <div class="site-container">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center stagger-children">
@@ -124,12 +144,10 @@ const pricingFeatures = [
     </div>
   </section>
 
-  <!-- ═══ 5-STEP PROGRAM ═══ -->
   <section class="py-24 section-dark" id="program-details">
     <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16 fade-in">
 
-        <!-- Steps Column -->
         <div>
           <p class="section-label">The Program</p>
           <h2 class="section-title">FIVE STEPS TO A <span style="color: var(--color-green-bright);">HEALTHIER LAWN</span></h2>
@@ -174,7 +192,6 @@ const pricingFeatures = [
           <p class="text-xs italic mt-8" style="color: var(--color-text-muted);">* Surface insect inspection/treatment as needed. Treatment applied when pest populations are detected at actionable levels.</p>
         </div>
 
-        <!-- Pricing Sidebar -->
         <div>
           <div class="rounded-xl p-8 text-center sticky top-24" style="background: var(--color-bg-dark-card); border: 2px solid var(--color-green-bright);">
             <span class="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full mb-4" style="background: linear-gradient(135deg, #6CC551 0%, #00863F 100%); color: white;">Most Popular</span>
@@ -213,7 +230,6 @@ const pricingFeatures = [
     </div>
   </section>
 
-  <!-- ═══ ADDITIONAL SERVICES ═══ -->
   <section class="py-24 section-accent">
     <div class="site-container">
       <div class="text-center mb-16 fade-in">
@@ -234,7 +250,6 @@ const pricingFeatures = [
     </div>
   </section>
 
-  <!-- ═══ WHY US ═══ -->
   <section class="py-24 section-dark">
     <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-xl overflow-hidden fade-in" style="border: 1px solid var(--color-border-dark);">
@@ -277,6 +292,8 @@ const pricingFeatures = [
       </div>
     </div>
   </section>
+
+  <FaqSection faqs={faqs} />
 
 </ServiceLayout>
 

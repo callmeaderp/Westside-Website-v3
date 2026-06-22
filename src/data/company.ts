@@ -1,8 +1,3 @@
-/**
- * Company-wide constants — single source of truth for business information.
- * Used by structured data, footer, contact page, meta tags, etc.
- */
-
 export const company = {
   name: 'Westside Professional Landscape',
   legalName: 'Westside Professional Landscape, Inc.',
@@ -12,13 +7,11 @@ export const company = {
   foundingYear: 2000,
   priceRange: '$$',
 
-  // Contact
   phone: '(585) 594-8420',
   phoneTel: '+1-585-594-8420',
   phoneHref: 'tel:+15855948420',
   email: 'office@westsideprolandscape.com',
 
-  // Address
   address: {
     street: '2565 Buffalo Road',
     city: 'Rochester',
@@ -39,7 +32,6 @@ export const company = {
     sunday: null as { open: string; close: string } | null,
   },
 
-  // URLs
   url: 'https://westsideprolandscape.com',
   social: {
     facebook: 'https://www.facebook.com/Westside-Pro-Landscape-420584711317587/',
@@ -48,10 +40,8 @@ export const company = {
     google: 'https://share.google/eUiYvhs6dSC2dhFVe',
   },
 
-  // Certifications
   certifications: ['NYS DEC Certified Commercial Pesticide Applicator', 'SYNLawn Authorized Dealer'],
 
-  // Financing
   financing: {
     provider: 'Wells Fargo',
     program: 'Buy Today, Pay Over Time',
@@ -60,7 +50,6 @@ export const company = {
     eligibleServices: ['landscape-design', 'hardscaping', 'artificial-grass', 'water-features'] as string[],
   },
 
-  // Tracking IDs
   tracking: {
     ga4: 'G-HQYE7MKZ9P',
     metaPixel: '414143897932367',
@@ -85,7 +74,6 @@ export const company = {
     googleSiteVerification: 'o8V0gG8CkDJ0oGu14-9rGA8s1QpZfbSGuJ7M3JOvVvU',
   },
 
-  // Areas served
   areasServed: [
     'Rochester',
     'Pittsford',

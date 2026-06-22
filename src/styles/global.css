@@ -1,23 +1,14 @@
-/* ═══════════════════════════════════════════════════════════════════
-   Westside Professional Landscape — V3 Global Styles
-   Tailwind v4 + CSS custom properties for the dark premium theme
-   ═══════════════════════════════════════════════════════════════════ */
+/* Westside V3 global styles: Tailwind v4 + dark premium theme tokens. */
 
 @import 'tailwindcss';
 @import './fonts.css';
 
-/* ═══ DESIGN TOKENS (CSS Custom Properties) ═══
-   These define the brand identity and are referenced throughout.
-   Tailwind utilities handle most layout/spacing; these cover brand values. */
-
 @theme {
-  /* Brand Colors */
   --color-green-primary: #00863F;
   --color-green-bright: #6CC551;
   --color-green-dark: #005C2B;
   --color-green-on-light: #2B7530; /* AA-accessible on warm white backgrounds (4.73:1 on #eceae3) */
 
-  /* Backgrounds */
   --color-bg-dark: #111111;
   --color-bg-dark-alt: #1a1a1a;
   --color-bg-dark-card: #1a1a1a;
@@ -27,7 +18,6 @@
   --color-bg-accent: #0f1f14;
   --color-bg-accent-card: #152a1b;
 
-  /* Text */
   --color-text-white: #ffffff;
   --color-text-light: #e0e0e0;
   --color-text-muted: #b5b5b5;
@@ -35,35 +25,27 @@
   --color-text-body-dark: #444444;
   --color-text-green: #6CC551;
 
-  /* Borders */
   --color-border-dark: #2a2a2a;
   --color-border-light: #e0e0e0;
   --color-border-accent: #1f3d26;
 
-  /* Typography */
   --font-heading: 'Anton', 'Impact', sans-serif;
   --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
 
-  /* Layout */
   --container-max: 1200px;
   --container-wide: 1400px;
   --header-height: 80px;
 
-  /* Shadows */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
   --shadow-green: 0 4px 20px rgba(108, 197, 81, 0.3);
 
-  /* Easing */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ═══ BASE / RESET OVERRIDES ═══
-   Wrapped in @layer base so Tailwind utilities (h-9, w-auto, etc.) can override. */
-
+/* Wrapped in @layer base so Tailwind utilities can override. */
 @layer base {
-  /* File-input button styling (resume upload) */
   input[type="file"]::file-selector-button {
     background: var(--color-green-primary);
     color: #fff;
@@ -124,20 +106,14 @@
     color: var(--color-text-white);
   }
 
-  /* ═══ FOCUS RING ═══
-     Visible on keyboard nav (:focus-visible) but not on click.
-     2px green outline offset from the element for clarity. */
   :focus-visible {
     outline: 2px solid var(--color-green-bright);
     outline-offset: 2px;
   }
 
-  /* Skip-link already has its own focus treatment */
   .skip-link:focus-visible {
     outline: none;
   }
-
-  /* ═══ TYPOGRAPHY ═══ */
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -152,8 +128,6 @@
   h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
   h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
 }
-
-/* ═══ UTILITY CLASSES ═══ */
 
 .section-label {
   @apply text-sm font-semibold uppercase tracking-[3px] mb-4;
@@ -182,8 +156,6 @@
   background-clip: text;
 }
 
-/* ═══ CONTAINER ═══ */
-
 .site-container {
   @apply w-full mx-auto px-8;
   max-width: var(--container-max);
@@ -193,8 +165,6 @@
   @apply mx-auto px-8;
   max-width: var(--container-wide);
 }
-
-/* ═══ SECTIONS ═══ */
 
 .section-dark {
   background-color: var(--color-bg-dark);
@@ -249,8 +219,6 @@
   border-color: rgba(0, 0, 0, 0.4);
   color: var(--color-text-dark);
 }
-
-/* ═══ BUTTONS ═══ */
 
 .btn {
   @apply inline-flex items-center justify-center gap-2 font-semibold rounded-lg
@@ -343,8 +311,6 @@
 .js .stagger-children.visible > *:nth-child(6) { transition-delay: 400ms; }
 .js .stagger-children.visible > *:nth-child(7) { transition-delay: 480ms; }
 
-/* ═══ SCROLL CUE ═══ */
-
 .scroll-cue.is-visible {
   opacity: 0.92;
 }
@@ -380,8 +346,6 @@
     opacity: 1;
   }
 }
-
-/* ═══ SKIP LINK ═══ */
 
 .skip-link {
   position: absolute;
@@ -424,8 +388,6 @@
     animation: none !important;
   }
 }
-
-/* ═══ RESPONSIVE ═══ */
 
 @media (max-width: 1023px) {
   :root {

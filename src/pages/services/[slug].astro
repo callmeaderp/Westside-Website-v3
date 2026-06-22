@@ -1,9 +1,6 @@
 ---
-/**
- * Dynamic service page — generates /services/landscape-design, /services/plant-health, etc.
- * Content comes from the typed services data file + rich content from service-content.ts.
- */
 import ServiceLayout from '@layouts/ServiceLayout.astro';
+import FaqSection from '@components/FaqSection.astro';
 import { Image } from 'astro:assets';
 import { services, type Service } from '@data/services';
 import { serviceContent } from '@data/service-content';
@@ -30,9 +27,8 @@ const relatedServices = (content?.relatedSlugs ?? [])
 const showFinancing = company.financing.eligibleServices.includes(service.slug);
 ---
 
-<ServiceLayout service={service} ctaHeading={content?.ctaHeading} ctaText={content?.ctaText}>
+<ServiceLayout service={service} ctaHeading={content?.ctaHeading} ctaText={content?.ctaText} faqs={content?.faqs}>
 
-  <!-- ═══ INTRO SECTION ═══ -->
   {content && (
     <section class="py-24 section-dark">
       <div class="site-container">
@@ -62,7 +58,6 @@ const showFinancing = company.financing.eligibleServices.includes(service.slug);
     </section>
   )}
 
-  <!-- ═══ DETAIL CARDS ═══ -->
   {content?.detailCards && content.detailCards.length > 0 && (
     <section class="py-24 section-dark-alt">
       <div class="site-container">
@@ -94,7 +89,6 @@ const showFinancing = company.financing.eligibleServices.includes(service.slug);
     </section>
   )}
 
-  <!-- ═══ PROCESS STEPS ═══ -->
   {content?.processSteps && content.processSteps.length > 0 && (
     <section class="py-24 section-white">
       <div class="site-container">
@@ -124,10 +118,10 @@ const showFinancing = company.financing.eligibleServices.includes(service.slug);
     </section>
   )}
 
-  <!-- ═══ FINANCING ═══ -->
   {showFinancing && <FinancingBanner variant="compact" />}
 
-  <!-- ═══ RELATED SERVICES ═══ -->
+  {content?.faqs && content.faqs.length > 0 && <FaqSection faqs={content.faqs} />}
+
   {relatedServices.length > 0 && (
     <section class="py-24 section-dark-alt">
       <div class="site-container">

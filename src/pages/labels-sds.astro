@@ -35,7 +35,6 @@ const breadcrumbJsonLd = {
     variant="utility"
   />
 
-  <!-- Intro -->
   <section class="py-16 section-dark-alt">
     <div class="site-container">
       <div class="max-w-3xl mx-auto text-center fade-in">
@@ -57,7 +56,6 @@ const breadcrumbJsonLd = {
     </div>
   </section>
 
-  <!-- Category Navigation -->
   <section class="py-6 sticky z-30" style="top: var(--header-height); background: var(--color-bg-dark); border-bottom: 1px solid var(--color-border-dark);">
     <div class="site-container">
       <nav class="flex flex-wrap justify-center gap-3" aria-label="Product categories">
@@ -74,7 +72,6 @@ const breadcrumbJsonLd = {
     </div>
   </section>
 
-  <!-- Product Categories -->
   {productCategories.map((category) => (
     <section id={category.slug} class:list={['py-20', productCategories.indexOf(category) % 2 === 0 ? 'section-dark' : 'section-dark-alt']} style="scroll-margin-top: calc(var(--header-height) + 4rem);">
       <div class="site-container">
@@ -143,7 +140,6 @@ const breadcrumbJsonLd = {
     </section>
   ))}
 
-  <!-- Disclaimer -->
   <section class="py-12 section-dark-alt">
     <div class="site-container">
       <div class="max-w-3xl mx-auto text-center">
@@ -165,7 +161,6 @@ const breadcrumbJsonLd = {
 </BaseLayout>
 
 <style>
-  /* Category navigation links */
   .cat-link {
     color: var(--color-text-muted);
     background: rgba(255, 255, 255, 0.03);
@@ -197,7 +192,6 @@ const breadcrumbJsonLd = {
     color: var(--color-green-bright);
   }
 
-  /* Product grid */
   .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -210,7 +204,6 @@ const breadcrumbJsonLd = {
     }
   }
 
-  /* Product card */
   .product-card {
     display: flex;
     align-items: center;
@@ -256,7 +249,6 @@ const breadcrumbJsonLd = {
     flex-shrink: 0;
   }
 
-  /* Download links */
   .doc-link {
     display: inline-flex;
     align-items: center;

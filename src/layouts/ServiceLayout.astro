@@ -1,13 +1,10 @@
 ---
-/**
- * Shared layout for individual service pages.
- * Wraps BaseLayout with service-specific hero, breadcrumbs, and CTA.
- */
 import BaseLayout from './BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { company } from '@data/company';
 import type { Service } from '@data/services';
+import type { FaqItem } from '@data/service-content';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
 
@@ -15,54 +12,65 @@ interface Props {
   service: Service;
   ctaHeading?: string;
   ctaText?: string;
+  faqs?: FaqItem[];
 }
 
-const { service, ctaHeading, ctaText } = Astro.props;
+const { service, ctaHeading, ctaText, faqs } = Astro.props;
 
-// Build structured data for this service
-const serviceJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Service',
-      name: service.name,
-      description: service.description,
-      provider: {
-        '@type': 'HomeAndConstructionBusiness',
-        name: company.name,
-        url: company.url,
-        telephone: company.phoneTel,
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: company.address.street,
-          addressLocality: company.address.city,
-          addressRegion: company.address.state,
-          postalCode: company.address.zip,
-          addressCountry: company.address.country,
-        },
+const schemaGraph: Record<string, unknown>[] = [
+  {
+    '@type': 'Service',
+    name: service.name,
+    description: service.description,
+    provider: {
+      '@type': 'HomeAndConstructionBusiness',
+      name: company.name,
+      url: company.url,
+      telephone: company.phoneTel,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: company.address.street,
+        addressLocality: company.address.city,
+        addressRegion: company.address.state,
+        postalCode: company.address.zip,
+        addressCountry: company.address.country,
       },
-      areaServed: company.areasServed.map((city) => ({
-        '@type': 'City',
-        name: city,
-        ...(city === 'Rochester' ? { containedInPlace: { '@type': 'State', name: 'New York' } } : {}),
-      })),
-      url: siteUrl(`/services/${service.slug}`),
     },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
-        { '@type': 'ListItem', position: 2, name: 'Services', item: siteUrl('/services') },
-        {
-          '@type': 'ListItem',
-          position: 3,
-          name: service.name,
-          item: siteUrl(`/services/${service.slug}`),
-        },
-      ],
-    },
-  ],
-};
+    areaServed: company.areasServed.map((city) => ({
+      '@type': 'City',
+      name: city,
+      ...(city === 'Rochester' ? { containedInPlace: { '@type': 'State', name: 'New York' } } : {}),
+    })),
+    url: siteUrl(`/services/${service.slug}`),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: siteUrl('/services') },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: service.name,
+        item: siteUrl(`/services/${service.slug}`),
+      },
+    ],
+  },
+];
+
+// Add FAQPage schema when FAQs are provided (enables FAQ rich snippets)
+if (faqs && faqs.length > 0) {
+  schemaGraph.push({
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  });
+}
+
+const serviceJsonLd = { '@context': 'https://schema.org', '@graph': schemaGraph };
 ---
 
 <BaseLayout
@@ -78,7 +86,6 @@ const serviceJsonLd = {
     image={getPhoto(service.heroImage)}
   />
 
-  <!-- Service body content (unique per page) -->
   <slot />
 
   <CtaBanner heading={ctaHeading} text={ctaText} />
