@@ -32,7 +32,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   if (!env.CHEMICAL_RECORDS) {
     return text(500, 'Chemical records database is not configured.');
   }
-  if (env.CHEMICAL_RECORD_EXPORT_KEY && !isAuthorized(request, env.CHEMICAL_RECORD_EXPORT_KEY)) {
+  if (!env.CHEMICAL_RECORD_EXPORT_KEY || !isAuthorized(request, env.CHEMICAL_RECORD_EXPORT_KEY)) {
     return text(401, 'Unauthorized.');
   }
 
@@ -129,7 +129,11 @@ function parseProducts(json: string): ProductEntry[] {
 }
 
 function csvCell(value: string): string {
-  const escaped = value.replace(/"/g, '""');
+  // Prevent spreadsheet programs from interpreting user-controlled cells as
+  // formulas when the CSV is opened. A leading apostrophe displays the value
+  // literally in Excel/Sheets while preserving the underlying record text.
+  const safe = /^[=+\-@]/.test(value) ? `'${value}` : value;
+  const escaped = safe.replace(/"/g, '""');
   return /[",\r\n]/.test(escaped) ? `"${escaped}"` : escaped;
 }
 

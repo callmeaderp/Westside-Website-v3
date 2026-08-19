@@ -58,6 +58,11 @@ interface ContactPayload {
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB (base64 is ~33% larger, so ~6.7MB in payload)
+const MAX_NAME_LENGTH = 100;
+const MAX_EMAIL_LENGTH = 254;
+const MAX_ADDRESS_LENGTH = 300;
+const MAX_MESSAGE_LENGTH = 5000;
+const MAX_FILENAME_LENGTH = 180;
 const ALLOWED_TYPES: Record<string, string> = {
   'application/pdf': '.pdf',
   'application/msword': '.doc',
@@ -92,28 +97,51 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !message?.trim()) {
     return json(400, { success: false, message: 'First name, last name, email, and message are required.' });
   }
+  if (
+    firstName.trim().length > MAX_NAME_LENGTH ||
+    lastName.trim().length > MAX_NAME_LENGTH ||
+    email.trim().length > MAX_EMAIL_LENGTH ||
+    (payload.address?.trim().length ?? 0) > MAX_ADDRESS_LENGTH ||
+    message.trim().length > MAX_MESSAGE_LENGTH
+  ) {
+    return json(400, { success: false, message: 'One or more fields are too long.' });
+  }
 
   if (!turnstileToken) {
     return json(400, { success: false, message: 'Missing verification token.' });
   }
 
-  const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      secret: env.TURNSTILE_SECRET,
-      response: turnstileToken,
-      remoteip: request.headers.get('CF-Connecting-IP') || '',
-    }),
-  });
-  const tsResult = (await tsRes.json()) as { success: boolean };
+  let tsResult: { success: boolean };
+  try {
+    const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET,
+        response: turnstileToken,
+        remoteip: request.headers.get('CF-Connecting-IP') || '',
+      }),
+    });
+    if (!tsRes.ok) {
+      throw new Error(`Turnstile returned HTTP ${tsRes.status}`);
+    }
+    tsResult = (await tsRes.json()) as { success: boolean };
+  } catch (error) {
+    console.error('Turnstile verification request failed:', error);
+    return json(503, { success: false, message: 'Verification is temporarily unavailable. Please try again.' });
+  }
   if (!tsResult.success) {
     return json(403, { success: false, message: 'Verification failed.' });
   }
 
   let resumeBytes: Uint8Array | null = null;
+  let resumeName = '';
   if (payload.resume) {
-    const { name, type, data } = payload.resume;
+    const { type, data } = payload.resume;
+    resumeName = sanitizeFilename(payload.resume.name, ALLOWED_TYPES[type] || '');
+    if (!resumeName) {
+      return json(400, { success: false, message: 'Invalid file name.' });
+    }
 
     if (!ALLOWED_TYPES[type]) {
       return json(400, { success: false, message: `Invalid file type: ${type}. PDF, DOC, or DOCX only.` });
@@ -176,7 +204,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   if (payload.resume && resumeBytes) {
     attachments.push({
       '@odata.type': '#microsoft.graph.fileAttachment',
-      name: payload.resume.name,
+      name: resumeName,
       contentType: payload.resume.type,
       contentBytes: payload.resume.data, // already base64
     });
@@ -301,6 +329,16 @@ function json(status: number, body: Record<string, unknown>): Response {
       'Access-Control-Allow-Origin': '*',
     },
   });
+}
+
+function sanitizeFilename(raw: string, expectedExtension: string): string {
+  const leaf = String(raw || '').split(/[\\/]/).pop()?.trim() || '';
+  const cleaned = leaf
+    .replace(/[ -]/g, '')
+    .replace(/["<>:|?*]/g, '_')
+    .slice(0, MAX_FILENAME_LENGTH);
+  if (!cleaned) return '';
+  return cleaned.toLowerCase().endsWith(expectedExtension) ? cleaned : `${cleaned}${expectedExtension}`;
 }
 
 function base64ToUint8Array(base64: string): Uint8Array {
