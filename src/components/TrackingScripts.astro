@@ -42,6 +42,57 @@ const googleAdsPhoneLabel = googleAdsId && company.tracking.googleAdsPhoneLabel
 const metaPixelId = company.tracking.metaPixel;
 ---
 
+<!-- Acquisition attribution capture.
+     Must run BEFORE any form script reads it, and must persist: a visitor
+     usually lands on an ad destination page with ?utm_source=... or ?gclid=...,
+     browses to /contact/, and submits from a URL with no parameters at all. We
+     capture on first pageview, keep the FIRST-touch values in sessionStorage,
+     and expose them to the form and the server notification. Nothing here is a
+     secret — these are the same values already visible in the address bar. -->
+<script is:inline>
+  (function () {
+    var KEY = '__wpl_attribution';
+    var FIELDS = [
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+      'fbclid', 'gclid', 'msclkid',
+    ];
+
+    function read() {
+      try {
+        var raw = sessionStorage.getItem(KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (_) { return null; }
+    }
+
+    var stored = read();
+    var params = new URLSearchParams(window.location.search);
+    var incoming = {};
+    var sawAny = false;
+    FIELDS.forEach(function (f) {
+      var v = params.get(f);
+      if (v) { incoming[f] = v.slice(0, 200); sawAny = true; }
+    });
+
+    // First touch wins — a later untagged pageview must not erase the campaign
+    // that actually produced the visit.
+    if (sawAny && !stored) {
+      incoming.landing_page = window.location.pathname + window.location.search;
+      incoming.referrer = document.referrer ? document.referrer.slice(0, 300) : '';
+      try { sessionStorage.setItem(KEY, JSON.stringify(incoming)); } catch (_) { /* private mode */ }
+      stored = incoming;
+    } else if (!stored) {
+      // No campaign parameters anywhere — still record where they came from.
+      stored = {
+        landing_page: window.location.pathname + window.location.search,
+        referrer: document.referrer ? document.referrer.slice(0, 300) : '',
+      };
+      try { sessionStorage.setItem(KEY, JSON.stringify(stored)); } catch (_) { /* private mode */ }
+    }
+
+    window.__wplAttribution = function () { return read() || stored || {}; };
+  })();
+</script>
+
 <!-- Internal traffic gate + gtag/fbq stubs (must run immediately) -->
 <script is:inline define:vars={{ ga4Id, googleAdsId, metaPixelId }}>
   // Internal traffic detection

@@ -13,9 +13,11 @@ interface Props {
   ctaHeading?: string;
   ctaText?: string;
   faqs?: FaqItem[];
+  /** Hero call-to-action buttons. Without these the hero is a dead end. */
+  heroButtons?: Array<{ text: string; href: string; style: 'primary' | 'dark' | 'outline' }>;
 }
 
-const { service, ctaHeading, ctaText, faqs } = Astro.props;
+const { service, ctaHeading, ctaText, faqs, heroButtons } = Astro.props;
 
 const schemaGraph: Record<string, unknown>[] = [
   {
@@ -84,6 +86,10 @@ const serviceJsonLd = { '@context': 'https://schema.org', '@graph': schemaGraph 
     heading={service.heroHeading}
     intro={service.heroIntro}
     image={getPhoto(service.heroImage)}
+    buttons={heroButtons ?? [
+      { text: service.cta, href: `/contact/?service=${service.slug}`, style: 'primary' },
+      { text: `Call ${company.phone}`, href: company.phoneHref, style: 'outline' },
+    ]}
   />
 
   <slot />

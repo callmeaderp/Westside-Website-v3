@@ -41,6 +41,18 @@ export interface ServiceContent {
   relatedSlugs: ServiceSlug[];
   ctaHeading: string;
   ctaText: string;
+  /**
+   * Hero buttons for this service. Without these the generic ServiceLayout
+   * hero has no call to action at all and the visitor has to scroll to find
+   * one — the single biggest funnel leak on the construction pages.
+   */
+  heroButtons?: Array<{ text: string; href: string; style: 'primary' | 'dark' | 'outline' }>;
+  /** Investment-band ids (src/data/investment.ts) to publish on this page. */
+  investmentBandIds?: string[];
+  investmentTitle?: string;
+  investmentIntro?: string;
+  /** Project slugs (src/data/projects.ts) to feature as proof. */
+  featuredProjectSlugs?: string[];
 }
 
 export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
@@ -57,7 +69,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     detailSubtitle: 'Comprehensive landscape design solutions for residential and commercial properties throughout the Greater Rochester area.',
     detailCards: [
       {
-        title: 'CUSTOM LANDSCAPE ARCHITECTURE',
+        title: 'CUSTOM LANDSCAPE DESIGN',
         text: "Our designers create <strong>detailed landscape plans</strong> that account for every element of your property. We consider sight lines, traffic patterns, seasonal interest, and long-term growth to deliver a design that looks beautiful today and matures gracefully over the years. Homeowners in Pittsford, Brighton, and Penfield trust us to match their landscape to their home's architectural style.",
         features: ['Full property design plans', 'Phased installation options', "Plant selection for Rochester's climate"],
       },
@@ -89,7 +101,11 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does landscape design cost in Rochester?',
-        answer: 'Costs vary based on the scope of the project, property size, and materials selected. We provide free on-site consultations and detailed estimates so you know exactly what to expect before any work begins. Most residential projects in the Greater Rochester area range from a few thousand dollars for targeted enhancements to significantly more for full property transformations.',
+        answer: 'It depends on scope \u2014 a targeted front-entry redesign and a full property transformation are different projects. The ranges published above cover the renovation work we do most often in the Greater Rochester area. Design itself is developed as part of the proposal for the projects we build. Every number is a planning figure until we walk the property; you get a written, itemized estimate before any work begins.',
+      },
+      {
+        question: 'Do you have a licensed landscape architect on staff?',
+        answer: "No, and we won't claim otherwise \u2014 in New York, \"landscape architect\" is a title protected by state license. We are a design-build landscape contractor: our designers produce the layout drawings, plant schedules, grading intent, and material specifications for the work our own crews install. If a project needs stamped drawings or a licensed professional's involvement, we will tell you that up front.",
       },
       {
         question: 'What is the best time of year to start a landscaping project?',
@@ -104,7 +120,15 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         answer: 'Timeline depends on the project scope. A targeted front-entry redesign might take a few days, while a full property transformation with hardscaping, planting, and grading can take several weeks. We provide a detailed timeline during the proposal phase so you can plan accordingly.',
       },
     ],
-    relatedSlugs: ['hardscaping', 'water-features', 'landscape-maintenance'],
+    heroButtons: [
+      { text: 'Start Your Design', href: '/contact/?service=landscape-design', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['landscape-renovation', 'walkway-entry', 'full-backyard'],
+    investmentIntro:
+      'Design and installation scope varies more than any other service we offer. These are the ranges renovation projects in Greater Rochester typically land in.',
+    featuredProjectSlugs: ['front-walkway-planting-beds', 'commercial-courtyard-paver-plaza', 'stone-retaining-wall-shade-garden'],
+    relatedSlugs: ['hardscaping', 'walkways-steps', 'drainage-grading'],
     ctaHeading: 'READY TO DESIGN YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">DREAM LANDSCAPE?</span>',
     ctaText: "Schedule a <strong>free on-site consultation</strong>. We'll walk your property, discuss your vision, and develop a plan that fits your budget.",
   },
@@ -169,6 +193,10 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         question: 'When should spring cleanup happen in Rochester?',
         answer: "Spring cleanup in the Rochester area typically begins in late March or early April, once the snow has melted and the ground is firm enough to work. We remove winter debris, cut back dead perennials, clean out beds, and prepare your landscape for the growing season. Booking early ensures you're first on the schedule.",
       },
+    ],
+    heroButtons: [
+      { text: 'Get a Maintenance Quote', href: '/contact/?service=landscape-maintenance', style: 'primary' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
     relatedSlugs: ['plant-health', 'landscape-design', 'snow-ice-management'],
     ctaHeading: 'KEEP YOUR PROPERTY LOOKING ITS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">BEST</span>',
@@ -253,6 +281,10 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         answer: "We serve Rochester and the surrounding communities throughout Monroe County — including Pittsford, Brighton, Penfield, Webster, Fairport, Greece, Gates, Chili, Spencerport, Henrietta, and more. See our full <a href=\"/service-areas/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">service areas page</a> for the complete list. If you're not sure, just call — if we can get there, we'll service you.",
       },
     ],
+    heroButtons: [
+      { text: 'Get a Free Lawn Care Quote', href: '/contact/?service=lawn-care', style: 'primary' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
+    ],
     relatedSlugs: ['plant-health', 'landscape-maintenance', 'artificial-grass'],
     ctaHeading: 'READY FOR A LAWN YOU\'RE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">PROUD OF?</span>',
     ctaText: "Get a <strong>free on-site lawn evaluation</strong>. We'll walk your property, tell you honestly what it needs, and give you a clear itemized quote.",
@@ -262,32 +294,34 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Craftsmanship That Endures',
     introTitle: 'OUTDOOR SPACES BUILT FOR <span class="text-green">ROCHESTER</span>',
     introText: [
-      `Rochester\u2019s <strong>freeze-thaw cycles</strong> put outdoor structures to the test. A patio or retaining wall that isn\u2019t built with proper base preparation and drainage will heave, crack, and fail within a few winters. At Westside Professional Landscape, we\u2019ve been building hardscapes across Monroe County for over ${yearsInBusiness} years \u2014 and <strong>we build them to last</strong>.`,
+      `Rochester’s <strong>freeze-thaw cycles</strong> put outdoor structures to the test. A patio or retaining wall that isn’t built with proper base preparation and drainage will heave, crack, and fail within a few winters. At Westside Professional Landscape, we’ve been building hardscapes across Monroe County for over ${yearsInBusiness} years — and <strong>we build them to last</strong>.`,
       "Our crews understand the engineering that goes into a durable installation: compacted aggregate bases, proper pitch for water drainage, polymeric sand for joint stability, and the right materials for our climate. Whether you're a homeowner in Pittsford looking for an elegant patio or a commercial property in Greece that needs a functional retaining wall, we bring the same level of precision to every project.",
+      'Most people arrive here with two questions: <em>what would this cost</em>, and <em>what does the process look like</em>. Both are answered on this page, before you have to talk to anyone.',
     ],
+    introCta: 'Start Your Project',
     detailLabel: 'What We Build',
     detailTitle: 'HARDSCAPING <span class="text-green">SERVICES</span>',
     detailSubtitle: "Built to withstand Rochester's demanding four-season climate.",
     detailCards: [
       {
-        title: 'PATIOS & OUTDOOR KITCHENS',
-        text: "Create the <em>ultimate outdoor entertaining space</em>. We build patios from natural stone, pavers, and concrete in configurations that complement your home's architecture. Add a built-in grill, countertop, or bar for a fully functional outdoor kitchen.",
-        features: ['Natural stone & paver options', 'Built-in grills & counters', 'Seating walls & pergolas'],
+        title: 'PATIOS & OUTDOOR ROOMS',
+        text: "Create the <em>ultimate outdoor entertaining space</em>. We build patios from natural stone, pavers, and large-format slab in configurations that complement your home's architecture — seat walls, steps, and integrated lighting turn a surface into a room you actually use.",
+        features: ['Natural stone & paver options', 'Seat walls, pillars & steps', 'Low-voltage lighting integration'],
       },
       {
         title: 'RETAINING & DECORATIVE WALLS',
-        text: 'Manage slopes, prevent erosion, and add architectural interest with properly engineered retaining walls. From small garden walls to large structural installations, we use segmental block, natural stone, and boulder systems sized for the load.',
-        features: ['Engineered structural walls', 'Natural stone & boulder walls', 'Proper drainage & backfill'],
+        text: 'Manage slopes, prevent erosion, and add architectural interest with properly built retaining walls. From small garden walls to large structural installations, we use segmental block, natural stone, and boulder systems sized for the load. <a href="/services/retaining-walls/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">More on retaining walls</a>.',
+        features: ['Structural block & stone walls', 'Natural stone & boulder walls', 'Drainage stone & backfill standard'],
       },
       {
         title: 'WALKWAYS & STEPS',
-        text: "Guide visitors to your front door or connect outdoor living areas with elegant walkways and steps. We build with pavers, flagstone, and natural stone to create paths that are both beautiful and safe in all weather conditions — including Rochester's icy winters.",
-        features: ['Front entry walkways', 'Garden paths & stepping stones', 'Natural stone steps'],
+        text: "Guide visitors to your front door or connect outdoor living areas with elegant walkways and steps. We build with pavers, flagstone, and natural stone to create paths that are both beautiful and safe in all weather conditions — including Rochester's icy winters. <a href=\"/services/walkways-steps/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">More on walkways and entries</a>.",
+        features: ['Front entry walkways & landings', 'Garden paths & stepping stones', 'Natural stone & paver steps'],
       },
       {
-        title: 'FIRE PITS & FIREPLACES',
-        text: 'Extend your outdoor season with a custom fire feature. From simple fire pits for casual evenings to full outdoor fireplaces that become a backyard focal point, we design and build fire features that bring warmth and ambiance to your outdoor living space.',
-        features: ['Custom fire pits', 'Outdoor fireplaces', 'Gas & wood-burning options'],
+        title: 'FIRE FEATURES & OUTDOOR KITCHENS',
+        text: 'Extend your outdoor season with a fire pit, fire table, or full masonry fireplace, and stop hauling everything in and out with a built-in grill and prep counter. <a href="/services/outdoor-kitchens/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">More on kitchens and fire features</a>.',
+        features: ['Wood & gas fire pits', 'Outdoor fireplaces', 'Stone bars & built-in grills'],
       },
       {
         title: 'DRIVEWAYS & PARKING AREAS',
@@ -295,20 +329,37 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         features: ['Paver & stone driveways', 'Commercial parking areas', 'Permeable paver systems'],
       },
       {
-        title: 'PERGOLAS & SHADE STRUCTURES',
-        text: 'Define outdoor rooms and add shade with custom pergolas, arbors, and shade structures. We build with wood, vinyl, and aluminum to match your aesthetic and maintenance preferences. Perfect for framing a patio, dining area, or garden entrance.',
-        features: ['Custom pergolas & arbors', 'Multiple material options', 'Integrated lighting available'],
+        title: 'DRAINAGE BUILT INTO THE WORK',
+        text: 'Every hardscape we build is a water-management decision. Pitch, base permeability, wall drainage, and where the runoff ends up are designed in from the start — not discovered the first spring. <a href="/services/drainage-grading/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">More on drainage and grading</a>.',
+        features: ['Designed pitch & runoff paths', 'Wall drainage & filter fabric', 'Downspout & catch basin tie-ins'],
       },
     ],
-    processSteps: [],
+    processLabel: 'How It Works',
+    processTitle: 'FROM FIRST CALL TO <span class="text-green">FINISHED BUILD</span>',
+    processSubtitle: 'No mystery and no surprise change orders. Here is exactly how a construction project runs with us.',
+    processSteps: [
+      { title: 'SITE VISIT', text: 'We walk the property with you, take measurements, check grade and drainage, and talk honestly about what your budget will and will not reach.' },
+      { title: 'DESIGN & PROPOSAL', text: 'You get a layout, material selections, and a written itemized estimate — scope, materials, and price on paper before anything is committed.' },
+      { title: 'EXCAVATION & BASE', text: 'The part nobody photographs and everything depends on: excavation, disposal, compacted aggregate base, and drainage. This is where a build lasts or fails.' },
+      { title: 'BUILD', text: 'Pavers, walls, steps, and features go in. Our own crews do the work — we stay on your property until the build is finished.' },
+      { title: 'WALKTHROUGH', text: 'We walk the finished project with you, close out the punch list, and explain how to care for the surface so it still looks right in year ten.' },
+    ],
     faqs: [
       {
+        question: 'How much does a paver patio cost in Rochester?',
+        answer: "It depends on size, access, how much excavation and disposal the site needs, and what you build into it. As a planning figure, compact seating patios in the Greater Rochester area typically begin around <strong>$9,000</strong>, and patios built as full outdoor rooms — seat walls, steps, a fire feature, lighting — commonly run <strong>$18,000 to $45,000</strong>. The ranges published on this page cover our usual project mix. They are planning figures, not quotes: your written estimate comes after we walk the property.",
+      },
+      {
+        question: 'Why is one contractor thousands cheaper than another for the same patio?',
+        answer: "Almost always the base. A patio is several inches of compacted aggregate you never see plus one layer you do. Cutting base depth, skipping geotextile, skipping compaction, or skipping the drainage detail saves real money on day one and shows up as heaving and settling within a few Rochester winters. Ask any bid you receive what the base depth is, how it is compacted, and where the water goes — the answers usually explain the price gap.",
+      },
+      {
         question: "How long do pavers last in Rochester's climate?",
-        answer: "Properly installed pavers last 25\u201350 years or more, even in Rochester's demanding freeze-thaw climate. The key is proper base preparation \u2014 a compacted aggregate base with correct depth, adequate drainage, and polymeric sand joints. We engineer every installation for our specific climate conditions.",
+        answer: "Properly installed pavers last 25–50 years or more, even in Rochester's demanding freeze-thaw climate. The key is proper base preparation — a compacted aggregate base with correct depth, adequate drainage, and polymeric sand joints. We build every installation for our specific climate conditions.",
       },
       {
         question: 'Do I need a permit for a patio or retaining wall?',
-        answer: "In most Rochester-area municipalities, standard patios don't require a building permit. Retaining walls over a certain height (typically 4 feet) often do, and some towns require permits for structures near property lines. We handle the permitting process and ensure your project meets all local codes.",
+        answer: "In most Rochester-area municipalities, standard patios don't require a building permit. Retaining walls over a certain height (typically 4 feet) often do, and some towns require permits for structures near property lines. We handle the permitting process and make sure your project meets local code.",
       },
       {
         question: "What's the best patio material for Rochester?",
@@ -316,12 +367,365 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Can hardscape work be done in the fall or winter?',
-        answer: "Fall is actually an excellent time for hardscaping in Rochester \u2014 cooler weather is easier on crews, and you avoid the spring rush. We can install pavers and walls into November as long as the ground isn't frozen. Winter is ideal for planning and design so you're ready to build when the season opens.",
+        answer: "Fall is actually an excellent time for hardscaping in Rochester — cooler weather is easier on crews, and you avoid the spring rush. We can install pavers and walls into November as long as the ground isn't frozen. Winter is ideal for planning and design so you're ready to build when the season opens.",
+      },
+      {
+        question: 'Can I finance a hardscape project?',
+        answer: 'Yes. We offer financing through <strong>Wells Fargo</strong>, so a larger project can be paid over time rather than all at once. You can apply directly from the financing section on this page; approval and terms are handled by Wells Fargo, not by us.',
+      },
+      {
+        question: 'How long does a patio project take?',
+        answer: 'Most residential patios are a one- to two-week build once we start, depending on size, excavation volume, and whether walls, steps, and features are included. Weather moves schedules in Rochester — we give you a realistic window in the proposal and tell you when it changes rather than leaving you guessing.',
       },
     ],
-    relatedSlugs: ['landscape-design', 'water-features', 'holiday-lighting'],
+    heroButtons: [
+      { text: 'Start Your Project', href: '/contact/?service=hardscaping', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['patio-small', 'patio-outdoor-room', 'outdoor-kitchen', 'retaining-wall', 'walkway-entry', 'full-backyard'],
+    investmentTitle: 'WHAT PROJECTS LIKE YOURS <span class="text-green">TYPICALLY RUN</span>',
+    investmentIntro:
+      'Most contractors make you book an appointment just to learn whether you are in the right ballpark. Here are the ranges our completed Greater Rochester projects actually land in, so you can decide before you pick up the phone.',
+    featuredProjectSlugs: [
+      'lit-bar-patio-outdoor-room',
+      'circular-brick-patio-seat-wall',
+      'multi-level-patio-seat-wall',
+      'front-entry-steps-wall-rebuild',
+    ],
+    relatedSlugs: ['walkways-steps', 'retaining-walls', 'outdoor-kitchens'],
     ctaHeading: "LET'S BUILD SOMETHING <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">BEAUTIFUL</span>",
     ctaText: 'Every great outdoor space starts with a conversation. Tell us about your project and we\'ll make it happen.',
+  },
+
+  'walkways-steps': {
+    introLabel: 'Curb Appeal & Safety',
+    introTitle: 'THE PROJECT PEOPLE <span class="text-green">NOTICE FIRST</span>',
+    introText: [
+      'A settled front step, a walk that has heaved into a trip hazard, or a path so narrow two people cannot walk it side by side — these are the details every guest registers before they reach your door, and the ones homeowners live with the longest because they seem too small to bother with.',
+      'They are also the fastest hardscape project to turn around. A front entry rebuild is usually a <strong>few days on site</strong>, not a few weeks, and it changes the first impression of the entire property. If your budget is not ready for a full backyard build, this is where it does the most visible work.',
+    ],
+    introCta: 'Get a Free Estimate',
+    detailLabel: 'What We Build',
+    detailTitle: 'WALKWAYS, STEPS & <span class="text-green">ENTRIES</span>',
+    detailSubtitle: 'Rebuilt level, rebuilt safe, and rebuilt on a base that survives Rochester winters.',
+    detailCards: [
+      {
+        title: 'FRONT ENTRY WALKWAYS',
+        text: "The walk from the driveway or street to the front door. We size it so two people can walk together, run it on the line people <em>actually</em> use rather than the line the builder drew, and finish it with a contrasting soldier-course border so it reads as designed rather than poured.",
+        features: ['Paver, flagstone & natural stone', 'Widened for two-abreast walking', 'Contrasting borders & banding'],
+      },
+      {
+        title: 'ENTRY LANDINGS & STEPS',
+        text: "Settled or out-of-level steps are the most common repair we are called for, and they are a genuine liability. We remove the failing structure, rebuild on a compacted base, and set risers to a consistent height — uneven riser heights are what actually causes falls.",
+        features: ['Full step removal & rebuild', 'Consistent riser heights', 'Wide landings at the door'],
+      },
+      {
+        title: 'STONE STEPS & GRADE CHANGES',
+        text: 'Where a property drops away, natural stone slab steps and terraced landings handle the grade without the boxed-in look of a poured stair. Often paired with a low wall that holds the surrounding bed and makes the change of level intentional.',
+        features: ['Natural stone slab treads', 'Terraced landings', 'Integrated low walls'],
+      },
+      {
+        title: 'GARDEN & CONNECTING PATHS',
+        text: 'Paths that link the parts of your property people actually travel between — driveway to side entry, patio to garden, house to a fire pit at the back of the lot. Narrower and more informal than a front walk, and often the thing that makes a large yard finally feel used.',
+        features: ['Stepping stone & paver paths', 'Informal garden routes', 'Path lighting integration'],
+      },
+    ],
+    processLabel: 'How It Works',
+    processTitle: 'OUR ENTRY <span class="text-green">PROCESS</span>',
+    processSubtitle: 'Short projects, but the same base work as a full patio — that is the whole point.',
+    processSteps: [
+      { title: 'SITE VISIT', text: 'We measure, check how the grade and water move, and look at where people are actually walking today.' },
+      { title: 'PROPOSAL', text: 'Layout, materials, and a written itemized price. No pressure to decide on the spot.' },
+      { title: 'REMOVE & BASE', text: 'The failing walk or steps come out, and a compacted aggregate base goes in at full depth.' },
+      { title: 'BUILD & FINISH', text: 'Pavers or stone are set, borders and jointing are finished, and the surrounding beds and lawn edge are restored.' },
+    ],
+    faqs: [
+      {
+        question: 'How much does a new front walkway cost in Rochester?',
+        answer: 'Front walkway and entry projects in the Greater Rochester area typically begin around <strong>$7,500</strong> and run to roughly <strong>$16,000</strong> when they include new steps, a wider landing, a retaining element, and rebuilt planting beds. That is a planning range, not a quote — length, material, how much of the old walk has to come out, and access all move the number.',
+      },
+      {
+        question: 'Why do my front steps keep settling?',
+        answer: "Almost always insufficient base. If steps were set on native soil or a thin layer of stone, Rochester's freeze-thaw cycles lift and drop them every winter until the risers go out of level. The fix is not resetting the top course — it is excavating and rebuilding on a properly compacted aggregate base with somewhere for water to go.",
+      },
+      {
+        question: 'Can you match my existing pavers?',
+        answer: "Sometimes. Paver lines change and colors are discontinued, so an exact match on older work is not always possible. Where it is not, we usually recommend a deliberate contrast — a complementary border or a different but coordinated field — because a near-match reads as a mistake while an intentional contrast reads as design. We show you options before ordering.",
+      },
+      {
+        question: 'How long does a front entry project take?',
+        answer: 'Most front walkway and step projects are a <strong>two- to four-day build</strong> once we start. You will have a temporary route to the door throughout. Weather can shift the start date; we tell you when it does.',
+      },
+      {
+        question: 'Do I need a permit for a walkway or steps?',
+        answer: 'Standard walkways and entry steps generally do not require a building permit in Rochester-area municipalities. Retaining elements above a certain height and work close to a property line sometimes do. We check the requirements for your town and handle the permitting where one is needed.',
+      },
+    ],
+    heroButtons: [
+      { text: 'Get a Free Estimate', href: '/contact/?service=walkways-steps', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['walkway-entry', 'landscape-renovation'],
+    investmentIntro:
+      'Entry projects are the most predictable construction work we do, which is why we can publish a fairly tight range for them.',
+    featuredProjectSlugs: ['front-entry-steps-wall-rebuild', 'front-walkway-planting-beds'],
+    relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
+    ctaHeading: 'FIX THE FIRST THING EVERYONE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEES</span>',
+    ctaText: "Send us a photo of your entry and we'll tell you honestly what it needs. <strong>Free on-site estimate</strong>, no obligation.",
+  },
+
+  'retaining-walls': {
+    introLabel: 'Structural Hardscape',
+    introTitle: 'A WALL IS A <span class="text-green">STRUCTURE</span>',
+    introText: [
+      'A retaining wall holds back soil, and soil is heavy — heavier still once it is saturated by a Rochester spring. That is why walls fail: not because the block was wrong, but because water got behind them with nowhere to go, and the hydrostatic pressure pushed the face out.',
+      '<strong>Drainage stone, filter fabric, and compacted backfill behind the wall are not upgrades.</strong> They are the wall. What you see is the finish. We build the part you do not see to the same standard either way, which is why our bids sometimes come in above a wall that will lean within five years.',
+    ],
+    introCta: 'Get a Free Estimate',
+    detailLabel: 'What We Build',
+    detailTitle: 'RETAINING & <span class="text-green">SEAT WALLS</span>',
+    detailSubtitle: 'From a low garden wall to a terraced structural install.',
+    detailCards: [
+      {
+        title: 'SEGMENTAL BLOCK WALLS',
+        text: 'The workhorse of Rochester retaining work: manufactured units in a range of textures and colors, dry-stacked with a batter and locked with a pin or lip system. Fast to build, consistent, and available in the heavier units that taller walls require.',
+        features: ['Multiple textures & colors', 'Capped and finished tops', 'Sized to the retained load'],
+      },
+      {
+        title: 'NATURAL STONE & BOULDER WALLS',
+        text: 'Quarried stone and placed boulders for a wall that looks like it belongs to the site rather than to a catalog. Boulder walls in particular handle irregular grade well and read as landscape rather than as construction.',
+        features: ['Quarried & fieldstone options', 'Placed boulder walls', 'Naturalistic grade transitions'],
+      },
+      {
+        title: 'SEAT WALLS & PILLARS',
+        text: 'Low walls at seating height around a patio, often with lit pillars at the corners or flanking the steps. They define the outdoor room, add permanent seating that never needs to be stored for winter, and carry the lighting.',
+        features: ['Seating-height wall runs', 'Lit stone pillars', 'Integrated low-voltage lighting'],
+      },
+      {
+        title: 'TERRACED & MULTI-LEVEL WALLS',
+        text: 'On a steep grade, two or three shorter walls with planted terraces between them often outperform one tall wall — less load on each structure, more usable planted area, and a much better look from the house.',
+        features: ['Stepped terrace design', 'Planted intermediate levels', 'Reduced load per structure'],
+      },
+      {
+        title: 'FAILING WALL ASSESSMENT & REBUILD',
+        text: 'If your wall is leaning, bulging, or shedding units, we will tell you honestly whether it can be reset or has to come out. Rebuilding a wall that is going to fail again is a waste of your money and our time.',
+        features: ['Honest reset vs. rebuild call', 'Root cause diagnosis', 'Drainage corrected on rebuild'],
+      },
+      {
+        title: 'DRAINAGE BEHIND THE WALL',
+        text: 'Every wall we build gets drainage stone behind the face, filter fabric to keep fines out of that stone, and an outlet path for the water. Where the volume warrants it, a perforated drain line runs the length of the wall to daylight.',
+        features: ['Clean drainage stone backfill', 'Filter fabric separation', 'Perforated drain to daylight'],
+      },
+    ],
+    processLabel: 'How It Works',
+    processTitle: 'HOW WE BUILD A <span class="text-green">WALL</span>',
+    processSubtitle: 'Most of this work is invisible when we leave. That is the point.',
+    processSteps: [
+      { title: 'ASSESS', text: 'We look at the grade, what the wall has to hold, how water moves across the site, and whether a permit applies at that height.' },
+      { title: 'PROPOSAL', text: 'Wall type, height, length, materials, drainage detail, and a written itemized price.' },
+      { title: 'EXCAVATE & BASE', text: 'We over-excavate behind the wall line and compact a leveling pad — the base course sets the accuracy of every course above it.' },
+      { title: 'BUILD & BACKFILL', text: 'Units go up with the correct batter, drainage stone and fabric go in behind as we climb, and backfill is compacted in lifts.' },
+      { title: 'CAP & RESTORE', text: 'Caps are set and secured, the terrace above is graded and planted, and the surrounding lawn is restored.' },
+    ],
+    faqs: [
+      {
+        question: 'How much does a retaining wall cost in Rochester?',
+        answer: 'Retaining wall projects here typically run <strong>$12,000 to $65,000</strong>. That is a wide range because height drives it non-linearly: a 3-foot garden wall and a 6-foot structural wall of the same length are different projects with different excavation, different units, and sometimes an engineering requirement. Square face footage, access for equipment, and material choice set where you land. It is a planning range, not a quote.',
+      },
+      {
+        question: 'Why is my retaining wall leaning?',
+        answer: 'Nearly always water. If drainage stone and an outlet were not built in behind the wall, saturated soil pushes on the back of the face with pressure the units were never meant to take, and the wall rotates outward. Frost heave from that same trapped water accelerates it. A leaning wall is telling you about its backfill, not its block.',
+      },
+      {
+        question: 'Do I need a permit or an engineer for a retaining wall?',
+        answer: 'It depends on height and your municipality. Many Rochester-area towns require a permit above roughly 4 feet, and taller or surcharged walls — a wall holding back a driveway or a structure — can require a licensed engineer’s design. We check what your town requires, tell you honestly if a project needs engineering, and handle the permitting.',
+      },
+      {
+        question: 'Can you repair a wall instead of replacing it?',
+        answer: 'Sometimes. If the base is sound and only the top courses have shifted, a reset can be worth doing. If the wall is leaning from the bottom, bulging mid-face, or was built without drainage, a reset just buys a season or two. We give you the honest call and the reasoning, and let you decide.',
+      },
+      {
+        question: 'How tall can a segmental block wall be?',
+        answer: 'Taller than most people expect, with the right units, geogrid reinforcement, and engineering. In practice we more often recommend terracing — two shorter walls with a planted bench between them usually costs less than one tall reinforced wall and looks considerably better from the house.',
+      },
+    ],
+    heroButtons: [
+      { text: 'Get a Free Estimate', href: '/contact/?service=retaining-walls', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['retaining-wall', 'patio-outdoor-room'],
+    investmentIntro:
+      'Wall pricing is driven by square face footage, height, and what the wall is holding back — which is why the honest range is wide until we see the site.',
+    featuredProjectSlugs: ['stone-retaining-wall-shade-garden', 'front-entry-steps-wall-rebuild', 'multi-level-patio-seat-wall'],
+    relatedSlugs: ['hardscaping', 'drainage-grading', 'walkways-steps'],
+    ctaHeading: 'BUILD IT ONCE, BUILD IT <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">RIGHT</span>',
+    ctaText: "Whether it's a new wall or one that's already failing, we'll walk the site and give you an honest assessment. <strong>Free estimate</strong>.",
+  },
+
+  'outdoor-kitchens': {
+    introLabel: 'Outdoor Living',
+    introTitle: 'WHERE THE EVENING <span class="text-green">ACTUALLY HAPPENS</span>',
+    introText: [
+      'A fire feature is the single highest-return addition to a Rochester patio, because it adds weeks to each end of a short outdoor season. People stay outside in September and October around a fire in a way they simply do not around an empty patio.',
+      'An outdoor kitchen solves a different problem: the trip back inside. A built-in grill, a prep counter, and somewhere to set a drink means the person cooking is still part of the evening instead of shuttling between the patio and the kitchen all night.',
+      '<strong>Both are best planned with the patio.</strong> Utility runs, structural footings, and the seating layout around a fire are far cheaper to design in than to retrofit into a finished surface later.',
+    ],
+    introCta: 'Get a Free Estimate',
+    detailLabel: 'What We Build',
+    detailTitle: 'KITCHENS & <span class="text-green">FIRE FEATURES</span>',
+    detailSubtitle: 'From a simple fire pit to a full masonry cooking run.',
+    detailCards: [
+      {
+        title: 'FIRE PITS',
+        text: 'The most common way people extend their season. A masonry fire pit sized and sited so the seating around it actually works — too small and nobody can sit back, too close to the house and the smoke finds the windows.',
+        features: ['Wood-burning & gas', 'Sized to the seating circle', 'Built into the patio field'],
+      },
+      {
+        title: 'OUTDOOR FIREPLACES',
+        text: 'A full masonry fireplace becomes the backdrop of the whole backyard and gives you a wall to build seating against. Bigger commitment than a fire pit, and a fundamentally different piece of architecture.',
+        features: ['Full masonry construction', 'Hearth & seating integration', 'Chimney sited for prevailing wind'],
+      },
+      {
+        title: 'BUILT-IN GRILLS & COOKING RUNS',
+        text: "A stone-faced counter run with a cutout for the grill, prep space beside it, and storage below. Sized around the appliance you actually want — we spec the cutout to the unit before a single block is set.",
+        features: ['Appliance-specific cutouts', 'Granite & stone counters', 'Access doors & storage'],
+      },
+      {
+        title: 'BARS & SERVING COUNTERS',
+        text: 'A raised bar overhang with stool seating turns the cooking side into the social side. It is also the detail that most reliably makes a patio look finished rather than furnished.',
+        features: ['Bar-height overhangs', 'Stool seating clearance', 'Under-counter accent lighting'],
+      },
+    ],
+    processLabel: 'How It Works',
+    processTitle: 'PLANNING A FIRE OR <span class="text-green">KITCHEN FEATURE</span>',
+    processSubtitle: 'The sequencing matters more here than anywhere else in hardscape.',
+    processSteps: [
+      { title: 'HOW YOU USE IT', text: 'Who cooks, how many people gather, and what time of year you are outside. The answers drive size and placement more than style does.' },
+      { title: 'LAYOUT & UTILITIES', text: 'We locate the feature for wind, smoke, and seating flow, then plan any gas or electrical runs before the base goes in.' },
+      { title: 'PROPOSAL', text: 'Materials, appliance specifications, layout, and a written itemized price.' },
+      { title: 'BUILD', text: 'Footings and base first, then masonry, counters, and appliances, with lighting run through the structure as it goes up.' },
+    ],
+    faqs: [
+      {
+        question: 'How much does an outdoor kitchen cost in Rochester?',
+        answer: 'A stone bar and counter run with a built-in grill typically begins around <strong>$15,000</strong>, and full cooking-and-gathering builds — larger runs, more appliances, a fireplace, granite counters — go well beyond that. A simple masonry fire pit built into an existing patio is a much smaller project. These are planning figures; appliance selection alone can move a kitchen budget by five figures.',
+      },
+      {
+        question: 'Gas or wood-burning fire pit?',
+        answer: 'Gas lights instantly, produces no smoke or sparks, and shuts off when you go inside — better for frequent, casual use and for smaller yards with close neighbors. Wood gives you the smell and the sound and costs less to build, but it needs storage, cleanup, and more clearance. Gas requires a line run, which is why it is far cheaper to decide before the patio is built.',
+      },
+      {
+        question: 'Can you add a kitchen or fire feature to my existing patio?',
+        answer: 'Usually yes. The constraints are whether the existing base can carry the load of a masonry structure, whether utilities can be run without tearing up the field, and whether there is clearance for both the feature and the seating around it. We assess all three on site and tell you honestly if the retrofit makes sense.',
+      },
+      {
+        question: 'How close to my house can a fire feature be?',
+        answer: "Clearance requirements vary by municipality and by whether the feature is gas or wood-burning, and there are practical considerations beyond code — prevailing wind will decide whether smoke ends up on your patio or in your bedroom window. We site it for both, and we check the local requirements for your town.",
+      },
+      {
+        question: 'Do outdoor kitchens work through Rochester winters?',
+        answer: 'The masonry does, when built with proper footings below frost. Appliances and water lines are the vulnerable part: any plumbing needs to be blown out before the freeze, and grills and refrigerators should be covered or pulled for the season. We walk you through the winterization at the final walkthrough.',
+      },
+    ],
+    heroButtons: [
+      { text: 'Get a Free Estimate', href: '/contact/?service=outdoor-kitchens', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['outdoor-kitchen', 'patio-outdoor-room'],
+    investmentIntro:
+      'Fire and kitchen features are usually built with a patio, so these ranges assume the surface is part of the project or already exists.',
+    featuredProjectSlugs: ['stone-outdoor-kitchen-bar', 'circular-brick-patio-seat-wall', 'lit-bar-patio-outdoor-room'],
+    relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
+    ctaHeading: 'EXTEND YOUR OUTDOOR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEASON</span>',
+    ctaText: "Tell us how you'd actually use the space and we'll design around that. <strong>Free on-site estimate</strong>.",
+  },
+
+  'drainage-grading': {
+    introLabel: 'Water Management',
+    introTitle: 'MOVE THE WATER <span class="text-green">FIRST</span>',
+    introText: [
+      "Standing water in the same spot every spring, a soggy strip along the foundation, mulch washing across the walk, a corner of lawn that never quite recovers — these are grade and drainage problems, and no amount of new plant material or fresh mulch fixes them.",
+      "Rochester makes this worse than most places: heavy clay subsoil that drains slowly, plenty of flat lots, and a freeze-thaw cycle that keeps rearranging the surface. Water that has nowhere to go finds your foundation.",
+      '<strong>Drainage is the least glamorous work we do and the most likely to protect everything else on the property.</strong> It is also the work that has to happen before a patio, a wall, or a planting bed goes in — not after.',
+    ],
+    introCta: 'Get a Free Estimate',
+    detailLabel: 'What We Install',
+    detailTitle: 'DRAINAGE & <span class="text-green">GRADING SOLUTIONS</span>',
+    detailSubtitle: "Matched to the actual problem, not sold as a package.",
+    detailCards: [
+      {
+        title: 'FRENCH & CURTAIN DRAINS',
+        text: 'A perforated pipe in a stone-filled trench wrapped in filter fabric, intercepting subsurface water and carrying it somewhere useful. The most common fix for a chronically wet lawn area or a wet foundation wall.',
+        features: ['Perforated pipe & clean stone', 'Filter fabric wrap', 'Outlet to daylight or dry well'],
+      },
+      {
+        title: 'CATCH BASINS & YARD INLETS',
+        text: 'Where surface water collects in a low spot faster than it can soak in, a catch basin and solid pipe run gets it off the lawn. Often paired with grading that intentionally directs water toward the inlet.',
+        features: ['Grated basins at low points', 'Solid pipe conveyance', 'Silt trap & cleanout access'],
+      },
+      {
+        title: 'DOWNSPOUT & SUMP TIE-INS',
+        text: 'Downspouts dumping at the foundation are the single most common cause of a wet basement and a soggy bed. Piping them underground and away — along with a sump discharge — is often the cheapest meaningful drainage improvement on a property.',
+        features: ['Underground downspout piping', 'Sump discharge routing', 'Pop-up emitters or daylight outlets'],
+      },
+      {
+        title: 'DRY CREEK BEDS & SWALES',
+        text: 'When water has to cross a property, a shaped swale or a stone-lined dry creek bed carries it on a designed path instead of an accidental one. Done well, it reads as a landscape feature rather than as a drainage fix.',
+        features: ['Shaped and stabilized swales', 'Stone-lined creek beds', 'Planted edges for stability'],
+      },
+      {
+        title: 'REGRADING & FOUNDATION PROTECTION',
+        text: 'Positive slope away from the house for the first several feet is the baseline every property should have and many older Rochester lots have lost to settling. Regrading restores it, and often solves problems that looked like they needed a drain.',
+        features: ['Positive slope restoration', 'Settled area correction', 'Topsoil & seed restoration'],
+      },
+      {
+        title: 'DRAINAGE WITHIN HARDSCAPE',
+        text: 'Patios, walls, and driveways all change how water moves. Pitch, permeable base options, wall drainage, and where the runoff is directed are designed into every hardscape project we build.',
+        features: ['Designed patio pitch', 'Permeable paver systems', 'Wall drainage & outlets'],
+      },
+    ],
+    processLabel: 'How It Works',
+    processTitle: 'DIAGNOSE, THEN <span class="text-green">DIG</span>',
+    processSubtitle: 'Installing the wrong drain in the wrong place is expensive and changes nothing.',
+    processSteps: [
+      { title: 'SEE THE PROBLEM', text: 'We walk the site, ideally after rain, and look at where water comes from, where it collects, and where it could legally and practically go.' },
+      { title: 'DIAGNOSE', text: 'Surface runoff, subsurface flow, roof water, and a failed grade all look similar in a photo and need different fixes. We tell you which one you have.' },
+      { title: 'PROPOSAL', text: 'The specific solution, the outlet path, and a written itemized price — including honest limits where a site cannot fully drain.' },
+      { title: 'INSTALL & RESTORE', text: 'Trenching, pipe, stone, and fabric go in, then the lawn and beds are restored so the yard does not look excavated when we leave.' },
+    ],
+    faqs: [
+      {
+        question: 'How much does yard drainage cost in Rochester?',
+        answer: 'Drainage projects typically run <strong>$2,500 to $15,000</strong>. A downspout tie-in or a short French drain run sits at the low end; a full property solution with multiple basins, long pipe runs, and regrading sits at the high end. Length of run, depth, obstructions, and — most of all — whether there is a usable outlet drive the number. Planning range, not a quote.',
+      },
+      {
+        question: 'Why does water pool in the same spot every spring?',
+        answer: "Usually a low point with clay beneath it: the surface collects water faster than the subsoil can take it. Sometimes it is a grade that has settled over years and now pitches back toward the house. Which one you have changes the fix entirely, which is why we want to look at the site rather than diagnose from a photo.",
+      },
+      {
+        question: 'Will a French drain fix my wet basement?',
+        answer: "It can help substantially when the water is arriving from the yard — and in many Rochester homes the actual culprit is simply downspouts discharging at the foundation, which is a far cheaper fix. But drainage work outside cannot repair a failed foundation wall, a bad interior drain tile, or a high water table. We will tell you when the problem is outside our scope rather than sell you a trench that will not solve it.",
+      },
+      {
+        question: 'Where does the water actually go?',
+        answer: 'To daylight at a lower point on the property, to a dry well sized for the volume, or to a legal storm connection where one exists and the municipality permits it. Every drainage design needs a real outlet — a drain that ends nowhere just relocates the puddle. On sites without a good outlet we say so up front.',
+      },
+      {
+        question: 'Can drainage be done at the same time as my patio?',
+        answer: 'It should be. Excavation is already happening, the equipment is already on site, and the patio pitch and base can be designed to work with the drainage rather than against it. Retrofitting drainage under a finished patio means taking the patio up.',
+      },
+    ],
+    heroButtons: [
+      { text: 'Get a Free Estimate', href: '/contact/?service=drainage-grading', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['drainage-grading', 'landscape-renovation'],
+    investmentIntro:
+      'Drainage pricing depends almost entirely on run length and whether the site has a usable outlet, so treat these as planning figures only.',
+    featuredProjectSlugs: ['stone-retaining-wall-shade-garden', 'multi-level-patio-seat-wall'],
+    relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
+    ctaHeading: 'STOP FIGHTING THE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">WATER</span>',
+    ctaText: "We'll walk the property and tell you what's actually causing it — including when the answer isn't a drain. <strong>Free estimate</strong>.",
   },
 
   'water-features': {
@@ -375,7 +779,11 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         answer: "Water features can be designed for almost any space. A bubbling rock or small fountain fits in a courtyard or corner garden. Larger properties can accommodate full ponds, waterfalls, and streams. During the design consultation, we assess your space, discuss your vision, and recommend features that fit both the property and your budget.",
       },
     ],
-    relatedSlugs: ['landscape-design', 'hardscaping', 'landscape-maintenance'],
+    heroButtons: [
+      { text: 'Get a Free Estimate', href: '/contact/?service=water-features', style: 'primary' },
+      { text: 'See Our Projects', href: '/projects/', style: 'outline' },
+    ],
+    relatedSlugs: ['hardscaping', 'landscape-design', 'drainage-grading'],
     ctaHeading: 'ADD THE BEAUTY OF WATER TO YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">LANDSCAPE</span>',
     ctaText: 'Schedule a consultation and let us design a water feature that transforms your outdoor space.',
   },
@@ -430,6 +838,10 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         question: 'What de-icing products do you use?',
         answer: "We use a combination of rock salt, treated salt, and liquid de-icers, selected based on the specific conditions of each storm. Pre-treatment before storms is standard for high-traffic areas. Application rates are calibrated to be effective while minimizing environmental impact on surrounding landscaping and waterways.",
       },
+    ],
+    heroButtons: [
+      { text: 'Request a Snow Proposal', href: '/contact/?service=snow-ice-management', style: 'primary' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
     relatedSlugs: ['landscape-maintenance', 'hardscaping', 'holiday-lighting'],
     ctaHeading: "DON'T WAIT FOR THE FIRST <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">STORM</span>",
@@ -496,7 +908,15 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         answer: "Artificial turf handles snow well. Snow can be shoveled or blown off without damaging the fibers, and it melts and drains through the turf quickly thanks to the permeable backing. Unlike natural grass, there's no mud season, no dormancy, and no spring recovery period \u2014 your lawn looks green the moment the snow clears.",
       },
     ],
-    relatedSlugs: ['landscape-design', 'hardscaping', 'landscape-maintenance'],
+    heroButtons: [
+      { text: 'Get a Free Consultation', href: '/contact/?service=artificial-grass', style: 'primary' },
+      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+    ],
+    investmentBandIds: ['artificial-turf'],
+    investmentIntro:
+      'Turf pricing is driven by square footage, base preparation, and how much contouring the design calls for — a flat pet area and a multi-break putting green are very different installs.',
+    featuredProjectSlugs: ['backyard-putting-green'],
+    relatedSlugs: ['hardscaping', 'landscape-design', 'landscape-maintenance'],
     ctaHeading: 'READY FOR A LAWN THAT\'S ALWAYS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">GREEN?</span>',
     ctaText: "Schedule a <strong>free consultation</strong>. We'll assess your property and show you how SYNLawn can transform your outdoor space.",
   },
@@ -548,6 +968,10 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         question: 'Can you manage multiple properties for the same company?',
         answer: "Absolutely. We manage portfolios of commercial properties for several clients across Monroe County. Multi-site contracts are coordinated through a single account manager, with service schedules and reporting customized for each location. This is one of our core strengths as a commercial landscape partner.",
       },
+    ],
+    heroButtons: [
+      { text: 'Request a Commercial Proposal', href: '/contact/?service=commercial-services', style: 'primary' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
     relatedSlugs: ['landscape-maintenance', 'snow-ice-management', 'plant-health'],
     ctaHeading: "LET'S TALK ABOUT YOUR <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">PROPERTY</span>",
@@ -612,6 +1036,10 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         question: 'Do you decorate commercial properties?',
         answer: "Yes. We design and install commercial-grade displays for storefronts, office buildings, retail centers, restaurants, and HOA common areas throughout Monroe County. Commercial displays include timers and automated controls for hassle-free operation. We work with your budget and brand to create a display that attracts attention and creates a welcoming atmosphere.",
       },
+    ],
+    heroButtons: [
+      { text: 'Book Holiday Lighting', href: '/contact/?service=holiday-lighting', style: 'primary' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
     relatedSlugs: ['landscape-design', 'snow-ice-management', 'landscape-maintenance'],
     ctaHeading: 'MAKE YOUR PROPERTY SHINE THIS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEASON</span>',

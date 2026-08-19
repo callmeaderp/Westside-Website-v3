@@ -79,6 +79,23 @@
 /artificial-grass-summer-2023/ /services/artificial-grass/ 301
 /synlawn/               /gallery/       301
 
+# Legacy hardscape sub-topic URLs -> dedicated construction pages
+/retaining-walls        /services/retaining-walls/   301
+/retaining-wall         /services/retaining-walls/   301
+/walkways               /services/walkways-steps/    301
+/walkways/              /services/walkways-steps/    301
+/patios                 /services/hardscaping/       301
+/patios/                /services/hardscaping/       301
+/paver-patios           /services/hardscaping/       301
+/paver-patios/          /services/hardscaping/       301
+/outdoor-kitchens       /services/outdoor-kitchens/  301
+/outdoor-living         /services/hardscaping/       301
+/outdoor-living/        /services/hardscaping/       301
+/drainage               /services/drainage-grading/  301
+/drainage/              /services/drainage-grading/  301
+/grading                /services/drainage-grading/  301
+/projects               /projects/                   301
+
 # Old WordPress blog posts & pages still indexed in Google
 # Targeted redirects for legacy URLs with traffic/search impressions
 /reviews                /about/         301

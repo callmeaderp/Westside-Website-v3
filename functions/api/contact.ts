@@ -38,15 +38,35 @@ interface Env {
   META_TEST_EVENT_CODE?: string;
 }
 
+interface Attribution {
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  fbclid?: string;
+  gclid?: string;
+  msclkid?: string;
+  landing_page?: string;
+  referrer?: string;
+}
+
 interface ContactPayload {
   firstName: string;
   lastName: string;
   email: string;
   phone?: string;
+  contactPreference?: string;
   address?: string;
+  zip?: string;
   service?: string;
+  projectType?: string;
+  budget?: string;
+  timing?: string;
   howHeard?: string;
   message: string;
+  /** First-touch campaign parameters captured client-side. Untrusted display data. */
+  attribution?: Attribution;
   turnstileToken?: string;
   /** UUID generated client-side and reused by the browser fbq Lead event for dedup. */
   eventId?: string;
@@ -55,6 +75,40 @@ interface ContactPayload {
     type: string;
     data: string; // base64
   };
+}
+
+/** Attribution keys we surface, in the order they appear in the notification. */
+const ATTRIBUTION_FIELDS: Array<[keyof Attribution, string]> = [
+  ['utm_source', 'Source'],
+  ['utm_medium', 'Medium'],
+  ['utm_campaign', 'Campaign'],
+  ['utm_content', 'Content'],
+  ['utm_term', 'Term'],
+  ['gclid', 'Google click ID'],
+  ['fbclid', 'Meta click ID'],
+  ['msclkid', 'Microsoft click ID'],
+  ['landing_page', 'Landing page'],
+  ['referrer', 'Referrer'],
+];
+
+const MAX_ATTRIBUTION_VALUE = 300;
+
+/**
+ * Attribution is attacker-controllable (it comes from the query string), so it
+ * is length-capped here and HTML-escaped at render time. It is never used for
+ * any control decision — only displayed in the internal notification.
+ */
+function sanitizeAttribution(raw: unknown): Array<[string, string]> {
+  if (!raw || typeof raw !== 'object') return [];
+  const source = raw as Record<string, unknown>;
+  const out: Array<[string, string]> = [];
+  for (const [key, label] of ATTRIBUTION_FIELDS) {
+    const value = source[key];
+    if (typeof value === 'string' && value.trim()) {
+      out.push([label, value.trim().slice(0, MAX_ATTRIBUTION_VALUE)]);
+    }
+  }
+  return out;
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB (base64 is ~33% larger, so ~6.7MB in payload)
@@ -168,8 +222,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   const phone = formatPhone(payload.phone || '');
   const address = payload.address?.trim() || '';
+  const zip = payload.zip?.trim().slice(0, 10) || '';
+  const contactPreference = payload.contactPreference?.trim().slice(0, 40) || '';
   const service = payload.service?.trim() || 'Not specified';
+  const projectType = payload.projectType?.trim().slice(0, 120) || '';
+  const budget = payload.budget?.trim().slice(0, 60) || '';
+  const timing = payload.timing?.trim().slice(0, 60) || '';
   const howHeard = payload.howHeard?.trim() || 'Not specified';
+  const attribution = sanitizeAttribution(payload.attribution);
   const isCareer = service === 'Career Inquiry';
   const submittedAt = new Date().toLocaleString('en-US', {
     timeZone: 'America/New_York',
@@ -198,7 +258,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const graphToken = tokenData.access_token;
 
   const inquiryType = isCareer ? 'Career Inquiry' : 'Estimate Request';
-  const subject = `[${inquiryType}] ${firstName.trim()} ${lastName.trim()} — ${service}`;
+  // Budget in the subject line lets the office triage from the inbox list view.
+  const subjectScope = [projectType || service, budget].filter(Boolean).join(' — ');
+  const subject = `[${inquiryType}] ${firstName.trim()} ${lastName.trim()} — ${subjectScope || service}`;
 
   const attachments: Record<string, unknown>[] = [];
   if (payload.resume && resumeBytes) {
@@ -215,13 +277,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     lastName: lastName.trim(),
     email: email.trim(),
     phone,
+    contactPreference,
     address,
+    zip,
     service,
+    projectType,
+    budget,
+    timing,
     howHeard,
     message: message.trim(),
     submittedAt,
     isCareer,
     hasResume: !!payload.resume,
+    attribution,
   });
 
   const sendRes = await fetch(
@@ -292,7 +360,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       lastName: lastName.trim(),
       city: fullAddress ? extractCity(fullAddress) : undefined,
       state: fullAddress ? extractStateCode(fullAddress) : undefined,
-      zip: fullAddress ? extractZip(fullAddress) : undefined,
+      // The dedicated ZIP field is more reliable than parsing it back out of a
+      // free-text address, so it wins when the visitor filled it in.
+      zip: zip || (fullAddress ? extractZip(fullAddress) : undefined),
       country: 'us',
       clientIp: extractClientIp(request),
       userAgent: request.headers.get('user-agent') || undefined,
@@ -311,6 +381,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         how_heard: howHeard,
         lead_source: 'website',
         form_type: isCareer ? 'career_inquiry' : 'estimate_request',
+        ...(projectType ? { project_type: projectType } : {}),
+        ...(budget ? { budget_band: budget } : {}),
+        ...(timing ? { project_timing: timing } : {}),
+        ...(payload.attribution?.utm_source ? { utm_source: String(payload.attribution.utm_source).slice(0, 100) } : {}),
+        ...(payload.attribution?.utm_campaign ? { utm_campaign: String(payload.attribution.utm_campaign).slice(0, 100) } : {}),
       },
       testEventCode: env.META_TEST_EVENT_CODE,
     });
@@ -368,18 +443,45 @@ interface NotificationData {
   lastName: string;
   email: string;
   phone: string;
+  contactPreference: string;
   address: string;
+  zip: string;
   service: string;
+  projectType: string;
+  budget: string;
+  timing: string;
   howHeard: string;
   message: string;
   submittedAt: string;
   isCareer: boolean;
   hasResume: boolean;
+  attribution: Array<[string, string]>;
 }
 
 function buildNotificationEmail(data: NotificationData): string {
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const messageHtml = esc(data.message).replace(/\n/g, '<br>');
+  const notProvided = '<span style="color:#999;">Not provided</span>';
+
+  const row = (label: string, valueHtml: string) =>
+    `<tr><td style="padding:8px 0;border-bottom:1px solid #eee;width:150px;color:#666;vertical-align:top;">${esc(label)}</td>
+         <td style="padding:8px 0;border-bottom:1px solid #eee;">${valueHtml}</td></tr>`;
+
+  // Project rows are omitted entirely on career inquiries rather than shown empty.
+  const projectRows = data.isCareer
+    ? ''
+    : [
+        row('Project Type', data.projectType ? `<strong>${esc(data.projectType)}</strong>` : notProvided),
+        row('Budget', data.budget ? `<strong>${esc(data.budget)}</strong>` : notProvided),
+        row('Timing', data.timing ? esc(data.timing) : notProvided),
+      ].join('');
+
+  const attributionHtml = data.attribution.length
+    ? `<tr><td colspan="2" style="padding:20px 0 8px;">
+         <span style="font-size:12px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:1px;">Where this lead came from</span>
+       </td></tr>` +
+      data.attribution.map(([label, value]) => row(label, `<span style="color:#555;">${esc(value)}</span>`)).join('')
+    : '';
 
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"></head>
@@ -395,20 +497,18 @@ function buildNotificationEmail(data: NotificationData): string {
   </td></tr>
   <tr><td style="padding:8px 32px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;color:#333;">
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;width:140px;color:#666;vertical-align:top;">Name</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;font-weight:600;">${esc(data.firstName)} ${esc(data.lastName)}</td></tr>
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Email</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;"><a href="mailto:${esc(data.email)}" style="color:#00863F;">${esc(data.email)}</a></td></tr>
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Phone</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;">${data.phone ? `<a href="tel:${esc(data.phone.replace(/\D/g, ''))}" style="color:#00863F;">${esc(data.phone)}</a>` : '<span style="color:#999;">Not provided</span>'}</td></tr>
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Address</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;">${data.address ? esc(data.address) : '<span style="color:#999;">Not provided</span>'}</td></tr>
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">Service</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;">${esc(data.service)}</td></tr>
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;color:#666;vertical-align:top;">How Heard</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;">${esc(data.howHeard)}</td></tr>
+      ${row('Name', `<strong>${esc(data.firstName)} ${esc(data.lastName)}</strong>`)}
+      ${row('Email', `<a href="mailto:${esc(data.email)}" style="color:#00863F;">${esc(data.email)}</a>`)}
+      ${row('Phone', data.phone ? `<a href="tel:${esc(data.phone.replace(/\D/g, ''))}" style="color:#00863F;">${esc(data.phone)}</a>` : notProvided)}
+      ${row('Prefers', data.contactPreference ? esc(data.contactPreference) : notProvided)}
+      ${row('Address', data.address ? esc(data.address) : notProvided)}
+      ${row('ZIP', data.zip ? esc(data.zip) : notProvided)}
+      ${row('Service', esc(data.service))}
+      ${projectRows}
+      ${row('How Heard', esc(data.howHeard))}
       <tr><td style="padding:8px 0;color:#666;vertical-align:top;">Message</td>
           <td style="padding:8px 0;">${messageHtml}</td></tr>
+      ${attributionHtml}
     </table>
   </td></tr>
   ${data.hasResume ? '<tr><td style="padding:16px 32px 0;"><span style="font-size:13px;color:#666;">📎 Resume attached to this email</span></td></tr>' : ''}

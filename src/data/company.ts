@@ -46,8 +46,18 @@ export const company = {
     provider: 'Wells Fargo',
     program: 'Buy Today, Pay Over Time',
     url: 'https://retailservices.wellsfargo.com/pl/0033053059',
-    /** Service slugs that should show the financing banner */
-    eligibleServices: ['landscape-design', 'hardscaping', 'artificial-grass', 'water-features'] as string[],
+    /** Service slugs that should show the financing banner — construction work
+     *  where the project size makes payment-over-time genuinely relevant. */
+    eligibleServices: [
+      'landscape-design',
+      'hardscaping',
+      'walkways-steps',
+      'retaining-walls',
+      'outdoor-kitchens',
+      'drainage-grading',
+      'artificial-grass',
+      'water-features',
+    ] as string[],
   },
 
   tracking: {

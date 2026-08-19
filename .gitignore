@@ -6,3 +6,5 @@ dist/
 *.log
 .DS_Store
 test-resumes/
+test-results/
+playwright-report/

@@ -13,10 +13,17 @@
  *   url('/contact?src=ad')    → /base/contact/?src=ad
  *   url('/about#team')        → /base/about/#team
  *   url('https://example.com') → https://example.com (returned as-is)
+ *   url('tel:+15855948420')    → tel:+15855948420 (returned as-is)
  */
 export function url(path: string): string {
-  // Absolute URLs — leave untouched
-  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  // Anything carrying its own scheme (http:, https:, tel:, mailto:) is already
+  // a complete target — prefixing it with BASE_URL would produce "/tel:+1...".
+  if (/^[a-z][a-z0-9+.-]*:/i.test(path)) return path;
+
+  // Same-page fragments and bare query strings must stay relative. Prefixing
+  // "#investment" would yield "/#investment", which navigates to the homepage
+  // instead of scrolling down the current page.
+  if (path.startsWith('#') || path.startsWith('?')) return path;
 
   const base = import.meta.env.BASE_URL;
 

@@ -1,6 +1,8 @@
 ---
 import ServiceLayout from '@layouts/ServiceLayout.astro';
 import FaqSection from '@components/FaqSection.astro';
+import InvestmentRanges from '@components/InvestmentRanges.astro';
+import ProjectProof from '@components/ProjectProof.astro';
 import { Image } from 'astro:assets';
 import { services, type Service } from '@data/services';
 import { serviceContent } from '@data/service-content';
@@ -27,7 +29,13 @@ const relatedServices = (content?.relatedSlugs ?? [])
 const showFinancing = company.financing.eligibleServices.includes(service.slug);
 ---
 
-<ServiceLayout service={service} ctaHeading={content?.ctaHeading} ctaText={content?.ctaText} faqs={content?.faqs}>
+<ServiceLayout
+  service={service}
+  ctaHeading={content?.ctaHeading}
+  ctaText={content?.ctaText}
+  faqs={content?.faqs}
+  heroButtons={content?.heroButtons}
+>
 
   {content && (
     <section class="py-24 section-dark">
@@ -116,6 +124,19 @@ const showFinancing = company.financing.eligibleServices.includes(service.slug);
         </div>
       </div>
     </section>
+  )}
+
+  {content?.investmentBandIds && content.investmentBandIds.length > 0 && (
+    <InvestmentRanges
+      bandIds={content.investmentBandIds}
+      title={content.investmentTitle}
+      intro={content.investmentIntro}
+      serviceSlug={service.slug}
+    />
+  )}
+
+  {content?.featuredProjectSlugs && content.featuredProjectSlugs.length > 0 && (
+    <ProjectProof slugs={content.featuredProjectSlugs} />
   )}
 
   {showFinancing && <FinancingBanner variant="compact" />}

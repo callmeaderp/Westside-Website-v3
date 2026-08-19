@@ -5,14 +5,25 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
+import { budgetOptions, projectTypeOptions, timingOptions } from '@data/investment';
+import { services } from '@data/services';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
+import { url } from '@lib/utils';
 
 const adsFormSendTo = company.tracking.googleAdsId && company.tracking.googleAdsFormLabel
   ? `${company.tracking.googleAdsId}/${company.tracking.googleAdsFormLabel}`
   : '';
 
 const turnstileSiteKey = company.tracking.turnstileSiteKey || '';
+
+/**
+ * Service dropdown options and the ?service=<slug> preselect map are both
+ * derived from services.ts so a new service can never silently go missing from
+ * the form — that was previously a hand-maintained list in two places.
+ */
+const serviceOptions = services.map((s) => ({ slug: s.slug, label: s.name }));
+const serviceSlugMap = Object.fromEntries(serviceOptions.map((o) => [o.slug, o.label]));
 
 /** Format 24h "HH:MM" to "H:MM AM/PM" */
 function formatTime(t: string): string {
@@ -28,12 +39,16 @@ const faqItems: { question: string; answer: string }[] = [
     answer: "Fill out the form above, give us a call, or send an email. We'll schedule an on-site visit to assess your property and provide a detailed, no-obligation estimate within 1-2 business days.",
   },
   {
+    question: 'Why do you ask for a budget range?',
+    answer: "So we can design something you'll actually build. A patio can be a $9,000 project or a $45,000 project depending on size, walls, lighting, and materials — knowing your range up front means the first proposal lands somewhere realistic instead of wasting both our time. \"Not sure yet\" is a completely valid answer; we'll help you scope it on site.",
+  },
+  {
     question: 'What areas do you serve?',
     answer: 'We serve the entire Greater Rochester area including Pittsford, Webster, Penfield, Fairport, Brighton, Greece, Gates, Chili, Henrietta, Victor, and surrounding communities.',
   },
   {
-    question: 'Can I sign up for the 5-Step Lawn Care Program mid-season?',
-    answer: "Yes! While the best results come from starting in spring, we can customize a program based on where you are in the season. Contact us and we'll recommend the best approach for your lawn.",
+    question: 'Do you offer financing on construction projects?',
+    answer: 'Yes. We offer financing through Wells Fargo so a larger patio, wall, or full backyard project can be paid over time. Approval and terms are handled by Wells Fargo, not by us.',
   },
   {
     question: 'Do you offer commercial services?',
@@ -67,15 +82,19 @@ const jsonLd = [
 ---
 
 <BaseLayout
-  title="Free Landscaping Estimate | Rochester, NY | Westside Professional Landscape"
-  description="Get a free estimate from Westside Professional Landscape. Contact us for landscaping, lawn care, hardscaping, and more in Rochester NY."
+  title="Free Landscaping & Hardscape Estimate | Rochester, NY | Westside"
+  description="Get a free estimate from Westside Professional Landscape. Patios, retaining walls, walkways, drainage, landscape design, lawn care, and more in Rochester NY."
   jsonLd={jsonLd}
 >
   <Hero
     label="Get in Touch"
     heading="REQUEST A FREE ESTIMATE IN ROCHESTER, NY"
-    intro="Ready to transform your outdoor space? Get a free, no-obligation estimate from our team. We'd love to hear about your project."
+    intro="Tell us about your project and roughly what you'd like to spend. We'll walk the property and give you a written, itemized estimate — no obligation."
     image={getPhoto('hero-contact.webp')}
+    buttons={[
+      { text: `Call ${company.phone}`, href: company.phoneHref, style: 'primary' },
+      { text: 'See Project Ranges', href: '/services/hardscaping/#investment', style: 'outline' },
+    ]}
   />
 
   <section class="py-24 section-dark-alt">
@@ -83,18 +102,27 @@ const jsonLd = [
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Contact Form -->
         <div class="lg:col-span-2">
-          <form id="contact-form" class="flex flex-col gap-6" data-ads-send-to={adsFormSendTo}>
+          <form
+            id="contact-form"
+            class="flex flex-col gap-6"
+            data-ads-send-to={adsFormSendTo}
+            data-service-map={JSON.stringify(serviceSlugMap)}
+          >
+
+            <p class="text-sm" style="color: var(--color-text-muted);">
+              Fields marked <span style="color: var(--color-green-bright);">*</span> are required. Everything else just helps us prepare before we arrive.
+            </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="first-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">First Name *</label>
+                <label for="first-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">First Name <span style="color: var(--color-green-bright);">*</span></label>
                 <input type="text" id="first-name" name="first_name" required autocomplete="given-name"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
                 />
               </div>
               <div>
-                <label for="last-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Last Name *</label>
+                <label for="last-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Last Name <span style="color: var(--color-green-bright);">*</span></label>
                 <input type="text" id="last-name" name="last_name" required autocomplete="family-name"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
@@ -104,36 +132,66 @@ const jsonLd = [
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Email *</label>
-                <input type="email" id="email" name="email" required autocomplete="email"
+                <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Email <span style="color: var(--color-green-bright);">*</span></label>
+                <input type="email" id="email" name="email" required autocomplete="email" inputmode="email"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
                 />
               </div>
               <div>
-                <label for="phone" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Phone</label>
-                <input type="tel" id="phone" name="phone" autocomplete="tel"
+                <label for="phone" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Phone <span style="color: var(--color-green-bright);">*</span></label>
+                <input type="tel" id="phone" name="phone" required autocomplete="tel" inputmode="tel"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
                   style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                  placeholder="(585) 555-0123"
                 />
               </div>
             </div>
 
-            <div class="relative">
-              <label for="address" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Property Address</label>
-              <input type="text" id="address" name="address" autocomplete="off"
-                class="w-full px-4 py-3 rounded-lg text-white text-sm"
-                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
-                placeholder="Start typing your address..."
-                role="combobox"
-                aria-expanded="false"
-                aria-autocomplete="list"
-                aria-controls="address-suggestions"
-              />
-              <ul id="address-suggestions" class="absolute z-50 w-full mt-1 rounded-lg overflow-hidden shadow-lg hidden"
-                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark); max-height: 280px; overflow-y: auto;"
-                role="listbox"
-              ></ul>
+            <fieldset class="border-0 p-0 m-0">
+              <legend class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Best Way to Reach You</legend>
+              <div class="flex flex-wrap gap-x-6 gap-y-2">
+                <label class="flex items-center gap-2 text-sm cursor-pointer" style="color: var(--color-text-muted);">
+                  <input type="radio" name="contact_preference" value="Phone call" checked class="accent-[#6CC551] w-4 h-4" />
+                  Phone call
+                </label>
+                <label class="flex items-center gap-2 text-sm cursor-pointer" style="color: var(--color-text-muted);">
+                  <input type="radio" name="contact_preference" value="Text message" class="accent-[#6CC551] w-4 h-4" />
+                  Text message
+                </label>
+                <label class="flex items-center gap-2 text-sm cursor-pointer" style="color: var(--color-text-muted);">
+                  <input type="radio" name="contact_preference" value="Email" class="accent-[#6CC551] w-4 h-4" />
+                  Email
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-6">
+              <div class="relative">
+                <label for="address" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Property Address</label>
+                <input type="text" id="address" name="address" autocomplete="off"
+                  class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                  style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                  placeholder="Start typing your address..."
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  aria-controls="address-suggestions"
+                />
+                <ul id="address-suggestions" class="absolute z-50 w-full mt-1 rounded-lg overflow-hidden shadow-lg hidden"
+                  style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark); max-height: 280px; overflow-y: auto;"
+                  role="listbox"
+                ></ul>
+              </div>
+              <div>
+                <label for="zip" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">ZIP Code</label>
+                <input type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric"
+                  pattern="[0-9]{5}(-[0-9]{4})?" maxlength="10"
+                  class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                  style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                  placeholder="14624"
+                />
+              </div>
             </div>
 
             <div>
@@ -143,19 +201,51 @@ const jsonLd = [
                 style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
               >
                 <option value="">Select a service...</option>
-                <option>Landscape Design</option>
-                <option>Landscape Maintenance</option>
-                <option>Lawn Care</option>
-                <option>Fertilization & Weed Control</option>
-                <option>Hardscaping</option>
-                <option>Water Features</option>
-                <option>Snow & Ice Management</option>
-                <option>Artificial Grass</option>
-                <option>Commercial Services</option>
-                <option>Holiday Decorating</option>
+                {serviceOptions.map((opt) => <option>{opt.label}</option>)}
                 <option value="Career Inquiry">Career Inquiry / Employment</option>
                 <option>Other</option>
               </select>
+            </div>
+
+            <!-- Project detail fields — hidden for career inquiries, where none apply. -->
+            <div id="project-fields" class="flex flex-col gap-6">
+              <div>
+                <label for="project-type" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">What Are You Looking to Build or Fix?</label>
+                <select id="project-type" name="project_type"
+                  class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                  style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                >
+                  <option value="">Select a project type...</option>
+                  {projectTypeOptions.map((opt) => <option>{opt}</option>)}
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="budget" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Approximate Budget</label>
+                  <select id="budget" name="budget"
+                    class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                    style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                  >
+                    <option value="">Select a range...</option>
+                    {budgetOptions.map((opt) => <option>{opt}</option>)}
+                  </select>
+                  <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">
+                    Optional, but it helps us design something you'll actually build.
+                    <a href={url('/services/hardscaping/#investment')} style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 2px;">See typical ranges</a>.
+                  </p>
+                </div>
+                <div>
+                  <label for="timing" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">When Would You Like It Done?</label>
+                  <select id="timing" name="timing"
+                    class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                    style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                  >
+                    <option value="">Select timing...</option>
+                    {timingOptions.map((opt) => <option>{opt}</option>)}
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div id="resume-upload-group" class="hidden">
@@ -189,11 +279,11 @@ const jsonLd = [
             </div>
 
             <div>
-              <label for="message" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Message *</label>
+              <label for="message" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Tell Us About It <span style="color: var(--color-green-bright);">*</span></label>
               <textarea id="message" name="message" rows="5" required
                 class="w-full px-4 py-3 rounded-lg text-white text-sm resize-y"
                 style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
-                placeholder="Tell us about your project..."
+                placeholder="What's the space like today, what would you like it to do, and is there anything giving you trouble (drainage, settling, access)?"
               ></textarea>
             </div>
 
@@ -292,37 +382,36 @@ const jsonLd = [
 <script>
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
   const resumeGroup = document.getElementById('resume-upload-group');
+  const projectFields = document.getElementById('project-fields');
 
   function syncCareerFields() {
     if (!serviceSelect) return;
     const isCareer = serviceSelect.value === 'Career Inquiry';
     resumeGroup?.classList.toggle('hidden', !isCareer);
+    // Project type / budget / timing are meaningless on a job application.
+    projectFields?.classList.toggle('hidden', isCareer);
   }
 
   serviceSelect?.addEventListener('change', syncCareerFields);
 
   // Pre-select Service Interest based on ?service=<slug> URL param. Slugs come
-  // from internal links (careers page) and external paid-ad destination URLs
-  // (Meta/Google ads point to /contact/?service=hardscaping etc.). The slug
-  // values mirror the ServiceSlug union in src/data/services.ts plus the
-  // 'careers' alias for the Career Inquiry option.
+  // from internal links (service hero CTAs, careers page) and external paid-ad
+  // destination URLs (Meta/Google ads point to /contact/?service=hardscaping
+  // etc.). The slug\u2192label map is serialized onto the form from services.ts, so
+  // adding a service no longer requires editing this script.
   if (serviceSelect) {
+    const formEl = document.getElementById('contact-form') as HTMLFormElement | null;
     const params = new URLSearchParams(window.location.search);
     const serviceParam = params.get('service');
     if (serviceParam) {
-      const slugToOption: Record<string, string> = {
-        'landscape-design': 'Landscape Design',
-        'landscape-maintenance': 'Landscape Maintenance',
-        'lawn-care': 'Lawn Care',
-        'plant-health': 'Fertilization & Weed Control',
-        'hardscaping': 'Hardscaping',
-        'water-features': 'Water Features',
-        'snow-ice-management': 'Snow & Ice Management',
-        'artificial-grass': 'Artificial Grass',
-        'commercial-services': 'Commercial Services',
-        'holiday-lighting': 'Holiday Decorating',
-        'careers': 'Career Inquiry',
-      };
+      let slugToOption: Record<string, string> = {};
+      try {
+        slugToOption = JSON.parse(formEl?.dataset.serviceMap || '{}');
+      } catch {
+        slugToOption = {};
+      }
+      slugToOption.careers = 'Career Inquiry';
+
       const targetOption = slugToOption[serviceParam];
       if (targetOption) {
         serviceSelect.value = targetOption;
@@ -497,15 +586,30 @@ const jsonLd = [
         : `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
       try {
+        const isCareerSubmit =
+          (form.querySelector<HTMLSelectElement>('[name="service_interest"]')?.value || '') === 'Career Inquiry';
+
         const payload: Record<string, unknown> = {
           firstName: (form.querySelector<HTMLInputElement>('[name="first_name"]')?.value || '').trim(),
           lastName: (form.querySelector<HTMLInputElement>('[name="last_name"]')?.value || '').trim(),
           email: (form.querySelector<HTMLInputElement>('[name="email"]')?.value || '').trim(),
           phone: (form.querySelector<HTMLInputElement>('[name="phone"]')?.value || '').trim(),
+          contactPreference: (form.querySelector<HTMLInputElement>('[name="contact_preference"]:checked')?.value || '').trim(),
           address: (form.querySelector<HTMLInputElement>('[name="address"]')?.value || '').trim(),
+          zip: (form.querySelector<HTMLInputElement>('[name="zip"]')?.value || '').trim(),
           service: (form.querySelector<HTMLSelectElement>('[name="service_interest"]')?.value || '').trim(),
+          // Project detail fields are hidden for career inquiries; sending a
+          // stale value from a switched selection would mislabel the lead.
+          projectType: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="project_type"]')?.value || '').trim(),
+          budget: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="budget"]')?.value || '').trim(),
+          timing: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="timing"]')?.value || '').trim(),
           howHeard: (form.querySelector<HTMLSelectElement>('[name="how_heard"]')?.value || '').trim(),
           message: (form.querySelector<HTMLTextAreaElement>('[name="message"]')?.value || '').trim(),
+          // First-touch campaign parameters captured by TrackingScripts on the
+          // landing page — the submit URL usually has none of them.
+          attribution: typeof (window as any).__wplAttribution === 'function'
+            ? (window as any).__wplAttribution()
+            : {},
           turnstileToken,
           eventId: leadEventId,
         };
@@ -526,6 +630,7 @@ const jsonLd = [
         const result = await response.json();
 
         if (result.success) {
+          const attribution = (payload.attribution || {}) as Record<string, string>;
           // GA4 form_submit always fires (internal traffic filtered via data filter).
           // Keep these parameter names aligned with GA4 custom dimensions.
           if (typeof (window as any).gtag === 'function') {
@@ -538,6 +643,12 @@ const jsonLd = [
               form_type: formType,
               service_interest: serviceInterest,
               how_heard: howHeard,
+              project_type: String(payload.projectType || 'Not specified'),
+              budget_band: String(payload.budget || 'Not specified'),
+              project_timing: String(payload.timing || 'Not specified'),
+              lead_utm_source: attribution.utm_source || 'direct',
+              lead_utm_medium: attribution.utm_medium || 'none',
+              lead_utm_campaign: attribution.utm_campaign || 'none',
             });
             // Google Ads conversion — blocked for internal traffic
             const sendTo = form.dataset.adsSendTo;
@@ -549,7 +660,11 @@ const jsonLd = [
             (window as any).fbq(
               'track',
               'Lead',
-              { service_interest: String(payload.service || 'Not specified') },
+              {
+                service_interest: String(payload.service || 'Not specified'),
+                project_type: String(payload.projectType || 'Not specified'),
+                budget_band: String(payload.budget || 'Not specified'),
+              },
               { eventID: leadEventId },
             );
           }

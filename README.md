@@ -44,28 +44,38 @@ The production build writes `dist/`. `astro.config.mjs` deliberately uses `build
 The current browser suites run with:
 
 ```sh
-npm test
-npm run test:a11y
+npm test           # full suite, desktop + mobile projects
+npm run test:a11y  # axe-core WCAG 2 A/AA pass only
 ```
+
+Both build against `dist/`, so run `npm run build` first. `playwright.config.ts` starts `tests/static-server.mjs` on port 4331 rather than `astro preview` — Astro 7's preview daemonizes and Playwright reports the launcher's exit as `Process from config.webServer exited early`. Override the port with `PLAYWRIGHT_PORT` if 4331 is taken.
 
 Run checks proportional to the change. Data, route, metadata, redirects, or global-layout changes require at least `npm run check`, `npm run lint`, and `npm run build`. UI changes should also be inspected at representative desktop and mobile widths. Update or add Playwright coverage when behavior is stable enough to assert.
 
 ## Content and asset conventions
 
-- Service slugs and core cards live in `src/data/services.ts`.
-- Long-form service content and FAQs live in `src/data/service-content.ts`.
+- Service slugs and core cards live in `src/data/services.ts`. `tier` separates the primary `core` offering from the focused `construction` build lanes.
+- Long-form service content and FAQs live in `src/data/service-content.ts`, including hero CTA buttons, investment-band references, and featured project slugs.
+- Published price ranges live only in `src/data/investment.ts`. Never inline a dollar figure in a template — every band renders with `INVESTMENT_CAVEAT` so it cannot be read as a quote.
+- Project case studies live in `src/data/projects.ts`. A `town` may be set only when the location is independently provable; photo EXIF in the current library has no GPS, so entries omit it rather than guess.
 - Header and footer navigation are separate arrays in `src/data/navigation.ts`.
-- Contact-form service options are currently maintained in the page form as well.
-- Internal routes use trailing slashes because Astro is configured with `trailingSlash: "always"`.
+- Contact-form service options and the `?service=<slug>` preselect map are both derived from `services.ts`, so adding a service no longer requires editing the form.
+- Internal routes use trailing slashes because Astro is configured with `trailingSlash: "always"`. `url()` deliberately passes through same-page fragments (`#investment`) and scheme URLs (`tel:`) untouched.
 - FAQ answers may contain the limited HTML supported by the component and structured-data output; questions remain plain text.
 - Photos currently exist in both the Astro asset pipeline and `public/images/photos/`, with the site serving the public copies. Remove the direct copies only as part of a verified Astro Image migration.
 - Generated `dist/`, local screenshots, test output, and secrets are deployment/test artifacts rather than source.
 
 Read `.claude/rules/add-service-page.md` before adding a service; a complete service currently touches multiple independently maintained data and form/navigation surfaces.
 
+## Professional title claims
+
+New York Education Law §7322 protects the title "landscape architect". No Westside licence has been identified, so the site describes the work as **landscape design** or **design-build landscape contracting**. `tests/construction.spec.ts` fails the build-adjacent test run if a claiming phrase reappears in page copy or metadata. The one permitted mention is the landscape-design FAQ that answers the question honestly.
+
 ## Tracking and forms
 
 Tracking is centralized in `src/components/TrackingScripts.astro`, including GA4 and Meta integrations. Keep identifiers and event wiring there instead of scattering scripts across pages. The contact form currently uses its established client/API integration; preserve lead attribution, service preselection, validation, and conversion events when changing it.
+
+Acquisition attribution (`utm_*`, `fbclid`, `gclid`, `msclkid`, landing page, referrer) is captured on first pageview by `TrackingScripts.astro`, held in `sessionStorage` as **first touch**, and exposed via `window.__wplAttribution()`. Ad traffic usually lands on a tagged page and submits from an untagged `/contact/`, so reading the parameters at submit time would lose the campaign. The values reach the office notification email and the GA4/Meta payloads; they are query-string data, never secrets.
 
 Never commit Cloudflare, Google, Meta, form-provider, or other credentials. Public analytics identifiers are configuration, but secret API tokens and server-side credentials must remain in environment or platform settings.
 

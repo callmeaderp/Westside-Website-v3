@@ -1,0 +1,79 @@
+---
+/**
+ * Representative investment ranges for a service page.
+ *
+ * The caveat is rendered unconditionally — a published band without its
+ * qualifier reads as a quote, which is exactly what we are not offering.
+ * Anchored at #investment so hero CTAs can jump straight here.
+ */
+import { company } from '@data/company';
+import { formatBand, getBands, INVESTMENT_CAVEAT } from '@data/investment';
+import { url } from '@lib/utils';
+
+interface Props {
+  bandIds: string[];
+  title?: string;
+  intro?: string;
+  /** Slug used to preselect the service on the contact form. */
+  serviceSlug?: string;
+}
+
+const {
+  bandIds,
+  title = 'REPRESENTATIVE <span class="text-green">INVESTMENT RANGES</span>',
+  intro,
+  serviceSlug,
+} = Astro.props;
+
+const bands = getBands(bandIds);
+const contactHref = serviceSlug ? `/contact/?service=${serviceSlug}` : '/contact/';
+---
+
+{bands.length > 0 && (
+  <section id="investment" class="py-24 section-white">
+    <div class="site-container">
+      <div class="text-center mb-12 fade-in">
+        <p class="section-label">Straight Answers on Cost</p>
+        <h2 class="section-title" set:html={title} />
+        {intro && <p class="section-subtitle mx-auto" set:html={intro} />}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        {bands.map((band) => (
+          <div class="p-8 rounded-xl bg-bg-light border border-border-light flex flex-col">
+            <h3 class="text-base mb-3" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+              {band.label}
+            </h3>
+            <p class="mb-4" style="font-family: var(--font-heading); font-size: 1.75rem; line-height: 1.2; color: var(--color-green-on-light);">
+              {formatBand(band)}
+            </p>
+            <p class="text-sm" style="color: var(--color-text-body-dark); line-height: 1.7;">
+              {band.scope}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 p-6 rounded-xl max-w-4xl mx-auto fade-in" style="background: rgba(0,0,0,0.04); border: 1px solid var(--color-border-light);">
+        <p class="text-sm" style="color: var(--color-text-body-dark); line-height: 1.8;">
+          <strong>These are ranges, not quotes.</strong> {INVESTMENT_CAVEAT}
+        </p>
+      </div>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-4 fade-in">
+        <a href={url(contactHref)} class="btn btn-primary btn-lg">Get Your Written Estimate</a>
+        <a
+          href={company.financing.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline btn-lg"
+        >
+          Finance This Project
+        </a>
+      </div>
+      <p class="text-center text-xs mt-4" style="color: var(--color-text-body-dark);">
+        Financing offered through {company.financing.provider}. Approval and terms are set by {company.financing.provider}.
+      </p>
+    </div>
+  </section>
+)}

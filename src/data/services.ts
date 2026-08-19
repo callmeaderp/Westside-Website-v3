@@ -11,6 +11,10 @@ export const SERVICE_SLUGS = [
   'lawn-care',
   'plant-health',
   'hardscaping',
+  'walkways-steps',
+  'retaining-walls',
+  'outdoor-kitchens',
+  'drainage-grading',
   'water-features',
   'snow-ice-management',
   'artificial-grass',
@@ -36,6 +40,13 @@ const ServiceSchema = z.object({
   icon: z.string(),
   features: z.array(z.string()),
   cta: z.string().default('Get a Free Estimate'),
+  /**
+   * 'core' services drive the homepage grid and the main services list.
+   * 'construction' services are focused build lanes that hang off the
+   * hardscaping hub — they get full pages and nav entries, but listing all of
+   * them on the homepage would bury the primary offering.
+   */
+  tier: z.enum(['core', 'construction']).default('core'),
 });
 
 export type Service = z.infer<typeof ServiceSchema>;
@@ -47,14 +58,14 @@ export const services: Service[] = [
     shortName: 'Landscape Design',
     tagline: 'From concept to completion',
     description:
-      'Custom landscape architecture tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
-    metaTitle: 'Landscape Design & Architects in Rochester, NY | Westside',
+      'Custom landscape design tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
+    metaTitle: 'Landscape Design & Installation in Rochester, NY | Westside',
     metaDescription:
-      'Rochester landscape design & landscape architects — residential & commercial. Plantings, patios, grading, lighting, concept to full install. Call (585) 594-8420.',
+      'Rochester landscape design and installation — residential & commercial. Plantings, patios, grading, lighting, concept to full install. Call (585) 594-8420.',
     heroLabel: 'Design & Installation',
     heroHeading: 'LANDSCAPE DESIGN IN ROCHESTER, NY',
     heroIntro:
-      'Custom landscape architecture tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
+      'Custom landscape design tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
     heroImage: 'svc-landscape-design.webp',
     cardImage: 'svc-landscape-design.webp',
     icon: 'PenTool',
@@ -67,6 +78,7 @@ export const services: Service[] = [
       'Seasonal color planning',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
   {
     slug: 'landscape-maintenance',
@@ -94,6 +106,7 @@ export const services: Service[] = [
       'Seasonal flower rotations',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
   {
     slug: 'lawn-care',
@@ -121,6 +134,7 @@ export const services: Service[] = [
       'Lawn repair & renovation',
     ],
     cta: 'Get a Free Lawn Care Quote',
+    tier: 'core',
   },
   {
     slug: 'plant-health',
@@ -148,6 +162,7 @@ export const services: Service[] = [
       'Free grub control included',
     ],
     cta: 'Start Your Program — 50% Off',
+    tier: 'core',
   },
   {
     slug: 'hardscaping',
@@ -156,25 +171,138 @@ export const services: Service[] = [
     tagline: 'Built to last',
     description:
       'Patios, retaining walls, walkways, fire pits, and outdoor kitchens — designed and built by experienced craftsmen.',
-    metaTitle: 'Patios, Walkways & Retaining Walls in Rochester, NY | Westside',
+    metaTitle: 'Paver Patios & Outdoor Living in Rochester, NY | Cost Ranges',
     metaDescription:
-      'Paver patios, walkways, retaining walls, fire pits & outdoor kitchens in Rochester, NY. Custom-built to last by Westside since 2000. Call (585) 594-8420.',
+      'Paver patios, walkways, retaining walls, fire features & outdoor kitchens in Rochester, NY. See representative project investment ranges. Building since 2000. (585) 594-8420.',
     heroLabel: 'Built to Last',
     heroHeading: 'HARDSCAPING & OUTDOOR LIVING IN ROCHESTER',
     heroIntro:
-      'Patios, retaining walls, walkways, fire pits, and outdoor kitchens — designed and built by experienced craftsmen.',
-    heroImage: 'svc-hardscape.webp',
+      'Paver patios, retaining walls, walkways, fire features, and outdoor kitchens — designed and built for our freeze-thaw climate. See what projects like yours typically run before you call.',
+    heroImage: 'hero-outdoor-living.webp',
     cardImage: 'svc-hardscape.webp',
     icon: 'Blocks',
     features: [
-      'Paver patios & walkways',
-      'Retaining walls',
-      'Outdoor kitchens & living spaces',
-      'Fire pits & fireplaces',
-      'Driveway installation',
-      'Steps & stairways',
+      'Paver patios & outdoor rooms',
+      'Retaining & seat walls',
+      'Walkways, steps & front entries',
+      'Outdoor kitchens & fire features',
+      'Driveways & parking areas',
+      'Drainage & grading built in',
+    ],
+    cta: 'Start Your Project',
+    tier: 'core',
+  },
+  {
+    slug: 'walkways-steps',
+    name: 'Walkways, Steps & Front Entries',
+    shortName: 'Walkways & Entries',
+    tagline: 'The first thing anyone sees',
+    description:
+      'Paver and natural-stone walkways, entry landings, and steps — rebuilt level, safe, and properly based for Rochester winters.',
+    metaTitle: 'Paver Walkways, Steps & Front Entries in Rochester, NY | Westside',
+    metaDescription:
+      'Rochester paver walkways, entry landings, and stone steps. Settled or unsafe steps rebuilt on a proper base. Typical projects and cost ranges. Call (585) 594-8420.',
+    heroLabel: 'Curb Appeal & Safety',
+    heroHeading: 'WALKWAYS, STEPS & FRONT ENTRIES IN ROCHESTER',
+    heroIntro:
+      'Settled steps and a cracked walk are the first thing every visitor notices — and the fastest hardscape project to turn around. Rebuilt level, safe, and on a base that survives our winters.',
+    heroImage: 'svc-walkways-steps.webp',
+    cardImage: 'svc-walkways-steps.webp',
+    icon: 'Footprints',
+    features: [
+      'Paver & natural stone walkways',
+      'Entry landings & wide steps',
+      'Settled step replacement',
+      'Garden paths & stepping stones',
+      'Contrasting borders & banding',
+      'Path lighting integration',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'construction',
+  },
+  {
+    slug: 'retaining-walls',
+    name: 'Retaining & Seat Walls',
+    shortName: 'Retaining Walls',
+    tagline: 'Engineered to hold',
+    description:
+      'Segmental block, natural stone, and boulder retaining walls with the drainage and backfill that keep them standing.',
+    metaTitle: 'Retaining Wall Contractor in Rochester, NY | Costs & Repair',
+    metaDescription:
+      'Rochester retaining walls — segmental block, natural stone, and boulder walls built with proper drainage and backfill. Failing wall repair. Cost ranges. (585) 594-8420.',
+    heroLabel: 'Structural Hardscape',
+    heroHeading: 'RETAINING & SEAT WALLS IN ROCHESTER, NY',
+    heroIntro:
+      'A retaining wall is a structure, not a decoration. Drainage stone, filter fabric, compacted backfill, and the right block for the load are what separate a wall that lasts from one that leans in five years.',
+    heroImage: 'svc-retaining-walls.webp',
+    cardImage: 'svc-retaining-walls.webp',
+    icon: 'Layers',
+    features: [
+      'Engineered segmental block walls',
+      'Natural stone & boulder walls',
+      'Seat walls & pillars',
+      'Terraced multi-level walls',
+      'Failing wall assessment & rebuild',
+      'Drainage stone & filter fabric standard',
+    ],
+    cta: 'Get a Free Estimate',
+    tier: 'construction',
+  },
+  {
+    slug: 'outdoor-kitchens',
+    name: 'Outdoor Kitchens & Fire Features',
+    shortName: 'Kitchens & Fire',
+    tagline: 'Where the evening happens',
+    description:
+      'Built-in grills, stone bars and counters, fire pits, fire tables, and full outdoor fireplaces built into your patio.',
+    metaTitle: 'Outdoor Kitchens, Fire Pits & Fireplaces in Rochester, NY',
+    metaDescription:
+      'Rochester outdoor kitchens, stone bars, built-in grills, fire pits, and outdoor fireplaces. Built with your patio or added to one. Cost ranges. Call (585) 594-8420.',
+    heroLabel: 'Outdoor Living',
+    heroHeading: 'OUTDOOR KITCHENS & FIRE FEATURES IN ROCHESTER',
+    heroIntro:
+      'A fire feature adds weeks to each end of the Rochester outdoor season, and a built-in kitchen means you stop carrying everything in and out. Both are best planned with the patio, not bolted on later.',
+    heroImage: 'svc-outdoor-kitchens.webp',
+    cardImage: 'svc-outdoor-kitchens.webp',
+    icon: 'Flame',
+    features: [
+      'Stone bars & prep counters',
+      'Built-in grills & appliance cutouts',
+      'Wood & gas fire pits',
+      'Full outdoor fireplaces',
+      'Utility & gas line coordination',
+      'Task and accent lighting',
+    ],
+    cta: 'Get a Free Estimate',
+    tier: 'construction',
+  },
+  {
+    slug: 'drainage-grading',
+    name: 'Drainage & Grading',
+    shortName: 'Drainage & Grading',
+    tagline: 'Move the water first',
+    description:
+      'French drains, catch basins, downspout tie-ins, dry creek beds, and regrading that move water away from your foundation.',
+    metaTitle: 'Yard Drainage & Grading in Rochester, NY | French Drains',
+    metaDescription:
+      'Rochester yard drainage and grading — French drains, catch basins, downspout tie-ins, dry creek beds, regrading. Fix standing water and wet basements. (585) 594-8420.',
+    heroLabel: 'Water Management',
+    heroHeading: 'DRAINAGE & GRADING IN ROCHESTER, NY',
+    heroIntro:
+      "Rochester's clay soils, flat lots, and freeze-thaw cycles put water where you don't want it. Drainage is the least glamorous work we do and the most likely to protect everything else on your property.",
+    heroImage: 'svc-drainage-grading.webp',
+    cardImage: 'svc-drainage-grading.webp',
+    icon: 'Droplets',
+    features: [
+      'French drains & curtain drains',
+      'Catch basins & yard inlets',
+      'Downspout & sump discharge tie-ins',
+      'Dry creek beds & swales',
+      'Foundation-protection regrading',
+      'Drainage designed into hardscape',
+    ],
+    cta: 'Get a Free Estimate',
+    tier: 'construction',
   },
   {
     slug: 'water-features',
@@ -202,6 +330,7 @@ export const services: Service[] = [
       'Maintenance & winterization',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
   {
     slug: 'snow-ice-management',
@@ -229,6 +358,7 @@ export const services: Service[] = [
       'Event & on-call services',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
   {
     slug: 'artificial-grass',
@@ -256,6 +386,7 @@ export const services: Service[] = [
       'Manufacturer-backed warranties',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
   {
     slug: 'commercial-services',
@@ -283,6 +414,7 @@ export const services: Service[] = [
       'Single-provider convenience',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
   {
     slug: 'holiday-lighting',
@@ -310,6 +442,7 @@ export const services: Service[] = [
       'Post-season takedown & storage',
     ],
     cta: 'Get a Free Estimate',
+    tier: 'core',
   },
 ];
 
@@ -321,3 +454,9 @@ services.forEach((s) => {
 export function getServiceBySlug(slug: ServiceSlug): Service | undefined {
   return services.find((s) => s.slug === slug);
 }
+
+/** Primary offering — homepage grid and the top of the services index. */
+export const coreServices = services.filter((s) => s.tier === 'core');
+
+/** Focused build lanes that hang off the hardscaping hub. */
+export const constructionServices = services.filter((s) => s.tier === 'construction');

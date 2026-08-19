@@ -1,0 +1,87 @@
+---
+/**
+ * Project proof strip — real completed work with the problem it solved and the
+ * band it landed in. Used on service pages; /projects/ renders the full set.
+ */
+import { Image } from 'astro:assets';
+import { formatBand, getBand } from '@data/investment';
+import { projects } from '@data/projects';
+import { getPhoto } from '@lib/images';
+import { url } from '@lib/utils';
+
+interface Props {
+  slugs: string[];
+  title?: string;
+  label?: string;
+  intro?: string;
+}
+
+const {
+  slugs,
+  label = 'Real Projects',
+  title = 'WORK WE HAVE <span class="text-green">ACTUALLY BUILT</span>',
+  intro,
+} = Astro.props;
+
+const featured = slugs
+  .map((slug) => projects.find((p) => p.slug === slug))
+  .filter((p): p is (typeof projects)[number] => p !== undefined);
+---
+
+{featured.length > 0 && (
+  <section class="py-24 section-dark">
+    <div class="site-container">
+      <div class="text-center mb-16 fade-in">
+        <p class="section-label">{label}</p>
+        <h2 class="section-title" set:html={title} />
+        {intro && <p class="section-subtitle mx-auto" set:html={intro} />}
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 stagger-children">
+        {featured.map((project) => {
+          const band = getBand(project.investmentBandId);
+          return (
+            <article class="rounded-xl overflow-hidden flex flex-col" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+              <div class="aspect-[4/3] overflow-hidden">
+                <Image
+                  src={getPhoto(project.image)}
+                  alt={project.alt}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                  widths={[600, 900]}
+                  sizes="(max-width: 1024px) 100vw, 600px"
+                />
+              </div>
+              <div class="p-8 flex flex-col gap-4 flex-1">
+                <div>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">
+                    {project.categoryLabel}{project.town ? ` — ${project.town}` : ''}
+                  </p>
+                  <h3 class="text-base" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                    {project.title}
+                  </h3>
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The problem</p>
+                  <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">What we built</p>
+                  <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>
+                </div>
+                <p class="text-sm mt-auto pt-2" style="border-top: 1px solid var(--color-border-dark); color: var(--color-text-muted);">
+                  Typical range for this scope:
+                  <strong style="color: var(--color-green-bright);"> {formatBand(band)}</strong>
+                </p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <div class="text-center mt-12 fade-in">
+        <a href={url('/projects/')} class="btn btn-outline btn-md">See More Projects</a>
+      </div>
+    </div>
+  </section>
+)}
