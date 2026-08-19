@@ -36,6 +36,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!input || input.length < 3) {
     return Response.json({ suggestions: [] });
   }
+  if (input.length > 200 || (body.sessionToken?.length ?? 0) > 100) {
+    return Response.json({ suggestions: [] }, { status: 400 });
+  }
 
   try {
     const res = await fetch('https://places.googleapis.com/v1/places:autocomplete', {
@@ -53,11 +56,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     });
 
     if (!res.ok) {
-      return Response.json({ suggestions: [] });
+      console.error(`Places autocomplete failed: HTTP ${res.status}`);
+      return Response.json({ suggestions: [] }, { status: 502 });
     }
 
     return Response.json(await res.json());
-  } catch {
-    return Response.json({ suggestions: [] });
+  } catch (error) {
+    console.error('Places autocomplete request failed:', error);
+    return Response.json({ suggestions: [] }, { status: 502 });
   }
 };
