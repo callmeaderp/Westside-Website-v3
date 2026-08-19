@@ -207,21 +207,21 @@ export const services: Service[] = [
     slug: 'snow-ice-management',
     name: 'Snow & Ice Management',
     shortName: 'Snow & Ice',
-    tagline: '24/7 winter protection',
+    tagline: 'Commercial winter protection',
     description:
-      "24/7 commercial snow and ice management. Keeping your property safe, accessible, and compliant through Rochester's winters.",
+      "Commercial snow and ice management tailored to your property. Keeping parking lots, walkways, and entrances accessible through Rochester's winters.",
     metaTitle: 'Snow & Ice Management in Rochester, NY | Westside Professional Landscape',
     metaDescription:
-      '24/7 commercial snow plowing and ice management in Rochester, NY. Seasonal contracts, de-icing, walkway clearing. Serving Monroe County since 2000. Call (585) 594-8420.',
+      'Commercial snow plowing and ice management in Rochester, NY. Seasonal contracts, de-icing, and walkway clearing throughout Monroe County.',
     heroLabel: 'Winter Services',
     heroHeading: 'SNOW & ICE MANAGEMENT IN ROCHESTER, NY',
     heroIntro:
-      "24/7 commercial snow and ice management. Keeping your property safe, accessible, and compliant through Rochester's winters.",
+      "Commercial snow and ice management planned around your property's trigger depths, service priorities, and winter access needs.",
     heroImage: 'svc-snow.webp',
     cardImage: 'svc-snow.webp',
     icon: 'Snowflake',
     features: [
-      '24/7 emergency response',
+      'Contract-based response plans',
       'Commercial plowing & removal',
       'Sidewalk & walkway clearing',
       'De-icing & salt application',

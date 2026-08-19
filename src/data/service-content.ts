@@ -392,7 +392,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     detailSubtitle: 'Comprehensive winter services for commercial properties throughout Monroe County.',
     detailCards: [
       {
-        title: '24/7 COMMERCIAL PLOWING',
+        title: 'COMMERCIAL PLOWING',
         text: 'Our fleet of trucks and loaders are equipped and ready to handle everything from a light dusting to a major lake-effect event. We service parking lots, access roads, loading docks, and emergency lanes. Trigger depths and response times are established in advance so there are no surprises when a storm hits.',
         features: ['Parking lots & access roads', 'Loading docks & emergency lanes', 'Pre-determined trigger depths'],
       },
@@ -416,7 +416,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'What triggers a snow plowing visit?',
-        answer: "Trigger depths are established in your contract \u2014 typically 1\u20132 inches for commercial properties. Once accumulation hits the trigger, our crews deploy automatically. You don't need to call us. We monitor weather conditions around the clock and aim to have your property cleared before your business opens.",
+        answer: "Trigger depths and response priorities are established in your contract. Once accumulation hits the agreed trigger, our crews follow the property's service plan. We monitor forecasts and conditions throughout each event so routes can be adjusted as Rochester weather changes.",
       },
       {
         question: 'Do you offer residential snow removal?',
@@ -520,8 +520,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'SNOW & ICE MANAGEMENT',
-        text: "Rochester's winters demand a <strong>proactive snow management partner</strong>. We offer seasonal contracts with 24/7 response for plowing, sidewalk clearing, and de-icing. Trigger depths, response times, and service areas are established in advance so your property stays safe and accessible all winter.",
-        features: ['24/7 response', 'Seasonal contracts', 'Plowing, clearing & de-icing'],
+        text: "Rochester's winters demand a <strong>prepared snow management partner</strong>. We offer seasonal contracts for plowing, sidewalk clearing, and de-icing. Trigger depths, response priorities, and service areas are established in advance so your property has a clear plan for winter weather.",
+        features: ['Contract-based response', 'Seasonal contracts', 'Plowing, clearing & de-icing'],
       },
       {
         title: 'SEASONAL COLOR & ENHANCEMENTS',
@@ -542,7 +542,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'How do you handle emergency snow events?',
-        answer: "Our commercial snow contracts include 24/7 response capability. We monitor weather forecasts continuously and pre-deploy equipment and materials before major storms. During multi-day events, our crews cycle through client properties around the clock. Emergency re-service requests are handled the same day.",
+        answer: "Snow response is defined by each commercial contract, including trigger depths, priority areas, and service expectations. We monitor forecasts and conditions throughout storm events and route crews according to those agreed plans. Contact us if your property needs a specific response window or re-service arrangement.",
       },
       {
         question: 'Can you manage multiple properties for the same company?',
