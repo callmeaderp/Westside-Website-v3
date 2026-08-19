@@ -5,13 +5,7 @@
 #   AZURE_CLIENT_ID           — "Westside Website Contact Form" app registration
 #   AZURE_CLIENT_SECRET       — Client secret (expires 2028-03-24)
 #   PLACES_API_KEY            — Places-API-only key for /api/address-suggest/
-#   CHEMICAL_RECORD_EXPORT_KEY — simple private key for /api/chemical-record/export.csv
 
 name = "westside-website"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-03-24"
-
-[[d1_databases]]
-binding = "CHEMICAL_RECORDS"
-database_name = "westside-chemical-records"
-database_id = "e0acd1f2-1f5b-4421-8abb-3abc86fcd934"
