@@ -80,7 +80,7 @@ import { url } from '@lib/utils';
 
     <div class="footer-bottom border-t border-border-dark pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-xs" style="color: var(--color-text-muted);">
-        &copy; {new Date().getFullYear()} {company.legalName}. All rights reserved.
+        &copy; {new Date().getFullYear()} {company.legalName.replace(/\.$/, '')}. All rights reserved.
       </p>
       <p class="text-xs">
         <a href={url('/privacy')} class="footer-link text-xs">Privacy Policy</a>

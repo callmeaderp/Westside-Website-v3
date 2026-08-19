@@ -88,6 +88,11 @@ export const productCategories: ProductCategory[] = [
         sdsUrl: '/documents/lawn-care/mossmax-sds.pdf',
       },
       {
+        name: 'Podium',
+        labelUrl: '/documents/lawn-care/podium-label.pdf',
+        sdsUrl: '/documents/lawn-care/podium-sds.pdf',
+      },
+      {
         name: 'Prophesy',
         labelUrl: '/documents/lawn-care/prophesy-label.pdf',
         sdsUrl: '/documents/lawn-care/prophesy-sds.pdf',
