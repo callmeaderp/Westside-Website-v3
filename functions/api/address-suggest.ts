@@ -8,7 +8,9 @@
  * Response: { suggestions: [...] } (Google Places format)
  */
 
-const PLACES_API_KEY = 'AIzaSyAWvCy3qmk0g_1A27OJYFftXn73941ac4Q';
+interface Env {
+  PLACES_API_KEY?: string;
+}
 
 const LOCATION_BIAS = {
   circle: {
@@ -17,7 +19,12 @@ const LOCATION_BIAS = {
   },
 };
 
-export const onRequestPost: PagesFunction = async ({ request }) => {
+export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  if (!env.PLACES_API_KEY) {
+    console.error('Address suggestions unavailable: PLACES_API_KEY is not configured');
+    return Response.json({ suggestions: [] }, { status: 503 });
+  }
+
   let body: { input?: string; sessionToken?: string };
   try {
     body = await request.json();
@@ -35,7 +42,7 @@ export const onRequestPost: PagesFunction = async ({ request }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Goog-Api-Key': PLACES_API_KEY,
+        'X-Goog-Api-Key': env.PLACES_API_KEY,
       },
       body: JSON.stringify({
         input,
