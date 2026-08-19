@@ -96,21 +96,8 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
               data-category={project.category}
               style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
             >
-              {project.beforeImage ? (
+              {project.secondaryImage ? (
                 <div class="grid grid-cols-2">
-                  <figure class="m-0 relative">
-                    <Image
-                      src={getPhoto(project.beforeImage)}
-                      alt={`Before: ${project.alt}`}
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                      widths={[400, 600]}
-                      sizes="(max-width: 1024px) 50vw, 300px"
-                    />
-                    <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,0,0,0.7); color: #fff;">
-                      Before
-                    </figcaption>
-                  </figure>
                   <figure class="m-0 relative">
                     <Image
                       src={getPhoto(project.image)}
@@ -120,8 +107,21 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
                       widths={[400, 600]}
                       sizes="(max-width: 1024px) 50vw, 300px"
                     />
+                    <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,0,0,0.7); color: #fff;">
+                      View One
+                    </figcaption>
+                  </figure>
+                  <figure class="m-0 relative">
+                    <Image
+                      src={getPhoto(project.secondaryImage)}
+                      alt={project.secondaryAlt ?? `Second completed view: ${project.alt}`}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                      widths={[400, 600]}
+                      sizes="(max-width: 1024px) 50vw, 300px"
+                    />
                     <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,134,63,0.85); color: #fff;">
-                      After
+                      View Two
                     </figcaption>
                   </figure>
                 </div>

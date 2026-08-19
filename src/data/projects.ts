@@ -23,8 +23,9 @@ export interface Project {
   title: string;
   /** Photo filename resolved through getPhoto(). */
   image: string;
-  /** Optional "before" photo — only where a genuine before frame exists. */
-  beforeImage?: string;
+  /** Optional second completed-work view of the same project. */
+  secondaryImage?: string;
+  secondaryAlt?: string;
   alt: string;
   /** Municipality — set ONLY when provable. Omitted otherwise. */
   town?: string;
@@ -143,7 +144,8 @@ export const projects: Project[] = [
     slug: 'front-entry-steps-wall-rebuild',
     title: 'Front Entry Rebuild — Steps, Landing, and Retaining Wall',
     image: 'proj-front-entry-after.webp',
-    beforeImage: 'proj-front-entry-before.webp',
+    secondaryImage: 'proj-front-entry-before.webp',
+    secondaryAlt: 'Second completed view of the paver front entry from the driveway, showing broad steps and the low wall',
     alt: 'Rebuilt front entry with a paver landing, wide steps, a low retaining wall, and a fresh planting bed',
     year: 2020,
     category: 'walkways',
