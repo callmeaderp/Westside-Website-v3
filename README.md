@@ -1,10 +1,10 @@
 # Westside Website v3
 
-This repository is the Astro 6 production website for Westside Professional Landscape at <https://westsideprolandscape.com>. It replaces the older static V2 site with data-driven services, shared layouts and components, self-hosted brand assets, structured metadata, and Cloudflare Pages deployment.
+This repository is the Astro 7 production website for Westside Professional Landscape at <https://westsideprolandscape.com>. It replaces the older static V2 site with data-driven services, shared layouts and components, self-hosted brand assets, structured metadata, and Cloudflare Pages deployment.
 
 ## Stack
 
-- Astro 6 with static output and per-route SSR opt-in when needed.
+- Astro 7 with static output and Cloudflare Pages Functions for API routes.
 - Tailwind CSS 4 through `@tailwindcss/vite`.
 - TypeScript and Zod for data contracts.
 - Biome for linting and formatting.

@@ -2,7 +2,7 @@
 
 ## Workspace identity
 
-This is the Astro 6 production website for Westside Professional Landscape. Start with [README.md](README.md) for architecture, content conventions, development, testing, deployment, and verification. The older V2 and V2.5 sibling repositories are references and rollback sources, not active development targets.
+This is the Astro 7 production website for Westside Professional Landscape. Start with [README.md](README.md) for architecture, content conventions, development, testing, deployment, and verification. The older V2 and V2.5 sibling repositories are references and rollback sources, not active development targets.
 
 ## Standing rules
 

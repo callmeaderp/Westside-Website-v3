@@ -20,6 +20,9 @@ export default defineConfig({
     assets: 'assets',
   },
 
+  // Preserve Astro 6 whitespace semantics; Astro 7's JSX mode can join adjacent inline text.
+  compressHTML: true,
+
   image: {
     domains: [],
   },
