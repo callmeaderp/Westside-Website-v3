@@ -11,12 +11,6 @@ name = "westside-website"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-03-24"
 
-# R2 bucket kept during transition — old resume download URLs still work until
-# objects auto-expire (90-day lifecycle). Remove after April 2026.
-[[r2_buckets]]
-binding = "RESUMES"
-bucket_name = "westside-resumes"
-
 [[d1_databases]]
 binding = "CHEMICAL_RECORDS"
 database_name = "westside-chemical-records"
