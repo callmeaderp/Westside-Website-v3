@@ -19,7 +19,11 @@ interface Props {
 const { label, heading, intro, image, variant = 'page', buttons } = Astro.props;
 
 const heroClasses = {
-  full: 'min-h-[100svh] flex items-center relative overflow-hidden',
+  // pt clears the sticky header (main is pulled up under it via negative
+  // margin in BaseLayout); pb clears the absolute scroll cue. Without these,
+  // flex centering lets tall content (small viewports, large font scaling)
+  // slide under the header and collide with the cue.
+  full: 'min-h-[100svh] flex items-center relative overflow-hidden pt-[calc(var(--header-height)+2rem)] pb-28',
   page: 'pt-40 pb-24 relative overflow-hidden',
   utility: 'pt-36 pb-16 relative overflow-hidden bg-bg-dark-alt',
 };
