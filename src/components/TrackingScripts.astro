@@ -39,6 +39,7 @@ const googleAdsId = company.tracking.googleAdsId;
 const googleAdsPhoneLabel = googleAdsId && company.tracking.googleAdsPhoneLabel
   ? `${googleAdsId}/${company.tracking.googleAdsPhoneLabel}`
   : '';
+const microsoftUetId = company.tracking.microsoftUet;
 const metaPixelId = company.tracking.metaPixel;
 ---
 
@@ -129,11 +130,11 @@ const metaPixelId = company.tracking.metaPixel;
   }
 </script>
 
-<!-- Immediate async script loader — gtag.js + fbevents.js load right away.
-     Async means no render blocking. Firing immediately means Google's tag
-     detector sees the tag on first crawl, and fast bouncers still register
+<!-- Immediate async script loader — gtag.js, fbevents.js, and Microsoft UET load right away.
+     Async means no render blocking. Firing immediately means ad-platform tag
+     detectors see the tags on first crawl, and fast bouncers still register
      conversion events. -->
-<script is:inline define:vars={{ ga4Id, metaPixelId }}>
+<script is:inline define:vars={{ ga4Id, metaPixelId, microsoftUetId }}>
   (function () {
     // GA4 — always loaded (internal traffic filtered via GA4 data filter).
     // Script URL carries the GA4 ID; Google Ads config runs from the inline
@@ -143,12 +144,29 @@ const metaPixelId = company.tracking.metaPixel;
     gtagScript.async = true;
     document.head.appendChild(gtagScript);
 
-    // Meta Pixel — blocked for internal traffic
+    // Ad-platform tags are blocked for internal traffic.
     if (metaPixelId && !window.__wplInternal) {
       var fbScript = document.createElement('script');
       fbScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
       fbScript.async = true;
       document.head.appendChild(fbScript);
+    }
+
+    if (microsoftUetId && !window.__wplInternal) {
+      window.uetq = window.uetq || [];
+      var uetScript = document.createElement('script');
+      uetScript.src = 'https://bat.bing.com/bat.js';
+      uetScript.async = true;
+      uetScript.onload = uetScript.onreadystatechange = function () {
+        var state = this.readyState;
+        if (state && state !== 'loaded' && state !== 'complete') return;
+        var options = { ti: microsoftUetId, enableAutoSpaTracking: true };
+        options.q = window.uetq;
+        window.uetq = new window.UET(options);
+        window.uetq.push('pageLoad');
+        uetScript.onload = uetScript.onreadystatechange = null;
+      };
+      document.head.appendChild(uetScript);
     }
   })();
 </script>
@@ -176,9 +194,18 @@ const metaPixelId = company.tracking.metaPixel;
         event_category: 'engagement',
         phone_number: phone,
       });
-      // Google Ads conversion — blocked for internal traffic
+      // Google Ads conversion — blocked for internal traffic.
       if (adsPhoneSendTo && !window.__wplInternal) {
         gtag('event', 'conversion', { send_to: adsPhoneSendTo, value: 25.0, currency: 'USD' });
+      }
+      // Microsoft Ads phone-click signal. Keep it separate from the primary
+      // estimate-submit event: a tap is useful intent, but not proof a call connected.
+      if (window.uetq && !window.__wplInternal) {
+        window.uetq.push('event', 'contact', {
+          event_category: 'phone_click',
+          event_label: phone,
+          event_value: 25,
+        });
       }
     }
     // Meta event — blocked for internal traffic

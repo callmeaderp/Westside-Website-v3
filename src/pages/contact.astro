@@ -650,6 +650,17 @@ const jsonLd = [
               lead_utm_medium: attribution.utm_medium || 'none',
               lead_utm_campaign: attribution.utm_campaign || 'none',
             });
+            // Microsoft Ads primary lead event — only after the server accepts
+            // the inquiry, and never for internal traffic.
+            if ((window as any).uetq && !(window as any).__wplInternal) {
+              (window as any).uetq.push('event', 'request_quote', {
+                event_category: 'lead',
+                event_label: formType,
+                event_value: 50,
+                revenue_value: 50,
+                currency: 'USD',
+              });
+            }
             // Google Ads conversion — blocked for internal traffic
             const sendTo = form.dataset.adsSendTo;
             if (sendTo && !(window as any).__wplInternal) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });

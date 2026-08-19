@@ -69,6 +69,8 @@ export const company = {
     googleAdsFormLabel: 'X0m7CO2BkYscEJzagdoD',
     /** Conversion label for phone number clicks ($25 value). */
     googleAdsPhoneLabel: 'TrMECPSIkYscEJzagdoD',
+    /** Microsoft Advertising UET tag ID. Set to '' to disable. */
+    microsoftUet: '97263322',
     /** Microsoft Clarity project ID for heatmaps/session recording. Set to '' to disable. */
     clarity: 'vwt4d6u369',
     /** Cloudflare Turnstile site key for contact form CAPTCHA. Set to '' to disable.
