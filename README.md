@@ -87,10 +87,10 @@ A preview deployment uses an explicit branch:
 npx wrangler pages deploy dist/ --project-name=westside-website --branch=<preview-name>
 ```
 
-Production is the Pages production branch and is deployed by omitting `--branch`:
+Production is the Pages `master` production branch; name it explicitly so a deploy from another checkout branch cannot silently become a preview:
 
 ```sh
-npx wrangler pages deploy dist/ --project-name=westside-website
+npx wrangler pages deploy dist/ --project-name=westside-website --branch=master
 ```
 
 Do not use `--branch=main` as a production substitute; it creates a preview named `main`. Read `.claude/rules/deploy.md` for the current environment terminology and authentication boundary.

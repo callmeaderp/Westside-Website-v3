@@ -4,6 +4,7 @@
 #   AZURE_TENANT_ID           — Entra ID tenant for MS Graph sendMail
 #   AZURE_CLIENT_ID           — "Westside Website Contact Form" app registration
 #   AZURE_CLIENT_SECRET       — Client secret (expires 2028-03-24)
+#   PLACES_API_KEY            — Places-API-only key for /api/address-suggest/
 #   CHEMICAL_RECORD_EXPORT_KEY — simple private key for /api/chemical-record/export.csv
 
 name = "westside-website"
