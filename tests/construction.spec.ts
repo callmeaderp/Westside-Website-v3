@@ -85,9 +85,9 @@ test.describe('project case studies', () => {
     expect(await cards.count()).toBeGreaterThanOrEqual(6);
 
     const first = cards.first();
-    await expect(first).toContainText('The problem');
+    await expect(first).toContainText('The design challenge');
     await expect(first).toContainText('What we built');
-    await expect(first).toContainText('Typical range:');
+    await expect(first).toContainText('Current planning range for comparable work:');
   });
 
   test('category filter narrows the grid', async ({ page }) => {

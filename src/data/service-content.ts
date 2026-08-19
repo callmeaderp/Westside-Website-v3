@@ -336,12 +336,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     processLabel: 'How It Works',
     processTitle: 'FROM FIRST CALL TO <span class="text-green">FINISHED BUILD</span>',
-    processSubtitle: 'No mystery and no surprise change orders. Here is exactly how a construction project runs with us.',
+    processSubtitle: 'A clear sequence from site visit through final walkthrough, with scope and pricing documented before the build starts.',
     processSteps: [
       { title: 'SITE VISIT', text: 'We walk the property with you, take measurements, check grade and drainage, and talk honestly about what your budget will and will not reach.' },
       { title: 'DESIGN & PROPOSAL', text: 'You get a layout, material selections, and a written itemized estimate — scope, materials, and price on paper before anything is committed.' },
       { title: 'EXCAVATION & BASE', text: 'The part nobody photographs and everything depends on: excavation, disposal, compacted aggregate base, and drainage. This is where a build lasts or fails.' },
-      { title: 'BUILD', text: 'Pavers, walls, steps, and features go in. Our own crews do the work — we stay on your property until the build is finished.' },
+      { title: 'BUILD', text: 'Pavers, walls, steps, and features go in according to the agreed scope. We coordinate the work through completion and keep you informed when weather or site conditions affect the schedule.' },
       { title: 'WALKTHROUGH', text: 'We walk the finished project with you, close out the punch list, and explain how to care for the surface so it still looks right in year ten.' },
     ],
     faqs: [
@@ -385,7 +385,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     investmentBandIds: ['patio-small', 'patio-outdoor-room', 'outdoor-kitchen', 'retaining-wall', 'walkway-entry', 'full-backyard'],
     investmentTitle: 'WHAT PROJECTS LIKE YOURS <span class="text-green">TYPICALLY RUN</span>',
     investmentIntro:
-      'Most contractors make you book an appointment just to learn whether you are in the right ballpark. Here are the ranges our completed Greater Rochester projects actually land in, so you can decide before you pick up the phone.',
+      'Most contractors make you book an appointment just to learn whether you are in the right ballpark. These broad Greater Rochester planning ranges let you decide whether the conversation makes sense before you pick up the phone.',
     featuredProjectSlugs: [
       'lit-bar-patio-outdoor-room',
       'circular-brick-patio-seat-wall',
@@ -696,7 +696,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does yard drainage cost in Rochester?',
-        answer: 'Drainage projects typically run <strong>$2,500 to $15,000</strong>. A downspout tie-in or a short French drain run sits at the low end; a full property solution with multiple basins, long pipe runs, and regrading sits at the high end. Length of run, depth, obstructions, and — most of all — whether there is a usable outlet drive the number. Planning range, not a quote.',
+        answer: 'Drainage projects commonly begin around <strong>$1,800</strong> for a focused correction and can exceed <strong>$12,000</strong> for a full-property solution with multiple basins, long pipe runs, and regrading. Length of run, depth, obstructions, and — most of all — whether there is a usable outlet drive the number. This is a broad market-based planning range, not a quote.',
       },
       {
         question: 'Why does water pool in the same spot every spring?',

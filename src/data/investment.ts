@@ -7,9 +7,9 @@
  * `INVESTMENT_CAVEAT` — do not surface a band without it.
  *
  * Sourcing rules for anything added here:
- *  - anchor on published Rochester-market ranges and Westside's own project
- *    mix; never copy a competitor's guarantee, promotion, or per-unit price
- *    as if it were ours;
+ *  - anchor on published Greater Rochester market ranges, then keep bands broad
+ *    enough for Westside's project mix; never copy a competitor's guarantee,
+ *    promotion, or per-unit price as if it were ours;
  *  - keep the low end genuinely reachable and the high end open-ended where
  *    scope has no natural ceiling (`openEnded: true` renders a trailing "+");
  *  - band boundaries must stay internally consistent — a walkway cannot start
@@ -30,7 +30,7 @@ export interface InvestmentBand {
 }
 
 export const INVESTMENT_CAVEAT =
-  'Ranges are planning figures from past Greater Rochester projects, not quotes. Site conditions, access, excavation and disposal, base depth, material selection, wall engineering, lighting, and design complexity all move the final number. Your written estimate comes after we walk the property.';
+  'Ranges are planning figures based on published Greater Rochester market pricing, not quotes or a promise that every project will fall within them. Westside’s written estimate controls. Site conditions, access, excavation and disposal, base depth, material selection, wall engineering, lighting, and design complexity all move the final number.';
 
 /** Formats a band as "$8,000–$20,000" or "$40,000+". */
 export function formatBand(band: InvestmentBand): string {
@@ -79,15 +79,17 @@ export const investmentBands: InvestmentBand[] = [
     id: 'drainage-grading',
     label: 'Drainage & grading',
     scope: 'French drains, catch basins, downspout tie-ins, dry creek beds, swales, and regrading to move water away from the foundation.',
-    low: 2500,
-    high: 15000,
+    low: 1800,
+    high: 12000,
+    openEnded: true,
   },
   {
     id: 'landscape-renovation',
     label: 'Landscape renovation',
     scope: 'Removing tired overgrown plantings and rebuilding the beds — design, soil work, edging, new plant material, mulch, and repair of the surrounding lawn.',
-    low: 6000,
+    low: 5000,
     high: 30000,
+    openEnded: true,
   },
   {
     id: 'artificial-turf',

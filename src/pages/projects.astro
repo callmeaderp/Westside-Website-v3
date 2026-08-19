@@ -1,8 +1,8 @@
 ---
 /**
- * Construction project case studies — the proof page the service funnels
- * point at. Each entry pairs a real Westside photo with the problem it solved
- * and the investment band it landed in.
+ * Construction project examples — the proof page the service funnels point at.
+ * Each entry pairs a real Westside photo with the visible design challenge,
+ * finished scope, and the current planning range for comparable work.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
@@ -54,14 +54,14 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 
 <BaseLayout
   title="Hardscape & Outdoor Living Projects in Rochester, NY | Westside"
-  description="Real paver patio, retaining wall, walkway, and outdoor kitchen projects built in Greater Rochester — the problem, what we built, and the typical investment range for each."
+  description="Real paver patio, retaining wall, walkway, and outdoor kitchen projects built by Westside in Greater Rochester — visible project scope and current planning ranges for comparable work."
   ogImage={getPhoto('gallery-drone-patio.webp')}
   jsonLd={jsonLd}
 >
   <Hero
     label="Real Completed Work"
     heading="OUR CONSTRUCTION PROJECTS IN ROCHESTER, NY"
-    intro="Every project below is our own work in Greater Rochester — the problem the property had, what we built to solve it, and the range that scope typically runs."
+    intro="Every photo below shows work Westside completed in Greater Rochester. We pair the visible design challenge and finished scope with today's planning range for comparable work — never an invented old contract price."
     image={getPhoto('gallery-drone-patio.webp')}
     buttons={[
       { text: 'Start Your Project', href: '/contact/?service=hardscaping', style: 'primary' },
@@ -149,7 +149,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
                 </div>
 
                 <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The problem</p>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
                   <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
                 </div>
 
@@ -160,7 +160,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 
                 <div class="mt-auto pt-4 flex flex-wrap items-center justify-between gap-3" style="border-top: 1px solid var(--color-border-dark);">
                   <p class="text-sm" style="color: var(--color-text-muted);">
-                    Typical range: <strong style="color: var(--color-green-bright);">{formatBand(band)}</strong>
+                    Current planning range for comparable work: <strong style="color: var(--color-green-bright);">{formatBand(band)}</strong>
                   </p>
                   <a href={url(`/services/${project.relatedService}/`)} class="text-sm font-semibold" style="color: var(--color-green-bright);">
                     {serviceName(project.relatedService)} &rarr;

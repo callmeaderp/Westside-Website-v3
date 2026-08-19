@@ -136,6 +136,14 @@ test.describe('conversion wiring is preserved', () => {
     expect(await page.evaluate(() => typeof (window as any).fbq)).toBe('function');
   });
 
+  test('customer confirmation replies route to the monitored office mailbox', async () => {
+    const source = await import('node:fs/promises').then((fs) =>
+      fs.readFile(new URL('../functions/api/contact.ts', import.meta.url), 'utf8')
+    );
+    expect(source).toContain("const REPLY_TO = 'office@westsideprolandscape.com'");
+    expect(source).not.toContain("const REPLY_TO = 'website@westsideprolandscape.com'");
+  });
+
   test('submission posts the qualification and attribution payload', async ({ page }) => {
     await page.goto('/services/hardscaping/?utm_source=google&utm_campaign=patios-2026');
     await page.goto('/contact/');

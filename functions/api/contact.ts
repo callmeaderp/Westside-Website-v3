@@ -134,8 +134,9 @@ const NOTIFY = [
   'office@westsideprolandscape.com',  // Heather
   'brad@westsideprolandscape.com',    // Brad
 ];
-// Where customer replies go (shared mailbox — visible to all staff added as members)
-const REPLY_TO = 'website@westsideprolandscape.com';
+// Customer confirmation replies go to the monitored office mailbox. The website
+// sender account is intentionally disabled for interactive use and is not an inbox.
+const REPLY_TO = 'office@westsideprolandscape.com';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
@@ -532,7 +533,7 @@ function buildConfirmationEmail(data: ConfirmationData): string {
 
   const bodyText = data.isCareer
     ? `Thank you for your interest in joining the Westside team! We've received your application and will review it shortly.`
-    : `Thank you for reaching out about <strong>${esc(data.service)}</strong>. We've received your request and will get back to you within one business day.`;
+    : `Thank you for reaching out about <strong>${esc(data.service)}</strong>. We've received your request. A member of our team will review the details and contact you about the next step.`;
 
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"></head>

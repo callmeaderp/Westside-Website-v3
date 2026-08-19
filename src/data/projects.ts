@@ -1,10 +1,13 @@
 /**
- * Construction project case studies — drives /projects/ and the outdoor-living
- * hub proof section.
+ * Construction project examples — drives /projects/ and the outdoor-living hub
+ * proof section.
  *
  * Evidence rules (these are published claims about real work):
  *  - `image` must be a real Westside job photo from the organized marketing
  *    photo library, not stock and not AI;
+ *  - describe only visible features. Without the original proposal or job notes,
+ *    do not invent the homeowner's original problem, hidden construction details,
+ *    use patterns, or project outcome;
  *  - `town` is OPTIONAL and may only be set when the location is independently
  *    supported. Photo EXIF in the current library carries capture dates and
  *    camera models but NO GPS, so no town is asserted here. Omit rather than
@@ -55,9 +58,9 @@ export const projects: Project[] = [
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
     problem:
-      'A new-build backyard dropped away from the house with nothing but bare grade behind the walkout — no usable flat surface and no reason to go outside after dinner.',
+      'A sloped backyard needed a level place for dining and gathering.',
     solution:
-      'We built the grade back up into a raised paver terrace held by a curved retaining wall, capped it with a bar-height counter and stool seating, and ran low-voltage lighting through the wall and step faces so the space works after dark.',
+      'The finished project combines a raised paver terrace, curved wall, bar-height counter, stool seating, broad steps, and integrated lighting.',
     investmentBandId: 'patio-outdoor-room',
     relatedService: 'hardscaping',
   },
@@ -70,9 +73,9 @@ export const projects: Project[] = [
     category: 'outdoor-kitchens',
     categoryLabel: 'Outdoor Kitchen',
     problem:
-      'The homeowners entertained constantly but cooked on a rolling grill at the edge of the lawn, hauling everything in and out of the house each time.',
+      'The yard needed a permanent cooking and serving area integrated with its patio.',
     solution:
-      'A stone-faced kitchen run with a built-in grill, prep counter, and bar overhang, set on a large-format paver terrace with dedicated lighting on the working face and the seating side.',
+      'A stone-faced kitchen run brings together a built-in grill, prep counter, bar overhang, paver terrace, and warm task and accent lighting.',
     investmentBandId: 'outdoor-kitchen',
     relatedService: 'hardscaping',
   },
@@ -85,9 +88,9 @@ export const projects: Project[] = [
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
     problem:
-      'A city backyard with an awkward shape and no defined gathering point — every layout the owners sketched fought the property lines.',
+      'The compact fenced yard called for a gathering space that fit the available geometry without feeling boxed in.',
     solution:
-      'A circular brick paver field solved the geometry: the radius ignores the lot lines entirely. A stone seat wall wraps the perimeter for permanent seating, with a grill station built into the wall run and planting beds softening the fence line.',
+      'A circular brick paver field defines the room, with a curved stone seat wall, built-in grill station, and planted perimeter softening the fence line.',
     investmentBandId: 'patio-outdoor-room',
     relatedService: 'hardscaping',
   },
@@ -100,9 +103,9 @@ export const projects: Project[] = [
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
     problem:
-      'A deep lot where the interesting part of the yard sat far from the house, so the back half of the property went unused.',
+      'The large yard needed a deliberate connection between the patio by the house and a second destination farther into the property.',
     solution:
-      'We anchored the near end with a brick paver patio and grill station, then ran a curved walk out to a pergola-covered destination at the far end — two outdoor rooms connected by a path instead of one stranded slab.',
+      'A brick paver patio and grill station anchor the house end, while a curved walk leads to a separate pergola-covered gathering area.',
     investmentBandId: 'full-backyard',
     relatedService: 'hardscaping',
   },
@@ -115,9 +118,9 @@ export const projects: Project[] = [
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
     problem:
-      'A backyard that fell away from the house in one continuous slope — a single-level patio would have needed either a retaining wall taller than the owners wanted or a truckload of imported fill.',
+      'The grade changed continuously behind the house, so the design needed usable flat areas without one visually dominant wall.',
     solution:
-      'Two terraces at different elevations, linked by broad steps, follow the existing grade instead of fighting it. A stone seat wall encloses the upper level and gives the space a defined edge without a tall wall anywhere.',
+      'Two paver terraces follow the slope at separate elevations, connected by broad steps and framed by a stone seat wall on the upper level.',
     investmentBandId: 'patio-outdoor-room',
     relatedService: 'hardscaping',
   },
@@ -130,9 +133,9 @@ export const projects: Project[] = [
     category: 'outdoor-kitchens',
     categoryLabel: 'Fire Feature',
     problem:
-      'A shaded, wooded lot where grass would never establish and the family only used the yard in the height of summer.',
+      'The wooded setting needed a durable gathering surface where shade made a conventional lawn impractical.',
     solution:
-      'A paver terrace under the tree canopy gave them a surface that shade cannot kill, and a fire pit sized to its seating circle extended the usable season well into fall.',
+      'A paver terrace fits beneath the tree canopy, with a centered fire feature and room for a full seating circle.',
     investmentBandId: 'patio-outdoor-room',
     relatedService: 'outdoor-kitchens',
   },
@@ -146,9 +149,9 @@ export const projects: Project[] = [
     category: 'walkways',
     categoryLabel: 'Walkway & Entry',
     problem:
-      'Settled, out-of-level entry steps with a crumbling edge and an overgrown foundation bed — the first thing every visitor saw, and a genuine trip hazard.',
+      'The original entry combined settled steps, uneven edges, and overgrown planting beds in one highly visible area.',
     solution:
-      'We removed the failing steps, rebuilt on a compacted base with a wider paver landing and full-tread steps, held the grade change with a low block wall, and replanted the bed so the entry reads as one designed element.',
+      'The rebuilt entry pairs a wider paver landing and broad steps with a low block wall and refreshed foundation planting.',
     investmentBandId: 'walkway-entry',
     relatedService: 'hardscaping',
   },
@@ -161,9 +164,9 @@ export const projects: Project[] = [
     category: 'walkways',
     categoryLabel: 'Walkway & Entry',
     problem:
-      'Guests parked in the driveway and cut across the lawn because the original walk took the long way around — a worn dirt track told the story.',
+      'The route from the driveway to the front door needed a clearer, wider approach tied into the surrounding landscape.',
     solution:
-      'We rebuilt the walk on the line people actually walk, widened it to let two people pass, added a contrasting soldier-course border, and rebuilt the foundation beds along the new curve.',
+      'A broad curved paver walk uses a contrasting soldier-course border and follows the foundation beds into the entry.',
     investmentBandId: 'walkway-entry',
     relatedService: 'hardscaping',
   },
@@ -176,9 +179,9 @@ export const projects: Project[] = [
     category: 'walls',
     categoryLabel: 'Retaining Wall',
     problem:
-      'A long side-yard slope under mature trees that would not hold mulch, would not grow grass, and washed onto the walk every heavy rain.',
+      'A long shaded side-yard slope needed a cleaner transition between the house, planted area, and lower walk.',
     solution:
-      'A raised block wall with drainage stone and filter fabric behind it turned the slope into a level planted terrace. Shade-tolerant plantings hold the soil, and the wall stops the wash before it reaches the walk.',
+      'A raised stone wall creates a level planting terrace beneath the mature trees and gives the garden a defined lower edge.',
     investmentBandId: 'retaining-wall',
     relatedService: 'hardscaping',
   },
@@ -190,9 +193,9 @@ export const projects: Project[] = [
     category: 'turf',
     categoryLabel: 'Turf & Putting Green',
     problem:
-      'A steep, hard-to-mow back corner that never grew decent grass and got no use at all.',
+      'A steep back corner needed to become a playable feature rather than unused grade.',
     solution:
-      'A natural stone wall terraced the corner into a level pad, and a contoured SYNLawn putting surface with cups and fringe went over an engineered aggregate base. Nothing to mow, nothing to water, and it drains through.',
+      'A stone wall terraces the corner around a contoured SYNLawn putting surface with cups, fringe, and planted edges.',
     investmentBandId: 'artificial-turf',
     relatedService: 'artificial-grass',
   },
@@ -205,9 +208,9 @@ export const projects: Project[] = [
     category: 'renovation',
     categoryLabel: 'Commercial Renovation',
     problem:
-      'A tired shared courtyard between two buildings that tenants walked through but never stopped in, with failing walks and thin beds.',
+      'The shared courtyard needed clearer circulation and a more finished place for tenants and visitors to pause.',
     solution:
-      'New paver walks on a commercial-duty base restored the circulation, seating and lighting made the space usable in the evening, and layered planting beds gave the courtyard the finish a shared amenity needs.',
+      'Paver walks organize the routes through the space, while seating, lighting, and layered planting beds complete the courtyard.',
     investmentBandId: 'landscape-renovation',
     relatedService: 'commercial-services',
   },

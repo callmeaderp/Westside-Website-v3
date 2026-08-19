@@ -1,7 +1,8 @@
 ---
 /**
- * Project proof strip — real completed work with the problem it solved and the
- * band it landed in. Used on service pages; /projects/ renders the full set.
+ * Project proof strip — real completed work with the visible design challenge,
+ * finished scope, and current planning range for comparable work. Used on
+ * service pages; /projects/ renders the full set.
  */
 import { Image } from 'astro:assets';
 import { formatBand, getBand } from '@data/investment';
@@ -62,7 +63,7 @@ const featured = slugs
                   </h3>
                 </div>
                 <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The problem</p>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
                   <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
                 </div>
                 <div>
@@ -70,7 +71,7 @@ const featured = slugs
                   <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>
                 </div>
                 <p class="text-sm mt-auto pt-2" style="border-top: 1px solid var(--color-border-dark); color: var(--color-text-muted);">
-                  Typical range for this scope:
+                  Current planning range for comparable work:
                   <strong style="color: var(--color-green-bright);"> {formatBand(band)}</strong>
                 </p>
               </div>
