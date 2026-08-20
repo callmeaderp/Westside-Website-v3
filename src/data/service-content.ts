@@ -471,7 +471,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     featuredProjectSlugs: ['front-entry-steps-wall-rebuild', 'front-walkway-planting-beds'],
     relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
     ctaHeading: 'FIX THE FIRST THING EVERYONE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEES</span>',
-    ctaText: "Send us a photo of your entry and we'll tell you honestly what it needs. <strong>Free on-site estimate</strong>, no obligation.",
+    ctaText: "Tell us what you want to improve at your entry and we'll take an honest look on site. <strong>Free on-site estimate</strong>, no obligation.",
   },
 
   'retaining-walls': {

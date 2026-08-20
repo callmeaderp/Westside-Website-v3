@@ -3,10 +3,10 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CtaBanner from '@components/CtaBanner.astro';
 import { Image, getImage } from 'astro:assets';
-import { company } from '@data/company';
 import { gallery, galleryCategories } from '@data/gallery';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
+import { url } from '@lib/utils';
 
 // Pre-generate larger lightbox versions of each gallery image
 const galleryWithFull = await Promise.all(
@@ -34,9 +34,21 @@ const breadcrumbJsonLd = {
   <Hero
     label="Our Work"
     heading="ROCHESTER LANDSCAPING GALLERY"
-    intro="Browse our portfolio of completed projects across Greater Rochester. From intimate gardens to expansive commercial properties."
+    intro="Browse our full photo collection of completed work across Greater Rochester, or explore the curated project stories for construction scope and planning ranges."
     image={getPhoto('gallery-show-garden.webp')}
+    buttons={[
+      { text: 'Explore Featured Projects', href: '/projects/', style: 'primary' },
+      { text: 'Start Your Project', href: '/contact/', style: 'outline' },
+    ]}
   />
+
+  <section class="py-8 section-dark">
+    <div class="site-container">
+      <p class="text-center text-sm" style="color: var(--color-text-muted); line-height: 1.8;">
+        Looking for construction details rather than the full photo collection? Our <a href={url('/projects/')} class="font-semibold" style="color: var(--color-green-bright);">featured projects</a> pair selected completed work with visible scope and current planning ranges for comparable work.
+      </p>
+    </div>
+  </section>
 
   <section class="py-24 section-dark-alt">
     <div class="site-container-wide">

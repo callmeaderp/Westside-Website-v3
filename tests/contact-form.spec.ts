@@ -124,6 +124,39 @@ test.describe('acquisition attribution', () => {
 });
 
 test.describe('conversion wiring is preserved', () => {
+  test('Microsoft UET initializes with the configured tag and page-load event', async ({ page }) => {
+    await page.route('https://bat.bing.com/bat.js', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/javascript',
+        body: `window.UET = function (options) {
+          this.options = options;
+          this.events = [];
+          this.push = (...args) => this.events.push(args);
+          window.__testUet = this;
+        };`,
+      });
+    });
+
+    await page.goto('/contact/');
+    await expect.poll(() => page.evaluate(() => Boolean((window as any).__testUet))).toBe(true);
+
+    const state = await page.evaluate(() => ({
+      tagId: (window as any).__testUet.options.ti,
+      autoSpa: (window as any).__testUet.options.enableAutoSpaTracking,
+      usedBootstrapQueue: Array.isArray((window as any).__testUet.options.q),
+      events: (window as any).__testUet.events,
+      installedGlobally: (window as any).uetq === (window as any).__testUet,
+    }));
+    expect(state).toEqual({
+      tagId: '97263322',
+      autoSpa: true,
+      usedBootstrapQueue: true,
+      events: [['pageLoad']],
+      installedGlobally: true,
+    });
+  });
+
   test('Google Ads send-to remains on the form', async ({ page }) => {
     await page.goto('/contact/');
     const sendTo = await page.locator('#contact-form').getAttribute('data-ads-send-to');
@@ -144,9 +177,63 @@ test.describe('conversion wiring is preserved', () => {
     expect(source).not.toContain("const REPLY_TO = 'website@westsideprolandscape.com'");
   });
 
-  test('submission posts the qualification and attribution payload', async ({ page }) => {
+  test('rejected submission does not emit request_quote', async ({ page }) => {
+    await page.goto('/contact/');
+    await page.evaluate(() => {
+      (window as any).uetq = {
+        events: [] as unknown[][],
+        push(...args: unknown[]) { this.events.push(args); },
+      };
+    });
+    await page.route('**/api/contact/', async (route) => {
+      await route.fulfill({
+        status: 400,
+        contentType: 'application/json',
+        body: '{"success":false,"message":"Rejected test inquiry"}',
+      });
+    });
+
+    await page.fill('#first-name', 'Test');
+    await page.fill('#last-name', 'Homeowner');
+    await page.fill('#email', 'test@example.com');
+    await page.fill('#phone', '5855550123');
+    await page.fill('#message', 'This submission should be rejected by the test route.');
+    await page.evaluate(() => document.querySelector('.cf-turnstile')?.remove());
+    await page.locator('#contact-form button[type="submit"]').click();
+
+    await expect(page.locator('#form-status')).toContainText('Rejected test inquiry');
+    expect(await page.evaluate(() => (window as any).uetq.events)).toEqual([]);
+  });
+
+  test('phone click emits the accepted Microsoft event shape', async ({ page }) => {
+    await page.goto('/contact/');
+    await page.evaluate(() => {
+      (window as any).uetq = {
+        events: [] as unknown[][],
+        push(...args: unknown[]) { this.events.push(args); },
+      };
+    });
+
+    await page.locator('a[href^="tel:"]').first().click();
+    expect(await page.evaluate(() => (window as any).uetq.events)).toEqual([
+      ['event', 'contact', {
+        event_category: 'phone_click',
+        event_label: '+15855948420',
+        event_value: 25,
+      }],
+    ]);
+  });
+
+  test('submission posts the qualification and attribution payload and emits request_quote only after acceptance', async ({ page }) => {
     await page.goto('/services/hardscaping/?utm_source=google&utm_campaign=patios-2026');
     await page.goto('/contact/');
+
+    await page.evaluate(() => {
+      (window as any).uetq = {
+        events: [] as unknown[][],
+        push(...args: unknown[]) { this.events.push(args); },
+      };
+    });
 
     // Intercept rather than actually submitting — the endpoint sends real mail.
     let body: Record<string, unknown> | null = null;
@@ -172,6 +259,16 @@ test.describe('conversion wiring is preserved', () => {
     });
     await page.locator('#contact-form button[type="submit"]').click();
     await expect.poll(() => body).not.toBeNull();
+
+    expect(await page.evaluate(() => (window as any).uetq.events)).toEqual([
+      ['event', 'request_quote', {
+        event_category: 'lead',
+        event_label: 'estimate_request',
+        event_value: 50,
+        revenue_value: 50,
+        currency: 'USD',
+      }],
+    ]);
 
     const payload = body as unknown as Record<string, unknown>;
     expect(payload.projectType).toBe('Paver patio');

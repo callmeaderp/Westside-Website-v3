@@ -195,6 +195,26 @@ test.describe('structured data', () => {
 });
 
 test.describe('internal linking', () => {
+  test('homepage makes curated projects primary while retaining the full gallery', async ({ page }) => {
+    await page.goto('/');
+    const main = page.locator('#main-content');
+    await expect(main.locator('a[href="/projects/"]').first()).toBeVisible();
+    await expect(main.locator('a[href="/gallery/"]')).toContainText('Browse the full photo gallery');
+  });
+
+  test('gallery routes visitors to curated project stories and the estimate form', async ({ page }) => {
+    await page.goto('/gallery/');
+    await expect(page.locator('section.hero a[href="/projects/"]')).toContainText('Explore Featured Projects');
+    await expect(page.locator('section.hero a[href="/contact/"]')).toContainText('Start Your Project');
+    await expect(page.locator('#main-content')).toContainText('featured projects');
+  });
+
+  test('entry CTA matches the form capabilities', async ({ page }) => {
+    await page.goto('/services/walkways-steps/');
+    await expect(page.locator('#main-content')).not.toContainText(/send us a photo/i);
+    await expect(page.locator('#main-content')).toContainText('take an honest look on site');
+  });
+
   test('hardscaping hub links to every construction lane', async ({ page }) => {
     await page.goto('/services/hardscaping/');
     for (const route of CONSTRUCTION_ROUTES.filter((r) => r !== '/services/hardscaping/')) {
