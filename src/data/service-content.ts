@@ -222,7 +222,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'FERTILIZATION & WEED CONTROL',
-        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is a precisely timed sequence of applications designed for Western New York\'s climate and soils. Balanced fertilizer, pre- and post-emergent weed control, and a <em>grub-control application included</em> — all applied by NYS DEC certified technicians. <strong>50% off your first treatment — just $58 for the average Rochester lawn.</strong> Full details on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
+        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is a precisely timed sequence of applications designed for Western New York\'s climate and soils. Balanced fertilizer, pre- and post-emergent weed control, and a <em>grub-control application included</em> — all applied by NYS DEC certified technicians. <strong>Your first treatment is 50% off — $58 instead of the usual $116 for the average Rochester lawn.</strong> Full details on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
         features: ['5 precisely timed visits', 'Crabgrass & broadleaf weed control', 'Grub prevention included'],
       },
       {
@@ -258,7 +258,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does professional lawn care cost in Rochester?',
-        answer: "It depends on lawn size and which services you include. Weekly mowing typically runs a flat seasonal or per-visit rate based on property size. The 5-Step Fertilization & Weed Control program averages around $58 per treatment for a typical Rochester lawn (with 50% off your first treatment). Aeration, overseeding, and lawn repair are quoted as one-time services. We provide <strong>free on-site estimates</strong> — you'll see itemized pricing before any work starts.",
+        answer: "It depends on lawn size and which services you include. Weekly mowing typically runs a flat seasonal or per-visit rate based on property size. The 5-Step Fertilization & Weed Control program averages around $116 per treatment for a typical Rochester lawn, and your <strong>first treatment is 50% off — $58 instead of the usual $116</strong>. Aeration, overseeding, and lawn repair are quoted as one-time services. We provide <strong>free on-site estimates</strong> — you'll see itemized pricing before any work starts.",
       },
       {
         question: 'Do I need to sign up for every service, or can I pick and choose?',
@@ -557,7 +557,6 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     investmentIntro:
       'Wall pricing is driven by square face footage, height, and what the wall is holding back — which is why the honest range is wide until we see the site.',
     featuredProjectSlugs: [
-      'terraced-stone-walls-and-patio',
       'stone-retaining-wall-shade-garden',
       'front-entry-steps-wall-rebuild',
       'multi-level-patio-seat-wall',
@@ -798,7 +797,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introTitle: 'PROFESSIONAL <span class="text-green">SNOW MANAGEMENT</span>',
     introText: [
       'Rochester averages <strong>nearly 100 inches of snowfall per year</strong>, making it one of the snowiest cities in the United States. For commercial property owners and managers across Monroe County, that means months of liability exposure, operational disruptions, and the constant threat of slip-and-fall incidents.',
-      "Westside Professional Landscape provides comprehensive commercial snow and ice management designed to keep your property safe and accessible. Our crews monitor weather conditions and aim to deploy proactively. With seasonal contracts, dedicated equipment, and a <strong>responsive team</strong>, we take the stress of winter off your plate.",
+      "Westside Professional Landscape provides comprehensive commercial snow and ice management designed to keep your property safe and accessible. Our crews follow the weather throughout the season and respond as conditions develop. With seasonal contracts, dedicated equipment, and a <strong>responsive team</strong>, we take the stress of winter off your plate.",
     ],
     detailLabel: 'Our Services',
     detailTitle: 'SNOW & ICE <span class="text-green">SERVICES</span>',
@@ -837,7 +836,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'How does a seasonal snow contract work?',
-        answer: "A seasonal contract covers all snow and ice services for the entire winter season (typically November through April) at a fixed price. No per-push charges, no surprises regardless of how many storms hit. Your budget is locked in before the first flake falls. We also offer per-event pricing for properties that prefer it.",
+        answer: "A seasonal contract covers all snow and ice services for the entire winter season (typically November through April) at a fixed price. No per-push charges, no surprises regardless of how many storms hit. Your winter budget is set when you sign, not at the end of the season. We also offer per-event pricing for properties that prefer it.",
       },
       {
         question: 'What de-icing products do you use?',

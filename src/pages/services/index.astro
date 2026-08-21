@@ -63,7 +63,7 @@ const buildLanes = [
             <div class="aspect-[16/10] overflow-hidden">
               <Image
                 src={getPhoto(service.cardImage)}
-                alt={service.name}
+                alt={service.cardImageAlt}
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
                 widths={[400, 600]}
@@ -93,7 +93,7 @@ const buildLanes = [
             <div class={`fade-in-${i % 2 === 0 ? 'left' : 'right'} ${i % 2 === 1 ? 'lg:col-start-2' : ''}`}>
               <Image
                 src={getPhoto(service.cardImage)}
-                alt={service.name}
+                alt={service.cardImageAlt}
                 class="rounded-xl shadow-lg"
                 loading="lazy"
                 widths={[600, 900]}

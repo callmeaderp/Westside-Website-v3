@@ -8,7 +8,7 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/404') && !page.includes('/api/') && !page.includes('/field/'),
+      filter: (page) => !page.includes('/404') && !page.includes('/api/'),
     }),
   ],
 

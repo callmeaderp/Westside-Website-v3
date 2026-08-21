@@ -16,7 +16,7 @@ const SITE_ORIGIN = company.url; // https://westsideprolandscape.com
  * Automatically adds trailing slash for page paths (no extension).
  *
  * @example siteUrl('/about') → 'https://westsideprolandscape.com/about/'
- * @example siteUrl('/images/photos/hero.webp') → 'https://westsideprolandscape.com/images/photos/hero.webp'
+ * @example siteUrl('/assets/hero.CxAbC123.webp') → 'https://westsideprolandscape.com/assets/hero.CxAbC123.webp'
  * @example siteUrl('/') → 'https://westsideprolandscape.com/'
  */
 export function siteUrl(path: string): string {

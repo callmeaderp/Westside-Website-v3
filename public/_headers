@@ -7,11 +7,10 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 
-/fonts/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/images/*
-  Cache-Control: public, max-age=2592000
-
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Product labels and SDS PDFs — served straight from public/, so the URLs are
+# not content-hashed. Cache for a week, never immutable.
+/documents/*
+  Cache-Control: public, max-age=604800

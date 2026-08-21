@@ -71,8 +71,6 @@ export const company = {
     googleAdsPhoneLabel: 'TrMECPSIkYscEJzagdoD',
     /** Microsoft Advertising UET tag ID. Set to '' to disable. */
     microsoftUet: '97263322',
-    /** Microsoft Clarity project ID for heatmaps/session recording. Set to '' to disable. */
-    clarity: 'vwt4d6u369',
     /** Cloudflare Turnstile site key for contact form CAPTCHA. Set to '' to disable.
      *  Create a widget at: Cloudflare Dashboard → Turnstile → Add widget → set domain. */
     turnstileSiteKey: '0x4AAAAAACtQFQUXq4idMeWu',

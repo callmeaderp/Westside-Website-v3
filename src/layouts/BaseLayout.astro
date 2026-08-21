@@ -44,7 +44,7 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
       noindex={noindex}
     />
     {jsonLdArray.map((ld) => (
-      <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)} />
     ))}
   </head>
   <body>

@@ -77,10 +77,9 @@ const breadcrumbJsonLd = {
       <div class="site-container">
         <div class="mb-12 fade-in">
           <p class="section-label">{category.name}</p>
-          <h2 class="section-title mb-4">
-            {category.name.toUpperCase().split(' ').slice(0, -1).join(' ')}{' '}
-            <span class="text-green">{category.name.toUpperCase().split(' ').pop()}</span>
-          </h2>
+          {/* Kept on one line: a line break between the two expressions renders as a
+              second space next to the explicit separator. */}
+          <h2 class="section-title mb-4">{category.name.toUpperCase().split(' ').slice(0, -1).join(' ')} <span class="text-green">{category.name.toUpperCase().split(' ').pop()}</span></h2>
           <p class="max-w-2xl" style="color: var(--color-text-muted); line-height: 1.7;">
             {category.description}
           </p>

@@ -21,17 +21,27 @@
 
 # WordPress page slugs → new pages
 /landscaping-services/  /services/      301
+/landscaping-services   /services/      301
 /landscape-services/    /services/      301
+/landscape-services     /services/      301
 /about-us/              /about/         301
+/about-us               /about/         301
 /contact-us/            /contact/       301
+/contact-us             /contact/       301
 /portfolio/             /gallery/       301
+/portfolio              /gallery/       301
 /our-work/              /gallery/       301
+/our-work               /gallery/       301
 
 # Service-specific WordPress slugs
 /plant-health/          /services/plant-health/      301
+/plant-health           /services/plant-health/      301
 /plant-health-care/     /services/plant-health/      301
-/lawn-care/             /services/plant-health/      301
+/plant-health-care      /services/plant-health/      301
+/lawn-care/             /services/lawn-care/         301
+/lawn-care              /services/lawn-care/         301
 /lawn-care-program/     /services/plant-health/      301
+/lawn-care-program      /services/plant-health/      301
 /all-year-lawn-care     /services/lawn-care/         301
 /all-year-lawn-care/    /services/lawn-care/         301
 /new-year-new-lawn      /services/lawn-care/         301
@@ -39,12 +49,15 @@
 /professional-turf-care /services/lawn-care/         301
 /professional-turf-care/ /services/lawn-care/        301
 /hardscaping/           /services/hardscaping/       301
+/hardscaping            /services/hardscaping/       301
 /hardscape/             /services/hardscaping/       301
+/hardscape              /services/hardscaping/       301
 /hardscape-design       /services/hardscaping/       301
 /hardscape-design/      /services/hardscaping/       301
 /services/hardscape-design /services/hardscaping/    301
 /services/hardscape-design/ /services/hardscaping/   301
 /landscape-design/      /services/landscape-design/  301
+/landscape-design       /services/landscape-design/  301
 /garden-trends          /services/landscape-design/  301
 /garden-trends/         /services/landscape-design/  301
 /summer-landscaping     /services/landscape-design/  301
@@ -52,14 +65,21 @@
 /update-the-outside     /services/landscape-design/  301
 /update-the-outside/    /services/landscape-design/  301
 /holiday-lighting/      /services/holiday-lighting/  301
+/holiday-lighting       /services/holiday-lighting/  301
 /holiday-lights/        /services/holiday-lighting/  301
+/holiday-lights         /services/holiday-lighting/  301
 /one-call-we-clear-it-all /services/snow-ice-management/ 301
 /one-call-we-clear-it-all/ /services/snow-ice-management/ 301
 /snow-removal/          /services/snow-ice-management/ 301
+/snow-removal           /services/snow-ice-management/ 301
 /snow-ice-management/   /services/snow-ice-management/ 301
+/snow-ice-management    /services/snow-ice-management/ 301
 /water-features/        /services/water-features/    301
+/water-features         /services/water-features/    301
 /landscape-maintenance/ /services/landscape-maintenance/ 301
+/landscape-maintenance  /services/landscape-maintenance/ 301
 /maintenance/           /services/landscape-maintenance/ 301
+/maintenance            /services/landscape-maintenance/ 301
 /services/professional-maintenance /services/landscape-maintenance/ 301
 /services/professional-maintenance/ /services/landscape-maintenance/ 301
 /spring-maintenance     /services/landscape-maintenance/ 301
@@ -73,15 +93,21 @@
 /commercial-services    /services/commercial-services/ 301
 /commercial-services/   /services/commercial-services/ 301
 /areas-served/          /service-areas/ 301
+/areas-served           /service-areas/ 301
 /artificial-turf/       /gallery/       301
+/artificial-turf        /gallery/       301
 /artificial-grass/      /services/artificial-grass/ 301
+/artificial-grass       /services/artificial-grass/  301
 /artificial-grass-summer-2023 /services/artificial-grass/ 301
 /artificial-grass-summer-2023/ /services/artificial-grass/ 301
 /synlawn/               /gallery/       301
+/synlawn                /gallery/       301
 
 # Legacy hardscape sub-topic URLs -> dedicated construction pages
 /retaining-walls        /services/retaining-walls/   301
+/retaining-walls/       /services/retaining-walls/   301
 /retaining-wall         /services/retaining-walls/   301
+/retaining-wall/        /services/retaining-walls/   301
 /walkways               /services/walkways-steps/    301
 /walkways/              /services/walkways-steps/    301
 /patios                 /services/hardscaping/       301
@@ -89,12 +115,13 @@
 /paver-patios           /services/hardscaping/       301
 /paver-patios/          /services/hardscaping/       301
 /outdoor-kitchens       /services/outdoor-kitchens/  301
+/outdoor-kitchens/      /services/outdoor-kitchens/  301
 /outdoor-living         /services/hardscaping/       301
 /outdoor-living/        /services/hardscaping/       301
 /drainage               /services/drainage-grading/  301
 /drainage/              /services/drainage-grading/  301
 /grading                /services/drainage-grading/  301
-/projects               /projects/                   301
+/grading/               /services/drainage-grading/  301
 
 # Old WordPress blog posts & pages still indexed in Google
 # Targeted redirects for legacy URLs with traffic/search impressions
@@ -118,6 +145,7 @@
 /news/                  /about/         301
 /news/*                 /about/         301
 /easy-indoor-plants/    /services/plant-health/      301
+/easy-indoor-plants     /services/plant-health/      301
 /did-you-know           /services/plant-health/      301
 /did-you-know/          /services/plant-health/      301
 /seasonal-transition    /services/plant-health/      301
@@ -200,15 +228,18 @@
 /blog/tag/*             /               301
 
 # Catch-all for unmapped blog URLs — send to services (MUST be AFTER specific /blog/ rules above)
-/blog/*                 /services/      301
 /blog                   /services/      301
+/blog/                  /services/      301
+/blog/*                 /services/      301
 
 # Other WordPress legacy URL patterns
 /tag/*                  /               301
 /author/*               /               301
 /feed                   /               301
+/feed/                  /               301
 /feed/*                 /               301
 /comments/feed          /               301
+/comments/feed/         /               301
 /comments/feed/*        /               301
 # Query-string variant /?feed=rss2 is handled by a zone-level Cloudflare
 # Redirect Rule, NOT here — Pages _redirects cannot match on query strings,
@@ -221,3 +252,4 @@
 # Common typos
 /index.php              /       301
 /home/                  /       301
+/home                   /               301

@@ -62,10 +62,12 @@ const featured = slugs
                     {project.title}
                   </h3>
                 </div>
-                <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
-                  <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
-                </div>
+                {project.problem && (
+                  <div>
+                    <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
+                    <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
+                  </div>
+                )}
                 <div>
                   <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">What we built</p>
                   <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>

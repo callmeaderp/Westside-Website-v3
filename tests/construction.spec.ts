@@ -82,12 +82,19 @@ test.describe('project case studies', () => {
   test('projects page lists case studies with scope and range', async ({ page }) => {
     await page.goto('/projects/');
     const cards = page.locator('.project-card');
-    expect(await cards.count()).toBeGreaterThanOrEqual(6);
+    const count = await cards.count();
+    expect(count).toBeGreaterThanOrEqual(6);
 
-    const first = cards.first();
-    await expect(first).toContainText('The design challenge');
-    await expect(first).toContainText('What we built');
-    await expect(first).toContainText('Current planning range for comparable work:');
+    // Every card publishes what was built and the comparable planning range.
+    for (let i = 0; i < count; i++) {
+      await expect(cards.nth(i)).toContainText('What we built');
+      await expect(cards.nth(i)).toContainText('Current planning range for comparable work:');
+    }
+
+    // "The design challenge" is optional — it renders only for the projects whose
+    // original site condition is actually supported (src/data/projects.ts evidence
+    // rules), so at least one card has it and none may render an empty block.
+    await expect(page.locator('.project-card', { hasText: 'The design challenge' }).first()).toBeVisible();
   });
 
   test('category filter narrows the grid', async ({ page }) => {

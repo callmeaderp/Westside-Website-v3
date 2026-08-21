@@ -33,7 +33,11 @@ export interface Project {
   year?: number;
   category: 'patios' | 'walkways' | 'walls' | 'outdoor-kitchens' | 'drainage' | 'renovation' | 'turf';
   categoryLabel: string;
-  problem: string;
+  /**
+   * The visible design challenge. OPTIONAL: omitted where the original site
+   * condition is not independently supported, per the evidence rules above.
+   */
+  problem?: string;
   solution: string;
   /** Key of an entry in investmentBands. */
   investmentBandId: string;
@@ -58,8 +62,6 @@ export const projects: Project[] = [
     alt: 'Raised paver patio at dusk with a stone bar counter, stools, and integrated wall lighting',
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
-    problem:
-      'The finished patio occupies the transition between the house and the lower yard.',
     solution:
       'The finished project combines a raised paver terrace, curved wall, bar-height counter, stool seating, broad steps, and integrated lighting.',
     investmentBandId: 'patio-outdoor-room',
@@ -103,8 +105,6 @@ export const projects: Project[] = [
     year: 2019,
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
-    problem:
-      'The finished property needed a clear connection between the patio by the house and a second destination farther into the yard.',
     solution:
       'A brick paver patio and grill station anchor the house end, while a curved walk leads to a separate pavilion-covered gathering area.',
     investmentBandId: 'full-backyard',
@@ -180,8 +180,6 @@ export const projects: Project[] = [
     year: 2014,
     category: 'walls',
     categoryLabel: 'Retaining Wall',
-    problem:
-      'The finished wall defines the transition between the shaded planting terrace and the lower walk.',
     solution:
       'A raised stone wall creates a level planting terrace beneath the mature trees and gives the garden a defined lower edge.',
     investmentBandId: 'retaining-wall',
@@ -194,8 +192,6 @@ export const projects: Project[] = [
     alt: 'Contoured artificial putting green bordered by a natural stone wall and planted beds',
     category: 'turf',
     categoryLabel: 'Turf & Putting Green',
-    problem:
-      'The finished installation uses a previously open back corner for a dedicated practice green.',
     solution:
       'A stone wall frames a contoured artificial-turf putting surface with cups, fringe, and planted edges.',
     investmentBandId: 'artificial-turf',
@@ -204,13 +200,11 @@ export const projects: Project[] = [
   {
     slug: 'terraced-stone-walls-and-patio',
     title: 'Terraced Stone Walls, Steps, and Patio',
-    image: 'proj-terraced-stone-walls.webp',
+    image: 'svc-retaining-walls-east-ave.webp',
     alt: 'Aerial view of terraced stone retaining walls, broad steps, a paver patio, planting beds, and striped lawn',
     year: 2023,
     category: 'walls',
     categoryLabel: 'Retaining Wall',
-    problem:
-      'The finished design organizes a broad elevation change between the house and lawn into distinct, connected levels.',
     solution:
       'Terraced stone walls, broad steps, a central paver patio, and layered planting beds create a continuous transition across the grade.',
     investmentBandId: 'retaining-wall',
@@ -224,8 +218,6 @@ export const projects: Project[] = [
     year: 2022,
     category: 'turf',
     categoryLabel: 'Turf & Putting Green',
-    problem:
-      'The finished installation uses the woodland edge for a full practice-green layout rather than a single putting strip.',
     solution:
       'A contoured artificial-turf green combines multiple putting areas, three bunkers, curved fringe, and a stone bridge within the surrounding landscape.',
     investmentBandId: 'artificial-turf',
@@ -239,8 +231,6 @@ export const projects: Project[] = [
     year: 2023,
     category: 'turf',
     categoryLabel: 'Residential Artificial Lawn',
-    problem:
-      'The finished layout fits a usable lawn around a mature tree and the yard’s existing patio, pool, fence, and garden edges.',
     solution:
       'A broad artificial-lawn surface follows the surrounding hardscape and planting beds while preserving the central tree as part of the yard.',
     investmentBandId: 'artificial-turf',

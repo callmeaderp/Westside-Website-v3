@@ -197,17 +197,37 @@ const breadcrumbJsonLd = {
     }
   });
 
-  // Keyboard: Escape to close, Tab to trap focus within lightbox
+  const FOCUSABLE =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  // Keyboard: Escape to close, Tab wraps around the lightbox's focusable elements
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('active')) return;
     if (e.key === 'Escape') {
       closeLightbox();
       return;
     }
-    // Focus trap — keep Tab within lightbox
-    if (e.key === 'Tab' && lightboxClose) {
+    if (e.key !== 'Tab') return;
+
+    const focusable = Array.from(
+      lightbox.querySelectorAll<HTMLElement>(FOCUSABLE)
+    ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+    if (focusable.length === 0) {
       e.preventDefault();
-      lightboxClose.focus();
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement as HTMLElement | null;
+
+    // Wrap at the ends; also pull focus back in if it escaped the dialog.
+    if (e.shiftKey && (active === first || !lightbox.contains(active))) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && (active === last || !lightbox.contains(active))) {
+      e.preventDefault();
+      first.focus();
     }
   });
 </script>

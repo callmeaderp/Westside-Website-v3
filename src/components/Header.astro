@@ -39,7 +39,7 @@ function isActive(href: string): boolean {
       </a>
     </div>
 
-    <nav class="main-nav hidden lg:flex items-center gap-1" id="main-nav">
+    <nav class="main-nav hidden lg:flex items-center gap-1" id="main-nav" aria-label="Main">
       {mainNav.map((item) => (
         item.children ? (
           <div class="nav-dropdown relative group">
@@ -97,7 +97,7 @@ function isActive(href: string): boolean {
 
   <!-- Mobile Nav — hidden attr = display:none from first paint (no FOUC).
        JS removes hidden + adds is-open to animate in; re-adds hidden on close. -->
-  <nav class="mobile-nav bg-bg-dark border-t border-border-dark" id="mobile-nav" hidden>
+  <nav class="mobile-nav bg-bg-dark border-t border-border-dark" id="mobile-nav" aria-label="Mobile" hidden>
     <div class="max-w-[1400px] mx-auto px-5 md:px-8 py-6 flex flex-col gap-1">
       {mainNav.map((item) => (
         item.children ? (

@@ -37,6 +37,8 @@ const ServiceSchema = z.object({
   heroIntro: z.string(),
   heroImage: z.string(),
   cardImage: z.string(),
+  /** Describes what the card photo shows — not a repeat of the service name. */
+  cardImageAlt: z.string(),
   icon: z.string(),
   features: z.array(z.string()),
   cta: z.string().default('Get a Free Estimate'),
@@ -68,6 +70,7 @@ export const services: Service[] = [
       'Custom landscape design tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
     heroImage: 'svc-landscape-design.webp',
     cardImage: 'svc-landscape-design.webp',
+    cardImageAlt: 'Stone-and-timber home with fresh mulched foundation beds, a flowering purple rhododendron, and a striped front lawn',
     icon: 'PenTool',
     features: [
       'Custom design consultations',
@@ -96,6 +99,7 @@ export const services: Service[] = [
       'Consistent, reliable maintenance that keeps your property looking its best through every season.',
     heroImage: 'svc-maintenance.webp',
     cardImage: 'svc-maintenance.webp',
+    cardImageAlt: 'Wide sloping lawn mowed into clean stripes running up to a gray-sided house framed by fall foliage',
     icon: 'Leaf',
     features: [
       'Weekly mowing & edging',
@@ -124,6 +128,7 @@ export const services: Service[] = [
       'Mowing, fertilization, weed control, aeration, and repair — everything your lawn needs to stay thick, green, and healthy through every Rochester season.',
     heroImage: 'lawn-lush-backyard.webp',
     cardImage: 'lawn-lush-backyard.webp',
+    cardImageAlt: 'Backyard lawn curving around a mulched bed of flowering shrubs and evergreens along a privacy fence',
     icon: 'Sprout',
     features: [
       'Weekly mowing, edging & trimming',
@@ -149,9 +154,10 @@ export const services: Service[] = [
     heroLabel: 'Lawn Care Program',
     heroHeading: 'LAWN FERTILIZATION & WEED CONTROL IN ROCHESTER, NY',
     heroIntro:
-      'Five precisely timed seasonal applications for a lush, healthy lawn you can be proud of. 50% off your first treatment — just $58 for the average lawn.',
+      'Five precisely timed seasonal applications for a lush, healthy lawn you can be proud of. Your first treatment is 50% off — $58 instead of the usual $116 for the average lawn.',
     heroImage: 'hero-plant-health.webp',
     cardImage: 'svc-plant-health.webp',
+    cardImageAlt: 'Close view of a healthy lilac in full purple bloom held up against a green landscape',
     icon: 'Sprout',
     features: [
       'Early spring crabgrass prevention + fertilizer',
@@ -180,6 +186,7 @@ export const services: Service[] = [
       'Paver patios, retaining walls, walkways, fire features, and outdoor kitchens — designed and built for our freeze-thaw climate. See what projects like yours typically run before you call.',
     heroImage: 'hero-outdoor-living.webp',
     cardImage: 'svc-hardscape.webp',
+    cardImageAlt: 'Circular brick paver patio with a stone seat wall and built-in grill counter under a mature tree beside a covered pavilion',
     icon: 'Blocks',
     features: [
       'Paver patios & outdoor rooms',
@@ -208,6 +215,7 @@ export const services: Service[] = [
       'Settled steps and a cracked walk are the first thing every visitor notices — and the fastest hardscape project to turn around. Rebuilt level, safe, and on a base that survives our winters.',
     heroImage: 'svc-walkways-steps.webp',
     cardImage: 'svc-walkways-steps.webp',
+    cardImageAlt: 'Curved paver walkway with a cobble border leading to a covered front porch past a mulched bed of mums and ornamental grass',
     icon: 'Footprints',
     features: [
       'Paver & natural stone walkways',
@@ -236,6 +244,7 @@ export const services: Service[] = [
       'A retaining wall is a structure, not a decoration. Drainage stone, filter fabric, compacted backfill, and the right block for the load are what separate a wall that lasts from one that leans in five years.',
     heroImage: 'svc-retaining-walls-east-ave.webp',
     cardImage: 'svc-retaining-walls-east-ave.webp',
+    cardImageAlt: 'Aerial view of a curved natural stone retaining wall terracing a large striped lawn down to a paver patio and fire pit',
     icon: 'Layers',
     features: [
       'Engineered segmental block walls',
@@ -264,6 +273,7 @@ export const services: Service[] = [
       'A fire feature adds weeks to each end of the Rochester outdoor season, and a built-in kitchen means you stop carrying everything in and out. Both are best planned with the patio, not bolted on later.',
     heroImage: 'svc-outdoor-kitchen-lit-bar.webp',
     cardImage: 'svc-outdoor-kitchen-lit-bar.webp',
+    cardImageAlt: 'Stone outdoor kitchen island with a stainless door and grill, lit by warm sconces on a paver patio at dusk',
     icon: 'Flame',
     features: [
       'Stone bars & prep counters',
@@ -292,6 +302,7 @@ export const services: Service[] = [
       "Rochester's clay soils, flat lots, and freeze-thaw cycles put water where you don't want it. Drainage is the least glamorous work we do and the most likely to protect everything else on your property.",
     heroImage: 'svc-drainage-grading.webp',
     cardImage: 'svc-drainage-grading.webp',
+    cardImageAlt: 'Compact excavator regrading a stripped-back side yard, with fresh machine tracks in the exposed soil',
     icon: 'Droplets',
     features: [
       'French drains & curtain drains',
@@ -320,6 +331,7 @@ export const services: Service[] = [
       'Custom ponds, waterfalls, fountains, and streams that bring the sound and beauty of water to your landscape.',
     heroImage: 'svc-water-features.webp',
     cardImage: 'svc-water-features.webp',
+    cardImageAlt: 'Boulder-lined stream and small waterfall running past a paver patio with a table and cushioned chairs',
     icon: 'Waves',
     features: [
       'Pondless waterfalls',
@@ -348,6 +360,7 @@ export const services: Service[] = [
       "Commercial snow and ice management planned around your property's trigger depths, service priorities, and winter access needs.",
     heroImage: 'svc-snow.webp',
     cardImage: 'svc-snow.webp',
+    cardImageAlt: 'Pickup truck with a red plow blade pushing a wave of snow off a road lined with snow-covered trees',
     icon: 'Snowflake',
     features: [
       'Contract-based response plans',
@@ -376,6 +389,7 @@ export const services: Service[] = [
       'Premium SYNLawn artificial turf — professionally installed for a lush, green lawn year-round with virtually zero maintenance.',
     heroImage: 'hero-artificial-grass-putting-green.webp',
     cardImage: 'svc-artificial-grass-backyard.webp',
+    cardImageAlt: 'Aerial view of a flat green artificial lawn ringed by a black iron fence, planted borders, and an adjoining paver patio',
     icon: 'Sprout',
     features: [
       'SYNLawn authorized dealer',
@@ -404,6 +418,7 @@ export const services: Service[] = [
       'Full-service grounds management for commercial properties — landscape maintenance, snow and ice management, and seasonal services from a single provider.',
     heroImage: 'hero-services.webp',
     cardImage: 'hero-services.webp',
+    cardImageAlt: 'Brick paver patio with a stone grill island connected by a concrete walkway to a covered pavilion behind a dark privacy fence',
     icon: 'Building2',
     features: [
       'Commercial landscape maintenance',
@@ -432,6 +447,7 @@ export const services: Service[] = [
       'Professional holiday lighting design, installation, and removal. Enjoy the season while your property shines.',
     heroImage: 'svc-holiday-lighting.webp',
     cardImage: 'svc-holiday-lighting.webp',
+    cardImageAlt: 'Large columned house at night outlined in warm white holiday lights, with every surrounding shrub and tree wrapped in lights',
     icon: 'Sparkles',
     features: [
       'Custom lighting design',

@@ -62,7 +62,7 @@ Run checks proportional to the change. Data, route, metadata, redirects, or glob
 - Contact-form service options and the `?service=<slug>` preselect map are both derived from `services.ts`, so adding a service no longer requires editing the form.
 - Internal routes use trailing slashes because Astro is configured with `trailingSlash: "always"`. `url()` deliberately passes through same-page fragments (`#investment`) and scheme URLs (`tel:`) untouched.
 - FAQ answers may contain the limited HTML supported by the component and structured-data output; questions remain plain text.
-- Photos currently exist in both the Astro asset pipeline and `public/images/photos/`, with the site serving the public copies. Remove the direct copies only as part of a verified Astro Image migration.
+- Photos live only in `src/images/photos/` and are resolved through `getPhoto()` in `src/lib/images.ts`. The Astro image pipeline emits optimized, content-hashed files under `/assets/`; there is no `public/images/` copy to keep in sync.
 - Generated `dist/`, local screenshots, test output, and secrets are deployment/test artifacts rather than source.
 
 Read `.claude/rules/add-service-page.md` before adding a service; a complete service currently touches multiple independently maintained data and form/navigation surfaces.
