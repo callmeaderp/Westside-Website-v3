@@ -59,7 +59,7 @@ export const projects: Project[] = [
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
     problem:
-      'A sloped backyard needed a level place for dining and gathering.',
+      'The finished patio occupies the transition between the house and the lower yard.',
     solution:
       'The finished project combines a raised paver terrace, curved wall, bar-height counter, stool seating, broad steps, and integrated lighting.',
     investmentBandId: 'patio-outdoor-room',
@@ -97,16 +97,16 @@ export const projects: Project[] = [
   },
   {
     slug: 'pergola-patio-walkway-connection',
-    title: 'Brick Patio, Pergola, and Connecting Walkway',
+    title: 'Brick Patio, Pavilion, and Connecting Walkway',
     image: 'proj-pergola-grill-patio.webp',
-    alt: 'Brick paver patio with an outdoor grill station and a concrete walkway leading to a shaded pergola',
+    alt: 'Brick paver patio with an outdoor grill station and a concrete walkway leading to a shaded pavilion',
     year: 2019,
     category: 'patios',
     categoryLabel: 'Patio & Outdoor Living',
     problem:
-      'The large yard needed a deliberate connection between the patio by the house and a second destination farther into the property.',
+      'The finished property needed a clear connection between the patio by the house and a second destination farther into the yard.',
     solution:
-      'A brick paver patio and grill station anchor the house end, while a curved walk leads to a separate pergola-covered gathering area.',
+      'A brick paver patio and grill station anchor the house end, while a curved walk leads to a separate pavilion-covered gathering area.',
     investmentBandId: 'full-backyard',
     relatedService: 'hardscaping',
   },
@@ -181,7 +181,7 @@ export const projects: Project[] = [
     category: 'walls',
     categoryLabel: 'Retaining Wall',
     problem:
-      'A long shaded side-yard slope needed a cleaner transition between the house, planted area, and lower walk.',
+      'The finished wall defines the transition between the shaded planting terrace and the lower walk.',
     solution:
       'A raised stone wall creates a level planting terrace beneath the mature trees and gives the garden a defined lower edge.',
     investmentBandId: 'retaining-wall',
@@ -195,9 +195,54 @@ export const projects: Project[] = [
     category: 'turf',
     categoryLabel: 'Turf & Putting Green',
     problem:
-      'A steep back corner needed to become a playable feature rather than unused grade.',
+      'The finished installation uses a previously open back corner for a dedicated practice green.',
     solution:
-      'A stone wall terraces the corner around a contoured SYNLawn putting surface with cups, fringe, and planted edges.',
+      'A stone wall frames a contoured artificial-turf putting surface with cups, fringe, and planted edges.',
+    investmentBandId: 'artificial-turf',
+    relatedService: 'artificial-grass',
+  },
+  {
+    slug: 'terraced-stone-walls-and-patio',
+    title: 'Terraced Stone Walls, Steps, and Patio',
+    image: 'proj-terraced-stone-walls.webp',
+    alt: 'Aerial view of terraced stone retaining walls, broad steps, a paver patio, planting beds, and striped lawn',
+    year: 2023,
+    category: 'walls',
+    categoryLabel: 'Retaining Wall',
+    problem:
+      'The finished design organizes a broad elevation change between the house and lawn into distinct, connected levels.',
+    solution:
+      'Terraced stone walls, broad steps, a central paver patio, and layered planting beds create a continuous transition across the grade.',
+    investmentBandId: 'retaining-wall',
+    relatedService: 'retaining-walls',
+  },
+  {
+    slug: 'private-putting-green-complex',
+    title: 'Private Putting Green with Bunkers and Stone Bridge',
+    image: 'proj-private-putting-green-complex.webp',
+    alt: 'Aerial view of a private artificial-turf putting green with three bunkers, a flag, curved fringe, and a stone bridge',
+    year: 2022,
+    category: 'turf',
+    categoryLabel: 'Turf & Putting Green',
+    problem:
+      'The finished installation uses the woodland edge for a full practice-green layout rather than a single putting strip.',
+    solution:
+      'A contoured artificial-turf green combines multiple putting areas, three bunkers, curved fringe, and a stone bridge within the surrounding landscape.',
+    investmentBandId: 'artificial-turf',
+    relatedService: 'artificial-grass',
+  },
+  {
+    slug: 'residential-artificial-lawn',
+    title: 'Residential Artificial Lawn with Garden Border',
+    image: 'proj-residential-artificial-lawn.webp',
+    alt: 'Aerial view of a finished artificial lawn surrounding a mature tree beside a patio, garden border, and white fence',
+    year: 2023,
+    category: 'turf',
+    categoryLabel: 'Residential Artificial Lawn',
+    problem:
+      'The finished layout fits a usable lawn around a mature tree and the yard’s existing patio, pool, fence, and garden edges.',
+    solution:
+      'A broad artificial-lawn surface follows the surrounding hardscape and planting beds while preserving the central tree as part of the yard.',
     investmentBandId: 'artificial-turf',
     relatedService: 'artificial-grass',
   },

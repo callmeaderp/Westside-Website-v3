@@ -234,8 +234,8 @@ export const services: Service[] = [
     heroHeading: 'RETAINING & SEAT WALLS IN ROCHESTER, NY',
     heroIntro:
       'A retaining wall is a structure, not a decoration. Drainage stone, filter fabric, compacted backfill, and the right block for the load are what separate a wall that lasts from one that leans in five years.',
-    heroImage: 'svc-retaining-walls.webp',
-    cardImage: 'svc-retaining-walls.webp',
+    heroImage: 'svc-retaining-walls-east-ave.webp',
+    cardImage: 'svc-retaining-walls-east-ave.webp',
     icon: 'Layers',
     features: [
       'Engineered segmental block walls',
@@ -262,8 +262,8 @@ export const services: Service[] = [
     heroHeading: 'OUTDOOR KITCHENS & FIRE FEATURES IN ROCHESTER',
     heroIntro:
       'A fire feature adds weeks to each end of the Rochester outdoor season, and a built-in kitchen means you stop carrying everything in and out. Both are best planned with the patio, not bolted on later.',
-    heroImage: 'svc-outdoor-kitchens.webp',
-    cardImage: 'svc-outdoor-kitchens.webp',
+    heroImage: 'svc-outdoor-kitchen-lit-bar.webp',
+    cardImage: 'svc-outdoor-kitchen-lit-bar.webp',
     icon: 'Flame',
     features: [
       'Stone bars & prep counters',
@@ -374,8 +374,8 @@ export const services: Service[] = [
     heroHeading: 'ARTIFICIAL GRASS INSTALLATION IN ROCHESTER, NY',
     heroIntro:
       'Premium SYNLawn artificial turf — professionally installed for a lush, green lawn year-round with virtually zero maintenance.',
-    heroImage: 'svc-artificial-turf.webp',
-    cardImage: 'svc-artificial-turf.webp',
+    heroImage: 'hero-artificial-grass-putting-green.webp',
+    cardImage: 'svc-artificial-grass-backyard.webp',
     icon: 'Sprout',
     features: [
       'SYNLawn authorized dealer',

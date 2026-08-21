@@ -556,7 +556,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     investmentBandIds: ['retaining-wall', 'patio-outdoor-room'],
     investmentIntro:
       'Wall pricing is driven by square face footage, height, and what the wall is holding back — which is why the honest range is wide until we see the site.',
-    featuredProjectSlugs: ['stone-retaining-wall-shade-garden', 'front-entry-steps-wall-rebuild', 'multi-level-patio-seat-wall'],
+    featuredProjectSlugs: [
+      'terraced-stone-walls-and-patio',
+      'stone-retaining-wall-shade-garden',
+      'front-entry-steps-wall-rebuild',
+      'multi-level-patio-seat-wall',
+    ],
     relatedSlugs: ['hardscaping', 'drainage-grading', 'walkways-steps'],
     ctaHeading: 'BUILD IT ONCE, BUILD IT <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">RIGHT</span>',
     ctaText: "Whether it's a new wall or one that's already failing, we'll walk the site and give you an honest assessment. <strong>Free estimate</strong>.",
@@ -915,7 +920,11 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     investmentBandIds: ['artificial-turf'],
     investmentIntro:
       'Turf pricing is driven by square footage, base preparation, and how much contouring the design calls for — a flat pet area and a multi-break putting green are very different installs.',
-    featuredProjectSlugs: ['backyard-putting-green'],
+    featuredProjectSlugs: [
+      'private-putting-green-complex',
+      'residential-artificial-lawn',
+      'backyard-putting-green',
+    ],
     relatedSlugs: ['hardscaping', 'landscape-design', 'landscape-maintenance'],
     ctaHeading: 'READY FOR A LAWN THAT\'S ALWAYS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">GREEN?</span>',
     ctaText: "Schedule a <strong>free consultation</strong>. We'll assess your property and show you how SYNLawn can transform your outdoor space.",
