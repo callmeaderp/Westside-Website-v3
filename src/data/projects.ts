@@ -142,7 +142,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'front-entry-steps-wall-rebuild',
-    title: 'Front Entry Rebuild — Steps, Landing, and Retaining Wall',
+    title: 'Front Entry Rebuild with Steps, Landing, and Retaining Wall',
     image: 'proj-front-entry-after.webp',
     secondaryImage: 'proj-front-entry-before.webp',
     secondaryAlt: 'Second completed view of the paver front entry from the driveway, showing broad steps and the low wall',

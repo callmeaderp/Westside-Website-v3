@@ -69,7 +69,7 @@ export const gallery: GalleryItem[] = [
     alt: 'Aerial view of custom patio and landscape design',
     category: 'hardscape',
     tag: 'Hardscaping',
-    caption: 'Dusk Aerial — Custom Patio',
+    caption: 'Custom Patio from Above at Dusk',
   },
   {
     id: 'lit-patio',

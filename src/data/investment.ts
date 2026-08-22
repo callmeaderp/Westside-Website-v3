@@ -49,7 +49,7 @@ export const investmentBands: InvestmentBand[] = [
   {
     id: 'patio-small',
     label: 'Compact paver patio',
-    scope: 'A right-sized seating patio — roughly the footprint of a dining set and grill — with full base work, edge restraint, and polymeric jointing.',
+    scope: 'A right-sized seating patio, roughly the footprint of a dining set and grill, with full base work, edge restraint, and polymeric jointing.',
     low: 9000,
     high: 20000,
   },
@@ -63,7 +63,7 @@ export const investmentBands: InvestmentBand[] = [
   {
     id: 'outdoor-kitchen',
     label: 'Outdoor kitchen or fireplace',
-    scope: 'A masonry cooking or gathering feature — stone bar and counter, built-in grill, utility runs, or a full outdoor fireplace — usually built with or onto a patio.',
+    scope: 'A masonry cooking or gathering feature such as a stone bar and counter, built-in grill, utility runs, or a full outdoor fireplace, usually built with or onto a patio.',
     low: 15000,
     high: 60000,
     openEnded: true,
@@ -86,7 +86,7 @@ export const investmentBands: InvestmentBand[] = [
   {
     id: 'landscape-renovation',
     label: 'Landscape renovation',
-    scope: 'Removing tired overgrown plantings and rebuilding the beds — design, soil work, edging, new plant material, mulch, and repair of the surrounding lawn.',
+    scope: 'Removing tired, overgrown plantings and rebuilding the beds with a new design, soil work, edging, plant material, mulch, and repair of the surrounding lawn.',
     low: 5000,
     high: 30000,
     openEnded: true,
@@ -94,7 +94,7 @@ export const investmentBands: InvestmentBand[] = [
   {
     id: 'artificial-turf',
     label: 'Artificial turf or putting green',
-    scope: 'SYNLawn turf over an engineered aggregate base — pet areas, small lawns, and backyard putting greens with cups, fringe, and contouring.',
+    scope: 'SYNLawn turf over an engineered aggregate base for pet areas, small lawns, and backyard putting greens with cups, fringe, and contouring.',
     low: 8000,
     high: 40000,
   },
@@ -128,7 +128,7 @@ export function getBands(ids: string[]): InvestmentBand[] {
  * signalling comfort level, not costing the project.
  */
 export const budgetOptions = [
-  'Not sure yet — help me scope it',
+  'Not sure yet; help me scope it',
   'Under $10,000',
   '$10,000 – $25,000',
   '$25,000 – $50,000',

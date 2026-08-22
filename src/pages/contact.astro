@@ -40,7 +40,7 @@ const faqItems: { question: string; answer: string }[] = [
   },
   {
     question: 'Why do you ask for a budget range?',
-    answer: "So we can design something you'll actually build. A patio can be a $9,000 project or a $45,000 project depending on size, walls, lighting, and materials — knowing your range up front means the first proposal lands somewhere realistic instead of wasting both our time. \"Not sure yet\" is a completely valid answer; we'll help you scope it on site.",
+    answer: "So we can design something you'll actually build. A patio can be a $9,000 project or a $45,000 project depending on size, walls, lighting, and materials. Knowing your range up front helps the first proposal land somewhere realistic. \"Not sure yet\" is a completely valid answer; we'll help you scope it on site.",
   },
   {
     question: 'What areas do you serve?',
@@ -89,7 +89,7 @@ const jsonLd = [
   <Hero
     label="Get in Touch"
     heading="REQUEST A FREE ESTIMATE IN ROCHESTER, NY"
-    intro="Tell us about your project and roughly what you'd like to spend. We'll walk the property and give you a written, itemized estimate — no obligation."
+    intro="Tell us about your project and roughly what you'd like to spend. We'll walk the property and give you a free, written, itemized estimate."
     image={getPhoto('hero-contact.webp')}
     buttons={[
       { text: `Call ${company.phone}`, href: company.phoneHref, style: 'primary' },
@@ -255,7 +255,7 @@ const jsonLd = [
                 class="w-full px-4 py-3 rounded-lg text-white text-sm cursor-pointer"
                 style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
               />
-              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX — 5 MB max</p>
+              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX, up to 5 MB</p>
             </div>
 
             <div>
@@ -681,7 +681,7 @@ const jsonLd = [
           }
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
-          if (formStatus) { formStatus.textContent = 'Your message has been sent successfully. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
+          if (formStatus) { formStatus.textContent = 'Message sent. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
           syncCareerFields();
           if (typeof (window as any).__resetAddressAutocomplete === 'function') (window as any).__resetAddressAutocomplete();
@@ -698,7 +698,7 @@ const jsonLd = [
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : '';
-        btn.textContent = 'Error \u2014 Please Call Us';
+        btn.textContent = 'Error: Please Call Us';
         btn.style.background = '#c0392b';
         if (formStatus) {
           formStatus.textContent = msg || 'There was an error sending your message. Please call us instead.';

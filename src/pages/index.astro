@@ -70,13 +70,13 @@ const homepageJsonLd = {
 
 <BaseLayout
   title="Landscaping Company in Rochester, NY | Patios, Design & Lawn Care"
-  description="Rochester, NY's full-service landscaping company since 2000 — landscape design, patios & hardscaping, lawn care, and maintenance. Free estimate: (585) 594-8420."
+  description="Rochester, NY's full-service landscaping company since 2000. Patios, hardscaping, landscape design, lawn care, and maintenance. Free estimate: (585) 594-8420."
   jsonLd={homepageJsonLd}
 >
   <Hero
     label="Full-Service Landscaping Since 2000"
-    heading='ROCHESTER&apos;S PROFESSIONAL <span class="text-green">LANDSCAPING EXPERTS</span>'
-    intro="Patios, retaining walls, walkways, and outdoor living spaces — designed and built for our climate. Plus the lawn care and maintenance that keeps it all looking right."
+    heading='ROCHESTER LANDSCAPING, <span class="text-green">DONE RIGHT</span>'
+    intro="We build patios, walls, walkways, and outdoor living spaces for Rochester weather. Then we provide the lawn care and maintenance that keeps the whole property looking right."
     image={getPhoto('hero-home.webp')}
     variant="full"
     buttons={[
@@ -91,7 +91,7 @@ const homepageJsonLd = {
         <p class="section-label">Design & Build</p>
         <h2 class="section-title">OUTDOOR SPACES BUILT TO <span class="text-green">LAST</span></h2>
         <p class="section-subtitle mx-auto">
-          Our construction work is where a property really changes. Every build page publishes what that scope typically runs — before you have to call anyone.
+          Construction is where a property really changes. Every build page shows what that scope typically costs before you have to call anyone.
         </p>
       </div>
 
@@ -135,7 +135,7 @@ const homepageJsonLd = {
               ))}
             </div>
             <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.7;">
-              Broad Greater Rochester planning ranges — not quotes or promises. Site conditions, materials, access, and design all move the final number.
+              These are broad Greater Rochester planning ranges, not quotes or promises. Site conditions, materials, access, and design all affect the final number.
             </p>
           </div>
           <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
@@ -151,9 +151,9 @@ const homepageJsonLd = {
     <div class="site-container">
       <div class="text-center mb-16 fade-in">
         <p class="section-label">What We Do</p>
-        <h2 class="section-title">COMPREHENSIVE LANDSCAPE <span class="text-green">SOLUTIONS</span></h2>
+        <h2 class="section-title">ONE CREW FOR THE <span class="text-green">WHOLE PROPERTY</span></h2>
         <p class="section-subtitle mx-auto">
-          From design through year-round maintenance, we handle every aspect of your outdoor space.
+          From the first layout to weekly mowing and seasonal care, we keep the work under one roof.
         </p>
       </div>
 
@@ -193,9 +193,7 @@ const homepageJsonLd = {
           <p class="section-label">Since 2000</p>
           <h2 class="section-title">ROCHESTER'S LOCALLY OWNED <span class="text-green">LANDSCAPE COMPANY</span></h2>
           <p class="mb-6" style="color: var(--color-text-body-dark); line-height: 1.8;">
-            For over <strong>two decades</strong>, <strong>Westside Professional Landscape</strong> has been transforming properties across Greater Rochester.
-            Our team brings expertise, creativity, and dedication to every project — from <em>intimate
-            residential gardens</em> to expansive commercial landscapes.
+            For over <strong>two decades</strong>, <strong>Westside Professional Landscape</strong> has built and cared for properties across Greater Rochester. Our crews handle everything from residential planting beds and patios to commercial grounds maintenance.
           </p>
           <div class="flex flex-wrap gap-4">
             <a href={url('/about')} class="btn btn-primary btn-md">Learn More About Us</a>
@@ -241,7 +239,7 @@ const homepageJsonLd = {
               "{t.text}"
             </p>
             <p class="text-sm font-semibold" style="color: var(--color-green-bright);">
-              — {t.author}
+              {t.author}
             </p>
             {t.role && (
               <p class="text-xs mt-1" style="color: var(--color-text-muted);">{t.role}</p>

@@ -60,14 +60,14 @@ export const services: Service[] = [
     shortName: 'Landscape Design',
     tagline: 'From concept to completion',
     description:
-      'Custom landscape design tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
+      'A custom landscape plan shaped around your property, how you use it, and what you want to spend, followed by an installation built from that plan.',
     metaTitle: 'Landscape Design & Installation in Rochester, NY | Westside',
     metaDescription:
-      'Rochester landscape design and installation — residential & commercial. Plantings, patios, grading, lighting, concept to full install. Call (585) 594-8420.',
+      'Rochester landscape design and installation for homes and commercial properties. Plantings, patios, grading, lighting, and full installation. Call (585) 594-8420.',
     heroLabel: 'Design & Installation',
     heroHeading: 'LANDSCAPE DESIGN IN ROCHESTER, NY',
     heroIntro:
-      'Custom landscape design tailored to your property, lifestyle, and budget. From concept sketches to completed installations.',
+      'A custom landscape plan shaped around your property, how you use it, and what you want to spend, followed by an installation built from that plan.',
     heroImage: 'svc-landscape-design.webp',
     cardImage: 'svc-landscape-design.webp',
     cardImageAlt: 'Stone-and-timber home with fresh mulched foundation beds, a flowering purple rhododendron, and a striped front lawn',
@@ -89,14 +89,14 @@ export const services: Service[] = [
     shortName: 'Maintenance',
     tagline: 'Year-round care for your property',
     description:
-      'Consistent, reliable maintenance that keeps your property looking its best through every season.',
+      'Scheduled mowing, bed care, pruning, and cleanups that keep the whole property looking cared for through every season.',
     metaTitle: 'Landscape Maintenance in Rochester, NY | Westside Professional Landscape',
     metaDescription:
-      'Professional landscape maintenance in Rochester, NY — weekly mowing, seasonal cleanups, mulching, pruning, and bed care. Residential and commercial. Call (585) 594-8420.',
+      'Professional landscape maintenance in Rochester, NY. Weekly mowing, seasonal cleanups, mulching, pruning, and bed care for homes and commercial properties. Call (585) 594-8420.',
     heroLabel: 'Year-Round Care',
     heroHeading: 'LANDSCAPE MAINTENANCE IN ROCHESTER, NY',
     heroIntro:
-      'Consistent, reliable maintenance that keeps your property looking its best through every season.',
+      'Scheduled mowing, bed care, pruning, and cleanups that keep the whole property looking cared for through every season.',
     heroImage: 'svc-maintenance.webp',
     cardImage: 'svc-maintenance.webp',
     cardImageAlt: 'Wide sloping lawn mowed into clean stripes running up to a gray-sided house framed by fall foliage',
@@ -118,14 +118,14 @@ export const services: Service[] = [
     shortName: 'Lawn Care',
     tagline: 'Complete lawn care for Rochester homes',
     description:
-      'Mowing, fertilization, weed control, aeration, overseeding, grub protection, and lawn repair — a full lawn care program for Greater Rochester properties.',
+      'A full Greater Rochester lawn care program covering mowing, fertilization, weed control, aeration, overseeding, grub protection, and repair.',
     metaTitle: 'Lawn Care in Rochester, NY | Westside Professional Landscape',
     metaDescription:
-      'Complete lawn care in Rochester, NY — mowing, 5-step fertilization, weed control, aeration, overseeding, grub control, and lawn repair. Serving Monroe County since 2000. Call (585) 594-8420.',
+      'Complete lawn care in Rochester, NY, including mowing, 5-step fertilization, weed control, aeration, overseeding, grub control, and lawn repair. Serving Monroe County since 2000. Call (585) 594-8420.',
     heroLabel: 'Complete Lawn Care',
     heroHeading: 'LAWN CARE IN ROCHESTER, NY',
     heroIntro:
-      'Mowing, fertilization, weed control, aeration, and repair — everything your lawn needs to stay thick, green, and healthy through every Rochester season.',
+      'Mowing, fertilization, weed control, aeration, and repair work together to keep your lawn thick and healthy through Rochester seasons.',
     heroImage: 'lawn-lush-backyard.webp',
     cardImage: 'lawn-lush-backyard.webp',
     cardImageAlt: 'Backyard lawn curving around a mulched bed of flowering shrubs and evergreens along a privacy fence',
@@ -147,14 +147,14 @@ export const services: Service[] = [
     shortName: 'Fertilization & Weed Control',
     tagline: 'Science-backed lawn care',
     description:
-      "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. NYS DEC certified applicators.",
+      "Westside's 5-Step Fertilization & Weed Control Program with NYS DEC certified applicators. Get 50% off your first treatment.",
     metaTitle: 'Lawn Fertilization & Weed Control in Rochester, NY | 50% Off',
     metaDescription:
-      "Westside's 5-Step Fertilization & Weed Control Program — 50% off your first treatment. Fertilization, weed control, grub protection included. NYS DEC certified. Rochester, NY.",
+      "Westside's Rochester 5-Step Fertilization & Weed Control Program includes fertilization, weed control, and grub protection. NYS DEC certified. First treatment 50% off.",
     heroLabel: 'Lawn Care Program',
     heroHeading: 'LAWN FERTILIZATION & WEED CONTROL IN ROCHESTER, NY',
     heroIntro:
-      'Five precisely timed seasonal applications for a lush, healthy lawn you can be proud of. Your first treatment is 50% off — $58 instead of the usual $116 for the average lawn.',
+      'Five seasonal applications are timed to your lawn, with grub control included. Your first treatment is $58, half the usual $116 price for the average lawn.',
     heroImage: 'hero-plant-health.webp',
     cardImage: 'svc-plant-health.webp',
     cardImageAlt: 'Close view of a healthy lilac in full purple bloom held up against a green landscape',
@@ -167,7 +167,7 @@ export const services: Service[] = [
       'Late fall final feed + weed prevention',
       'Free grub control included',
     ],
-    cta: 'Start Your Program — 50% Off',
+    cta: 'Start Your Program: 50% Off',
     tier: 'core',
   },
   {
@@ -176,14 +176,14 @@ export const services: Service[] = [
     shortName: 'Hardscaping',
     tagline: 'Built to last',
     description:
-      'Patios, retaining walls, walkways, fire pits, and outdoor kitchens — designed and built by experienced craftsmen.',
+      'Patios, walls, walkways, fire pits, and outdoor kitchens built on the base and drainage work Rochester weather demands.',
     metaTitle: 'Paver Patios & Outdoor Living in Rochester, NY | Cost Ranges',
     metaDescription:
       'Paver patios, walkways, retaining walls, fire features & outdoor kitchens in Rochester, NY. See representative project investment ranges. Building since 2000. (585) 594-8420.',
     heroLabel: 'Built to Last',
     heroHeading: 'HARDSCAPING & OUTDOOR LIVING IN ROCHESTER',
     heroIntro:
-      'Paver patios, retaining walls, walkways, fire features, and outdoor kitchens — designed and built for our freeze-thaw climate. See what projects like yours typically run before you call.',
+      'Paver patios, retaining walls, walkways, fire features, and outdoor kitchens built for Rochester freeze-thaw cycles. See what projects like yours typically run before you call.',
     heroImage: 'hero-outdoor-living.webp',
     cardImage: 'svc-hardscape.webp',
     cardImageAlt: 'Circular brick paver patio with a stone seat wall and built-in grill counter under a mature tree beside a covered pavilion',
@@ -205,14 +205,14 @@ export const services: Service[] = [
     shortName: 'Walkways & Entries',
     tagline: 'The first thing anyone sees',
     description:
-      'Paver and natural-stone walkways, entry landings, and steps — rebuilt level, safe, and properly based for Rochester winters.',
+      'Paver and natural-stone walkways, entry landings, and steps rebuilt level on a proper base for Rochester winters.',
     metaTitle: 'Paver Walkways, Steps & Front Entries in Rochester, NY | Westside',
     metaDescription:
       'Rochester paver walkways, entry landings, and stone steps. Settled or unsafe steps rebuilt on a proper base. Typical projects and cost ranges. Call (585) 594-8420.',
     heroLabel: 'Curb Appeal & Safety',
     heroHeading: 'WALKWAYS, STEPS & FRONT ENTRIES IN ROCHESTER',
     heroIntro:
-      'Settled steps and a cracked walk are the first thing every visitor notices — and the fastest hardscape project to turn around. Rebuilt level, safe, and on a base that survives our winters.',
+      'Settled steps and a cracked walk are the first thing every visitor notices. They are also among the fastest hardscape projects to turn around. We rebuild them level on a base made for Rochester winters.',
     heroImage: 'svc-walkways-steps.webp',
     cardImage: 'svc-walkways-steps.webp',
     cardImageAlt: 'Curved paver walkway with a cobble border leading to a covered front porch past a mulched bed of mums and ornamental grass',
@@ -237,7 +237,7 @@ export const services: Service[] = [
       'Segmental block, natural stone, and boulder retaining walls with the drainage and backfill that keep them standing.',
     metaTitle: 'Retaining Wall Contractor in Rochester, NY | Costs & Repair',
     metaDescription:
-      'Rochester retaining walls — segmental block, natural stone, and boulder walls built with proper drainage and backfill. Failing wall repair. Cost ranges. (585) 594-8420.',
+      'Rochester retaining walls in segmental block, natural stone, and boulders, built with proper drainage and backfill. Failing wall repair and cost ranges. (585) 594-8420.',
     heroLabel: 'Structural Hardscape',
     heroHeading: 'RETAINING & SEAT WALLS IN ROCHESTER, NY',
     heroIntro:
@@ -295,7 +295,7 @@ export const services: Service[] = [
       'French drains, catch basins, downspout tie-ins, dry creek beds, and regrading that move water away from your foundation.',
     metaTitle: 'Yard Drainage & Grading in Rochester, NY | French Drains',
     metaDescription:
-      'Rochester yard drainage and grading — French drains, catch basins, downspout tie-ins, dry creek beds, regrading. Fix standing water and wet basements. (585) 594-8420.',
+      'Rochester yard drainage and grading, including French drains, catch basins, downspout tie-ins, dry creek beds, and regrading for standing water and wet basements. (585) 594-8420.',
     heroLabel: 'Water Management',
     heroHeading: 'DRAINAGE & GRADING IN ROCHESTER, NY',
     heroIntro:
@@ -319,16 +319,16 @@ export const services: Service[] = [
     slug: 'water-features',
     name: 'Water Features',
     shortName: 'Water Features',
-    tagline: 'Serenity by design',
+    tagline: 'Bring the sound of water home',
     description:
-      'Custom ponds, waterfalls, fountains, and streams that bring the sound and beauty of water to your landscape.',
+      'Custom ponds, waterfalls, fountains, and streams that make moving water part of your landscape.',
     metaTitle: 'Water Features in Rochester, NY | Westside Professional Landscape',
     metaDescription:
-      'Custom water features in Rochester, NY — ponds, waterfalls, fountains, streams, and koi ponds. Design, installation, and maintenance. Serving Monroe County since 2000. Call (585) 594-8420.',
-    heroLabel: 'Serenity by Design',
+      'Custom water features in Rochester, NY, including ponds, waterfalls, fountains, streams, and koi ponds. Design, installation, and maintenance. Call (585) 594-8420.',
+    heroLabel: 'Designed Around the Water',
     heroHeading: 'WATER FEATURES IN ROCHESTER, NY',
     heroIntro:
-      'Custom ponds, waterfalls, fountains, and streams that bring the sound and beauty of water to your landscape.',
+      'Custom ponds, waterfalls, fountains, and streams that make moving water part of your landscape.',
     heroImage: 'svc-water-features.webp',
     cardImage: 'svc-water-features.webp',
     cardImageAlt: 'Boulder-lined stream and small waterfall running past a paver patio with a table and cushioned chairs',
@@ -379,14 +379,14 @@ export const services: Service[] = [
     shortName: 'Artificial Grass',
     tagline: 'Year-round green, zero maintenance',
     description:
-      'Authorized SYNLawn dealer — premium artificial turf installation for residential and commercial properties in Rochester, NY.',
+      'Authorized SYNLawn dealer installing artificial turf for homes and commercial properties in Rochester, NY.',
     metaTitle: 'Artificial Grass & Turf Installation in Rochester, NY | SYNLawn',
     metaDescription:
       'Authorized SYNLawn dealer serving Rochester, NY. Premium artificial turf installation for lawns, pet areas, putting greens, and commercial landscapes. Call (585) 594-8420.',
     heroLabel: 'SYNLawn Authorized Dealer',
     heroHeading: 'ARTIFICIAL GRASS INSTALLATION IN ROCHESTER, NY',
     heroIntro:
-      'Premium SYNLawn artificial turf — professionally installed for a lush, green lawn year-round with virtually zero maintenance.',
+      'Professionally installed SYNLawn artificial turf stays green year-round without mowing, watering, or a muddy spring recovery.',
     heroImage: 'hero-artificial-grass-putting-green.webp',
     cardImage: 'svc-artificial-grass-backyard.webp',
     cardImageAlt: 'Aerial view of a flat green artificial lawn ringed by a black iron fence, planted borders, and an adjoining paver patio',
@@ -415,7 +415,7 @@ export const services: Service[] = [
     heroLabel: 'Commercial Grounds Management',
     heroHeading: 'COMMERCIAL LANDSCAPING IN ROCHESTER, NY',
     heroIntro:
-      'Full-service grounds management for commercial properties — landscape maintenance, snow and ice management, and seasonal services from a single provider.',
+      'Commercial landscape maintenance, snow and ice management, and seasonal property care from one Greater Rochester provider.',
     heroImage: 'hero-services.webp',
     cardImage: 'hero-services.webp',
     cardImageAlt: 'Brick paver patio with a stone grill island connected by a concrete walkway to a covered pavilion behind a dark privacy fence',
@@ -435,16 +435,16 @@ export const services: Service[] = [
     slug: 'holiday-lighting',
     name: 'Holiday Decorating & Lighting',
     shortName: 'Holiday Decorating',
-    tagline: 'Seasonal magic',
+    tagline: 'Enjoy the lights, skip the ladder',
     description:
-      'Professional holiday lighting design, installation, and removal. Enjoy the season while your property shines.',
+      'We design, install, maintain, and remove your holiday display, so you can enjoy the lights without the ladders or tangled boxes.',
     metaTitle: 'Holiday Decorating & Lighting in Rochester, NY | Westside Professional Landscape',
     metaDescription:
-      'Professional holiday lighting and decorating in Rochester, NY — custom designs, installation, maintenance, and removal for homes and businesses. Call (585) 594-8420.',
-    heroLabel: 'Seasonal Magic',
+      'Professional holiday lighting and decorating in Rochester, NY, with custom design, installation, maintenance, and removal for homes and businesses. Call (585) 594-8420.',
+    heroLabel: 'Full-Service Holiday Lighting',
     heroHeading: 'HOLIDAY DECORATING & LIGHTING IN ROCHESTER, NY',
     heroIntro:
-      'Professional holiday lighting design, installation, and removal. Enjoy the season while your property shines.',
+      'We design, install, maintain, and remove your holiday display, so you can enjoy the lights without the ladders or tangled boxes.',
     heroImage: 'svc-holiday-lighting.webp',
     cardImage: 'svc-holiday-lighting.webp',
     cardImageAlt: 'Large columned house at night outlined in warm white holiday lights, with every surrounding shrub and tree wrapped in lights',

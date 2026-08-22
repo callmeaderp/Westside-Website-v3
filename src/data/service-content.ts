@@ -60,22 +60,22 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Your Vision, Our Expertise',
     introTitle: 'TRANSFORMING <span class="text-green">OUTDOOR SPACES</span>',
     introText: [
-      `For over <strong>${yearsInBusiness} years</strong>, <strong>Westside Professional Landscape</strong> has been designing and building <em>stunning outdoor environments</em> for homeowners and businesses across Monroe County. Whether you\u2019re envisioning a complete property transformation or a targeted enhancement to your front entrance, our design team works closely with you to develop a plan that reflects your style, meets your functional needs, and respects your budget.`,
-      "Every project begins with a thorough site assessment. We evaluate your property's soil conditions, sun exposure, drainage patterns, and existing features. This allows us to recommend plants, materials, and layouts that will thrive in Rochester's unique four-season climate — from the humid summers to the harsh winters that define our region.",
+      `For over <strong>${yearsInBusiness} years</strong>, <strong>Westside Professional Landscape</strong> has designed and built landscapes across Monroe County. Whether you want to rethink the whole property or fix the front entry, we start with how you use the space, what needs to work better, and what you want to spend.`,
+      "Every project begins with the site. We check soil, sun, drainage, grade, and the features worth keeping. Then we choose plants, materials, and a layout suited to Rochester's humid summers, cold winters, and everything in between.",
     ],
     introCta: 'Request a Design Consultation',
     detailLabel: 'What We Offer',
     detailTitle: 'DESIGN & INSTALLATION <span class="text-green">SERVICES</span>',
-    detailSubtitle: 'Comprehensive landscape design solutions for residential and commercial properties throughout the Greater Rochester area.',
+    detailSubtitle: 'Plans and installations shaped around Greater Rochester homes, businesses, and growing conditions.',
     detailCards: [
       {
         title: 'CUSTOM LANDSCAPE DESIGN',
-        text: "Our designers create <strong>detailed landscape plans</strong> that account for every element of your property. We consider sight lines, traffic patterns, seasonal interest, and long-term growth to deliver a design that looks beautiful today and matures gracefully over the years. Homeowners in Pittsford, Brighton, and Penfield trust us to match their landscape to their home's architectural style.",
+        text: "A <strong>detailed landscape plan</strong> puts sight lines, walking routes, seasonal interest, and mature plant sizes on paper before installation begins. The result fits the property now and still makes sense as the landscape grows, whether it is in Pittsford, Brighton, Penfield, or elsewhere in Monroe County.",
         features: ['Full property design plans', 'Phased installation options', "Plant selection for Rochester's climate"],
       },
       {
         title: 'PLANTING DESIGN & INSTALLATION',
-        text: "We select trees, shrubs, perennials, and ornamental grasses that are suited to Western New York's USDA Zone 6a growing conditions. Our planting designs consider bloom times, foliage color, mature sizes, and maintenance requirements — so your landscape delivers year-round beauty with manageable upkeep. From specimen trees to foundation plantings, every plant has a purpose.",
+        text: "We choose trees, shrubs, perennials, and ornamental grasses for Western New York's USDA Zone 6a conditions. Bloom times, foliage, mature size, and upkeep all matter. From a specimen tree to a foundation bed, every plant needs a reason to be there.",
         features: ['Native and adapted species', 'Four-season interest design', 'Specimen trees & ornamentals'],
       },
       {
@@ -85,35 +85,35 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'OUTDOOR LIGHTING',
-        text: 'Extend the beauty and usability of your landscape into the evening hours with professionally designed outdoor lighting. We create layered lighting schemes that highlight architectural features, illuminate walkways for safety, and set the mood for outdoor entertaining. LED technology keeps energy costs low while delivering warm, inviting ambiance.',
+        text: 'Good outdoor lighting lets you use the landscape after sunset. We light paths for safer footing, pick out trees and stonework, and add warm task lighting where people gather. LED fixtures keep energy use low.',
         features: ['Path & accent lighting', 'Uplighting & tree lighting', 'Energy-efficient LED systems'],
       },
     ],
     processLabel: 'How It Works',
     processTitle: 'OUR DESIGN <span class="text-green">PROCESS</span>',
-    processSubtitle: "A proven approach that turns your vision into a finished landscape you'll enjoy for years to come.",
+    processSubtitle: "A clear path from the first walk-through to the finished installation.",
     processSteps: [
       { title: 'CONSULTATION', text: 'We meet at your property, discuss your goals, assess existing conditions, and establish a budget range.' },
       { title: 'DESIGN', text: 'Our team creates a detailed landscape plan with plant selections, material specifications, and layout drawings.' },
-      { title: 'INSTALLATION', text: 'Our experienced crews bring the design to life with precision, care, and attention to every detail.' },
+      { title: 'INSTALLATION', text: 'Our crews build from the approved plan and keep the installation aligned with its materials, grades, and layout.' },
       { title: 'CARE', text: 'Ongoing maintenance programs protect your investment and keep your landscape thriving season after season.' },
     ],
     faqs: [
       {
         question: 'How much does landscape design cost in Rochester?',
-        answer: 'It depends on scope \u2014 a targeted front-entry redesign and a full property transformation are different projects. The ranges published above cover the renovation work we do most often in the Greater Rochester area. Design itself is developed as part of the proposal for the projects we build. Every number is a planning figure until we walk the property; you get a written, itemized estimate before any work begins.',
+        answer: 'It depends on scope. A targeted front-entry redesign and a full property transformation are very different projects. The ranges above cover the renovation work we do most often in Greater Rochester. Design is developed as part of the proposal for the projects we build. Every number remains a planning figure until we walk the property; you receive a written, itemized estimate before work begins.',
       },
       {
         question: 'Do you have a licensed landscape architect on staff?',
-        answer: "No, and we won't claim otherwise \u2014 in New York, \"landscape architect\" is a title protected by state license. We are a design-build landscape contractor: our designers produce the layout drawings, plant schedules, grading intent, and material specifications for the work our own crews install. If a project needs stamped drawings or a licensed professional's involvement, we will tell you that up front.",
+        answer: "No, and we will not claim otherwise. In New York, \"landscape architect\" is a title protected by state license. We are a design-build landscape contractor. Our designers produce layout drawings, plant schedules, grading intent, and material specifications for work our own crews install. If a project needs stamped drawings or another licensed professional, we will tell you up front.",
       },
       {
         question: 'What is the best time of year to start a landscaping project?',
-        answer: "In Rochester, spring (April\u2013June) and fall (September\u2013October) are the ideal windows for planting and installation. Cooler temperatures and reliable rainfall help new plants establish roots. However, hardscape work and design consultations can happen year-round \u2014 starting the design process in winter means you're ready to break ground as soon as the season opens.",
+        answer: "In Rochester, spring (April\u2013June) and fall (September\u2013October) are the best windows for planting and installation. Cooler temperatures and reliable rainfall help roots establish. Hardscape work and design consultations can happen year-round. A winter design start can have you ready to build when the season opens.",
       },
       {
         question: 'Do you work with existing landscaping or only start from scratch?',
-        answer: "Both. Many of our projects involve enhancing or renovating existing landscapes rather than starting over. During the site assessment, we evaluate what's working, what can be preserved, and what should be replaced \u2014 then build a plan that makes the most of your property's existing features.",
+        answer: "Both. Many projects improve an existing landscape rather than erase it. During the site assessment, we identify what works, what can stay, and what needs to change. The plan makes the most of the good features already there.",
       },
       {
         question: 'How long does a typical landscape installation take?',
@@ -129,7 +129,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       'Design and installation scope varies more than any other service we offer. These are the ranges renovation projects in Greater Rochester typically land in.',
     featuredProjectSlugs: ['front-walkway-planting-beds', 'commercial-courtyard-paver-plaza', 'stone-retaining-wall-shade-garden'],
     relatedSlugs: ['hardscaping', 'walkways-steps', 'drainage-grading'],
-    ctaHeading: 'READY TO DESIGN YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">DREAM LANDSCAPE?</span>',
+    ctaHeading: 'READY TO PUT A PLAN ON <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">PAPER?</span>',
     ctaText: "Schedule a <strong>free on-site consultation</strong>. We'll walk your property, discuss your vision, and develop a plan that fits your budget.",
   },
 
@@ -137,12 +137,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Protect Your Investment',
     introTitle: 'PROFESSIONAL <span class="text-green">LANDSCAPE CARE</span>',
     introText: [
-      'A beautiful landscape is <strong>an investment</strong> — and like any investment, it needs ongoing care to maintain its value. Without regular maintenance, plantings become overgrown, lawns thin out, beds fill with weeds, and the curb appeal you worked hard to create gradually disappears.',
-      "<strong>Westside Professional Landscape</strong> provides comprehensive maintenance programs for residential and commercial properties throughout the Greater Rochester area. Our trained crews deliver consistent, high-quality service on a predictable schedule — so your property always looks its best, whether it's a private home in Pittsford or a commercial campus in Henrietta.",
+      'Landscapes do not stay sharp on their own. Without regular care, shrubs crowd the walk, lawn edges soften, weeds take over beds, and seasonal cleanup keeps sliding down the list.',
+      "<strong>Westside Professional Landscape</strong> maintains homes and commercial properties throughout Greater Rochester on a dependable schedule, from Pittsford residences to Henrietta commercial campuses. We handle the recurring work so the lawn, beds, and shrubs look cared for each time you arrive.",
     ],
     detailLabel: 'What We Offer',
     detailTitle: 'MAINTENANCE <span class="text-green">SERVICES</span>',
-    detailSubtitle: 'Comprehensive landscape maintenance solutions for residential and commercial properties.',
+    detailSubtitle: 'Scheduled care for lawns, beds, shrubs, and seasonal cleanup at homes and commercial properties.',
     detailCards: [
       {
         title: 'WEEKLY MOWING & EDGING',
@@ -156,12 +156,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'MULCHING & BED CARE',
-        text: 'Fresh mulch suppresses weeds, retains moisture, and gives beds a clean, finished appearance. We apply premium-quality mulch at the right depth and maintain clean bed edges throughout the season. Weed control — both chemical and hand-pulling — keeps your beds looking sharp.',
+        text: 'Fresh mulch suppresses weeds, holds moisture, and gives beds a clean edge. We apply it at the right depth, maintain the bed lines, and use chemical and hand weed control where each makes sense.',
         features: ['Premium mulch installation', 'Bed edging & definition', 'Weed control'],
       },
       {
         title: 'PRUNING & HEDGE TRIMMING',
-        text: 'Proper pruning promotes healthy growth, maintains shape, and prevents disease. Our crews know when and how to prune each species — timing matters, especially for flowering shrubs. Hedge trimming keeps borders sharp and formal plantings looking their best.',
+        text: 'Pruning keeps growth healthy and plants in scale with the space. Timing matters, especially for flowering shrubs, so our crews prune by species instead of giving everything the same haircut. Hedge trimming keeps formal borders crisp.',
         features: ['Species-specific timing', 'Formal hedge shaping', 'Dead wood removal'],
       },
       {
@@ -179,11 +179,11 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How often should my lawn be mowed in Rochester?',
-        answer: "During the growing season (typically April through October), weekly mowing is standard for most Rochester-area lawns. In peak growth periods during spring and early summer, some properties benefit from twice-weekly service. We adjust mowing height seasonally \u2014 higher in summer to reduce heat stress, shorter in spring and fall.",
+        answer: "During the growing season, typically April through October, weekly mowing is standard for most Rochester-area lawns. Some properties benefit from twice-weekly service during peak spring and early-summer growth. We also change mowing height by season: higher in summer to reduce heat stress and shorter in spring and fall.",
       },
       {
         question: "What's included in a landscape maintenance program?",
-        answer: "Our maintenance programs typically include weekly mowing and edging, string trimming, spring and fall cleanups, mulching, bed maintenance, pruning, and seasonal color rotations. Programs are customized to your property's needs and budget \u2014 you choose the services that matter most to you.",
+        answer: "Programs can include weekly mowing and edging, string trimming, spring and fall cleanups, mulching, bed maintenance, pruning, and seasonal color. We match the list to your property and budget, so you choose what belongs in the plan.",
       },
       {
         question: 'Do you offer one-time services or only seasonal contracts?',
@@ -200,15 +200,15 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     relatedSlugs: ['plant-health', 'landscape-design', 'snow-ice-management'],
     ctaHeading: 'KEEP YOUR PROPERTY LOOKING ITS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">BEST</span>',
-    ctaText: 'Get a customized maintenance quote for your property. Consistent care, predictable costs, exceptional results.',
+    ctaText: 'Tell us what needs regular attention. We will walk the property and build a maintenance quote around it.',
   },
 
   'lawn-care': {
     introLabel: 'Complete Lawn Care',
     introTitle: 'A THICKER, GREENER LAWN IN <span class="text-green">ROCHESTER</span>',
     introText: [
-      `For over <strong>${yearsInBusiness} years</strong>, <strong>Westside Professional Landscape</strong> has been caring for lawns across Monroe County — from shaded yards in Brighton to sun-baked corner lots in Gates. A healthy lawn isn't the result of one service; it's the product of <em>mowing, feeding, weed control, aeration, and timely repair</em> all working together across the season.`,
-      'We handle every part of that program in-house. Our crews mow on a consistent schedule, our <strong>NYS DEC certified applicators</strong> run the 5-step fertilization and weed control program, and our specialists handle aeration, overseeding, grub protection, and lawn repair. One company, one point of contact, one thick green lawn.',
+      `For over <strong>${yearsInBusiness} years</strong>, <strong>Westside Professional Landscape</strong> has cared for lawns across Monroe County, from shaded yards in Brighton to sun-baked corner lots in Gates. A healthy lawn comes from mowing, feeding, weed control, aeration, and timely repair working together across the season.`,
+      'We keep the program in-house. Our crews handle scheduled mowing, <strong>NYS DEC certified applicators</strong> run the 5-step fertilization and weed control program, and our specialists cover aeration, overseeding, grub protection, and repair. You have one company to call about the lawn.',
     ],
     introCta: 'Get a Free Lawn Care Quote',
     detailLabel: 'Every Part of the Program',
@@ -217,27 +217,27 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     detailCards: [
       {
         title: 'WEEKLY MOWING & EDGING',
-        text: "Consistent mowing is the foundation of a great-looking lawn. Our crews mow on a <strong>predictable weekly schedule</strong> with sharp blades, clean edges along walkways and beds, and careful string-trimming around obstacles. We adjust height seasonally — taller in summer heat, closer in spring and fall — so grass stays healthy, not just cut. Mowing is delivered as part of our full <a href=\"/services/landscape-maintenance/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">landscape maintenance program</a>.",
+        text: "Consistent mowing is the foundation of a good-looking lawn. Our crews run on a <strong>predictable weekly schedule</strong> with sharp blades, clean edges, and careful trimming around obstacles. We cut taller in summer heat and closer in spring and fall so the turf stays healthy, not just short. Mowing is part of our full <a href=\"/services/landscape-maintenance/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">landscape maintenance program</a>.",
         features: ['Weekly visits, same crew', 'Sharp blades & clean edges', 'Seasonal height adjustments'],
       },
       {
         title: 'FERTILIZATION & WEED CONTROL',
-        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is a precisely timed sequence of applications designed for Western New York\'s climate and soils. Balanced fertilizer, pre- and post-emergent weed control, and a <em>grub-control application included</em> — all applied by NYS DEC certified technicians. <strong>Your first treatment is 50% off — $58 instead of the usual $116 for the average Rochester lawn.</strong> Full details on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
+        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is timed for Western New York\'s climate and soils. NYS DEC certified technicians apply balanced fertilizer, pre- and post-emergent weed control, and an included grub-control application. <strong>Your first treatment is $58, half the usual $116 price for the average Rochester lawn.</strong> See the full schedule on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
         features: ['5 precisely timed visits', 'Crabgrass & broadleaf weed control', 'Grub prevention included'],
       },
       {
         title: 'CORE AERATION & OVERSEEDING',
-        text: "Rochester's clay-heavy soils compact under foot traffic, mower weight, and freeze-thaw cycles. <strong>Core aeration</strong> pulls small plugs of soil from your lawn, opening pathways for water, air, and nutrients to reach the root zone. Pair aeration with <strong>overseeding</strong> — a premium seed blend worked into fresh aeration holes — to thicken thin spots, crowd out weeds, and refresh older lawns. Early fall is the ideal window in Monroe County.",
+        text: "Rochester's clay-heavy soils compact under foot traffic, mower weight, and freeze-thaw cycles. <strong>Core aeration</strong> pulls small soil plugs so water, air, and nutrients can reach the root zone. Pairing it with <strong>overseeding</strong> works premium seed into the fresh holes, thickening thin spots and refreshing older turf. Early fall is the ideal Monroe County window.",
         features: ['Best performed in early fall', 'Relieves compaction & thatch', 'Fills thin spots with premium seed'],
       },
       {
         title: 'GRUB CONTROL',
-        text: 'Grubs — the larval stage of Japanese beetles, European chafers, and similar pests — are among <strong>the most destructive lawn pests</strong> in the Rochester area. They feed on grass roots and can kill large sections of lawn in a single season. We apply <strong>preventive grub control</strong> as part of our 5-step program and handle curative treatments when active infestations are found. Preventing grub damage costs a fraction of repairing it.',
+        text: 'Grubs are the larval stage of Japanese beetles, European chafers, and similar pests, and they are among <strong>the most destructive lawn pests</strong> around Rochester. They feed on roots and can kill large sections of turf in one season. We include <strong>preventive grub control</strong> in the 5-step program and offer curative treatment when an active infestation is found. Prevention costs far less than repairing dead turf.',
         features: ['Preventive application included in 5-step', 'Curative treatment for active infestations', 'Targets Japanese beetle & chafer grubs'],
       },
       {
         title: 'LAWN REPAIR & RENOVATION',
-        text: "Grub damage, pet spots, dog tracks, heavy-equipment ruts, and general thin or bare areas — we repair all of it. <strong>Slit-seeding, topdressing, and spot repair</strong> for targeted areas; <strong>full renovation</strong> (dethatching, aeration, overseeding, starter fertilizer) for lawns that need a reset. For projects where seed just won't do, we also install <strong>sod</strong>. Most Rochester lawns benefit from a repair pass every few years.",
+        text: "We repair grub damage, pet spots, dog tracks, equipment ruts, and thin or bare areas. <strong>Slit-seeding, topdressing, and spot repair</strong> address focused trouble spots. Lawns that need a reset may call for <strong>full renovation</strong> with dethatching, aeration, overseeding, and starter fertilizer. We also install <strong>sod</strong> where seed is not the right fit.",
         features: ['Spot repair & slit-seeding', 'Full lawn renovation', 'Sod installation available'],
       },
       {
@@ -248,29 +248,29 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     processLabel: 'How It Works',
     processTitle: 'YOUR PATH TO A <span class="text-green">BETTER LAWN</span>',
-    processSubtitle: "A straightforward approach — we assess, we recommend, we deliver.",
+    processSubtitle: "We look at the lawn first, build the right program, and keep you informed as the season moves.",
     processSteps: [
       { title: 'LAWN EVALUATION', text: "We walk your property, check soil and sun conditions, identify weed pressure, and listen to what you want from your lawn." },
-      { title: 'CUSTOM PROGRAM', text: "We recommend the mix of services your lawn actually needs — nothing you don't, everything you do. Clear, itemized pricing." },
+      { title: 'CUSTOM PROGRAM', text: "We recommend only the services the lawn needs, with clear, itemized pricing." },
       { title: 'CONSISTENT SERVICE', text: 'Mowing crews run on a predictable schedule. Applications hit the right windows. You get visit notifications and application details in writing.' },
       { title: 'ONGOING RESULTS', text: "We monitor your lawn as the season progresses, catch issues early, and adjust the program where needed. Year after year, the lawn keeps improving." },
     ],
     faqs: [
       {
         question: 'How much does professional lawn care cost in Rochester?',
-        answer: "It depends on lawn size and which services you include. Weekly mowing typically runs a flat seasonal or per-visit rate based on property size. The 5-Step Fertilization & Weed Control program averages around $116 per treatment for a typical Rochester lawn, and your <strong>first treatment is 50% off — $58 instead of the usual $116</strong>. Aeration, overseeding, and lawn repair are quoted as one-time services. We provide <strong>free on-site estimates</strong> — you'll see itemized pricing before any work starts.",
+        answer: "It depends on lawn size and the services you choose. Weekly mowing typically has a flat seasonal or per-visit rate based on the property. The 5-Step Fertilization & Weed Control program averages $116 per treatment for a typical Rochester lawn, and your <strong>first treatment is $58, half the usual price</strong>. Aeration, overseeding, and repair are quoted separately. After a <strong>free on-site estimate</strong>, you will see itemized pricing before work starts.",
       },
       {
         question: 'Do I need to sign up for every service, or can I pick and choose?',
-        answer: "Pick what your lawn needs. Many clients start with just the 5-Step Fertilization & Weed Control program, then add mowing or aeration as the lawn improves and they see the difference. Others want the full program from day one. There's no requirement to bundle — though bundling does simplify scheduling and often delivers better overall results because the services are timed to work together.",
+        answer: "Pick what your lawn needs. Many clients start with the 5-Step Fertilization & Weed Control program, then add mowing or aeration as the lawn improves. Others want the full program from day one. Bundling is not required, though it can simplify scheduling and lets the services work on one coordinated calendar.",
       },
       {
         question: "What's the difference between 'lawn care' and 'landscape maintenance'?",
-        answer: "'<strong>Lawn care</strong>' focuses specifically on the turf — mowing, fertilization, weed control, aeration, grub protection, and repair. '<strong>Landscape maintenance</strong>' is broader and includes beds, shrubs, mulch, pruning, seasonal cleanups, and flower rotations in addition to lawn work. Most Rochester homeowners need both. Our <a href=\"/services/landscape-maintenance/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">landscape maintenance program</a> bundles them, or you can work with us on lawn care only.",
+        answer: "'<strong>Lawn care</strong>' focuses on the turf: mowing, fertilization, weed control, aeration, grub protection, and repair. '<strong>Landscape maintenance</strong>' also covers beds, shrubs, mulch, pruning, seasonal cleanups, and flower rotations. Our <a href=\"/services/landscape-maintenance/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">landscape maintenance program</a> can combine them, or you can hire us for lawn care only.",
       },
       {
         question: 'When should I start lawn care service?',
-        answer: "In Rochester, the earlier the better. <strong>Early spring</strong> (March/April) is the window for pre-emergent crabgrass control and the first fertilizer application — miss it and weeds are harder to manage all year. Mowing contracts are set up before the growing season ramps in late April. Aeration and overseeding are best in <strong>early fall</strong> (late August through September). That said, we can start a program mid-season and still deliver strong results — just contact us and we'll design the right approach for where you are in the year.",
+        answer: "In Rochester, <strong>early spring</strong> (March/April) is the window for pre-emergent crabgrass control and the first fertilizer application. Miss that timing and weeds become harder to manage. Mowing contracts are set before growth ramps up in late April. Aeration and overseeding are best in <strong>early fall</strong> (late August through September). We can still start mid-season and tailor the remaining work to the calendar.",
       },
       {
         question: 'Are your lawn care products safe for kids and pets?',
@@ -278,7 +278,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Do you service my area?',
-        answer: "We serve Rochester and the surrounding communities throughout Monroe County — including Pittsford, Brighton, Penfield, Webster, Fairport, Greece, Gates, Chili, Spencerport, Henrietta, and more. See our full <a href=\"/service-areas/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">service areas page</a> for the complete list. If you're not sure, just call — if we can get there, we'll service you.",
+        answer: "We serve Rochester and communities throughout Monroe County, including Pittsford, Brighton, Penfield, Webster, Fairport, Greece, Gates, Chili, Spencerport, and Henrietta. See our <a href=\"/service-areas/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">service areas page</a> for the full list. Not sure about your address? Call us and we will check.",
       },
     ],
     heroButtons: [
@@ -294,7 +294,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Craftsmanship That Endures',
     introTitle: 'OUTDOOR SPACES BUILT FOR <span class="text-green">ROCHESTER</span>',
     introText: [
-      `Rochester’s <strong>freeze-thaw cycles</strong> put outdoor structures to the test. A patio or retaining wall that isn’t built with proper base preparation and drainage will heave, crack, and fail within a few winters. At Westside Professional Landscape, we’ve been building hardscapes across Monroe County for over ${yearsInBusiness} years — and <strong>we build them to last</strong>.`,
+      `Rochester’s <strong>freeze-thaw cycles</strong> put outdoor structures to the test. A patio or retaining wall without proper base preparation and drainage will heave, crack, and fail within a few winters. Westside Professional Landscape has built hardscapes across Monroe County for over ${yearsInBusiness} years. <strong>We build for this climate.</strong>`,
       "Our crews understand the engineering that goes into a durable installation: compacted aggregate bases, proper pitch for water drainage, polymeric sand for joint stability, and the right materials for our climate. Whether you're a homeowner in Pittsford looking for an elegant patio or a commercial property in Greece that needs a functional retaining wall, we bring the same level of precision to every project.",
       'Most people arrive here with two questions: <em>what would this cost</em>, and <em>what does the process look like</em>. Both are answered on this page, before you have to talk to anyone.',
     ],
@@ -305,7 +305,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     detailCards: [
       {
         title: 'PATIOS & OUTDOOR ROOMS',
-        text: "Create the <em>ultimate outdoor entertaining space</em>. We build patios from natural stone, pavers, and large-format slab in configurations that complement your home's architecture — seat walls, steps, and integrated lighting turn a surface into a room you actually use.",
+        text: "A patio should work like an outdoor room, not a leftover rectangle. We build with natural stone, pavers, and large-format slabs, then use seat walls, steps, and lighting where they make the space more useful.",
         features: ['Natural stone & paver options', 'Seat walls, pillars & steps', 'Low-voltage lighting integration'],
       },
       {
@@ -315,7 +315,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'WALKWAYS & STEPS',
-        text: "Guide visitors to your front door or connect outdoor living areas with elegant walkways and steps. We build with pavers, flagstone, and natural stone to create paths that are both beautiful and safe in all weather conditions — including Rochester's icy winters. <a href=\"/services/walkways-steps/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">More on walkways and entries</a>.",
+        text: "A good walkway follows the route people naturally take and stays comfortable underfoot. We build entries and connecting paths with pavers, flagstone, and natural stone for Rochester weather. <a href=\"/services/walkways-steps/\" style=\"color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;\">More on walkways and entries</a>.",
         features: ['Front entry walkways & landings', 'Garden paths & stepping stones', 'Natural stone & paver steps'],
       },
       {
@@ -330,7 +330,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'DRAINAGE BUILT INTO THE WORK',
-        text: 'Every hardscape we build is a water-management decision. Pitch, base permeability, wall drainage, and where the runoff ends up are designed in from the start — not discovered the first spring. <a href="/services/drainage-grading/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">More on drainage and grading</a>.',
+        text: 'Every hardscape changes how water moves. We plan pitch, base permeability, wall drainage, and the runoff path before the first spring reveals a problem. <a href="/services/drainage-grading/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">More on drainage and grading</a>.',
         features: ['Designed pitch & runoff paths', 'Wall drainage & filter fabric', 'Downspout & catch basin tie-ins'],
       },
     ],
@@ -339,7 +339,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     processSubtitle: 'A clear sequence from site visit through final walkthrough, with scope and pricing documented before the build starts.',
     processSteps: [
       { title: 'SITE VISIT', text: 'We walk the property with you, take measurements, check grade and drainage, and talk honestly about what your budget will and will not reach.' },
-      { title: 'DESIGN & PROPOSAL', text: 'You get a layout, material selections, and a written itemized estimate — scope, materials, and price on paper before anything is committed.' },
+      { title: 'DESIGN & PROPOSAL', text: 'You get a layout, material selections, and a written itemized estimate. Scope, materials, and price are on paper before you commit.' },
       { title: 'EXCAVATION & BASE', text: 'The part nobody photographs and everything depends on: excavation, disposal, compacted aggregate base, and drainage. This is where a build lasts or fails.' },
       { title: 'BUILD', text: 'Pavers, walls, steps, and features go in according to the agreed scope. We coordinate the work through completion and keep you informed when weather or site conditions affect the schedule.' },
       { title: 'WALKTHROUGH', text: 'We walk the finished project with you, close out the punch list, and explain how to care for the surface so it still looks right in year ten.' },
@@ -347,15 +347,15 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does a paver patio cost in Rochester?',
-        answer: "It depends on size, access, how much excavation and disposal the site needs, and what you build into it. As a planning figure, compact seating patios in the Greater Rochester area typically begin around <strong>$9,000</strong>, and patios built as full outdoor rooms — seat walls, steps, a fire feature, lighting — commonly run <strong>$18,000 to $45,000</strong>. The ranges published on this page cover our usual project mix. They are planning figures, not quotes: your written estimate comes after we walk the property.",
+        answer: "It depends on size, access, excavation, disposal, and the features you build into it. As a planning figure, compact seating patios in Greater Rochester typically begin around <strong>$9,000</strong>. Full outdoor rooms with seat walls, steps, a fire feature, or lighting commonly run <strong>$18,000 to $45,000</strong>. The ranges on this page reflect our usual project mix. They are not quotes; your written estimate comes after we walk the property.",
       },
       {
         question: 'Why is one contractor thousands cheaper than another for the same patio?',
-        answer: "Almost always the base. A patio is several inches of compacted aggregate you never see plus one layer you do. Cutting base depth, skipping geotextile, skipping compaction, or skipping the drainage detail saves real money on day one and shows up as heaving and settling within a few Rochester winters. Ask any bid you receive what the base depth is, how it is compacted, and where the water goes — the answers usually explain the price gap.",
+        answer: "Almost always the base. A patio is several inches of compacted aggregate you never see, plus one finish layer you do. Cutting base depth, geotextile, compaction, or drainage saves money on day one and shows up as heaving and settling after a few Rochester winters. Ask any bidder about base depth, compaction, and the runoff path. Those answers usually explain the price gap.",
       },
       {
         question: "How long do pavers last in Rochester's climate?",
-        answer: "Properly installed pavers last 25–50 years or more, even in Rochester's demanding freeze-thaw climate. The key is proper base preparation — a compacted aggregate base with correct depth, adequate drainage, and polymeric sand joints. We build every installation for our specific climate conditions.",
+        answer: "Properly installed pavers last 25–50 years or more, even through Rochester freeze-thaw cycles. The key is the work underneath: a compacted aggregate base at the correct depth, adequate drainage, and polymeric sand joints. We build each installation for this climate.",
       },
       {
         question: 'Do I need a permit for a patio or retaining wall?',
@@ -367,7 +367,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Can hardscape work be done in the fall or winter?',
-        answer: "Fall is actually an excellent time for hardscaping in Rochester — cooler weather is easier on crews, and you avoid the spring rush. We can install pavers and walls into November as long as the ground isn't frozen. Winter is ideal for planning and design so you're ready to build when the season opens.",
+        answer: "Fall is an excellent time for hardscaping in Rochester. Cooler weather is easier on crews, and you avoid the spring rush. We can install pavers and walls into November while the ground remains workable. Winter is a good time to plan and design for the next build season.",
       },
       {
         question: 'Can I finance a hardscape project?',
@@ -375,7 +375,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'How long does a patio project take?',
-        answer: 'Most residential patios are a one- to two-week build once we start, depending on size, excavation volume, and whether walls, steps, and features are included. Weather moves schedules in Rochester — we give you a realistic window in the proposal and tell you when it changes rather than leaving you guessing.',
+        answer: 'Most residential patios take one to two weeks once construction begins, depending on size, excavation volume, walls, steps, and other features. Rochester weather can move the schedule. We put a realistic window in the proposal and tell you if it changes.',
       },
     ],
     heroButtons: [
@@ -394,14 +394,14 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     relatedSlugs: ['walkways-steps', 'retaining-walls', 'outdoor-kitchens'],
     ctaHeading: "LET'S BUILD SOMETHING <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">BEAUTIFUL</span>",
-    ctaText: 'Every great outdoor space starts with a conversation. Tell us about your project and we\'ll make it happen.',
+    ctaText: 'Tell us what needs to work better outside. We\'ll walk the site, talk through the options, and put the scope in writing.',
   },
 
   'walkways-steps': {
     introLabel: 'Curb Appeal & Safety',
     introTitle: 'THE PROJECT PEOPLE <span class="text-green">NOTICE FIRST</span>',
     introText: [
-      'A settled front step, a walk that has heaved into a trip hazard, or a path so narrow two people cannot walk it side by side — these are the details every guest registers before they reach your door, and the ones homeowners live with the longest because they seem too small to bother with.',
+      'A settled front step, a walk that has heaved into a trip hazard, or a path too narrow for two people: guests notice these details before they reach your door. Homeowners often live with them for years because the project seems too small to tackle.',
       'They are also the fastest hardscape project to turn around. A front entry rebuild is usually a <strong>few days on site</strong>, not a few weeks, and it changes the first impression of the entire property. If your budget is not ready for a full backyard build, this is where it does the most visible work.',
     ],
     introCta: 'Get a Free Estimate',
@@ -416,7 +416,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'ENTRY LANDINGS & STEPS',
-        text: "Settled or out-of-level steps are the most common repair we are called for, and they are a genuine liability. We remove the failing structure, rebuild on a compacted base, and set risers to a consistent height — uneven riser heights are what actually causes falls.",
+        text: "Settled or out-of-level steps are among our most common repair calls, and they create a real liability. We remove the failing structure, rebuild on a compacted base, and set every riser to a consistent height. Uneven risers are what cause falls.",
         features: ['Full step removal & rebuild', 'Consistent riser heights', 'Wide landings at the door'],
       },
       {
@@ -426,13 +426,13 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'GARDEN & CONNECTING PATHS',
-        text: 'Paths that link the parts of your property people actually travel between — driveway to side entry, patio to garden, house to a fire pit at the back of the lot. Narrower and more informal than a front walk, and often the thing that makes a large yard finally feel used.',
+        text: 'Connecting paths should follow the trips people actually make: driveway to side entry, patio to garden, or house to a fire pit at the back of the lot. They are narrower and more informal than a front walk, and can make a large yard feel far more usable.',
         features: ['Stepping stone & paver paths', 'Informal garden routes', 'Path lighting integration'],
       },
     ],
     processLabel: 'How It Works',
     processTitle: 'OUR ENTRY <span class="text-green">PROCESS</span>',
-    processSubtitle: 'Short projects, but the same base work as a full patio — that is the whole point.',
+    processSubtitle: 'The project may be short. The base work still follows the same standard as a full patio.',
     processSteps: [
       { title: 'SITE VISIT', text: 'We measure, check how the grade and water move, and look at where people are actually walking today.' },
       { title: 'PROPOSAL', text: 'Layout, materials, and a written itemized price. No pressure to decide on the spot.' },
@@ -442,15 +442,15 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does a new front walkway cost in Rochester?',
-        answer: 'Front walkway and entry projects in the Greater Rochester area typically begin around <strong>$7,500</strong> and run to roughly <strong>$16,000</strong> when they include new steps, a wider landing, a retaining element, and rebuilt planting beds. That is a planning range, not a quote — length, material, how much of the old walk has to come out, and access all move the number.',
+        answer: 'Front walkway and entry projects in Greater Rochester typically begin around <strong>$7,500</strong> and run to roughly <strong>$16,000</strong> when they include steps, a wider landing, a retaining element, and rebuilt planting beds. That is a planning range, not a quote. Length, material, removal, and access all affect the number.',
       },
       {
         question: 'Why do my front steps keep settling?',
-        answer: "Almost always insufficient base. If steps were set on native soil or a thin layer of stone, Rochester's freeze-thaw cycles lift and drop them every winter until the risers go out of level. The fix is not resetting the top course — it is excavating and rebuilding on a properly compacted aggregate base with somewhere for water to go.",
+        answer: "Almost always, the base is too thin or poorly compacted. Steps set on native soil or a skim of stone move with Rochester freeze-thaw cycles until the risers go out of level. Resetting the top course will not solve it. The fix is excavation, a properly compacted aggregate base, and a path for water.",
       },
       {
         question: 'Can you match my existing pavers?',
-        answer: "Sometimes. Paver lines change and colors are discontinued, so an exact match on older work is not always possible. Where it is not, we usually recommend a deliberate contrast — a complementary border or a different but coordinated field — because a near-match reads as a mistake while an intentional contrast reads as design. We show you options before ordering.",
+        answer: "Sometimes. Paver lines change and colors are discontinued, so older work may not have an exact match. In that case, a complementary border or coordinated field usually looks better than a near-match. We show you the options before ordering.",
       },
       {
         question: 'How long does a front entry project take?',
@@ -478,7 +478,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Structural Hardscape',
     introTitle: 'A WALL IS A <span class="text-green">STRUCTURE</span>',
     introText: [
-      'A retaining wall holds back soil, and soil is heavy — heavier still once it is saturated by a Rochester spring. That is why walls fail: not because the block was wrong, but because water got behind them with nowhere to go, and the hydrostatic pressure pushed the face out.',
+      'A retaining wall holds back heavy soil, and a wet Rochester spring makes that load heavier. Walls often fail because water collects behind them with nowhere to go, not because the face block was wrong.',
       '<strong>Drainage stone, filter fabric, and compacted backfill behind the wall are not upgrades.</strong> They are the wall. What you see is the finish. We build the part you do not see to the same standard either way, which is why our bids sometimes come in above a wall that will lean within five years.',
     ],
     introCta: 'Get a Free Estimate',
@@ -503,7 +503,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'TERRACED & MULTI-LEVEL WALLS',
-        text: 'On a steep grade, two or three shorter walls with planted terraces between them often outperform one tall wall — less load on each structure, more usable planted area, and a much better look from the house.',
+        text: 'On a steep grade, two or three shorter walls with planted terraces can outperform one tall wall. Each structure carries less load, the property gains usable planting area, and the view from the house improves.',
         features: ['Stepped terrace design', 'Planted intermediate levels', 'Reduced load per structure'],
       },
       {
@@ -523,7 +523,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     processSteps: [
       { title: 'ASSESS', text: 'We look at the grade, what the wall has to hold, how water moves across the site, and whether a permit applies at that height.' },
       { title: 'PROPOSAL', text: 'Wall type, height, length, materials, drainage detail, and a written itemized price.' },
-      { title: 'EXCAVATE & BASE', text: 'We over-excavate behind the wall line and compact a leveling pad — the base course sets the accuracy of every course above it.' },
+      { title: 'EXCAVATE & BASE', text: 'We over-excavate behind the wall line and compact a leveling pad. The base course sets the accuracy of every course above it.' },
       { title: 'BUILD & BACKFILL', text: 'Units go up with the correct batter, drainage stone and fabric go in behind as we climb, and backfill is compacted in lifts.' },
       { title: 'CAP & RESTORE', text: 'Caps are set and secured, the terrace above is graded and planted, and the surrounding lawn is restored.' },
     ],
@@ -538,7 +538,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Do I need a permit or an engineer for a retaining wall?',
-        answer: 'It depends on height and your municipality. Many Rochester-area towns require a permit above roughly 4 feet, and taller or surcharged walls — a wall holding back a driveway or a structure — can require a licensed engineer’s design. We check what your town requires, tell you honestly if a project needs engineering, and handle the permitting.',
+        answer: 'It depends on height and your municipality. Many Rochester-area towns require a permit above roughly 4 feet. Taller or surcharged walls, such as one holding back a driveway or structure, can require a licensed engineer’s design. We check the local requirements, tell you when engineering is needed, and handle the permitting.',
       },
       {
         question: 'Can you repair a wall instead of replacing it?',
@@ -546,7 +546,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'How tall can a segmental block wall be?',
-        answer: 'Taller than most people expect, with the right units, geogrid reinforcement, and engineering. In practice we more often recommend terracing — two shorter walls with a planted bench between them usually costs less than one tall reinforced wall and looks considerably better from the house.',
+        answer: 'Taller than most people expect, with the right units, geogrid reinforcement, and engineering. In practice, we often recommend two shorter walls with a planted bench between them. That can cost less than one tall reinforced wall and usually looks better from the house.',
       },
     ],
     heroButtons: [
@@ -555,7 +555,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     investmentBandIds: ['retaining-wall', 'patio-outdoor-room'],
     investmentIntro:
-      'Wall pricing is driven by square face footage, height, and what the wall is holding back — which is why the honest range is wide until we see the site.',
+      'Wall pricing depends on square face footage, height, and what the wall holds back. The honest range stays wide until we see the site.',
     featuredProjectSlugs: [
       'stone-retaining-wall-shade-garden',
       'front-entry-steps-wall-rebuild',
@@ -581,7 +581,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     detailCards: [
       {
         title: 'FIRE PITS',
-        text: 'The most common way people extend their season. A masonry fire pit sized and sited so the seating around it actually works — too small and nobody can sit back, too close to the house and the smoke finds the windows.',
+        text: 'A masonry fire pit can add weeks to the outdoor season, but its size and location have to suit the seating. Too small and nobody can sit back. Too close to the house and smoke finds the windows.',
         features: ['Wood-burning & gas', 'Sized to the seating circle', 'Built into the patio field'],
       },
       {
@@ -591,7 +591,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'BUILT-IN GRILLS & COOKING RUNS',
-        text: "A stone-faced counter run with a cutout for the grill, prep space beside it, and storage below. Sized around the appliance you actually want — we spec the cutout to the unit before a single block is set.",
+        text: "A stone-faced counter run brings together a built-in grill, prep space, and storage. We size the cutout to the appliance you choose before a single block is set.",
         features: ['Appliance-specific cutouts', 'Granite & stone counters', 'Access doors & storage'],
       },
       {
@@ -612,11 +612,11 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does an outdoor kitchen cost in Rochester?',
-        answer: 'A stone bar and counter run with a built-in grill typically begins around <strong>$15,000</strong>, and full cooking-and-gathering builds — larger runs, more appliances, a fireplace, granite counters — go well beyond that. A simple masonry fire pit built into an existing patio is a much smaller project. These are planning figures; appliance selection alone can move a kitchen budget by five figures.',
+        answer: 'A stone bar and counter run with a built-in grill typically begins around <strong>$15,000</strong>. Larger cooking-and-gathering builds with more appliances, a fireplace, or granite counters go well beyond that. A simple masonry fire pit in an existing patio is a much smaller project. These are planning figures; appliance selection alone can move a kitchen budget by five figures.',
       },
       {
         question: 'Gas or wood-burning fire pit?',
-        answer: 'Gas lights instantly, produces no smoke or sparks, and shuts off when you go inside — better for frequent, casual use and for smaller yards with close neighbors. Wood gives you the smell and the sound and costs less to build, but it needs storage, cleanup, and more clearance. Gas requires a line run, which is why it is far cheaper to decide before the patio is built.',
+        answer: 'Gas lights instantly, produces no smoke or sparks, and shuts off when you go inside. It works well for frequent use and smaller yards with close neighbors. Wood gives you the smell and sound of a traditional fire and costs less to build, but needs storage, cleanup, and more clearance. A gas line is far cheaper to plan before the patio is built.',
       },
       {
         question: 'Can you add a kitchen or fire feature to my existing patio?',
@@ -624,7 +624,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'How close to my house can a fire feature be?',
-        answer: "Clearance requirements vary by municipality and by whether the feature is gas or wood-burning, and there are practical considerations beyond code — prevailing wind will decide whether smoke ends up on your patio or in your bedroom window. We site it for both, and we check the local requirements for your town.",
+        answer: "Clearance requirements vary by municipality and fuel type. Code is not the only concern; prevailing wind can put smoke on the patio or through a bedroom window. We plan for both and check the requirements in your town.",
       },
       {
         question: 'Do outdoor kitchens work through Rochester winters?',
@@ -648,9 +648,9 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introLabel: 'Water Management',
     introTitle: 'MOVE THE WATER <span class="text-green">FIRST</span>',
     introText: [
-      "Standing water in the same spot every spring, a soggy strip along the foundation, mulch washing across the walk, a corner of lawn that never quite recovers — these are grade and drainage problems, and no amount of new plant material or fresh mulch fixes them.",
+      "Standing water every spring, a soggy strip along the foundation, mulch washing across the walk, or a corner of lawn that never recovers all point to grade or drainage problems. New plants and fresh mulch will not fix them.",
       "Rochester makes this worse than most places: heavy clay subsoil that drains slowly, plenty of flat lots, and a freeze-thaw cycle that keeps rearranging the surface. Water that has nowhere to go finds your foundation.",
-      '<strong>Drainage is the least glamorous work we do and the most likely to protect everything else on the property.</strong> It is also the work that has to happen before a patio, a wall, or a planting bed goes in — not after.',
+      '<strong>Drainage is the least glamorous work we do and the most likely to protect everything else on the property.</strong> It belongs ahead of the patio, wall, or planting bed, not underneath it as an afterthought.',
     ],
     introCta: 'Get a Free Estimate',
     detailLabel: 'What We Install',
@@ -669,7 +669,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'DOWNSPOUT & SUMP TIE-INS',
-        text: 'Downspouts dumping at the foundation are the single most common cause of a wet basement and a soggy bed. Piping them underground and away — along with a sump discharge — is often the cheapest meaningful drainage improvement on a property.',
+        text: 'Downspouts dumping at the foundation are a common cause of wet basements and soggy beds. Piping them and a sump discharge underground to a proper outlet is often the least expensive drainage improvement that makes a real difference.',
         features: ['Underground downspout piping', 'Sump discharge routing', 'Pop-up emitters or daylight outlets'],
       },
       {
@@ -694,13 +694,13 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     processSteps: [
       { title: 'SEE THE PROBLEM', text: 'We walk the site, ideally after rain, and look at where water comes from, where it collects, and where it could legally and practically go.' },
       { title: 'DIAGNOSE', text: 'Surface runoff, subsurface flow, roof water, and a failed grade all look similar in a photo and need different fixes. We tell you which one you have.' },
-      { title: 'PROPOSAL', text: 'The specific solution, the outlet path, and a written itemized price — including honest limits where a site cannot fully drain.' },
+      { title: 'PROPOSAL', text: 'You get the specific fix, its outlet path, and an itemized price in writing, including honest limits where the site cannot fully drain.' },
       { title: 'INSTALL & RESTORE', text: 'Trenching, pipe, stone, and fabric go in, then the lawn and beds are restored so the yard does not look excavated when we leave.' },
     ],
     faqs: [
       {
         question: 'How much does yard drainage cost in Rochester?',
-        answer: 'Drainage projects commonly begin around <strong>$1,800</strong> for a focused correction and can exceed <strong>$12,000</strong> for a full-property solution with multiple basins, long pipe runs, and regrading. Length of run, depth, obstructions, and — most of all — whether there is a usable outlet drive the number. This is a broad market-based planning range, not a quote.',
+        answer: 'Drainage projects commonly begin around <strong>$1,800</strong> for a focused correction and can exceed <strong>$12,000</strong> for a full-property solution with multiple basins, long pipe runs, and regrading. Run length, depth, obstructions, and especially a usable outlet drive the number. This is a broad market-based planning range, not a quote.',
       },
       {
         question: 'Why does water pool in the same spot every spring?',
@@ -708,11 +708,11 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Will a French drain fix my wet basement?',
-        answer: "It can help substantially when the water is arriving from the yard — and in many Rochester homes the actual culprit is simply downspouts discharging at the foundation, which is a far cheaper fix. But drainage work outside cannot repair a failed foundation wall, a bad interior drain tile, or a high water table. We will tell you when the problem is outside our scope rather than sell you a trench that will not solve it.",
+        answer: "It can help when water is arriving from the yard. In many Rochester homes, the culprit is a downspout discharging at the foundation, which is a much cheaper fix. Outdoor drainage cannot repair a failed foundation wall, bad interior drain tile, or high water table. We will say when the problem is outside our scope rather than sell you a trench that will not solve it.",
       },
       {
         question: 'Where does the water actually go?',
-        answer: 'To daylight at a lower point on the property, to a dry well sized for the volume, or to a legal storm connection where one exists and the municipality permits it. Every drainage design needs a real outlet — a drain that ends nowhere just relocates the puddle. On sites without a good outlet we say so up front.',
+        answer: 'To daylight at a lower point, a dry well sized for the volume, or a legal storm connection where one exists and the municipality permits it. Every design needs a real outlet. A drain that ends nowhere simply moves the puddle. If the site lacks a good outlet, we say so up front.',
       },
       {
         question: 'Can drainage be done at the same time as my patio?',
@@ -729,33 +729,33 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     featuredProjectSlugs: ['stone-retaining-wall-shade-garden', 'multi-level-patio-seat-wall'],
     relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
     ctaHeading: 'STOP FIGHTING THE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">WATER</span>',
-    ctaText: "We'll walk the property and tell you what's actually causing it — including when the answer isn't a drain. <strong>Free estimate</strong>.",
+    ctaText: "We'll walk the property and identify the likely cause, including when the right answer is not a drain. <strong>Free estimate</strong>.",
   },
 
   'water-features': {
     introLabel: 'Transform Your Outdoor Space',
     introTitle: 'THE BEAUTY OF <span class="text-green">WATER</span>',
     introText: [
-      'There is <em>nothing quite like</em> the sight and sound of moving water in a landscape. A well-designed water feature becomes the <strong>focal point</strong> of your outdoor space — a place that draws you outside, calms the mind, and adds a dimension that no other element can replicate.',
-      `At Westside Professional Landscape, we design and build water features that are tailored to your property, your aesthetic, and your lifestyle. Whether you envision a naturalistic waterfall cascading over native stone, a tranquil koi pond, or a sleek modern fountain, our team has the expertise to bring it to life. We\u2019ve been creating water features for homeowners across Pittsford, Brighton, Penfield, and the greater Rochester area for over ${yearsInBusiness} years.`,
+      'Moving water changes the feel of a yard. A small bubbler can soften street noise near a patio, while a pond or stream can become the feature the rest of the landscape gathers around.',
+      `Westside Professional Landscape designs and builds water features around the property and the way you want to use it. That might mean a natural-stone waterfall, a koi pond, or a compact fountain near the entry. We have built water features in Pittsford, Brighton, Penfield, and across Greater Rochester for over ${yearsInBusiness} years.`,
     ],
     detailLabel: 'What We Build',
     detailTitle: 'WATER FEATURE <span class="text-green">SERVICES</span>',
-    detailSubtitle: 'Custom water feature design, installation, and year-round maintenance.',
+    detailSubtitle: 'Ponds, waterfalls, streams, and compact fountains, plus the seasonal care Rochester weather requires.',
     detailCards: [
       {
         title: 'PONDS & KOI PONDS',
-        text: "A garden pond creates a living ecosystem in your backyard. We design ponds with proper filtration, aeration, and plant shelves to support aquatic life — from decorative koi to native plantings. Rochester's climate requires specific depth considerations for overwintering fish, and we engineer every pond with the local freeze line in mind.",
+        text: "A garden pond is a living backyard system. We plan filtration, aeration, and plant shelves around the aquatic life it will support, from koi to native plantings. Rochester winters also affect pond depth, so overwintering is part of the design from the start.",
         features: ['Proper filtration & aeration', 'Fish-safe depth engineering', 'Aquatic plant integration'],
       },
       {
         title: 'WATERFALLS & STREAMS',
-        text: "Cascading waterfalls and meandering streams add movement and sound to any landscape. We use natural boulders and native stone to create features that look like they've always been part of your property. Our recirculating systems are efficient and low-maintenance, with pumps sized for reliable year-round operation.",
+        text: "Waterfalls and streams bring movement and sound through the landscape. We set natural boulders and stone so the water follows a believable path, then size the recirculating pump for dependable operation.",
         features: ['Natural boulder construction', 'Recirculating pump systems', 'Multi-tier cascade designs'],
       },
       {
         title: 'FOUNTAINS & BUBBLERS',
-        text: "For properties where a full pond isn't practical, fountains and bubbling rocks deliver the calming presence of water in a compact footprint. These self-contained features are ideal for courtyards, entryways, patios, and small gardens. Minimal maintenance, maximum impact — perfect for busy homeowners in Webster, Fairport, and surrounding communities.",
+        text: "When a full pond does not fit, a fountain or bubbling rock brings the sound of water to a courtyard, entry, patio, or small garden. These self-contained features take up less space and need less care than a pond.",
         features: ['Self-contained systems', 'Low maintenance', 'Bubbling rocks & columns'],
       },
       {
@@ -768,7 +768,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much maintenance does a pond require?',
-        answer: "A well-built pond needs regular but manageable maintenance: filter cleaning, skimming debris, monitoring water quality, and seasonal plant care. We offer maintenance programs that handle all of this for you. Spring startup and fall winterization are the two most important service visits \u2014 they protect your investment through Rochester's harsh winters.",
+        answer: "A well-built pond needs regular but manageable care: filter cleaning, debris removal, water-quality checks, and seasonal plant work. We offer maintenance programs that cover it. Spring startup and fall winterization are the two most important visits because they protect the system through Rochester winters.",
       },
       {
         question: "Can a water feature run through Rochester's winter?",
@@ -776,7 +776,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Do water features attract mosquitoes?',
-        answer: "Moving water doesn't attract mosquitoes \u2014 they breed in stagnant water. Our water features are designed with recirculating pumps that keep water constantly moving. Ponds with fish (especially koi and goldfish) have a built-in mosquito control system, since fish eat mosquito larvae.",
+        answer: "Mosquitoes breed in stagnant water, not moving water. Our recirculating pumps keep the water moving, and fish such as koi and goldfish eat mosquito larvae.",
       },
       {
         question: 'How much space do I need for a backyard water feature?',
@@ -788,20 +788,20 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       { text: 'See Our Projects', href: '/projects/', style: 'outline' },
     ],
     relatedSlugs: ['hardscaping', 'landscape-design', 'drainage-grading'],
-    ctaHeading: 'ADD THE BEAUTY OF WATER TO YOUR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">LANDSCAPE</span>',
-    ctaText: 'Schedule a consultation and let us design a water feature that transforms your outdoor space.',
+    ctaHeading: 'BRING THE SOUND OF <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">WATER HOME</span>',
+    ctaText: 'Tell us where you want to see and hear the water. We will look at the site and talk through the right scale and style.',
   },
 
   'snow-ice-management': {
     introLabel: "Rochester's Winters Demand More",
     introTitle: 'PROFESSIONAL <span class="text-green">SNOW MANAGEMENT</span>',
     introText: [
-      'Rochester averages <strong>nearly 100 inches of snowfall per year</strong>, making it one of the snowiest cities in the United States. For commercial property owners and managers across Monroe County, that means months of liability exposure, operational disruptions, and the constant threat of slip-and-fall incidents.',
-      "Westside Professional Landscape provides comprehensive commercial snow and ice management designed to keep your property safe and accessible. Our crews follow the weather throughout the season and respond as conditions develop. With seasonal contracts, dedicated equipment, and a <strong>responsive team</strong>, we take the stress of winter off your plate.",
+      'Rochester averages <strong>nearly 100 inches of snow each year</strong>. For Monroe County property managers, every storm affects parking, deliveries, entrances, and the people crossing the site on foot.',
+      "Westside plans commercial snow and ice service around each property before winter. Trigger depths, priority areas, equipment, and pricing are written into the agreement, while our crews monitor conditions and work the route as storms develop.",
     ],
     detailLabel: 'Our Services',
     detailTitle: 'SNOW & ICE <span class="text-green">SERVICES</span>',
-    detailSubtitle: 'Comprehensive winter services for commercial properties throughout Monroe County.',
+    detailSubtitle: 'Plowing, walkway clearing, and de-icing planned for commercial properties across Monroe County.',
     detailCards: [
       {
         title: 'COMMERCIAL PLOWING',
@@ -810,17 +810,17 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'WALKWAY & ENTRANCE CLEARING',
-        text: "<strong>Slip-and-fall liability</strong> is a serious concern for any commercial property. Our sidewalk crews clear walkways, building entrances, emergency exits, and ADA-accessible paths with snow blowers, shovels, and brooms. We don't leave until surfaces are safe for foot traffic.",
+        text: "<strong>Walkway access</strong> matters as much as a clear parking lot. Sidewalk crews use snow blowers, shovels, and brooms on entrances, emergency exits, and ADA-accessible paths according to the property plan.",
         features: ['Building entrances & exits', 'Sidewalks & pedestrian paths', 'ADA-accessible routes'],
       },
       {
         title: 'DE-ICING & SALT APPLICATION',
-        text: 'We apply rock salt, treated salt, and liquid de-icers based on the specific conditions of each storm. Pre-treatment before storms, anti-icing during events, and post-storm de-icing ensure surfaces remain as safe as possible. Application rates are calibrated to minimize environmental impact while maximizing effectiveness.',
+        text: 'We select rock salt, treated salt, or liquid de-icer for the conditions. Pre-treatment, service during the event, and post-storm applications are scheduled where the contract calls for them. Calibrated rates target the surface without needless overapplication.',
         features: ['Pre-treatment & anti-icing', 'Rock salt & treated salt', 'Environmentally conscious application'],
       },
       {
         title: 'SEASONAL CONTRACTS',
-        text: "Lock in your winter budget with a seasonal contract that covers the entire snow season. No per-push surprises, no worrying about whether a storm triggers service. Our seasonal agreements are tailored to your property's needs and give you <strong>predictable costs</strong> from November through April.",
+        text: "A seasonal contract sets the winter budget and service plan before the first storm. Trigger depths, priority areas, and included work are matched to the property, giving you <strong>predictable costs</strong> from November through April. Per-push options are also available.",
         features: ['Fixed seasonal pricing', 'Per-push options also available', 'Customized service plans'],
       },
     ],
@@ -836,7 +836,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'How does a seasonal snow contract work?',
-        answer: "A seasonal contract covers all snow and ice services for the entire winter season (typically November through April) at a fixed price. No per-push charges, no surprises regardless of how many storms hit. Your winter budget is set when you sign, not at the end of the season. We also offer per-event pricing for properties that prefer it.",
+        answer: "A seasonal contract covers the agreed snow and ice services for the winter, typically November through April, at a fixed price. That sets your winter budget before the snow arrives. We also offer per-event pricing for properties that prefer it.",
       },
       {
         question: 'What de-icing products do you use?',
@@ -849,24 +849,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     relatedSlugs: ['landscape-maintenance', 'hardscaping', 'holiday-lighting'],
     ctaHeading: "DON'T WAIT FOR THE FIRST <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">STORM</span>",
-    ctaText: "Secure your snow management contract before winter. Planning ahead means you're covered when Rochester's weather arrives.",
+    ctaText: "Set the trigger depths, priority areas, and pricing before Rochester weather tests the property.",
   },
 
   'artificial-grass': {
     introLabel: 'SYNLawn Authorized Dealer',
     introTitle: 'YEAR-ROUND <span class="text-green">GREEN</span>',
     introText: [
-      "As an <strong>Authorized SYNLawn dealer</strong>, Westside Professional Landscape installs premium artificial turf for homeowners and businesses across Greater Rochester. Synthetic turf eliminates mowing, watering, fertilizing, and weed control — giving you a consistently green lawn <em>every day of the year</em>, even through Rochester's long winters.",
-      "SYNLawn products are crafted from advanced synthetic fibers designed to replicate the look and feel of natural grass. Backed by <strong>manufacturer warranties</strong> and engineered for durability, they're built to handle foot traffic, pets, and our four-season climate.",
+      "As an <strong>Authorized SYNLawn dealer</strong>, Westside Professional Landscape installs artificial turf for homes and businesses across Greater Rochester. It stays green without mowing, watering, fertilizing, or weed control, even after a Rochester winter.",
+      "SYNLawn fibers are made to look and feel like natural grass while handling foot traffic, pets, and our four-season climate. The products carry <strong>manufacturer warranties</strong>.",
     ],
     introCta: 'Request a Free Consultation',
     detailLabel: 'Applications',
     detailTitle: 'ARTIFICIAL TURF <span class="text-green">SOLUTIONS</span>',
-    detailSubtitle: 'Premium SYNLawn products for residential, commercial, and specialty applications.',
+    detailSubtitle: 'SYNLawn surfaces for home lawns, pet areas, putting greens, and commercial spaces.',
     detailCards: [
       {
         title: 'RESIDENTIAL LAWNS',
-        text: "Transform your yard into a <strong>maintenance-free landscape</strong> that stays green and inviting year-round. Ideal for front yards, side yards, and backyard living areas where you want the look of a perfect lawn without the ongoing work. Especially popular with homeowners tired of fighting Rochester's clay soils, shade issues, and seasonal brown-out.",
+        text: "A <strong>low-maintenance artificial lawn</strong> stays green in front yards, side yards, and backyard living areas without mowing or watering. It is especially useful where Rochester clay, dense shade, or heavy traffic makes natural turf hard to maintain.",
         features: ['Front & back yard installations', 'Pet-friendly options', 'Looks natural year-round'],
       },
       {
@@ -876,7 +876,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'COMMERCIAL & HOA INSTALLATIONS',
-        text: 'Reduce grounds maintenance costs while keeping common areas, building entrances, and high-visibility landscaping looking pristine. Artificial turf is a smart choice for commercial properties where <strong>consistent appearance matters</strong> and irrigation is impractical or expensive.',
+        text: 'Artificial turf can reduce routine grounds work in common areas, entrances, and other high-visibility spaces. It fits commercial properties where <strong>a consistent green surface matters</strong> and irrigation is impractical or expensive.',
         features: ['Building entrances & courtyards', 'HOA common areas', 'High-traffic commercial zones'],
       },
       {
@@ -887,7 +887,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     processLabel: 'How It Works',
     processTitle: 'INSTALLATION <span class="text-green">PROCESS</span>',
-    processSubtitle: 'Professional installation ensures your turf looks great and lasts for years.',
+    processSubtitle: 'The finish depends on careful drainage, base preparation, seams, and infill.',
     processSteps: [
       { title: 'SITE PREP', text: 'We remove existing vegetation, level the ground, and install proper drainage to create a stable foundation.' },
       { title: 'BASE WORK', text: 'A compacted aggregate base and geotextile fabric prevent weeds and ensure long-term stability.' },
@@ -909,7 +909,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: "How does artificial grass handle Rochester's snow?",
-        answer: "Artificial turf handles snow well. Snow can be shoveled or blown off without damaging the fibers, and it melts and drains through the turf quickly thanks to the permeable backing. Unlike natural grass, there's no mud season, no dormancy, and no spring recovery period \u2014 your lawn looks green the moment the snow clears.",
+        answer: "Artificial turf handles snow well. You can shovel or blow snow off without damaging the fibers, and meltwater drains through the permeable backing. There is no mud season, dormancy, or spring recovery period. The lawn is green when the snow clears.",
       },
     ],
     heroButtons: [
@@ -918,7 +918,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     investmentBandIds: ['artificial-turf'],
     investmentIntro:
-      'Turf pricing is driven by square footage, base preparation, and how much contouring the design calls for — a flat pet area and a multi-break putting green are very different installs.',
+      'Turf pricing depends on square footage, base preparation, and contouring. A flat pet area and a multi-break putting green are very different installations.',
     featuredProjectSlugs: [
       'private-putting-green-complex',
       'residential-artificial-lawn',
@@ -926,24 +926,24 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     relatedSlugs: ['hardscaping', 'landscape-design', 'landscape-maintenance'],
     ctaHeading: 'READY FOR A LAWN THAT\'S ALWAYS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">GREEN?</span>',
-    ctaText: "Schedule a <strong>free consultation</strong>. We'll assess your property and show you how SYNLawn can transform your outdoor space.",
+    ctaText: "Schedule a <strong>free consultation</strong>. We'll assess the property and show you where SYNLawn fits, what the base needs, and what the project is likely to cost.",
   },
 
   'commercial-services': {
     introLabel: 'Grounds Management for Business',
     introTitle: 'COMMERCIAL <span class="text-green">LANDSCAPE SERVICES</span>',
     introText: [
-      "<strong>Westside Professional Landscape</strong> provides full-service grounds management for commercial properties across Greater Rochester. From weekly landscape maintenance to seasonal snow and ice management, we give property managers and business owners <em>a single point of contact</em> for all exterior property care.",
-      "Our commercial crews bring over <strong>two decades of experience</strong> maintaining office parks, retail centers, medical facilities, HOA communities, and industrial properties throughout Monroe County. We hold ourselves to professional standards of service, safety, and quality.",
+      "<strong>Westside Professional Landscape</strong> manages commercial grounds across Greater Rochester. Weekly maintenance, seasonal enhancements, and snow and ice service run through <em>one point of contact</em> instead of a stack of vendors.",
+      "Our crews bring over <strong>two decades of experience</strong> on office parks, retail centers, medical facilities, HOA communities, and industrial properties throughout Monroe County. Each property gets a defined scope and service schedule.",
     ],
     introCta: 'Request a Commercial Proposal',
     detailLabel: 'What We Offer',
     detailTitle: 'COMMERCIAL <span class="text-green">SERVICES</span>',
-    detailSubtitle: 'Everything your property needs from a single, reliable landscape partner.',
+    detailSubtitle: 'Recurring grounds care and seasonal response through one local provider.',
     detailCards: [
       {
         title: 'LANDSCAPE MAINTENANCE',
-        text: "Consistent, <strong>reliable grounds care</strong> on a predictable schedule. Mowing, edging, bed maintenance, pruning, seasonal cleanups, and mulching — all handled by dedicated crews who know your property. We develop maintenance plans tailored to your property's specific needs and budget.",
+        text: "Mowing, edging, bed maintenance, pruning, cleanup, and mulching run on a predictable schedule. A defined crew learns the property, and the maintenance plan reflects its needs and budget.",
         features: ['Weekly mowing & edging', 'Seasonal cleanups', 'Bed care & mulching'],
       },
       {
@@ -953,12 +953,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'SEASONAL COLOR & ENHANCEMENTS',
-        text: "Keep your property looking sharp and welcoming with seasonal flower rotations, container planting, and landscape enhancements. We handle <em>spring, summer, and fall</em> color programs that keep entrances, courtyards, and common areas vibrant throughout the growing season.",
+        text: "Seasonal flowers and containers keep entrances, courtyards, and common areas looking cared for. We schedule <em>spring, summer, and fall</em> rotations around the property and growing season.",
         features: ['Seasonal flower rotations', 'Container planting', 'Entrance & focal point displays'],
       },
       {
         title: 'TURF & IRRIGATION',
-        text: "Healthy turf and efficient irrigation are the foundation of a well-maintained commercial property. Our programs include fertilization, weed control, aeration, overseeding, and <strong>full irrigation management</strong> — spring startup, seasonal adjustments, and fall winterization.",
+        text: "Commercial turf programs can combine fertilization, weed control, aeration, and overseeding with <strong>full irrigation management</strong>. We handle spring startup, in-season adjustments, and fall winterization.",
         features: ['Fertilization & weed control', 'Aeration & overseeding', 'Irrigation management'],
       },
     ],
@@ -966,7 +966,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'Do you offer bundled year-round commercial services?',
-        answer: "Yes. Many of our commercial clients bundle landscape maintenance, snow management, and seasonal enhancements into a single annual contract with one point of contact. Bundling simplifies vendor management, often reduces overall costs, and ensures seamless transitions between seasons \u2014 the same team that maintains your landscape in summer handles your snow in winter.",
+        answer: "Yes. Many commercial clients put landscape maintenance, snow management, and seasonal enhancements under one annual agreement and one point of contact. It reduces vendor handoffs and keeps the same provider responsible as the seasons change.",
       },
       {
         question: 'How do you handle emergency snow events?',
@@ -974,7 +974,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Can you manage multiple properties for the same company?',
-        answer: "Absolutely. We manage portfolios of commercial properties for several clients across Monroe County. Multi-site contracts are coordinated through a single account manager, with service schedules and reporting customized for each location. This is one of our core strengths as a commercial landscape partner.",
+        answer: "Yes. We manage multi-property portfolios across Monroe County through one account manager, with a separate service schedule and reporting plan for each location.",
       },
     ],
     heroButtons: [
@@ -983,62 +983,62 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     relatedSlugs: ['landscape-maintenance', 'snow-ice-management', 'plant-health'],
     ctaHeading: "LET'S TALK ABOUT YOUR <span style=\"text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;\">PROPERTY</span>",
-    ctaText: "Get a <strong>customized commercial proposal</strong>. We'll walk your property, understand your needs, and build a plan that fits your budget and standards.",
+    ctaText: "Request a <strong>commercial proposal</strong>. We'll walk the property, define the service priorities, and put the schedule and price in writing.",
   },
 
   'holiday-lighting': {
     introLabel: 'Let Us Handle the Lights',
     introTitle: 'PROFESSIONAL <span class="text-green">HOLIDAY DECORATING</span>',
     introText: [
-      "The holiday season should be about <em>enjoying time with family</em> — not climbing ladders in the cold to untangle lights. At Westside Professional Landscape, we handle <strong>every aspect</strong> of your holiday decorating: design, installation, maintenance throughout the season, and takedown when the holidays are over.",
-      "Whether you want a classic, elegant look for your home in Pittsford or an eye-catching commercial display for your business in Greece, our team creates custom designs that match your vision and your property's architecture. We've been adding seasonal magic to homes and businesses across the Greater Rochester area for years.",
+      "Enjoy the lights without climbing a cold ladder or sorting tangled strands. Westside handles the holiday display from the first design through installation, in-season maintenance, takedown, and storage.",
+      "We design around the building instead of forcing the same display onto every property. A Pittsford home may call for a clean warm-white roofline, while a Greece commercial entrance needs a brighter display that reads from the road.",
     ],
     detailLabel: 'Our Services',
     detailTitle: 'HOLIDAY DECORATING <span class="text-green">SERVICES</span>',
-    detailSubtitle: 'Full-service holiday decorating for homes and businesses across Greater Rochester.',
+    detailSubtitle: 'Custom displays for Greater Rochester homes and businesses, installed and removed by our crew.',
     detailCards: [
       {
         title: 'CUSTOM LIGHTING DESIGN',
-        text: "<strong>Every property is unique</strong>, and your holiday display should be too. We visit your property, assess the architecture and landscaping, and create a custom lighting plan that highlights your home's best features. Choose from warm white elegance, multi-color festivity, or anything in between. LED technology keeps energy costs low and brightness high.",
+        text: "We walk the property and build the lighting plan around its roofline, trees, entries, and best sight lines. Choose warm white, multicolor, or a mix that fits the property. LED lights keep energy use lower while delivering a bright, even display.",
         features: ['On-site design consultation', 'LED & traditional options', 'Roofline, tree, & landscape lighting'],
       },
       {
         title: 'WREATHS & GARLAND',
-        text: "Complete your holiday look with fresh or artificial wreaths, garland, and bows. We install wreaths on doors, windows, and fences. Garland is draped along railings, entryways, columns, and mantels. Fresh greenery options include Fraser fir, noble fir, and mixed evergreen — all sourced for quality and longevity through Rochester's cold December weather.",
+        text: "Wreaths, garland, and bows finish the parts of a display that lights alone cannot. We install them on doors, windows, fences, railings, entries, columns, and mantels. Fresh greenery options include Fraser fir, noble fir, and mixed evergreen selected to hold up through a Rochester December.",
         features: ['Fresh & artificial options', 'Doors, windows & railings', 'Custom bows & ribbon'],
       },
       {
         title: 'COMMERCIAL DISPLAYS',
-        text: 'Make your business stand out during the holiday season with a professional display that attracts attention and creates a welcoming atmosphere. We design and install commercial-grade lighting for storefronts, office buildings, retail centers, restaurants, and HOA common areas throughout Monroe County. Timers and automated controls ensure hassle-free operation.',
+        text: 'Commercial-grade lighting gives storefronts, offices, retail centers, restaurants, and HOA common areas a finished seasonal look. Timers and automated controls keep the display on schedule without adding another daily task for your staff.',
         features: ['Commercial-grade lighting', 'Storefronts & office buildings', 'Timers & automated controls'],
       },
       {
         title: 'TAKEDOWN & STORAGE',
-        text: "When the season ends, we return to carefully remove all lights, decorations, and hardware. Everything is inspected, labeled, and stored for the following year. No tangled boxes in your attic, no forgotten lights still hanging in February. We handle the <strong>complete lifecycle</strong> so each year's installation is quick and seamless.",
+        text: "After the season, we remove the lights, decorations, and hardware, then inspect, label, and store them for next year. No tangled attic boxes and no forgotten strand still hanging in February.",
         features: ['Careful removal', 'Inspection & repair', 'Organized storage'],
       },
     ],
     processLabel: 'How It Works',
     processTitle: 'OUR HOLIDAY <span class="text-green">PROCESS</span>',
-    processSubtitle: 'A hassle-free experience from your first call to the final takedown.',
+    processSubtitle: 'You approve the plan. We handle the ladders, service calls, takedown, and storage.',
     processSteps: [
       { title: 'CONSULTATION', text: 'We visit your property, discuss your vision and budget, and develop a custom design plan.' },
-      { title: 'INSTALLATION', text: 'Our experienced crew installs lights and decorations with care — <em>treating your property with respect</em>.' },
+      { title: 'INSTALLATION', text: 'Our crew installs the approved display carefully and keeps attachment points appropriate for the property.' },
       { title: 'MAINTENANCE', text: "If a bulb goes out or a strand needs adjustment, one call and we're there to fix it." },
       { title: 'REMOVAL', text: 'After the holidays, we remove everything, inspect it, and store it for next year.' },
     ],
     faqs: [
       {
         question: 'When should I book holiday lighting installation?',
-        answer: "The earlier the better \u2014 our schedule fills up fast. We begin consultations in September and start installations in late October through early November. Booking by mid-October ensures your preferred installation date and gives us time to design and source materials. Last-minute requests are accommodated when possible but availability is limited.",
+        answer: "Earlier is better because the schedule fills quickly. Consultations begin in September, and installations start in late October through early November. Booking by mid-October gives us time to design the display, source materials, and hold your preferred installation window. We take later requests when the schedule allows.",
       },
       {
         question: 'Do you provide the lights or do I supply them?',
-        answer: "We provide everything: commercial-grade LED lights, extension cords, clips, timers, wreaths, garland, and all hardware. Our lights are more durable and energy-efficient than retail options. Everything is included in the price \u2014 you don't need to purchase, store, or maintain any equipment.",
+        answer: "We provide the commercial-grade LED lights, extension cords, clips, timers, wreaths, garland, and hardware included in your design. You do not need to buy, store, or maintain the equipment.",
       },
       {
         question: 'What happens if a light burns out during the season?',
-        answer: "One call and we're there. Our service includes maintenance visits throughout the holiday season. If a bulb goes out, a strand fails, or a decoration needs adjustment, we handle it promptly at no extra charge. That's the advantage of professional installation \u2014 you don't climb a ladder in December.",
+        answer: "Call us if a bulb goes out, a strand fails, or a decoration shifts. In-season maintenance is included at no extra charge, so you do not have to climb a ladder in December.",
       },
       {
         question: 'Do you decorate commercial properties?',
@@ -1051,6 +1051,6 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     relatedSlugs: ['landscape-design', 'snow-ice-management', 'landscape-maintenance'],
     ctaHeading: 'MAKE YOUR PROPERTY SHINE THIS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEASON</span>',
-    ctaText: "Book your holiday decorating early — <strong>the best time to plan is now</strong>. Let us handle the lights while you enjoy the holidays.",
+    ctaText: "Book early for the best choice of installation dates. We will handle the lights while you enjoy the display.",
   },
 };

@@ -54,14 +54,14 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 
 <BaseLayout
   title="Hardscape & Outdoor Living Projects in Rochester, NY | Westside"
-  description="Real paver patio, retaining wall, walkway, and outdoor kitchen projects built by Westside in Greater Rochester — visible project scope and current planning ranges for comparable work."
+  description="See real paver patio, retaining wall, walkway, and outdoor kitchen projects built by Westside in Greater Rochester, with scope and current planning ranges."
   ogImage={getPhoto('hero-projects-east-ave.webp')}
   jsonLd={jsonLd}
 >
   <Hero
     label="Real Completed Work"
     heading="OUR CONSTRUCTION PROJECTS IN ROCHESTER, NY"
-    intro="Every photo below shows work Westside completed in Greater Rochester. We pair the visible design challenge and finished scope with today's planning range for comparable work — never an invented old contract price."
+    intro="Every photo below shows work Westside completed in Greater Rochester. We pair the visible design challenge and finished scope with today's planning range for comparable work, not an invented old contract price."
     image={getPhoto('hero-projects-east-ave.webp')}
     buttons={[
       { text: 'Start Your Project', href: '/contact/?service=hardscaping', style: 'primary' },
@@ -141,7 +141,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
               <div class="p-8 flex flex-col gap-4 flex-1">
                 <div>
                   <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">
-                    {project.categoryLabel}{project.town ? ` — ${project.town}` : ''}{project.year ? ` · ${project.year}` : ''}
+                    {project.categoryLabel}{project.town ? ` · ${project.town}` : ''}{project.year ? ` · ${project.year}` : ''}
                   </p>
                   <h2 class="text-lg" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
                     {project.title}
@@ -175,7 +175,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
       </div>
 
       <p id="project-empty" class="text-center text-sm mt-12 hidden" style="color: var(--color-text-muted);">
-        No projects in that category yet — <a href={url('/contact/')} style="color: var(--color-green-bright);">tell us about yours</a>.
+        No projects are listed in that category yet. <a href={url('/contact/')} style="color: var(--color-green-bright);">Tell us about yours</a>.
       </p>
 
       <div class="mt-14 p-6 rounded-xl max-w-4xl mx-auto fade-in" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">

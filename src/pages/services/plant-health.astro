@@ -12,7 +12,7 @@ const service = getServiceBySlug('plant-health')!;
 const faqs: FaqItem[] = [
   {
     question: 'When is the best time to start a lawn care program?',
-    answer: "Early spring (March\u2013April) is the ideal time to start, since the first application includes pre-emergent crabgrass control that needs to go down before soil temperatures rise. However, you can join the program mid-season \u2014 we'll customize the remaining treatments based on where you are in the calendar.",
+    answer: "Early spring (March\u2013April) is the ideal time to start because the first application includes pre-emergent crabgrass control that must go down before soil temperatures rise. You can also join mid-season. We'll adjust the remaining treatments to the calendar.",
   },
   {
     question: 'Is the lawn care program safe for kids and pets?',
@@ -20,51 +20,51 @@ const faqs: FaqItem[] = [
   },
   {
     question: 'How long before I see results from fertilization?',
-    answer: "You'll typically see greening and improved density within 1\u20132 weeks of the first application. Full results develop over the season as the program builds on itself \u2014 each treatment is timed to your lawn's growth cycle. Most clients see a dramatic difference by the end of the first full season.",
+    answer: "You'll typically see greening and improved density within 1\u20132 weeks of the first application. Full results develop across the season because each treatment is timed to your lawn's growth cycle. Most clients see the biggest difference after a full season.",
   },
   {
     question: "What's the difference between professional lawn care and doing it myself?",
-    answer: "Professional programs use professional-grade products applied by certified technicians at precisely calibrated rates. Timing matters \u2014 our treatments are scheduled to match your lawn's growth cycle, not a weekend schedule. The result is more consistent coverage, better weed control, and healthier turf with less product waste.",
+    answer: "Professional programs pair commercial products with certified applicators and calibrated rates. Timing matters. We schedule treatments around your lawn's growth cycle rather than a free weekend, which improves coverage and weed control while reducing wasted product.",
   },
   {
     question: 'Why is grub control included for free?',
-    answer: "Grubs are one of the most destructive lawn pests in the Rochester area \u2014 they feed on grass roots and can destroy large sections of lawn in a single season. We include preventive grub control with our Step 3 summer application because treating proactively is far more effective (and less expensive) than repairing grub damage after the fact.",
+    answer: "Grubs feed on grass roots and can destroy large sections of a Rochester lawn in one season. We include preventive grub control with Step 3 because treating before damage appears is more effective and less expensive than repairing dead turf afterward.",
   },
 ];
 
 const programSteps = [
   {
     number: 1,
-    timing: 'March — April',
+    timing: 'March – April',
     title: 'SPRING APPLICATION',
     text: 'Jump-start your lawn out of winter dormancy with a balanced fertilizer that promotes strong root development. <strong>Pre-emergent crabgrass control</strong> creates an invisible barrier that stops crabgrass seeds before they germinate. Broadleaf weed control targets any weeds that survived winter.',
     tags: ['Balanced Fertilizer', 'Pre-emergent Crabgrass', 'Weed Control'],
   },
   {
     number: 2,
-    timing: 'May — June',
+    timing: 'May – June',
     title: 'LATE SPRING APPLICATION',
     text: 'A second round of balanced fertilization keeps your lawn thick and green as temperatures rise. Continued crabgrass control reinforces the spring barrier. Weed control targets new broadleaf weeds. Surface insect inspection identifies any emerging pest problems early.',
     tags: ['Balanced Fertilizer', 'Crabgrass Control', 'Weed Control', 'Insect Inspection*'],
   },
   {
     number: 3,
-    timing: 'June — July',
+    timing: 'June – July',
     title: 'SUMMER APPLICATION',
     text: 'The midsummer visit sustains growth during <em>heat stress</em> with balanced nutrition. Spot treatment addresses any crabgrass that broke through the barrier. Weed control continues through peak season.',
     tags: ['Balanced Fertilizer', 'Crabgrass Spot Treatment', 'Weed Control', 'Insect Inspection*'],
-    freeCallout: 'Professional grub preventive application included with this visit (June/July). Helps prevent destructive grub damage — included at no extra charge.',
+    freeCallout: 'A professional preventive grub application is included with this June/July visit at no extra charge.',
   },
   {
     number: 4,
-    timing: 'August — September',
+    timing: 'August – September',
     title: 'LATE SUMMER APPLICATION',
     text: "As summer winds down, this application prepares your lawn for fall recovery. Balanced fertilizer supports continued growth. Broadleaf weed control hits any late-season invaders. Surface insect inspection ensures pest populations haven't established.",
     tags: ['Balanced Fertilizer', 'Broadleaf Weed Control', 'Insect Inspection*'],
   },
   {
     number: 5,
-    timing: 'October — November',
+    timing: 'October – November',
     title: 'FALL APPLICATION',
     text: 'The final visit is <strong>the most important of the season</strong>. A winterizing fertilizer promotes deep root growth that pays dividends come spring. Spot weed treatment addresses any remaining broadleaf weeds before dormancy sets in.',
     tags: ['Balanced Fertilizer', 'Spot Weed Treatment', 'Winterization'],
@@ -79,7 +79,7 @@ const additionalServices = [
   },
   {
     title: 'BED MAINTENANCE',
-    text: 'Weekly weed control — both chemical and hand-picking — to keep your beds clean all season.',
+    text: 'Weekly chemical and hand weed control keeps your beds clean all season.',
     icon: '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6CC551" stroke-width="1.5" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>',
   },
   {
@@ -116,8 +116,8 @@ const pricingFeatures = [
 
 <ServiceLayout
   service={service}
-  ctaHeading='START YOUR JOURNEY TO A <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">HEALTHIER LAWN</span>'
-  ctaText="Schedule your <strong>free lawn evaluation</strong> today. Our experts will assess your lawn and recommend the right program for your property."
+  ctaHeading='START BUILDING A <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">HEALTHIER LAWN</span>'
+  ctaText="Schedule a <strong>free lawn evaluation</strong>. We will assess the turf and recommend the right program for your property."
   faqs={faqs}
 >
 
@@ -152,7 +152,7 @@ const pricingFeatures = [
           <p class="section-label">The Program</p>
           <h2 class="section-title">FIVE STEPS TO A <span style="color: var(--color-green-bright);">HEALTHIER LAWN</span></h2>
           <p class="mb-10" style="color: var(--color-text-muted); line-height: 1.8;">
-            <strong>Each treatment is timed</strong> to match your lawn's growth cycle. Our <strong style="color: var(--color-text-light);">NYS DEC Certified Applicators</strong> use professional-grade products for effective, lasting results.
+            <strong>Each treatment is timed</strong> to match your lawn's growth cycle. Our <strong style="color: var(--color-text-light);">NYS DEC Certified Applicators</strong> apply professional products at labeled rates.
           </p>
 
           {programSteps.map((step, i) => (
@@ -235,7 +235,7 @@ const pricingFeatures = [
       <div class="text-center mb-16 fade-in">
         <p class="section-label">Enhance Your Lawn</p>
         <h2 class="section-title">ADDITIONAL <span class="text-green">SERVICES</span></h2>
-        <p class="section-subtitle mx-auto">Take your lawn to the next level with these <strong>add-on services</strong>, available individually or bundled with your 5-step program.</p>
+        <p class="section-subtitle mx-auto">Add the services your lawn needs. Each is available on its own or alongside the 5-step program.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
@@ -267,14 +267,14 @@ const pricingFeatures = [
           <p class="section-label">Why Westside</p>
           <h2 class="text-2xl mb-4">PROFESSIONAL-GRADE <span style="color: var(--color-green-bright);">RESULTS</span></h2>
           <p class="text-sm mb-6" style="color: var(--color-text-muted); line-height: 1.8;">
-            There's a real difference between DIY lawn care and a <strong>professionally managed program</strong>. Here's why our clients choose Westside:
+            A managed lawn program brings trained applicators, calibrated products, and seasonal timing together. Here is what Westside provides:
           </p>
           <ul class="flex flex-col gap-4">
             {[
               { strong: 'NYS DEC Certified Applicators', detail: 'Our technicians are properly certified and trained' },
               { strong: 'Professional-Grade Products', detail: 'Commercial-quality products applied by trained technicians' },
               { strong: 'Precisely Timed Treatments', detail: "Each visit is scheduled to match your lawn's growth cycle" },
-              { strong: 'We Stand Behind Our Work', detail: "Questions about a treatment? Give us a call — we're here to help" },
+              { strong: 'We Stand Behind Our Work', detail: "Questions about a treatment? Call and talk with our team" },
               { strong: '26+ Years Serving Rochester', detail: 'We know the local soil, climate, and grass types' },
             ].map((item) => (
               <li class="flex items-start gap-3">
