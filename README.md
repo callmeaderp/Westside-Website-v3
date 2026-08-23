@@ -24,7 +24,8 @@ Node.js 22.12 or newer is required.
 - `public/`: directly served fonts, icons, manifests, redirects, headers, robots configuration, and currently direct-served photos.
 - `tests/`: Playwright suites and fixtures.
 - `CONTENT-NEEDED.md`: outstanding content or asset requests.
-- `.claude/rules/`: focused contributor runbooks for Tailwind layers, redirects, service pages, and deployment.
+- `.claude/rules/`: focused contributor guidance for Tailwind layers, redirects, and service pages.
+- `.claude/skills/deploy/`: user-invoked Cloudflare Pages deployment and verification workflow.
 
 Repeating company and service content should come from `src/data/`, not be duplicated in templates. Shared HTML belongs in layouts or components. JSON-LD must be computed from canonical data rather than handwritten independently.
 
@@ -103,6 +104,6 @@ Production is the Pages `master` production branch; name it explicitly so a depl
 npx wrangler pages deploy dist/ --project-name=westside-website --branch=master
 ```
 
-Do not use `--branch=main` as a production substitute; it creates a preview named `main`. Read `.claude/rules/deploy.md` for the current environment terminology and authentication boundary.
+Do not use `--branch=main` as a production substitute; it creates a preview named `main`. The user-only `.claude/skills/deploy/SKILL.md` owns the current target terminology, authentication boundary, and post-deploy verification workflow.
 
 After deployment, verify the generated deployment URL before checking the custom domain. Exercise the changed page, responsive navigation, forms/conversion events when relevant, canonical/meta tags, structured data, assets, and affected redirects. Production deployment is an external side effect and requires Joshua's explicit request.

@@ -22,8 +22,9 @@ Read the matching file under `.claude/rules/` before changing:
 
 - service routes or data: `add-service-page.md`;
 - Tailwind layer behavior: `tailwind-v4-layers.md`;
-- `public/_redirects`: `_redirects-pitfalls.md`;
-- Cloudflare deployment: `deploy.md`.
+- `public/_redirects`: `_redirects-pitfalls.md`.
+
+Cloudflare deployment is an on-demand external workflow under `.claude/skills/deploy/SKILL.md`; invoke `/deploy` only after Joshua explicitly requests a production or preview publication.
 
 ## Short verification workflow
 

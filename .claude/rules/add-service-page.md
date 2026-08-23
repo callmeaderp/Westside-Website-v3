@@ -74,7 +74,7 @@ Do not use HTML in `faq.question` — rendered as plain text.
 
 ## Build + Verify
 
-After editing: `npm run check`, `npm run lint`, and `npm run build` must succeed, then `npm test`. The new route is asserted automatically only if you add it to the route lists at the top of `tests/construction.spec.ts`. Then see `deploy.md` for Cloudflare Pages deployment.
+After editing: `npm run check`, `npm run lint`, and `npm run build` must succeed, then `npm test`. The new route is asserted automatically only if you add it to the route lists at the top of `tests/construction.spec.ts`. Deploy only when Joshua explicitly requests it; the user-only `/deploy` skill owns the Cloudflare Pages workflow.
 
 The build emits `dist/services/<slug>/index.html` and the sitemap picks up the new URL automatically via `@astrojs/sitemap`. No manual sitemap edits needed.
 
