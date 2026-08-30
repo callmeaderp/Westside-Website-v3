@@ -20,9 +20,9 @@ This is the Astro 7 production website for Westside Professional Landscape. Star
 
 Read the matching file under `.claude/rules/` before changing:
 
-- service routes or data: `add-service-page.md`;
-- Tailwind layer behavior: `tailwind-v4-layers.md`;
-- `public/_redirects`: `_redirects-pitfalls.md`.
+- service routes or data: [`.claude/rules/add-service-page.md`](.claude/rules/add-service-page.md);
+- Tailwind layer behavior: [`.claude/rules/tailwind-v4-layers.md`](.claude/rules/tailwind-v4-layers.md);
+- `public/_redirects`: [`.claude/rules/_redirects-pitfalls.md`](.claude/rules/_redirects-pitfalls.md).
 
 Cloudflare deployment is an on-demand external workflow under `.claude/skills/deploy/SKILL.md`; invoke `/deploy` only after Joshua explicitly requests a production or preview publication.
 
@@ -34,6 +34,7 @@ For source or content changes, run:
 npm run check
 npm run lint
 npm run build
+npm test
 ```
 
-Add focused Playwright/accessibility checks and responsive visual inspection for affected UI behavior. Deploy previews before production when Joshua wants to review the result.
+Add focused Playwright/accessibility checks and responsive visual inspection for affected UI behavior. The default Playwright runtime serves static `dist/` and does not execute Pages Functions; read [`functions/README.md`](functions/README.md) before changing an API route. Deploy previews before production when Joshua wants to review the result.

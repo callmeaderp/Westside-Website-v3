@@ -1,22 +1,18 @@
-# Content Needed from Westside
+# Content and approvals still needed
 
-Checklist of content and approvals needed to restore features that were removed or softened for the initial deployment. Each item below was on the previous `master` branch and can be re-added once Westside provides the information.
+Current-state list of unpublished content, missing approvals, and the safe fallback already on the site. This is not a branch-restoration checklist: some earlier implementations no longer exist and should be rebuilt from current data/component conventions only after the underlying content is approved.
 
-## Team Section (About Page)
+## Team section (About page)
 
-**What's needed:** Real bios for each team member (2-3 sentences each), plus approved headshot photos.
+**Current published fallback:** a generic “A Team That Cares” section in `src/pages/about.astro`.
 
-The about page currently has a generic "A Team That Cares" paragraph. The full version has a grid of team member cards with photos, names, roles, and bios. The code and layout are ready — just needs real content.
+**What's needed:** approved people, current roles, 2–3 sentence bios, and approved headshots. The roster below is historical input, not an approved current lineup; Brantley is no longer active and must not be republished as Plant Health Manager.
 
-**People to include:**
-- **Brad** — Owner / President. *Need:* How he started the company, background, philosophy. Photo.
-- **Brantley** — Plant Health Manager. *Need:* Years with Westside, certifications, what he enjoys. Photo.
-- **Heather** — Office Manager. *Need:* What she manages day-to-day, years with Westside. Photo.
-- **Jeff** — Landscape Operations Manager. *Need:* Background, specialties, years with Westside. Photo.
+**Implementation state:** four `team-*.webp` assets and `about-company.webp` exist under `src/images/photos/`, but there is no current `src/data/team.ts` or team-card renderer. After approval, create a canonical team data module and rebuild the About-page grid from current components. Do not follow the retired `src/data/team.ts` route as though its code were already present.
 
-**Code:** Team data lives in `src/data/team.ts`. About page imports `team` and renders the grid. Team photos go in `src/images/photos/` as `team-brad.webp`, `team-brantley.webp`, etc.
+**Candidate people to confirm:** Brad, Heather, Jeff, Joshua, and any other current leaders Westside wants to publish. Confirm exact public titles, bios, and photo rights before implementation.
 
-**Also blocked:** The homepage about section currently uses `gallery-striped-colonial.webp` (a real project photo). When team photos are approved, swap to `about-company.webp` (a team/company photo) on the homepage too.
+**Homepage follow-up:** once a current company/team photo is approved, decide whether `about-company.webp` should replace the current project photo in the homepage About section.
 
 ---
 
@@ -63,20 +59,11 @@ These are copy improvements that were softened for safety. They can be restored 
 - **Confirm:** "reservations fill up fast" — is this true, or aspirational?
 
 ### Artificial Grass (`service-content.ts`, `services.ts`)
-- **Decision:** "industry-leading warranties" vs. "manufacturer-backed warranties" — the latter is factually safer (SYNLawn does back their products with warranties). The former is a subjective claim.
+- **Current published fallback:** “manufacturer-backed warranties,” which is the factually safer approved wording unless Westside supplies evidence for a stronger comparative claim. No decision is currently blocking the site.
 
 ### Plant Health (`plant-health.astro`)
 - **Decision:** "go beyond what's available at retail stores" vs. "for effective, lasting results" — is the retail comparison accurate and desired?
 - **Decision:** "Not satisfied? Contact us and we'll make it right" vs. "Questions about a treatment? Give us a call" — the first implies a guarantee. Does Westside want that?
 
 ### Contact FAQ (`contact.astro`)
-- **Confirm:** "All of our plant health and lawn care technicians are NYS DEC Certified Pesticide Applicators" — is *every* technician certified, or just the team leads? Currently says "Our plant health technicians hold NYS DEC Certified Commercial Pesticide Applicator credentials."
-
----
-
-## Not Content-Blocked (Can Be Done Anytime)
-
-These are code quality improvements that don't depend on Westside:
-
-- [x] ~~Contact form script: modernize `var` → `const`, arrow functions, TypeScript types~~ *(applied during branch consolidation)*
-- [x] ~~Contact form: remove duplicate inline tracking code (now handled by TrackingScripts)~~ *(applied during branch consolidation)*
+- **Current published fallback:** “Our plant health technicians hold NYS DEC Certified Commercial Pesticide Applicator credentials.” Keep that narrower wording unless Westside verifies the certification status of every technician represented by a broader claim.

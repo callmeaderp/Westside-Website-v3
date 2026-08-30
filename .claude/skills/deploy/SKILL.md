@@ -11,7 +11,7 @@ Deploy only when Joshua explicitly requests the external publication. Interpret 
 
 ## Prepare and verify the build
 
-From the repository root, run `npm run check`, `npm run lint`, and `npm run build`. Do not deploy a failed build.
+From the repository root, run `npm run check`, `npm run lint`, `npm run build`, and `npm test`. Do not deploy a failed build or test suite. The Playwright suite is the repository's policy/browser gate but serves static `dist/`; for a Pages Function change, also follow the preview-runtime verification in `functions/README.md` before production.
 
 ## Select the Cloudflare Pages target
 
@@ -20,7 +20,7 @@ From the repository root, run `npm run check`, `npm run lint`, and `npm run buil
 
 The explicit branch is load-bearing. The Pages production branch is `master`; `main` creates a preview named `main`, and omitting the branch lets Wrangler infer behavior from the current checkout.
 
-On Linux, Wrangler authentication uses `CLOUDFLARE_API_KEY`, `CLOUDFLARE_EMAIL`, and `CLOUDFLARE_ACCOUNT_ID`, not `CLOUDFLARE_API_TOKEN`. Read them from the established environment/credential source; never print or commit them.
+In the established deployment environment, Wrangler authenticates with `CLOUDFLARE_API_KEY`, `CLOUDFLARE_EMAIL`, and `CLOUDFLARE_ACCOUNT_ID`, not `CLOUDFLARE_API_TOKEN`. Read them from the established environment/credential source; never print or commit them.
 
 ## Verify the deployment
 

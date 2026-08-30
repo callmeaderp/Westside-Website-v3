@@ -244,7 +244,7 @@
 # Query-string variant /?feed=rss2 is handled by a zone-level Cloudflare
 # Redirect Rule, NOT here — Pages _redirects cannot match on query strings,
 # and any attempt ("/?feed=*") is parsed as "/" and creates a loop. See
-# memory/cloudflare-redirect-rules.md for the rule definition.
+# .claude/rules/_redirects-pitfalls.md for current ownership and the live-rule workflow.
 
 # Old V2 dev paths (somehow indexed)
 /Westside-Website-Project-v2/*  /       301

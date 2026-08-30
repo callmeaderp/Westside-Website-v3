@@ -1,6 +1,6 @@
 /**
- * Site navigation structure — drives Header, Footer, and sitemap.
- * Single source of truth for all internal links.
+ * Canonical Header/Footer navigation configuration.
+ * Page-specific internal links and Astro's generated sitemap live elsewhere.
  * All hrefs include trailing slashes to match trailingSlash: 'always' config.
  *
  * Construction lanes lead the Services menu deliberately: they are the

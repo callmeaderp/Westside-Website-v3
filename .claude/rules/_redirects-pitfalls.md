@@ -3,7 +3,11 @@ paths:
   - public/_redirects
 ---
 
-# Cloudflare Pages `_redirects` — Known Pitfalls
+# Cloudflare Pages `_redirects` — known pitfalls
+
+## Current status
+
+Verified 2026-08-30 against the Cloudflare API and the current Pages file: dynamic-redirect ruleset `63277d1deb904d28ae0c71175cddc5c8` contains **10 enabled rules**, not one. Rule `9d2503507dee41bb8ce304b049b04a19` handles both legacy `feed=` queries and `/field/chemical-record[/]`; the other rules own path catalogs for hardscaping, landscape design, lawn care, maintenance, commercial, snow, brand/news, careers, and the canonical `www` host redirect. Several path-only rules intentionally or historically overlap `public/_redirects`; the zone rule wins because it runs before Pages. Never reconstruct or replace the phase from an excerpt in this document.
 
 ## NEVER write query-string patterns in `_redirects`
 
@@ -23,44 +27,49 @@ is NOT parsed as "root with query param `feed=anything`" — the `?` truncates t
 
 Query-string matching requires wirefilter expressions, which only Cloudflare Zone-level Redirect Rules support. They run in the `http_request_dynamic_redirect` phase **before** Pages sees the request, so no loop is possible with the static `_redirects` file.
 
-The current zone rule for `/?feed=rss2`-style URLs (ruleset `63277d1deb904d28ae0c71175cddc5c8`, rule `9d2503507dee41bb8ce304b049b04a19`):
+Rule `9d2503507dee41bb8ce304b049b04a19` currently handles the feed-query case **and** the retired chemical-record path. The feed fragment below is illustrative only; it is not the rule's complete expression and is never a safe replacement payload:
 
 ```
-Expression:
+Feed fragment:
   (http.host in {"westsideprolandscape.com" "www.westsideprolandscape.com"})
   and (http.request.uri.path eq "/")
   and (starts_with(http.request.uri.query, "feed=")
        or http.request.uri.query contains "&feed=")
 
-Action: dynamic redirect, 301, target = https://westsideprolandscape.com/, preserve_query_string = false
+Shared action: dynamic redirect, 301, target = https://westsideprolandscape.com/, preserve_query_string = false
 ```
 
 Manage via Cloudflare API (zone `5a81c4f4e3e41b9422ab799dcb369673`):
 
 ```bash
-# List rules
-curl -s -H "X-Auth-Email: callmeaderp@gmail.com" -H "X-Auth-Key: $CF_KEY" \
+# Fetch the complete live phase immediately before any change
+curl -s -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
   "https://api.cloudflare.com/client/v4/zones/5a81c4f4e3e41b9422ab799dcb369673/rulesets/phases/http_request_dynamic_redirect/entrypoint" | jq .
 
-# Update — PUT to the same endpoint replaces all rules in the phase
+# Preferred single-rule edit: PATCH preserves every other rule
+curl -s -X PATCH \
+  -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data @<complete-one-rule-payload.json> \
+  "https://api.cloudflare.com/client/v4/zones/5a81c4f4e3e41b9422ab799dcb369673/rulesets/63277d1deb904d28ae0c71175cddc5c8/rules/<RULE_ID>"
 ```
 
-## Rule-precedence order (Cloudflare → Pages)
+A `PUT` to the phase entrypoint replaces the entire live catalog. Use it only with a freshly fetched, intentionally complete ten-rule payload and explicit intent to replace the whole phase. Never build that payload from the illustrative feed fragment above.
 
-When a request hits the Cloudflare edge:
+## Rule-precedence branches (Cloudflare → Pages)
 
-1. **Zone-level Redirect Rules** (`http_request_dynamic_redirect`) — fire first. Full wirefilter: host, path, query, headers, cookies, geo.
-2. **Pages Functions** (if any match) — can handle routing dynamically.
-3. **Pages static file handling** — serves files from `dist/`.
-4. **`_redirects`** — runs during Pages static handling; path-only matching with splats (`*`) and placeholders (`:name`).
-5. **404 fallback** — Pages returns `404.html` if nothing matched.
+When a request hits the edge, reason in three branches rather than as one linear five-step pipeline:
 
-So: put query-string / header / geo rules at the zone level. Keep `_redirects` for simple path rewrites only.
+1. **Zone-level Redirect Rules run before the Pages project.** They support host, path, query, headers, cookies, and geography. Any overlapping zone rule shadows `public/_redirects`.
+2. **A request handled by a Pages Function does not invoke `_redirects`, even when the Function route matches the same URL pattern.** Function routing belongs in `functions/` or `_routes.json`.
+3. **Otherwise, a matching `_redirects` rule is followed even when a static asset exists.** Rules are evaluated top-to-bottom; when none matches, normal static-file and 404 resolution applies.
+
+Put query-string/header/geo rules at the zone level. Keep path-only redirects in `_redirects` when possible, but first check whether a live zone rule already owns the path; editing only the repository copy may have no production effect.
 
 ## Other `_redirects` gotchas
 
-- **No trailing-slash auto-matching.** `/blog/winterize` and `/blog/winterize/` are two separate sources. We have the first as a specific topical redirect (`→ /services/plant-health/`); the second falls through to the catch-all `/blog/*` → `/services/` and loses the topical mapping. If Google has both forms indexed, add both lines.
-- **Soft 404 anti-pattern.** Per an earlier SEO audit (see `memory/website-v3-migration.md`): redirecting obviously-unrelated legacy URLs like `/wp-admin/*`, `/xmlrpc.php`, `/tag/*`, `/author/*`, `/feed/*` to `/` is treated by Google as a soft 404 — a negative crawl signal. A natural 404 is stronger SEO-wise when the destination has no topical relationship to the source. We currently send a mix of topical redirects (good) and blanket `→ /` redirects (marginal).
+- **Slash forms are separate sources.** Maintain both when production may receive both; the current `public/_redirects` correctly maps `/blog/winterize` and `/blog/winterize/` to `/services/plant-health/`.
+- **Soft 404 anti-pattern.** Redirecting obviously unrelated legacy URLs such as `/wp-admin/*`, `/xmlrpc.php`, `/tag/*`, `/author/*`, or `/feed/*` to `/` can be treated by Google as a soft 404. Prefer a natural 404 when there is no topically related destination; preserve targeted redirects where there is one. The broader historical Cloudflare context lives in the Westside operations workspace's `memory/cloudflare-dns-setup.md`.
 - **Trailing slash on destination matters.** `trailingSlash: 'always'` in `astro.config.mjs` means every destination should end in `/` to avoid a double hop through Pages' trailing-slash canonicalization.
 
 ## After editing `_redirects`, always test the homepage

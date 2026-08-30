@@ -8,7 +8,7 @@ This repository is the Astro 7 production website for Westside Professional Land
 - Tailwind CSS 4 through `@tailwindcss/vite`.
 - TypeScript and Zod for data contracts.
 - Biome for linting and formatting.
-- Playwright and axe-core for browser, accessibility, and visual tests.
+- Playwright and axe-core for browser and accessibility tests.
 - Cloudflare Pages and Wrangler for deployment.
 
 Node.js 22.12 or newer is required.
@@ -20,8 +20,9 @@ Node.js 22.12 or newer is required.
 - `src/components/`: header, footer, metadata, tracking, heroes, calls to action, forms, and reusable sections.
 - `src/data/`: canonical company, service, navigation, testimonial, gallery, content, and product-document data.
 - `src/styles/`: Tailwind theme tokens, base styles, animation styles, and self-hosted font declarations.
-- `src/assets/`: source assets processed by Astro.
-- `public/`: directly served fonts, icons, manifests, redirects, headers, robots configuration, and currently direct-served photos.
+- `src/images/photos/`: source photography processed and optimized by Astro.
+- `public/`: pass-through fonts, icons, logos, manifests, documents, redirects, headers, robots configuration, and other static assets that should not enter Astro's image pipeline.
+- `functions/`: Cloudflare Pages API routes; start with [`functions/README.md`](functions/README.md) for runtime bindings and verification boundaries.
 - `tests/`: Playwright suites and fixtures.
 - `CONTENT-NEEDED.md`: outstanding content or asset requests.
 - `.claude/rules/`: focused contributor guidance for Tailwind layers, redirects, and service pages.
@@ -49,15 +50,15 @@ npm test           # full suite, desktop + mobile projects
 npm run test:a11y  # axe-core WCAG 2 A/AA pass only
 ```
 
-Both build against `dist/`, so run `npm run build` first. `playwright.config.ts` starts `tests/static-server.mjs` on port 4331 rather than `astro preview` — Astro 7's preview daemonizes and Playwright reports the launcher's exit as `Process from config.webServer exited early`. Override the port with `PLAYWRIGHT_PORT` if 4331 is taken.
+Both build against `dist/`, so run `npm run build` first. `playwright.config.ts` starts `tests/static-server.mjs` on port 4331 rather than `astro preview`—Astro 7's preview daemonizes and Playwright reports the launcher's exit as `Process from config.webServer exited early`. Override the port with `PLAYWRIGHT_PORT` if 4331 is taken. This server is static: it does not execute Cloudflare Pages Functions, and contact-form browser tests mock the API response. Read [`functions/README.md`](functions/README.md) before changing an API route or its secrets.
 
-Run checks proportional to the change. Data, route, metadata, redirects, or global-layout changes require at least `npm run check`, `npm run lint`, and `npm run build`. UI changes should also be inspected at representative desktop and mobile widths. Update or add Playwright coverage when behavior is stable enough to assert.
+Biome currently lints/formats `src/` only; Functions, tests, and configuration are outside the `npm run lint` surface and need their own TypeScript/build/runtime checks. Run checks proportional to the change. Data, route, metadata, redirects, or global-layout changes require at least `npm run check`, `npm run lint`, and `npm run build`. UI changes should also be inspected at representative desktop and mobile widths. Update or add Playwright coverage when behavior is stable enough to assert.
 
 ## Content and asset conventions
 
 - Service slugs and core cards live in `src/data/services.ts`. `tier` separates the primary `core` offering from the focused `construction` build lanes.
 - Long-form service content and FAQs live in `src/data/service-content.ts`, including hero CTA buttons, investment-band references, and featured project slugs.
-- Published price ranges live only in `src/data/investment.ts`. Never inline a dollar figure in a template — every band renders with `INVESTMENT_CAVEAT` so it cannot be read as a quote.
+- Construction planning bands live in `src/data/investment.ts` and should be rendered from that module rather than retyped in templates. Plant Health's promotional program price is a separate service offer; keep its repeated values synchronized until it receives its own canonical data object. Any published planning range must carry the `INVESTMENT_CAVEAT` in the enclosing section so it cannot be read as a quote.
 - Project case studies live in `src/data/projects.ts`. A `town` may be set only when the location is independently provable; photo EXIF in the current library has no GPS, so entries omit it rather than guess.
 - Header and footer navigation are separate arrays in `src/data/navigation.ts`.
 - Contact-form service options and the `?service=<slug>` preselect map are both derived from `services.ts`, so adding a service no longer requires editing the form.
@@ -74,7 +75,7 @@ New York Education Law §7322 protects the title "landscape architect". No Wests
 
 ## Tracking and forms
 
-Tracking is centralized in `src/components/TrackingScripts.astro`, including GA4 and Meta integrations. Keep identifiers and event wiring there instead of scattering scripts across pages. The contact form currently uses its established client/API integration; preserve lead attribution, service preselection, validation, and conversion events when changing it.
+Tracking responsibilities are deliberately split by runtime. `src/components/TrackingScripts.astro` owns GA4, Google Ads conversions, Meta Pixel, Microsoft UET, first-touch attribution, and call-click wiring. The Pages Functions own server work: `functions/api/contact.ts` performs Turnstile verification, Microsoft Graph mail, and Meta `Lead` CAPI; `functions/api/track-call.ts` performs Meta `Contact` CAPI; `functions/api/address-suggest.ts` proxies Google Places. Read [`functions/README.md`](functions/README.md) for bindings and the important fact that the static Playwright server does not run any of these Functions.
 
 Acquisition attribution (`utm_*`, `fbclid`, `gclid`, `msclkid`, landing page, referrer) is captured on first pageview by `TrackingScripts.astro`, held in `sessionStorage` as **first touch**, and exposed via `window.__wplAttribution()`. Ad traffic usually lands on a tagged page and submits from an untagged `/contact/`, so reading the parameters at submit time would lose the campaign. The values reach the office notification email and the GA4/Meta payloads; they are query-string data, never secrets.
 
@@ -82,14 +83,14 @@ Never commit Cloudflare, Google, Meta, form-provider, or other credentials. Publ
 
 ## Redirects and compatibility
 
-`public/_redirects` maps V2 `.html` and legacy service URLs to the current trailing-slash routes. Redirect syntax has Cloudflare-specific pitfalls; read `.claude/rules/_redirects-pitfalls.md` and validate affected old URLs after changes. V2 and V2.5 sibling repositories are reference/rollback sources, not active development targets.
+`public/_redirects` maps V2 `.html` and legacy service URLs to the current trailing-slash routes. Live Cloudflare zone rules also own query/host redirects and currently shadow a number of duplicated path-only entries before Pages sees them. Redirect syntax and ownership therefore have Cloudflare-specific pitfalls; read [`.claude/rules/_redirects-pitfalls.md`](.claude/rules/_redirects-pitfalls.md), fetch the live zone rules before editing either layer, and validate affected old URLs after changes. V2 and V2.5 repositories remain reference/rollback sources, not active development targets.
 
 ## Deployment
 
 Cloudflare Pages project `westside-website` serves production. Build before every deploy:
 
 ```sh
-npm run check && npm run lint && npm run build
+npm run check && npm run lint && npm run build && npm test
 ```
 
 A preview deployment uses an explicit branch:

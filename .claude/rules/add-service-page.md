@@ -15,7 +15,7 @@ Service pages are data-driven — `/services/[slug]/` routes are generated dynam
 ## The Three-File Touch
 
 1. **`src/data/services.ts`**
-   - Add the new slug to the `SERVICE_SLUGS` tuple (this is the Zod-validated union; the build fails if slugs drift).
+   - Add the new slug to the `SERVICE_SLUGS` tuple. The Zod enum rejects an invalid slug in a service object, but it does not prove that every tuple member has exactly one service object or reject duplicate objects; preserve that completeness and uniqueness deliberately.
    - Append a full `Service` object to the `services` array (all fields required by `ServiceSchema`).
    - Set `tier`: `'core'` puts it in the homepage grid; `'construction'` groups it with the build lanes under the hardscaping hub.
 
@@ -35,7 +35,7 @@ Service pages are data-driven — `/services/[slug]/` routes are generated dynam
 
 ## Publishing prices
 
-Never inline a dollar figure in a template or content string. Add an `InvestmentBand` to `src/data/investment.ts` and reference it by id; the `InvestmentRanges` component renders `INVESTMENT_CAVEAT` alongside every band so a published range cannot be read as a quote. Ranges must stay internally consistent — a walkway cannot start above a full patio.
+Construction planning bands belong in `src/data/investment.ts`; render them from `InvestmentBand` data rather than independently retyping the same range in templates or content strings. Keep Plant Health's promotional program price separate from these construction bands. Every published construction range must include `INVESTMENT_CAVEAT` in the enclosing section, and ranges must stay internally consistent—a walkway cannot start above a full patio.
 
 `tests/construction.spec.ts` asserts that every construction route publishes a band **and** the caveat.
 
@@ -74,7 +74,7 @@ Do not use HTML in `faq.question` — rendered as plain text.
 
 ## Build + Verify
 
-After editing: `npm run check`, `npm run lint`, and `npm run build` must succeed, then `npm test`. The new route is asserted automatically only if you add it to the route lists at the top of `tests/construction.spec.ts`. Deploy only when Joshua explicitly requests it; the user-only `/deploy` skill owns the Cloudflare Pages workflow.
+After editing, `npm run check`, `npm run lint`, `npm run build`, and `npm test` must succeed. Tests do not discover a new route automatically: add every new service to `ALL_SERVICE_ROUTES`, and add every construction lane to `CONSTRUCTION_ROUTES`, at the top of `tests/construction.spec.ts`. Deploy only when Joshua explicitly requests it; the user-only `/deploy` skill owns the Cloudflare Pages workflow.
 
 The build emits `dist/services/<slug>/index.html` and the sitemap picks up the new URL automatically via `@astrojs/sitemap`. No manual sitemap edits needed.
 
