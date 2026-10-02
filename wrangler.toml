@@ -8,6 +8,8 @@
 #   PLACES_API_KEY            — Places-API-only key for /api/address-suggest/
 #   META_ACCESS_TOKEN         — optional Meta CAPI token for Lead/Contact events
 #   META_TEST_EVENT_CODE      — optional test-only Events Manager code
+#   CONTACT_TEST_RECIPIENT    — PREVIEW ENVIRONMENT ONLY: routes contact notifications
+#                               to one Westside mailbox and skips Meta CAPI
 
 name = "westside-website"
 pages_build_output_dir = "dist"

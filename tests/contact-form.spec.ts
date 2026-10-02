@@ -16,7 +16,7 @@ test.describe('field structure', () => {
     await expect(page.locator('[name="message"]')).toHaveAttribute('required', '');
 
     // Qualification fields must stay optional — gating on budget kills leads.
-    for (const name of ['project_type', 'budget', 'timing', 'zip', 'address']) {
+    for (const name of ['project_type', 'budget', 'timing', 'zip', 'address', 'property_type', 'company']) {
       await expect(page.locator(`[name="${name}"]`)).not.toHaveAttribute('required', '');
     }
 
@@ -57,6 +57,84 @@ test.describe('field structure', () => {
     ]) {
       expect(options).toContain(label);
     }
+  });
+});
+
+test.describe('property type and company', () => {
+  test('company field appears only for non-home properties', async ({ page }) => {
+    await page.goto('/contact/');
+    await expect(page.locator('#property-type')).toBeVisible();
+    await expect(page.locator('#property-type')).toContainText('Business or commercial property');
+    await expect(page.locator('#company')).toBeHidden();
+
+    await page.selectOption('#property-type', 'Commercial');
+    await expect(page.locator('#company')).toBeVisible();
+    await expect(page.locator('#company')).toHaveAttribute('autocomplete', 'organization');
+
+    await page.selectOption('#property-type', 'Home');
+    await expect(page.locator('#company')).toBeHidden();
+
+    await page.selectOption('#property-type', 'HOA / community');
+    await expect(page.locator('#company')).toBeVisible();
+  });
+
+  test('the commercial proposal CTA starts on a business property', async ({ page }) => {
+    await page.goto('/services/commercial-services/');
+    await page.locator('section.hero a.btn-primary').click();
+    await expect(page).toHaveURL(/\/contact\/\?service=commercial-services/);
+    await expect(page.locator('#property-type')).toHaveValue('Commercial');
+    await expect(page.locator('#company')).toBeVisible();
+  });
+
+  test('other services leave the property type for the visitor to choose', async ({ page }) => {
+    await page.goto('/contact/?service=snow-ice-management');
+    await expect(page.locator('#property-type')).toHaveValue('');
+    await expect(page.locator('#company')).toBeHidden();
+  });
+
+  test('career inquiries hide the property fields', async ({ page }) => {
+    await page.goto('/contact/?service=careers');
+    await expect(page.locator('#property-type')).toBeHidden();
+  });
+
+  test('submission sends the property type and company only while it applies', async ({ page }) => {
+    await page.goto('/contact/');
+    const bodies: Record<string, unknown>[] = [];
+    await page.route('**/api/contact/', async (route) => {
+      bodies.push(JSON.parse(route.request().postData() || '{}'));
+      await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+    });
+    await page.evaluate(() => document.querySelector('.cf-turnstile')?.remove());
+
+    const fillRequired = async () => {
+      await page.fill('#first-name', 'Test');
+      await page.fill('#last-name', 'Manager');
+      await page.fill('#email', 'test@example.com');
+      await page.fill('#phone', '5855550123');
+      await page.fill('#message', 'Seasonal grounds maintenance for our community.');
+    };
+
+    await fillRequired();
+    await page.selectOption('#property-type', 'HOA / community');
+    await page.fill('#company', 'Lakeside Village HOA');
+    await page.locator('#contact-form button[type="submit"]').click();
+    await expect.poll(() => bodies.length).toBe(1);
+    expect(bodies[0].propertyType).toBe('HOA / community');
+    expect(bodies[0].company).toBe('Lakeside Village HOA');
+
+    // After a successful send the form resets and the company field hides again.
+    await expect(page.locator('#company')).toBeHidden();
+
+    // A company typed before switching to a home is not sent.
+    await expect(page.locator('#contact-form button[type="submit"]')).toBeEnabled({ timeout: 6000 });
+    await fillRequired();
+    await page.selectOption('#property-type', 'Commercial');
+    await page.fill('#company', 'Should Not Send LLC');
+    await page.selectOption('#property-type', 'Home');
+    await page.locator('#contact-form button[type="submit"]').click();
+    await expect.poll(() => bodies.length).toBe(2);
+    expect(bodies[1].propertyType).toBe('Home');
+    expect(bodies[1].company).toBe('');
   });
 });
 

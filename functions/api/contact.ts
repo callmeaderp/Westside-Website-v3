@@ -7,16 +7,18 @@
  * 1. Validates Turnstile server-side
  * 2. Validates resume file if present (magic bytes, size, type)
  * 3. Exchanges Azure AD client credentials for Graph token
- * 4. Sends HTML notification email to office@ + brad@ with resume attached
+ * 4. Sends HTML notification email to office@ + brad@ with resume attached;
+ *    non-home property types and the company name go in the subject for triage
  * 5. Sends branded confirmation email to customer
  * 6. Fires a Meta CAPI `Lead` event server-side (dedupes with browser pixel
  *    via shared `event_id`). Failure is logged and swallowed.
  *
  * Environment secrets (set via wrangler pages secret put):
  *   TURNSTILE_SECRET, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
- *   META_ACCESS_TOKEN
+ *   META_ACCESS_TOKEN, CONTACT_TEST_RECIPIENT (preview environment only)
  */
 
+import { isPropertyType, RESIDENTIAL_PROPERTY_TYPE } from '../../src/data/property-types';
 import {
   buildUserData,
   extractCity,
@@ -36,6 +38,13 @@ interface Env {
   META_ACCESS_TOKEN?: string;
   /** Meta Events Manager test code (optional). When set, server events show up only in the Test Events tab. */
   META_TEST_EVENT_CODE?: string;
+  /**
+   * Preview-environment test mode. When set to a Westside mailbox, the office
+   * notification goes only there and the Meta CAPI Lead event is skipped, so a
+   * preview test never reaches the office or ad reporting. Never set it on the
+   * production environment.
+   */
+  CONTACT_TEST_RECIPIENT?: string;
 }
 
 interface Attribution {
@@ -60,6 +69,9 @@ interface ContactPayload {
   address?: string;
   zip?: string;
   service?: string;
+  /** One of src/data/property-types.ts; anything else is dropped. */
+  propertyType?: string;
+  company?: string;
   projectType?: string;
   budget?: string;
   timing?: string;
@@ -115,6 +127,9 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB (base64 is ~33% larger, so ~6.7MB
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 254;
 const MAX_ADDRESS_LENGTH = 300;
+const MAX_COMPANY_LENGTH = 150;
+/** Long company names are shortened in the subject only; the body keeps the full name. */
+const MAX_SUBJECT_COMPANY_LENGTH = 60;
 const MAX_MESSAGE_LENGTH = 5000;
 const MAX_FILENAME_LENGTH = 180;
 const ALLOWED_TYPES: Record<string, string> = {
@@ -138,6 +153,12 @@ const NOTIFY = [
 // sender account is intentionally disabled for interactive use and is not an inbox.
 const REPLY_TO = 'office@westsideprolandscape.com';
 
+/** Preview test mode may only redirect notifications to a company mailbox. */
+function testRecipient(env: Env): string | null {
+  const value = env.CONTACT_TEST_RECIPIENT?.trim().toLowerCase() || '';
+  return /^[a-z0-9._%+-]+@westsideprolandscape\.com$/.test(value) ? value : null;
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
@@ -157,6 +178,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     lastName.trim().length > MAX_NAME_LENGTH ||
     email.trim().length > MAX_EMAIL_LENGTH ||
     (payload.address?.trim().length ?? 0) > MAX_ADDRESS_LENGTH ||
+    (typeof payload.company === 'string' && payload.company.trim().length > MAX_COMPANY_LENGTH) ||
     message.trim().length > MAX_MESSAGE_LENGTH
   ) {
     return json(400, { success: false, message: 'One or more fields are too long.' });
@@ -226,6 +248,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const zip = payload.zip?.trim().slice(0, 10) || '';
   const contactPreference = payload.contactPreference?.trim().slice(0, 40) || '';
   const service = payload.service?.trim() || 'Not specified';
+  const propertyType = isPropertyType(payload.propertyType) ? payload.propertyType : '';
+  // Collapse whitespace so a pasted multi-line name cannot reshape the subject line.
+  const company = typeof payload.company === 'string' ? payload.company.replace(/\s+/g, ' ').trim() : '';
   const projectType = payload.projectType?.trim().slice(0, 120) || '';
   const budget = payload.budget?.trim().slice(0, 60) || '';
   const timing = payload.timing?.trim().slice(0, 60) || '';
@@ -257,11 +282,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(500, { success: false, message: 'Unable to process your request. Please call us instead.' });
   }
   const graphToken = tokenData.access_token;
+  const previewRecipient = testRecipient(env);
+  const notifyRecipients = previewRecipient ? [previewRecipient] : NOTIFY;
 
   const inquiryType = isCareer ? 'Career Inquiry' : 'Estimate Request';
-  // Budget in the subject line lets the office triage from the inbox list view.
-  const subjectScope = [projectType || service, budget].filter(Boolean).join(' — ');
-  const subject = `[${inquiryType}] ${firstName.trim()} ${lastName.trim()} — ${subjectScope || service}`;
+  // Property type, company, and budget in the subject line let the office triage
+  // from the inbox list view. Homes are the default case, so only other property
+  // types are called out.
+  const flaggedPropertyType = !isCareer && propertyType !== RESIDENTIAL_PROPERTY_TYPE ? propertyType : '';
+  const subjectCompany =
+    company.length > MAX_SUBJECT_COMPANY_LENGTH ? `${company.slice(0, MAX_SUBJECT_COMPANY_LENGTH - 1).trimEnd()}…` : company;
+  const subjectWho = `${firstName.trim()} ${lastName.trim()}${!isCareer && subjectCompany ? ` (${subjectCompany})` : ''}`;
+  const subjectScope = [flaggedPropertyType, projectType || service, budget].filter(Boolean).join(' — ');
+  const subject = `[${inquiryType}] ${subjectWho} — ${subjectScope || service}`;
 
   const attachments: Record<string, unknown>[] = [];
   if (payload.resume && resumeBytes) {
@@ -282,6 +315,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     address,
     zip,
     service,
+    propertyType: isCareer ? '' : propertyType,
+    company: isCareer ? '' : company,
     projectType,
     budget,
     timing,
@@ -305,10 +340,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         message: {
           subject,
           body: { contentType: 'HTML', content: notificationHtml },
-          toRecipients: NOTIFY.map((addr) => ({ emailAddress: { address: addr } })),
+          toRecipients: notifyRecipients.map((addr) => ({ emailAddress: { address: addr } })),
           replyTo: [{ emailAddress: { address: email.trim(), name: `${firstName.trim()} ${lastName.trim()}` } }],
           attachments,
-          categories: [service],
+          // No Outlook categories: sender-set categories never reached the office
+          // mailbox (checked 2026-10-02), so the subject line carries triage info.
         },
         saveToSentItems: false,
       }),
@@ -327,8 +363,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     isCareer,
   });
 
-  // Fire-and-forget — don't fail the submission if confirmation fails
-  fetch(`https://graph.microsoft.com/v1.0/users/${SENDER}/sendMail`, {
+  // Never fail the submission over the confirmation, but keep the Worker alive
+  // until it is sent: an unawaited fetch can be cancelled once the response returns.
+  const confirmation = fetch(`https://graph.microsoft.com/v1.0/users/${SENDER}/sendMail`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${graphToken}`,
@@ -346,12 +383,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       saveToSentItems: false,
     }),
   }).catch((err) => console.error('Confirmation email failed:', err));
+  context.waitUntil(confirmation);
 
   // --- Meta Conversions API — server-side Lead event ---
   // Mirrors the browser-side fbq('track','Lead', ..., {eventID}) so Meta can
   // dedupe via the shared event_id (sent in payload.eventId) and recover
   // signal lost to ad blockers / ITP / iOS opt-outs. Failure is logged and
   // swallowed — CAPI is supplementary and must never break the form response.
+  // Preview test submissions are skipped so they never count as ad conversions.
+  if (previewRecipient) {
+    console.log(`Preview test mode: notification sent only to ${previewRecipient}; Meta CAPI skipped.`);
+    return json(200, { success: true });
+  }
   try {
     const fullAddress = address;
     const userData = await buildUserData({
@@ -382,6 +425,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         how_heard: howHeard,
         lead_source: 'website',
         form_type: isCareer ? 'career_inquiry' : 'estimate_request',
+        ...(propertyType && !isCareer ? { property_type: propertyType } : {}),
         ...(projectType ? { project_type: projectType } : {}),
         ...(budget ? { budget_band: budget } : {}),
         ...(timing ? { project_timing: timing } : {}),
@@ -448,6 +492,8 @@ interface NotificationData {
   address: string;
   zip: string;
   service: string;
+  propertyType: string;
+  company: string;
   projectType: string;
   budget: string;
   timing: string;
@@ -472,6 +518,7 @@ function buildNotificationEmail(data: NotificationData): string {
   const projectRows = data.isCareer
     ? ''
     : [
+        row('Property Type', data.propertyType ? `<strong>${esc(data.propertyType)}</strong>` : notProvided),
         row('Project Type', data.projectType ? `<strong>${esc(data.projectType)}</strong>` : notProvided),
         row('Budget', data.budget ? `<strong>${esc(data.budget)}</strong>` : notProvided),
         row('Timing', data.timing ? esc(data.timing) : notProvided),
@@ -495,10 +542,14 @@ function buildNotificationEmail(data: NotificationData): string {
   </td></tr>
   <tr><td style="padding:28px 32px 8px;">
     <span style="font-size:20px;font-weight:700;color:#222;">${data.isCareer ? '📋 Career Inquiry' : '🌿 New Estimate Request'}</span>
+    ${!data.isCareer && data.propertyType && data.propertyType !== RESIDENTIAL_PROPERTY_TYPE
+      ? `<br><span style="display:inline-block;margin-top:8px;padding:3px 10px;border-radius:12px;background:#e7f4ec;color:#00572B;font-size:12px;font-weight:700;letter-spacing:0.5px;">${esc(data.propertyType.toUpperCase())}</span>`
+      : ''}
   </td></tr>
   <tr><td style="padding:8px 32px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;color:#333;">
       ${row('Name', `<strong>${esc(data.firstName)} ${esc(data.lastName)}</strong>`)}
+      ${data.company ? row('Company', `<strong>${esc(data.company)}</strong>`) : ''}
       ${row('Email', `<a href="mailto:${esc(data.email)}" style="color:#00863F;">${esc(data.email)}</a>`)}
       ${row('Phone', data.phone ? `<a href="tel:${esc(data.phone.replace(/\D/g, ''))}" style="color:#00863F;">${esc(data.phone)}</a>` : notProvided)}
       ${row('Prefers', data.contactPreference ? esc(data.contactPreference) : notProvided)}

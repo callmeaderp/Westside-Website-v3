@@ -6,6 +6,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
 import { budgetOptions, projectTypeOptions, timingOptions } from '@data/investment';
+import { propertyTypes } from '@data/property-types';
 import { services } from '@data/services';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
@@ -209,6 +210,28 @@ const jsonLd = [
 
             <!-- Project detail fields — hidden for career inquiries, where none apply. -->
             <div id="project-fields" class="flex flex-col gap-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="property-type" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Property Type</label>
+                  <select id="property-type" name="property_type"
+                    class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                    style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                  >
+                    <option value="">Select property type...</option>
+                    {propertyTypes.map((type) => <option value={type.value}>{type.label}</option>)}
+                  </select>
+                </div>
+                <!-- Shown only for business, HOA, apartment, and other non-home properties. -->
+                <div id="company-group" class="hidden">
+                  <label for="company" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Company or Property Name</label>
+                  <input type="text" id="company" name="company" autocomplete="organization" maxlength="150"
+                    class="w-full px-4 py-3 rounded-lg text-white text-sm"
+                    style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                    placeholder="Business, HOA, or community name"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label for="project-type" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">What Are You Looking to Build or Fix?</label>
                 <select id="project-type" name="project_type"
@@ -380,9 +403,21 @@ const jsonLd = [
 </style>
 
 <script>
+  import { COMMERCIAL_PROPERTY_TYPE, RESIDENTIAL_PROPERTY_TYPE } from '@data/property-types';
+
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
   const resumeGroup = document.getElementById('resume-upload-group');
   const projectFields = document.getElementById('project-fields');
+  const propertySelect = document.getElementById('property-type') as HTMLSelectElement | null;
+  const companyGroup = document.getElementById('company-group');
+
+  /** The company/property name only matters once the property is not a home. */
+  function syncCompanyField() {
+    const type = propertySelect?.value || '';
+    companyGroup?.classList.toggle('hidden', !type || type === RESIDENTIAL_PROPERTY_TYPE);
+  }
+
+  propertySelect?.addEventListener('change', syncCompanyField);
 
   function syncCareerFields() {
     if (!serviceSelect) return;
@@ -416,6 +451,12 @@ const jsonLd = [
       if (targetOption) {
         serviceSelect.value = targetOption;
         syncCareerFields();
+        // "Request a Commercial Proposal" lands here; start that visitor on the
+        // business property type so the company field is already showing.
+        if (serviceParam === 'commercial-services' && propertySelect && !propertySelect.value) {
+          propertySelect.value = COMMERCIAL_PROPERTY_TYPE;
+          syncCompanyField();
+        }
         if (serviceParam === 'careers') {
           const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
           if (messageEl && !messageEl.value) {
@@ -600,6 +641,11 @@ const jsonLd = [
           service: (form.querySelector<HTMLSelectElement>('[name="service_interest"]')?.value || '').trim(),
           // Project detail fields are hidden for career inquiries; sending a
           // stale value from a switched selection would mislabel the lead.
+          propertyType: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="property_type"]')?.value || '').trim(),
+          // Same rule for the company name: only send it while the field is showing.
+          company: isCareerSubmit || companyGroup?.classList.contains('hidden')
+            ? ''
+            : (form.querySelector<HTMLInputElement>('[name="company"]')?.value || '').trim(),
           projectType: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="project_type"]')?.value || '').trim(),
           budget: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="budget"]')?.value || '').trim(),
           timing: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="timing"]')?.value || '').trim(),
@@ -643,6 +689,7 @@ const jsonLd = [
               form_type: formType,
               service_interest: serviceInterest,
               how_heard: howHeard,
+              property_type: String(payload.propertyType || 'Not specified'),
               project_type: String(payload.projectType || 'Not specified'),
               budget_band: String(payload.budget || 'Not specified'),
               project_timing: String(payload.timing || 'Not specified'),
@@ -673,6 +720,7 @@ const jsonLd = [
               'Lead',
               {
                 service_interest: String(payload.service || 'Not specified'),
+                property_type: String(payload.propertyType || 'Not specified'),
                 project_type: String(payload.projectType || 'Not specified'),
                 budget_band: String(payload.budget || 'Not specified'),
               },
@@ -684,6 +732,7 @@ const jsonLd = [
           if (formStatus) { formStatus.textContent = 'Message sent. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
           syncCareerFields();
+          syncCompanyField();
           if (typeof (window as any).__resetAddressAutocomplete === 'function') (window as any).__resetAddressAutocomplete();
           if (turnstileWidget && typeof (window as any).turnstile?.reset === 'function') {
             (window as any).turnstile.reset(turnstileWidget);
