@@ -8,13 +8,19 @@
  *  - describe only visible features. Without the original proposal or job notes,
  *    do not invent the homeowner's original problem, hidden construction details,
  *    use patterns, or project outcome;
+ *  - "What we built" covers Westside's scope only. A photo can show work by
+ *    other trades (a pool, a home's hardscape, a stone bridge); name only what
+ *    the Jobber job/line items support. Scope for the drone-era entries was
+ *    checked against Jobber on 2026-10-02
+ *    (westside repo: local/marketing/website-media-refresh-2026-10-02/jobber/);
  *  - `town` is OPTIONAL and may only be set when the location is independently
  *    supported. Photo EXIF in the current library carries capture dates and
  *    camera models but NO GPS, so no town is asserted here. Omit rather than
  *    guess — a wrong town is a trust problem, and the honest alternative
  *    ("Greater Rochester") is already implied site-wide;
  *  - `year` comes from EXIF DateTimeOriginal on the source photo where present;
- *  - `investmentBandId` points at src/data/investment.ts. Never inline a price.
+ *  - `investmentBandId` points at src/data/investment.ts. Never inline a price;
+ *    when no band honestly fits, omit it and give a `pricingNote` instead.
  */
 import type { ServiceSlug } from './services';
 
@@ -31,7 +37,7 @@ export interface Project {
   town?: string;
   /** Capture year from source photo EXIF, where available. */
   year?: number;
-  category: 'patios' | 'walkways' | 'walls' | 'outdoor-kitchens' | 'drainage' | 'renovation' | 'turf';
+  category: 'patios' | 'walkways' | 'walls' | 'outdoor-kitchens' | 'drainage' | 'landscape' | 'turf' | 'commercial';
   categoryLabel: string;
   /**
    * The visible design challenge. OPTIONAL: omitted where the original site
@@ -39,8 +45,13 @@ export interface Project {
    */
   problem?: string;
   solution: string;
-  /** Key of an entry in investmentBands. */
-  investmentBandId: string;
+  /**
+   * Key of an entry in investmentBands. Omit it when no published band honestly
+   * covers the scope (commercial bids, estate-scale builds) and set pricingNote.
+   */
+  investmentBandId?: string;
+  /** Shown instead of a planning range when investmentBandId is omitted. */
+  pricingNote?: string;
   relatedService: ServiceSlug;
 }
 
@@ -50,8 +61,9 @@ export const projectCategories = [
   { value: 'walkways', label: 'Walkways & Entries' },
   { value: 'walls', label: 'Retaining Walls' },
   { value: 'outdoor-kitchens', label: 'Kitchens & Fire' },
-  { value: 'renovation', label: 'Renovations' },
+  { value: 'landscape', label: 'Landscape Installation' },
   { value: 'turf', label: 'Turf & Greens' },
+  { value: 'commercial', label: 'Commercial' },
 ] as const;
 
 export const projects: Project[] = [
@@ -186,55 +198,69 @@ export const projects: Project[] = [
     relatedService: 'hardscaping',
   },
   {
-    slug: 'backyard-putting-green',
-    title: 'Backyard Putting Green with Stone Wall Surround',
-    image: 'proj-putting-green-wall.webp',
-    alt: 'Contoured artificial putting green bordered by a natural stone wall and planted beds',
-    category: 'turf',
-    categoryLabel: 'Turf & Putting Green',
-    solution:
-      'A stone wall frames a contoured artificial-turf putting surface with cups, fringe, and planted edges.',
-    investmentBandId: 'artificial-turf',
-    relatedService: 'artificial-grass',
-  },
-  {
-    slug: 'terraced-stone-walls-and-patio',
-    title: 'Terraced Stone Walls, Steps, and Patio',
-    image: 'svc-retaining-walls-east-ave.webp',
-    alt: 'Aerial view of terraced stone retaining walls, broad steps, a paver patio, planting beds, and striped lawn',
+    slug: 'estate-landscape-installation',
+    title: 'Estate Landscape Installation and Ongoing Care',
+    image: 'proj-estate-landscape.webp',
+    alt: 'Aerial view of a white home with a striped front lawn, curved foundation beds, and young trees planted along a long driveway',
     year: 2023,
-    category: 'walls',
-    categoryLabel: 'Retaining Wall',
+    category: 'landscape',
+    categoryLabel: 'Landscape Installation',
     solution:
-      'Terraced stone walls, broad steps, a central paver patio, and layered planting beds create a continuous transition across the grade.',
-    investmentBandId: 'retaining-wall',
-    relatedService: 'retaining-walls',
+      'New planting beds and trees, about 21,000 square feet of graded sod, irrigation, and low-voltage lighting, followed by ongoing mowing, turf applications, and bed care.',
+    pricingNote: 'Whole-property installations like this are priced from the landscape plan.',
+    relatedService: 'landscape-design',
   },
   {
     slug: 'private-putting-green-complex',
-    title: 'Private Putting Green with Bunkers and Stone Bridge',
+    title: 'Private Par-3 Golf Hole in Synthetic Turf',
     image: 'proj-private-putting-green-complex.webp',
     alt: 'Aerial view of a private artificial-turf putting green with three bunkers, a flag, curved fringe, and a stone bridge',
     year: 2022,
     category: 'turf',
     categoryLabel: 'Turf & Putting Green',
     solution:
-      'A contoured artificial-turf green combines multiple putting areas, three bunkers, curved fringe, and a stone bridge within the surrounding landscape.',
+      'About 24,000 square feet of SYNLawn turf covers a contoured green over a ShotStopper base, the bunkers, tee boxes, fairway, and the swale under the stone bridge, with putting turf carried across the bridge deck.',
+    pricingNote: 'Estate-scale turf work like this is priced from the site plan.',
+    relatedService: 'artificial-grass',
+  },
+  {
+    slug: 'backyard-putting-green',
+    title: 'Three-Cup Backyard Putting Green',
+    image: 'proj-backyard-putting-green.webp',
+    alt: 'Backyard synthetic putting green with flags, fringe, and a white-turf bunker beside a paver patio and natural stone wall',
+    year: 2026,
+    category: 'turf',
+    categoryLabel: 'Turf & Putting Green',
+    solution:
+      'A 15-by-25-foot SYNLawn putting surface with three cups and a shaped fringe, built over a cushioned pad beside the pool patio.',
     investmentBandId: 'artificial-turf',
     relatedService: 'artificial-grass',
   },
   {
     slug: 'residential-artificial-lawn',
-    title: 'Residential Artificial Lawn with Garden Border',
+    title: 'Backyard Artificial Turf for a Pet Area',
     image: 'proj-residential-artificial-lawn.webp',
     alt: 'Aerial view of a finished artificial lawn surrounding a mature tree beside a patio, garden border, and white fence',
     year: 2023,
     category: 'turf',
-    categoryLabel: 'Residential Artificial Lawn',
+    categoryLabel: 'Pet Turf',
     solution:
-      'A broad artificial-lawn surface follows the surrounding hardscape and planting beds while preserving the central tree as part of the yard.',
+      'SYNLawn turf gives the backyard a mud-free pet area, fitted around the existing tree and bordered by planting beds and fencing.',
     investmentBandId: 'artificial-turf',
     relatedService: 'artificial-grass',
+  },
+  {
+    slug: 'apartment-turf-recreation-lawn',
+    title: 'Synthetic Turf Recreation Lawn for an Apartment Community',
+    image: 'gallery-turf-courts-aerial.webp',
+    alt: 'Aerial view of a lined synthetic turf recreation lawn with a center logo next to an apartment pool deck',
+    year: 2023,
+    category: 'commercial',
+    categoryLabel: 'Commercial Synthetic Turf',
+    solution:
+      'About 3,000 square feet of high-traffic SYNLawn turf with yard-line striping and a custom logo inlay, installed for the general contractor on a new apartment community.',
+    pricingNote: 'Commercial turf work is priced from the site plan and specifications.',
+    relatedService: 'commercial-services',
   },
   {
     slug: 'commercial-courtyard-paver-plaza',
@@ -242,13 +268,20 @@ export const projects: Project[] = [
     image: 'proj-commercial-courtyard.webp',
     alt: 'Lit commercial courtyard with paver walkways, seating, and planting beds in the evening',
     year: 2019,
-    category: 'renovation',
-    categoryLabel: 'Commercial Renovation',
+    category: 'commercial',
+    categoryLabel: 'Commercial Courtyard',
     problem:
       'The shared courtyard needed clearer circulation and a more finished place for tenants and visitors to pause.',
     solution:
       'Paver walks organize the routes through the space, while seating, lighting, and layered planting beds complete the courtyard.',
-    investmentBandId: 'landscape-renovation',
+    pricingNote: 'Commercial site work is priced from the plan and specifications.',
     relatedService: 'commercial-services',
   },
 ];
+
+// A card must show either a planning range or an explanation of why it has none.
+for (const project of projects) {
+  if (!project.investmentBandId && !project.pricingNote) {
+    throw new Error(`Project "${project.slug}" needs an investmentBandId or a pricingNote`);
+  }
+}

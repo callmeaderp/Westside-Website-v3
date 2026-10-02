@@ -12,11 +12,13 @@ interface Props {
   heading: string;
   intro?: string;
   image?: ImageMetadata;
+  /** CSS object-position for the background photo when its subject is off-center. */
+  imagePosition?: string;
   variant?: 'full' | 'page' | 'utility';
   buttons?: Array<{ text: string; href: string; style: 'primary' | 'dark' | 'outline' }>;
 }
 
-const { label, heading, intro, image, variant = 'page', buttons } = Astro.props;
+const { label, heading, intro, image, imagePosition, variant = 'page', buttons } = Astro.props;
 
 const heroClasses = {
   // pt clears the sticky header (main is pulled up under it via negative
@@ -36,6 +38,7 @@ const heroClasses = {
         src={image}
         alt=""
         class="w-full h-full object-cover"
+        style={imagePosition ? `object-position: ${imagePosition};` : undefined}
         widths={[768, 1280, 1536]}
         sizes="100vw"
         fetchpriority="high"

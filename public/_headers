@@ -14,3 +14,8 @@
 # not content-hashed. Cache for a week, never immutable.
 /documents/*
   Cache-Control: public, max-age=604800
+
+# Gallery drone clips — also un-hashed public/ files. Same week-long policy;
+# rename the file rather than overwrite it when a clip is re-cut.
+/media/*
+  Cache-Control: public, max-age=604800

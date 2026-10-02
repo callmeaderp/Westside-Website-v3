@@ -3,9 +3,11 @@ import ServiceLayout from '@layouts/ServiceLayout.astro';
 import FaqSection from '@components/FaqSection.astro';
 import InvestmentRanges from '@components/InvestmentRanges.astro';
 import ProjectProof from '@components/ProjectProof.astro';
+import ServiceGallery from '@components/ServiceGallery.astro';
 import { Image } from 'astro:assets';
 import { services, type Service } from '@data/services';
 import { serviceContent } from '@data/service-content';
+import { projects } from '@data/projects';
 import type { GetStaticPaths } from 'astro';
 import FinancingBanner from '@components/FinancingBanner.astro';
 import { company } from '@data/company';
@@ -27,6 +29,15 @@ const relatedServices = (content?.relatedSlugs ?? [])
   .map((s) => services.find((svc) => svc.slug === s))
   .filter((s): s is Service => s !== undefined);
 const showFinancing = company.financing.eligibleServices.includes(service.slug);
+// The photo strip skips anything the page already shows (hero, intro image, project cards).
+const shownPhotos = [
+  service.heroImage,
+  service.cardImage,
+  ...(content?.featuredProjectSlugs ?? []).flatMap((slug) => {
+    const project = projects.find((p) => p.slug === slug);
+    return project ? [project.image, ...(project.secondaryImage ? [project.secondaryImage] : [])] : [];
+  }),
+];
 ---
 
 <ServiceLayout
@@ -138,6 +149,8 @@ const showFinancing = company.financing.eligibleServices.includes(service.slug);
   {content?.featuredProjectSlugs && content.featuredProjectSlugs.length > 0 && (
     <ProjectProof slugs={content.featuredProjectSlugs} />
   )}
+
+  <ServiceGallery slug={service.slug} exclude={shownPhotos} />
 
   {showFinancing && <FinancingBanner variant="compact" />}
 

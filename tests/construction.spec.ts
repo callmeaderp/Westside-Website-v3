@@ -85,11 +85,16 @@ test.describe('project case studies', () => {
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(6);
 
-    // Every card publishes what was built and the comparable planning range.
+    // Every card publishes what was built and either the comparable planning
+    // range or, for commercial/estate-scale scope no band honestly covers, a
+    // note on how that work is priced (src/data/projects.ts pricingNote).
     for (let i = 0; i < count; i++) {
       await expect(cards.nth(i)).toContainText('What we built');
-      await expect(cards.nth(i)).toContainText('Current planning range for comparable work:');
+      await expect(cards.nth(i).locator('.project-pricing')).not.toBeEmpty();
     }
+    await expect(
+      page.locator('.project-card', { hasText: 'Current planning range for comparable work:' }).first()
+    ).toBeVisible();
 
     // "The design challenge" is optional — it renders only for the projects whose
     // original site condition is actually supported (src/data/projects.ts evidence

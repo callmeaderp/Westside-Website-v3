@@ -68,9 +68,9 @@ export const services: Service[] = [
     heroHeading: 'LANDSCAPE DESIGN IN ROCHESTER, NY',
     heroIntro:
       'A custom landscape plan shaped around your property, how you use it, and what you want to spend, followed by an installation built from that plan.',
-    heroImage: 'svc-landscape-design.webp',
-    cardImage: 'svc-landscape-design.webp',
-    cardImageAlt: 'Stone-and-timber home with fresh mulched foundation beds, a flowering purple rhododendron, and a striped front lawn',
+    heroImage: 'svc-landscape-design-estate.webp',
+    cardImage: 'svc-landscape-design-front-entry.webp',
+    cardImageAlt: 'Aerial view of a striped front lawn bordered by layered ornamental trees and shrubs, with foundation plantings along a white home',
     icon: 'PenTool',
     features: [
       'Custom design consultations',
@@ -97,9 +97,9 @@ export const services: Service[] = [
     heroHeading: 'LANDSCAPE MAINTENANCE IN ROCHESTER, NY',
     heroIntro:
       'Scheduled mowing, bed care, pruning, and cleanups that keep the whole property looking cared for through every season.',
-    heroImage: 'svc-maintenance.webp',
-    cardImage: 'svc-maintenance.webp',
-    cardImageAlt: 'Wide sloping lawn mowed into clean stripes running up to a gray-sided house framed by fall foliage',
+    heroImage: 'svc-maintenance-striped-lawn.webp',
+    cardImage: 'svc-maintenance-beds.webp',
+    cardImageAlt: 'Striped lawn beside a curved bed of pink sedum and clipped shrubs along a paver walkway with path lights',
     icon: 'Leaf',
     features: [
       'Weekly mowing & edging',
@@ -126,9 +126,9 @@ export const services: Service[] = [
     heroHeading: 'LAWN CARE IN ROCHESTER, NY',
     heroIntro:
       'Mowing, fertilization, weed control, aeration, and repair work together to keep your lawn thick and healthy through Rochester seasons.',
-    heroImage: 'lawn-lush-backyard.webp',
-    cardImage: 'lawn-lush-backyard.webp',
-    cardImageAlt: 'Backyard lawn curving around a mulched bed of flowering shrubs and evergreens along a privacy fence',
+    heroImage: 'svc-lawn-care-community.webp',
+    cardImage: 'svc-lawn-care-backyard.webp',
+    cardImageAlt: 'Striped backyard lawn framed by planted berms of evergreens, with Adirondack chairs around a fire pit on a paver patio',
     icon: 'Sprout',
     features: [
       'Weekly mowing, edging & trimming',
@@ -155,9 +155,9 @@ export const services: Service[] = [
     heroHeading: 'LAWN FERTILIZATION & WEED CONTROL IN ROCHESTER, NY',
     heroIntro:
       'Five seasonal applications are timed to your lawn, with grub control included. Your first treatment is $58, half the usual $116 price for the average lawn.',
-    heroImage: 'hero-plant-health.webp',
-    cardImage: 'svc-plant-health.webp',
-    cardImageAlt: 'Close view of a healthy lilac in full purple bloom held up against a green landscape',
+    heroImage: 'svc-plant-health-lawn.webp',
+    cardImage: 'svc-plant-health-lawn-card.webp',
+    cardImageAlt: 'Thick, evenly striped lawn running past a row of blue spruce beside a white home',
     icon: 'Sprout',
     features: [
       'Early spring crabgrass prevention + fertilizer',
@@ -242,9 +242,9 @@ export const services: Service[] = [
     heroHeading: 'RETAINING & SEAT WALLS IN ROCHESTER, NY',
     heroIntro:
       'A retaining wall is a structure, not a decoration. Drainage stone, filter fabric, compacted backfill, and the right block for the load are what separate a wall that lasts from one that leans in five years.',
-    heroImage: 'svc-retaining-walls-east-ave.webp',
-    cardImage: 'svc-retaining-walls-east-ave.webp',
-    cardImageAlt: 'Aerial view of a curved natural stone retaining wall terracing a large striped lawn down to a paver patio and fire pit',
+    heroImage: 'svc-retaining-walls-seat-wall.webp',
+    cardImage: 'svc-retaining-walls-curved-seat-wall.webp',
+    cardImageAlt: 'Curved segmental seat wall with capped pillars wrapping a paver patio, edged by mulch beds and lawn',
     icon: 'Layers',
     features: [
       'Engineered segmental block walls',
@@ -358,9 +358,9 @@ export const services: Service[] = [
     heroHeading: 'SNOW & ICE MANAGEMENT IN ROCHESTER, NY',
     heroIntro:
       "Commercial snow and ice management planned around your property's trigger depths, service priorities, and winter access needs.",
-    heroImage: 'svc-snow.webp',
-    cardImage: 'svc-snow.webp',
-    cardImageAlt: 'Pickup truck with a red plow blade pushing a wave of snow off a road lined with snow-covered trees',
+    heroImage: 'svc-snow-plow-truck.webp',
+    cardImage: 'svc-snow-cleared-drive.webp',
+    cardImageAlt: 'Plowed drive between rows of brick townhomes at dawn, with snowbanks lit by porch lights',
     icon: 'Snowflake',
     features: [
       'Contract-based response plans',
@@ -388,8 +388,8 @@ export const services: Service[] = [
     heroIntro:
       'Professionally installed SYNLawn artificial turf stays green year-round without mowing, watering, or a muddy spring recovery.',
     heroImage: 'hero-artificial-grass-putting-green.webp',
-    cardImage: 'svc-artificial-grass-backyard.webp',
-    cardImageAlt: 'Aerial view of a flat green artificial lawn ringed by a black iron fence, planted borders, and an adjoining paver patio',
+    cardImage: 'gallery-putting-green-bridge.webp',
+    cardImageAlt: 'Stone arch bridge surfaced in synthetic putting turf, leading to a green and white bunkers',
     icon: 'Sprout',
     features: [
       'SYNLawn authorized dealer',
@@ -416,9 +416,9 @@ export const services: Service[] = [
     heroHeading: 'COMMERCIAL LANDSCAPING IN ROCHESTER, NY',
     heroIntro:
       'Commercial landscape maintenance, snow and ice management, and seasonal property care from one Greater Rochester provider.',
-    heroImage: 'hero-services.webp',
-    cardImage: 'hero-services.webp',
-    cardImageAlt: 'Brick paver patio with a stone grill island connected by a concrete walkway to a covered pavilion behind a dark privacy fence',
+    heroImage: 'svc-commercial-apartment-grounds.webp',
+    cardImage: 'svc-commercial-turf-courts.webp',
+    cardImageAlt: 'Synthetic turf recreation lawn with white yard lines beside an apartment building and its pool deck',
     icon: 'Building2',
     features: [
       'Commercial landscape maintenance',

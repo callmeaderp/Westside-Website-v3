@@ -53,16 +53,17 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 ---
 
 <BaseLayout
-  title="Hardscape & Outdoor Living Projects in Rochester, NY | Westside"
-  description="See real paver patio, retaining wall, walkway, and outdoor kitchen projects built by Westside in Greater Rochester, with scope and current planning ranges."
-  ogImage={getPhoto('hero-projects-east-ave.webp')}
+  title="Hardscape, Landscape & Turf Projects in Rochester, NY | Westside"
+  description="See real patio, wall, walkway, outdoor kitchen, landscape installation, synthetic turf, and commercial projects built by Westside, with scope and planning ranges."
+  ogImage={getPhoto('gallery-putting-green-fall-hillside.webp')}
   jsonLd={jsonLd}
 >
   <Hero
     label="Real Completed Work"
     heading="OUR CONSTRUCTION PROJECTS IN ROCHESTER, NY"
-    intro="Every photo below shows work Westside completed in Greater Rochester. We pair the visible design challenge and finished scope with today's planning range for comparable work, not an invented old contract price."
-    image={getPhoto('hero-projects-east-ave.webp')}
+    intro="Every photo below shows work Westside completed. We pair the visible design challenge and finished scope with today's planning range for comparable work, not an invented old contract price."
+    image={getPhoto('gallery-putting-green-fall-hillside.webp')}
+    imagePosition="center 45%"
     buttons={[
       { text: 'Start Your Project', href: '/contact/?service=hardscaping', style: 'primary' },
       { text: `Call ${company.phone}`, href: company.phoneHref, style: 'outline' },
@@ -89,7 +90,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="project-grid">
         {projects.map((project) => {
-          const band = getBand(project.investmentBandId);
+          const band = project.investmentBandId ? getBand(project.investmentBandId) : undefined;
           return (
             <article
               class="project-card rounded-xl overflow-hidden flex flex-col"
@@ -161,8 +162,12 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
                 </div>
 
                 <div class="mt-auto pt-4 flex flex-wrap items-center justify-between gap-3" style="border-top: 1px solid var(--color-border-dark);">
-                  <p class="text-sm" style="color: var(--color-text-muted);">
-                    Current planning range for comparable work: <strong style="color: var(--color-green-bright);">{formatBand(band)}</strong>
+                  <p class="project-pricing text-sm" style="color: var(--color-text-muted);">
+                    {band ? (
+                      <>Current planning range for comparable work: <strong style="color: var(--color-green-bright);">{formatBand(band)}</strong></>
+                    ) : (
+                      project.pricingNote
+                    )}
                   </p>
                   <a href={url(`/services/${project.relatedService}/`)} class="text-sm font-semibold" style="color: var(--color-green-bright);">
                     {serviceName(project.relatedService)} &rarr;
@@ -181,7 +186,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
       <div class="mt-14 p-6 rounded-xl max-w-4xl mx-auto fade-in" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
         <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">
           <strong style="color: var(--color-text-light);">About these ranges.</strong> {INVESTMENT_CAVEAT}
-          Photographs are our own completed Greater Rochester projects. We identify a municipality only where we can support it, so most entries are described by scope rather than by town.
+          Photographs are our own completed projects, nearly all of them in Greater Rochester. We identify a municipality only where we can support it, so entries are described by scope rather than by town.
         </p>
       </div>
     </div>

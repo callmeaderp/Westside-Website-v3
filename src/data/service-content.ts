@@ -127,7 +127,12 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     investmentBandIds: ['landscape-renovation', 'walkway-entry', 'full-backyard'],
     investmentIntro:
       'Design and installation scope varies more than any other service we offer. These are the ranges renovation projects in Greater Rochester typically land in.',
-    featuredProjectSlugs: ['front-walkway-planting-beds', 'commercial-courtyard-paver-plaza', 'stone-retaining-wall-shade-garden'],
+    featuredProjectSlugs: [
+      'estate-landscape-installation',
+      'front-walkway-planting-beds',
+      'commercial-courtyard-paver-plaza',
+      'stone-retaining-wall-shade-garden',
+    ],
     relatedSlugs: ['hardscaping', 'walkways-steps', 'drainage-grading'],
     ctaHeading: 'READY TO PUT A PLAN ON <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">PAPER?</span>',
     ctaText: "Schedule a <strong>free on-site consultation</strong>. We'll walk your property, discuss your vision, and develop a plan that fits your budget.",
@@ -921,8 +926,9 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       'Turf pricing depends on square footage, base preparation, and contouring. A flat pet area and a multi-break putting green are very different installations.',
     featuredProjectSlugs: [
       'private-putting-green-complex',
-      'residential-artificial-lawn',
       'backyard-putting-green',
+      'residential-artificial-lawn',
+      'apartment-turf-recreation-lawn',
     ],
     relatedSlugs: ['hardscaping', 'landscape-design', 'landscape-maintenance'],
     ctaHeading: 'READY FOR A LAWN THAT\'S ALWAYS <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">GREEN?</span>',
@@ -934,7 +940,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     introTitle: 'COMMERCIAL <span class="text-green">LANDSCAPE SERVICES</span>',
     introText: [
       "<strong>Westside Professional Landscape</strong> manages commercial grounds across Greater Rochester. Weekly maintenance, seasonal enhancements, and snow and ice service run through <em>one point of contact</em> instead of a stack of vendors.",
-      "Our crews bring over <strong>two decades of experience</strong> on office parks, retail centers, medical facilities, HOA communities, and industrial properties throughout Monroe County. Each property gets a defined scope and service schedule.",
+      "Our crews bring over <strong>two decades of experience</strong> on office parks, retail centers, apartment communities, medical facilities, HOA communities, and industrial properties throughout Monroe County. Each property gets a defined scope and service schedule.",
     ],
     introCta: 'Request a Commercial Proposal',
     detailLabel: 'What We Offer',
@@ -961,7 +967,18 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
         text: "Commercial turf programs can combine fertilization, weed control, aeration, and overseeding with <strong>full irrigation management</strong>. We handle spring startup, in-season adjustments, and fall winterization.",
         features: ['Fertilization & weed control', 'Aeration & overseeding', 'Irrigation management'],
       },
+      {
+        title: 'SYNTHETIC TURF AMENITIES',
+        text: "As an <strong>authorized SYNLawn dealer</strong>, we install turf where foot traffic and weather would wear out natural grass. Recent commercial installs include a striped recreation lawn for a new apartment community, a tricycle track for a childcare center, and putting greens for golf venues.",
+        features: ['Recreation & amenity lawns', 'Play areas & tricycle tracks', 'Putting greens for clubs & venues'],
+      },
+      {
+        title: 'COURTYARDS & SITE IMPROVEMENTS',
+        text: "Courtyards and paver walks give tenants and visitors a finished place to walk and gather. We also repair worn fire pits and grill stations so existing amenities stay safe and presentable.",
+        features: ['Paver walkways & courtyards', 'Fire pit & seating areas', 'Hardscape repairs'],
+      },
     ],
+    featuredProjectSlugs: ['apartment-turf-recreation-lawn', 'commercial-courtyard-paver-plaza'],
     processSteps: [],
     faqs: [
       {

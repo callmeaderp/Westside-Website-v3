@@ -21,7 +21,7 @@ Node.js 22.12 or newer is required.
 - `src/data/`: canonical company, service, navigation, testimonial, gallery, content, and product-document data.
 - `src/styles/`: Tailwind theme tokens, base styles, animation styles, and self-hosted font declarations.
 - `src/images/photos/`: source photography processed and optimized by Astro.
-- `public/`: pass-through fonts, icons, logos, manifests, documents, redirects, headers, robots configuration, and other static assets that should not enter Astro's image pipeline.
+- `public/`: pass-through fonts, icons, logos, manifests, documents, gallery video clips (`public/media/video/`), redirects, headers, robots configuration, and other static assets that should not enter Astro's image pipeline.
 - `functions/`: Cloudflare Pages API routes; start with [`functions/README.md`](functions/README.md) for runtime bindings and verification boundaries.
 - `tests/`: Playwright suites and fixtures.
 - `CONTENT-NEEDED.md`: outstanding content or asset requests.
@@ -59,12 +59,14 @@ Biome currently lints/formats `src/` only; Functions, tests, and configuration a
 - Service slugs and core cards live in `src/data/services.ts`. `tier` separates the primary `core` offering from the focused `construction` build lanes.
 - Long-form service content and FAQs live in `src/data/service-content.ts`, including hero CTA buttons, investment-band references, and featured project slugs.
 - Construction planning bands live in `src/data/investment.ts` and should be rendered from that module rather than retyped in templates. Plant Health's promotional program price is a separate service offer; keep its repeated values synchronized until it receives its own canonical data object. Any published planning range must carry the `INVESTMENT_CAVEAT` in the enclosing section so it cannot be read as a quote.
-- Project case studies live in `src/data/projects.ts`. A `town` may be set only when the location is independently provable; photo EXIF in the current library has no GPS, so entries omit it rather than guess.
+- Project case studies live in `src/data/projects.ts`. A `town` may be set only when the location is independently provable; photo EXIF in the current library has no GPS, so entries omit it rather than guess. "What we built" names only Westside's verified scope, even when the photo also shows another trade's work. A project shows a planning band from `investment.ts`, or a `pricingNote` when no published band honestly covers it (commercial bids, estate-scale builds).
+- The photo/video gallery lives in `src/data/gallery.ts` and drives `/gallery/` plus the "From our work" strip on each service page (`ServiceGallery.astro`, which renders only when three or more items are tagged for that service). `MediaGrid.astro` renders tiles and `MediaLightbox.astro` is the shared viewer. Gallery items must be real Westside work; the file refuses verified stock and documents the evidence rules. Use neutral public filenames with no client names or addresses.
 - Header and footer navigation are separate arrays in `src/data/navigation.ts`.
 - Contact-form service options and the `?service=<slug>` preselect map are both derived from `services.ts`, so adding a service no longer requires editing the form.
 - Internal routes use trailing slashes because Astro is configured with `trailingSlash: "always"`. `url()` deliberately passes through same-page fragments (`#investment`) and scheme URLs (`tel:`) untouched.
 - FAQ answers may contain the limited HTML supported by the component and structured-data output; questions remain plain text.
-- Photos live only in `src/images/photos/` and are resolved through `getPhoto()` in `src/lib/images.ts`. The Astro image pipeline emits optimized, content-hashed files under `/assets/`; there is no `public/images/` copy to keep in sync.
+- Photos live only in `src/images/photos/` and are resolved through `getPhoto()` in `src/lib/images.ts`. The Astro image pipeline emits optimized, content-hashed files under `/assets/`; there is no `public/images/` copy to keep in sync. New sources are WebP masters of at most 1,800 px on the long edge with EXIF/GPS stripped, cut from the Westside Media Library.
+- Gallery videos are short H.264 MP4s in `public/media/video/` (1920x1080, 30 fps, no audio track, `+faststart`, about 12 seconds and under 10 MB each), with a matching 1920x1080 WebP poster of the same name in `src/images/photos/`. These files are not content-hashed, so re-cut a clip under a new name rather than overwriting it.
 - Generated `dist/`, local screenshots, test output, and secrets are deployment/test artifacts rather than source.
 
 Read `.claude/rules/add-service-page.md` before adding a service; a complete service currently touches multiple independently maintained data and form/navigation surfaces.

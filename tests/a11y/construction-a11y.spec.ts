@@ -17,6 +17,9 @@ const PAGES = [
   '/services/drainage-grading/',
   '/projects/',
   '/contact/',
+  '/gallery/',
+  '/services/commercial-services/',
+  '/services/artificial-grass/',
 ];
 
 for (const path of PAGES) {

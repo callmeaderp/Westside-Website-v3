@@ -1,0 +1,61 @@
+---
+/**
+ * "From our work" strip for a service page: up to six gallery photos/videos
+ * tagged with the service (src/data/gallery.ts), skipping the photos the page
+ * already shows. Renders nothing when fewer than three items qualify, so a
+ * thin category never looks padded.
+ */
+import MediaGrid from '@components/MediaGrid.astro';
+import MediaLightbox from '@components/MediaLightbox.astro';
+import { galleryForService } from '@data/gallery';
+import type { ServiceSlug } from '@data/services';
+import { url } from '@lib/utils';
+
+interface Props {
+  slug: ServiceSlug;
+  /** Photo filenames already on the page (hero, intro image). */
+  exclude?: string[];
+  label?: string;
+  title?: string;
+  intro?: string;
+  sectionClass?: string;
+}
+
+const {
+  slug,
+  exclude = [],
+  label = 'Photo Gallery',
+  title = 'FROM OUR <span class="text-green">WORK</span>',
+  intro,
+  sectionClass = 'section-dark-alt',
+} = Astro.props;
+
+const items = galleryForService(slug, exclude);
+
+// Deep-link to the gallery filter that best matches this strip.
+const counts = new Map<string, number>();
+for (const item of items) counts.set(item.category, (counts.get(item.category) ?? 0) + 1);
+const topCategory = [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
+const galleryHref = url(topCategory ? `/gallery/?category=${topCategory}` : '/gallery/');
+---
+
+{items.length >= 3 && (
+  <section class:list={['py-24', sectionClass]}>
+    <div class="site-container">
+      <div class="text-center mb-12 fade-in">
+        <p class="section-label">{label}</p>
+        <h2 class="section-title" set:html={title} />
+        {intro && <p class="section-subtitle mx-auto" set:html={intro} />}
+      </div>
+
+      <MediaGrid items={items} variant="strip" />
+
+      <p class="text-center mt-10">
+        <a href={galleryHref} class="text-sm font-semibold" style="color: var(--color-green-bright);">
+          See more in the full gallery &rarr;
+        </a>
+      </p>
+    </div>
+  </section>
+  <MediaLightbox />
+)}

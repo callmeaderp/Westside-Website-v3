@@ -2,6 +2,14 @@
 
 Current-state list of unpublished content, missing approvals, and the safe fallback already on the site. This is not a branch-restoration checklist: some earlier implementations no longer exist and should be rebuilt from current data/component conventions only after the underlying content is approved.
 
+## Real holiday lighting photos
+
+**Current published fallback:** the Holiday Decorating page hero and its homepage/service cards still use `svc-holiday-lighting.webp`, a generative re-render of a verified Corbis stock photo (September 27, 2026 audit). Its license position is unknown, and it is deliberately excluded from the gallery, which is presented as Westside's own work.
+
+**What's needed:** photos of real Westside holiday installs (rooflines, wrapped trees, wreaths, commercial entrances). This season's installs are the easiest source. Once they exist, add them to the media library, replace the hero/card image in `src/data/services.ts`, add them to `src/data/gallery.ts`, and delete the stock-derived file.
+
+---
+
 ## Team section (About page)
 
 **Current published fallback:** a generic “A Team That Cares” section in `src/pages/about.astro`.
