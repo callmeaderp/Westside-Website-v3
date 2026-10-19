@@ -1,50 +1,67 @@
-/**
- * POST /api/track-call/ — Meta CAPI Contact event for phone clicks
- *
- * Fired from the global tel:-link click handler in TrackingScripts.astro.
- * The browser sends a minimal JSON payload (event_id, url, optional fbp/fbc)
- * via fetch({keepalive: true}) so the request survives navigation to the
- * dialer. We dispatch a server-side `Contact` event to Meta CAPI with
- * IP/UA/cookies; Meta dedupes with the matching browser-side
- * fbq('track','Contact', {}, {eventID}) call via the shared event_id.
- *
- * CAPI failure is logged and swallowed — the endpoint always responds 200
- * so the page never sees a broken request.
- *
- * Environment secrets:
- *   META_ACCESS_TOKEN — Meta system-user token (never expires)
- *   META_TEST_EVENT_CODE — optional, routes events to Test Events tab only
- */
-
-import {
-  buildUserData,
-  extractClientIp,
-  readCookie,
-  sendCapiEvent,
-} from '../_lib/meta-capi';
+/** POST /api/track-call/: customer phone-click Contact CAPI, never recruiting. */
+import { buildUserData, extractClientIp, readCookie, sendCapiEvent } from '../_lib/meta-capi';
 
 interface Env {
   META_ACCESS_TOKEN?: string;
   META_TEST_EVENT_CODE?: string;
+  CONTACT_TEST_RECIPIENT?: string;
 }
 
 interface TrackCallPayload {
   event_id?: string;
   url?: string;
-  /** Caller may forward _fbp / _fbc from document.cookie too — server cookies are usually authoritative. */
   fbp?: string;
   fbc?: string;
 }
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  let body: TrackCallPayload = {};
+function productionUrl(value: string): URL | null {
   try {
-    body = (await request.json()) as TrackCallPayload;
-  } catch {
-    // Empty/invalid body is fine — we still try to fire CAPI with what we have.
-  }
+    const url = new URL(value);
+    return url.protocol === 'https:' && ['westsideprolandscape.com', 'www.westsideprolandscape.com'].includes(url.hostname) ? url : null;
+  } catch { return null; }
+}
 
-  // Always return 200 quickly; CAPI dispatch happens in the same request but failure is swallowed.
+function careerUrl(url: URL): boolean {
+  return /^\/careers?(?:\/|$)/i.test(url.pathname) ||
+    ['career inquiry', 'career-inquiry', 'careers', 'career'].includes((url.searchParams.get('service') || '').toLowerCase());
+}
+
+export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const ok = () => new Response(JSON.stringify({ ok: true }), {
+    status: 200, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+  });
+  // Fail closed for analytics only; never affect phone navigation or form mail.
+  if (!productionUrl(request.url) || env.CONTACT_TEST_RECIPIENT) return ok();
+  let body: TrackCallPayload;
+  try {
+    // Minimal call metadata should never approach this size, even with cookies.
+    if (Number(request.headers.get('content-length')) > 8192) return ok();
+    const reader = request.body?.getReader();
+    if (!reader) return ok();
+    const decoder = new TextDecoder();
+    let text = '';
+    let size = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > 8192) { await reader.cancel(); return ok(); }
+      text += decoder.decode(value, { stream: true });
+    }
+    const raw: unknown = JSON.parse(text + decoder.decode());
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return ok();
+    const fields = raw as Record<string, unknown>;
+    if (['event_id', 'url', 'fbp', 'fbc'].some((key) => fields[key] !== undefined && typeof fields[key] !== 'string')) return ok();
+    body = fields as TrackCallPayload;
+  } catch { return ok(); }
+
+  const sources = [body.url, request.headers.get('referer'), request.headers.get('origin')].filter((value): value is string => !!value);
+  if (!sources.length) return ok();
+  for (const source of sources) {
+    const url = productionUrl(source);
+    // A forwarded preview URL or a career referrer independently blocks CAPI.
+    if (!url || careerUrl(url)) return ok();
+  }
   try {
     const userData = await buildUserData({
       country: 'us',
@@ -53,7 +70,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       fbc: readCookie(request, '_fbc') || body.fbc || undefined,
       fbp: readCookie(request, '_fbp') || body.fbp || undefined,
     });
-
     await sendCapiEvent({
       accessToken: env.META_ACCESS_TOKEN || '',
       eventName: 'Contact',
@@ -63,15 +79,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       customData: { contact_method: 'phone_call' },
       testEventCode: env.META_TEST_EVENT_CODE,
     });
-  } catch (err) {
-    console.error('Meta CAPI Contact dispatch threw:', err);
+  } catch (error) {
+    console.error('Meta CAPI Contact dispatch threw:', error instanceof Error ? error.name : 'UnknownError');
   }
-
-  return new Response(JSON.stringify({ ok: true }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  });
+  return ok();
 };

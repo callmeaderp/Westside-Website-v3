@@ -6,8 +6,8 @@ The production site is a static Astro build plus three Cloudflare Pages Function
 
 | Route | Source | Responsibilities |
 |---|---|---|
-| `POST /api/contact/` | `api/contact.ts` | Turnstile verification, resume validation, Microsoft Graph notification and confirmation mail, Meta `Lead` Conversions API event |
-| `POST /api/track-call/` | `api/track-call.ts` | Meta `Contact` Conversions API event for tracked call clicks |
+| `POST /api/contact/` | `api/contact.ts` | Customer requests and short career applications, Turnstile, optional resume validation, Microsoft Graph notification and acknowledgement mail; customer-only Meta `Lead` CAPI |
+| `POST /api/track-call/` | `api/track-call.ts` | Customer-only Meta `Contact` CAPI for production call clicks, excluding career sources |
 | `GET /api/address-suggest/` | `api/address-suggest.ts` | Google Places address suggestions |
 
 Browser-side analytics and conversion wiring live in `src/components/TrackingScripts.astro`: GA4, Google Ads, Meta Pixel, Microsoft UET, first-touch attribution, and call-click tracking. Keep that browser layer and these server routes aligned when changing event names or deduplication.
@@ -30,6 +30,20 @@ Verified 2026-08-30 against the production Pages project's secret inventory and 
 Production currently retains a `WEB3FORMS_KEY` secret even though no tracked Function uses it. Web3Forms was replaced by the Graph-backed contact endpoint. Remove that live secret only as an explicit platform-cleanup task after checking any retained preview environment that matters; it is not part of current source.
 
 Never put secret values in the repository. Set production values with `wrangler pages secret put <NAME> --project-name=westside-website` and verify names, not values, with `wrangler pages secret list --project-name=westside-website`.
+
+## Contact and career payloads
+
+Both use JSON `POST /api/contact/` and the same `{ success: true }` response. Errors return `{ success: false, message }` with an appropriate 4xx/5xx status. All known text fields must be strings when supplied; omit unused fields rather than sending `null`. Unknown fields are ignored. Turnstile verification remains required.
+
+- **Customer requests:** first name, last name, email and message remain required. Existing property/company/project/budget/timing fields and office routing remain supported.
+- **Career applications:** set `service: 'Career Inquiry'`, supply `firstName`, `lastName`, `turnstileToken` and at least one usable `email` or `phone`. A supplied email or phone must be valid even when the other is usable. `message` (relevant experience) is optional. Optional `careerPosition` (160 characters), `careerAvailability` (500), `referredBy` (120), `howHeard` (300), `contactPreference` (40), acquisition `attribution`, and `resume` are supported. Position values are free text, not a separate roles catalog. Legacy career requests without these additions remain accepted.
+- Names are capped at 100 characters each, email at 254, phone at 80, message at 5,000. Phone validation accepts 7–15 main digits, common formatting and optional extensions of up to six digits. Attribution uses known keys only, each capped at 300 characters. The handler's `FIELD_LIMITS` owns all remaining field bounds. Subjects collapse whitespace and are capped at 400 characters.
+- Total body limit is **3 MiB**, enforced against the actual stream as well as Content-Length; oversized bodies return 413. Resumes are optional `{ name, type, data }` objects. `data` is base64 (a data URL is also accepted). PDF/DOC/DOCX MIME, matching extension, nonempty content, magic bytes and decoded byte size are checked. Filenames are sanitized. This is a signature check, not antivirus scanning or full document validation. Do not request SSNs, birth dates, banking data or identity documents.
+- Shared `src/data/form-limits.ts` exports `MAX_RESUME_BYTES = 2 * 1024 * 1024` and `MAX_RESUME_MB = 2`. Use these on the frontend. Microsoft documents simple Outlook attachments as [under 3 MB, with upload sessions for 3–150 MB](https://learn.microsoft.com/en-us/graph/outlook-large-attachments). The conservative 2 MiB cap leaves room for base64 and message overhead without an upload-session subsystem. [JSON sendMail supports inline base64 file attachments](https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0); its 202 response means accepted for processing, not proven delivery. Limits checked 2026-10-19.
+
+Notifications remain from `website@westsideprolandscape.com` to `office@westsideprolandscape.com` and `brad@westsideprolandscape.com`. Careers additionally CC Joshua's Westside address for launch coordination. Their subjects retain `[Career Inquiry]` and add the position when supplied; their HTML omits customer property/project rows. `CONTACT_TEST_RECIPIENT` overrides every notification To/CC recipient, including career CC. The acknowledgement still goes to the submitted email, so preview tests must use a controlled applicant email too. Phone-only applications send no acknowledgement and no empty applicant Reply-To. Acknowledgements only confirm receipt, promise no hiring outcome or response time, and failures log HTTP status, Graph error code and correlation ID without raw applicant content. An accepted notification is never reported as failed because acknowledgement sending failed.
+
+Career submissions exit before any Meta user-data hashing or `Lead` CAPI, including legacy requests. Both server conversion routes allow only HTTPS `westsideprolandscape.com` or `www.westsideprolandscape.com` request hosts, and reject supplied preview/nonproduction source origins. Preview notification mode skips conversions too. Call tracking also skips when either the submitted source URL or Referer points to `/career/`, `/careers/` (including descendants), or a legacy contact URL with a career `service` query value. These are analytics guards, not proof of a visitor's hiring intent: missing source metadata is skipped, but a forged customer source URL cannot identify a career-origin call. Browser-side suppression remains necessary.
 
 ## Local and preview verification
 

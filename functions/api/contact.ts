@@ -7,17 +7,17 @@
  * 1. Validates Turnstile server-side
  * 2. Validates resume file if present (magic bytes, size, type)
  * 3. Exchanges Azure AD client credentials for Graph token
- * 4. Sends HTML notification email to office@ + brad@ with resume attached;
- *    non-home property types and the company name go in the subject for triage
- * 5. Sends branded confirmation email to customer
- * 6. Fires a Meta CAPI `Lead` event server-side (dedupes with browser pixel
- *    via shared `event_id`). Failure is logged and swallowed.
+ * 4. Sends HTML notification to office@ + brad@; careers CC Joshua for launch coordination
+ * 5. Sends a branded acknowledgement when an email address was supplied
+ * 6. Sends customer-only Meta CAPI `Lead` events on production hosts, using the
+ *    browser's shared event_id for deduplication. Careers exit before hashing.
  *
  * Environment secrets (set via wrangler pages secret put):
  *   TURNSTILE_SECRET, AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET,
  *   META_ACCESS_TOKEN, CONTACT_TEST_RECIPIENT (preview environment only)
  */
 
+import { MAX_RESUME_BYTES, MAX_RESUME_MB } from '../../src/data/form-limits';
 import { isPropertyType, RESIDENTIAL_PROPERTY_TYPE } from '../../src/data/property-types';
 import {
   buildUserData,
@@ -76,6 +76,9 @@ interface ContactPayload {
   budget?: string;
   timing?: string;
   howHeard?: string;
+  careerPosition?: string;
+  careerAvailability?: string;
+  referredBy?: string;
   message: string;
   /** First-touch campaign parameters captured client-side. Untrusted display data. */
   attribution?: Attribution;
@@ -123,14 +126,116 @@ function sanitizeAttribution(raw: unknown): Array<[string, string]> {
   return out;
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB (base64 is ~33% larger, so ~6.7MB in payload)
-const MAX_NAME_LENGTH = 100;
-const MAX_EMAIL_LENGTH = 254;
-const MAX_ADDRESS_LENGTH = 300;
-const MAX_COMPANY_LENGTH = 150;
+// Base64 for a 2 MiB file plus bounded form metadata fits comfortably in 3 MiB.
+const MAX_REQUEST_BYTES = 3 * 1024 * 1024;
+const MAX_BASE64_LENGTH = 4 * Math.ceil(MAX_RESUME_BYTES / 3);
+const FIELD_LIMITS = {
+  firstName: 100, lastName: 100, email: 254, phone: 80,
+  address: 300, zip: 10, contactPreference: 40, service: 160,
+  propertyType: 100, company: 150, projectType: 120, budget: 60,
+  timing: 60, howHeard: 300, message: 5000, turnstileToken: 2048,
+  eventId: 100, careerPosition: 160, careerAvailability: 500, referredBy: 120,
+} as const;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+class PayloadError extends Error {
+  constructor(message: string, readonly status = 400) { super(message); }
+}
+
+/** Content-Length is advisory; count the stream too, including chunked requests. */
+async function readPayload(request: Request): Promise<ContactPayload> {
+  if (Number(request.headers.get('content-length')) > MAX_REQUEST_BYTES) {
+    throw new PayloadError('Request too large. Please use a resume of 2 MB or less.', 413);
+  }
+  const reader = request.body?.getReader();
+  if (!reader) throw new PayloadError('Invalid request body.');
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > MAX_REQUEST_BYTES) {
+      await reader.cancel();
+      throw new PayloadError('Request too large. Please use a resume of 2 MB or less.', 413);
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+  let raw: unknown;
+  try { raw = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); }
+  catch { throw new PayloadError('Invalid request body.'); }
+  if (!isRecord(raw)) throw new PayloadError('Invalid request body.');
+  // Whitelist known fields. Unknown legacy fields remain harmless and ignored.
+  const fields: Record<string, unknown> = {};
+  for (const [key, limit] of Object.entries(FIELD_LIMITS)) {
+    if (raw[key] === undefined) continue;
+    const label = key.replace(/([A-Z])/g, ' $1').toLowerCase();
+    if (typeof raw[key] !== 'string') throw new PayloadError(`Invalid ${label} field. Please enter text.`);
+    const value = raw[key].trim();
+    if (value.length > limit) throw new PayloadError(`The ${label} field is too long. Maximum ${limit} characters.`);
+    fields[key] = value;
+  }
+  if (raw.attribution !== undefined) {
+    if (!isRecord(raw.attribution)) throw new PayloadError('Invalid attribution field.');
+    const attribution: Record<string, string> = {};
+    for (const [key] of ATTRIBUTION_FIELDS) {
+      const value = raw.attribution[key];
+      if (value === undefined) continue;
+      if (typeof value !== 'string') throw new PayloadError('Invalid attribution field.');
+      attribution[key] = value.trim().slice(0, MAX_ATTRIBUTION_VALUE);
+    }
+    fields.attribution = attribution;
+  }
+  if (raw.resume !== undefined) {
+    const candidateResume = raw.resume;
+    if (!isRecord(candidateResume) || ['name', 'type', 'data'].some((key) => typeof candidateResume[key] !== 'string')) {
+      throw new PayloadError('Invalid resume. Please attach a PDF, DOC, or DOCX file.');
+    }
+    const resume = raw.resume as { name: string; type: string; data: string };
+    const data = resume.data.startsWith('data:') ? resume.data.slice(resume.data.indexOf(',') + 1) : resume.data;
+    if (data.length > MAX_BASE64_LENGTH) throw new PayloadError(`Resume too large. Maximum ${MAX_RESUME_MB} MB.`);
+    if (resume.name.length > 500 || resume.type.length > 100) throw new PayloadError('Invalid resume file name or type.');
+    fields.resume = { ...resume, data };
+  }
+  // These default to empty for the branch-specific required-field checks below.
+  return { firstName: '', lastName: '', email: '', message: '', ...fields } as unknown as ContactPayload;
+}
+
+function isUsableEmail(value: string): boolean {
+  if (!/^[^\s@<>"\x00-\x1f\x7f]+@[^\s@<>"\x00-\x1f\x7f]+\.[^\s@<>"\x00-\x1f\x7f]+$/.test(value)) return false;
+  const [local, domain] = value.split('@');
+  return local.length <= 64 && !local.startsWith('.') && !local.endsWith('.') && !local.includes('..') &&
+    domain.split('.').every((label) => label.length > 0 && label.length <= 63 &&
+      !label.startsWith('-') && !label.endsWith('-') && /^[\p{L}\p{N}-]+$/u.test(label));
+}
+
+function isUsablePhone(value: string): boolean {
+  // Accept common international punctuation and optional extensions, not arbitrary prose.
+  const parts = value.split(/\s*(?:ext\.?|x|#)\s*/i);
+  if (parts.length > 2 || (parts[1] !== undefined && !/^\d{1,6}$/.test(parts[1]))) return false;
+  const number = parts[0];
+  const digits = number.replace(/\D/g, '');
+  return /^\+?[\d\s()./\-]+$/.test(number) && digits.length >= 7 && digits.length <= 15;
+}
+
+function isProductionRequest(request: Request): boolean {
+  const production = (value: string) => {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && ['westsideprolandscape.com', 'www.westsideprolandscape.com'].includes(url.hostname);
+    } catch { return false; }
+  };
+  return production(request.url) && ['origin', 'referer'].every((key) => !request.headers.get(key) || production(request.headers.get(key)!));
+}
+
 /** Long company names are shortened in the subject only; the body keeps the full name. */
 const MAX_SUBJECT_COMPANY_LENGTH = 60;
-const MAX_MESSAGE_LENGTH = 5000;
 const MAX_FILENAME_LENGTH = 180;
 const ALLOWED_TYPES: Record<string, string> = {
   'application/pdf': '.pdf',
@@ -164,24 +269,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   let payload: ContactPayload;
   try {
-    payload = await request.json();
-  } catch {
-    return json(400, { success: false, message: 'Invalid request body.' });
+    payload = await readPayload(request);
+  } catch (error) {
+    return json(error instanceof PayloadError ? error.status : 400, {
+      success: false, message: error instanceof PayloadError ? error.message : 'Invalid request body.',
+    });
   }
 
   const { firstName, lastName, email, message, turnstileToken } = payload;
-  if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !message?.trim()) {
-    return json(400, { success: false, message: 'First name, last name, email, and message are required.' });
+  const isCareer = payload.service === 'Career Inquiry';
+  if (!firstName || !lastName || (!isCareer && (!email || !message))) {
+    return json(400, { success: false, message: isCareer
+      ? 'First name and last name are required.'
+      : 'First name, last name, email, and message are required.' });
   }
-  if (
-    firstName.trim().length > MAX_NAME_LENGTH ||
-    lastName.trim().length > MAX_NAME_LENGTH ||
-    email.trim().length > MAX_EMAIL_LENGTH ||
-    (payload.address?.trim().length ?? 0) > MAX_ADDRESS_LENGTH ||
-    (typeof payload.company === 'string' && payload.company.trim().length > MAX_COMPANY_LENGTH) ||
-    message.trim().length > MAX_MESSAGE_LENGTH
-  ) {
-    return json(400, { success: false, message: 'One or more fields are too long.' });
+  if (isCareer && !email && !payload.phone) {
+    return json(400, { success: false, message: 'Please provide an email address or phone number so we can contact you.' });
+  }
+  if (email && !isUsableEmail(email)) {
+    return json(400, { success: false, message: 'Please enter a valid email address.' });
+  }
+  if (payload.phone && !isUsablePhone(payload.phone)) {
+    return json(400, { success: false, message: 'Please enter a valid phone number, including the area or country code.' });
   }
 
   if (!turnstileToken) {
@@ -215,13 +324,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   let resumeName = '';
   if (payload.resume) {
     const { type, data } = payload.resume;
-    resumeName = sanitizeFilename(payload.resume.name, ALLOWED_TYPES[type] || '');
-    if (!resumeName) {
-      return json(400, { success: false, message: 'Invalid file name.' });
+    if (!Object.hasOwn(ALLOWED_TYPES, type)) {
+      return json(400, { success: false, message: 'Please attach a PDF, DOC, or DOCX resume.' });
     }
-
-    if (!ALLOWED_TYPES[type]) {
-      return json(400, { success: false, message: `Invalid file type: ${type}. PDF, DOC, or DOCX only.` });
+    resumeName = sanitizeFilename(payload.resume.name, ALLOWED_TYPES[type]);
+    if (!resumeName) {
+      return json(400, { success: false, message: 'Please use a valid resume file name ending in .pdf, .doc, or .docx that matches its type.' });
     }
 
     try {
@@ -233,8 +341,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (resumeBytes.byteLength === 0) {
       return json(400, { success: false, message: 'Empty file.' });
     }
-    if (resumeBytes.byteLength > MAX_FILE_SIZE) {
-      return json(400, { success: false, message: `File too large (${(resumeBytes.byteLength / 1024 / 1024).toFixed(1)} MB). Max 5 MB.` });
+    if (resumeBytes.byteLength > MAX_RESUME_BYTES) {
+      return json(400, { success: false, message: `Resume too large. Maximum ${MAX_RESUME_MB} MB.` });
     }
 
     const expected = MAGIC_BYTES[type];
@@ -256,7 +364,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const timing = payload.timing?.trim().slice(0, 60) || '';
   const howHeard = payload.howHeard?.trim() || 'Not specified';
   const attribution = sanitizeAttribution(payload.attribution);
-  const isCareer = service === 'Career Inquiry';
+  const careerPosition = payload.careerPosition || '';
+  const careerAvailability = payload.careerAvailability || '';
+  const referredBy = payload.referredBy || '';
   const submittedAt = new Date().toLocaleString('en-US', {
     timeZone: 'America/New_York',
     month: 'short', day: 'numeric', year: 'numeric',
@@ -293,8 +403,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const subjectCompany =
     company.length > MAX_SUBJECT_COMPANY_LENGTH ? `${company.slice(0, MAX_SUBJECT_COMPANY_LENGTH - 1).trimEnd()}…` : company;
   const subjectWho = `${firstName.trim()} ${lastName.trim()}${!isCareer && subjectCompany ? ` (${subjectCompany})` : ''}`;
-  const subjectScope = [flaggedPropertyType, projectType || service, budget].filter(Boolean).join(' — ');
-  const subject = `[${inquiryType}] ${subjectWho} — ${subjectScope || service}`;
+  const subjectScope = isCareer ? careerPosition || service : [flaggedPropertyType, projectType || service, budget].filter(Boolean).join(' — ');
+  const subject = `[${inquiryType}] ${subjectWho}${isCareer ? ' - ' : ' — '}${subjectScope || service}`.replace(/\s+/g, ' ').trim().slice(0, 400);
 
   const attachments: Record<string, unknown>[] = [];
   if (payload.resume && resumeBytes) {
@@ -321,6 +431,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     budget,
     timing,
     howHeard,
+    careerPosition,
+    careerAvailability,
+    referredBy,
     message: message.trim(),
     submittedAt,
     isCareer,
@@ -341,7 +454,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           subject,
           body: { contentType: 'HTML', content: notificationHtml },
           toRecipients: notifyRecipients.map((addr) => ({ emailAddress: { address: addr } })),
-          replyTo: [{ emailAddress: { address: email.trim(), name: `${firstName.trim()} ${lastName.trim()}` } }],
+          ccRecipients: isCareer && !previewRecipient
+            ? [{ emailAddress: { address: 'joshuabeldue@westsideprolandscape.com' } }] : [],
+          replyTo: email ? [{ emailAddress: { address: email, name: `${firstName} ${lastName}` } }] : [],
           attachments,
           // No Outlook categories: sender-set categories never reached the office
           // mailbox (checked 2026-10-02), so the subject line carries triage info.
@@ -352,47 +467,37 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   );
 
   if (!sendRes.ok) {
-    const err = await sendRes.text();
-    console.error('Graph sendMail (notification) failed:', sendRes.status, err);
+    await logMailFailure('notification', sendRes);
     return json(500, { success: false, message: 'Unable to send your message. Please call us instead.' });
   }
 
-  const confirmationHtml = buildConfirmationEmail({
-    firstName: firstName.trim(),
-    service,
-    isCareer,
-  });
+  if (email) {
+    const confirmationHtml = buildConfirmationEmail({ firstName, service, isCareer });
+    // Keep the Worker alive, but never report an accepted notification as failed
+    // just because its optional acknowledgement could not be sent.
+    const confirmation = fetch(`https://graph.microsoft.com/v1.0/users/${SENDER}/sendMail`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${graphToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: {
+          subject: isCareer
+            ? 'Application received - Westside Professional Landscape'
+            : 'We received your request — Westside Professional Landscape',
+          body: { contentType: 'HTML', content: confirmationHtml },
+          toRecipients: [{ emailAddress: { address: email, name: `${firstName} ${lastName}` } }],
+          replyTo: [{ emailAddress: { address: REPLY_TO, name: 'Westside Professional Landscape' } }],
+        },
+        saveToSentItems: false,
+      }),
+    }).then(async (response) => {
+      if (!response.ok) await logMailFailure('confirmation', response);
+    }).catch((error) => console.error('Graph sendMail (confirmation) request failed:', error instanceof Error ? error.name : 'UnknownError'));
+    context.waitUntil(confirmation);
+  }
 
-  // Never fail the submission over the confirmation, but keep the Worker alive
-  // until it is sent: an unawaited fetch can be cancelled once the response returns.
-  const confirmation = fetch(`https://graph.microsoft.com/v1.0/users/${SENDER}/sendMail`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${graphToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      message: {
-        subject: isCareer
-          ? 'Application received — Westside Professional Landscape'
-          : 'We received your request — Westside Professional Landscape',
-        body: { contentType: 'HTML', content: confirmationHtml },
-        toRecipients: [{ emailAddress: { address: email.trim(), name: `${firstName.trim()} ${lastName.trim()}` } }],
-        replyTo: [{ emailAddress: { address: REPLY_TO, name: 'Westside Professional Landscape' } }],
-      },
-      saveToSentItems: false,
-    }),
-  }).catch((err) => console.error('Confirmation email failed:', err));
-  context.waitUntil(confirmation);
-
-  // --- Meta Conversions API — server-side Lead event ---
-  // Mirrors the browser-side fbq('track','Lead', ..., {eventID}) so Meta can
-  // dedupe via the shared event_id (sent in payload.eventId) and recover
-  // signal lost to ad blockers / ITP / iOS opt-outs. Failure is logged and
-  // swallowed — CAPI is supplementary and must never break the form response.
-  // Preview test submissions are skipped so they never count as ad conversions.
-  if (previewRecipient) {
-    console.log(`Preview test mode: notification sent only to ${previewRecipient}; Meta CAPI skipped.`);
+  // Career inquiries are not customer leads. Exit BEFORE building/hashing user
+  // data, independently of browser tags, tokens, or legacy form field shape.
+  if (isCareer || previewRecipient || !isProductionRequest(request)) {
     return json(200, { success: true });
   }
   try {
@@ -424,8 +529,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         service_interest: service,
         how_heard: howHeard,
         lead_source: 'website',
-        form_type: isCareer ? 'career_inquiry' : 'estimate_request',
-        ...(propertyType && !isCareer ? { property_type: propertyType } : {}),
+        form_type: 'estimate_request',
+        ...(propertyType ? { property_type: propertyType } : {}),
         ...(projectType ? { project_type: projectType } : {}),
         ...(budget ? { budget_band: budget } : {}),
         ...(timing ? { project_timing: timing } : {}),
@@ -441,6 +546,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   return json(200, { success: true });
 };
 
+async function logMailFailure(kind: 'notification' | 'confirmation', response: Response): Promise<void> {
+  // Graph error messages can echo addresses or content. Keep exact status/code
+  // and correlation ID, never log applicant data or the raw response body.
+  let code = 'UnknownError';
+  try {
+    const body = await response.json() as { error?: { code?: unknown } };
+    if (typeof body.error?.code === 'string' && /^[A-Za-z0-9_.-]{1,100}$/.test(body.error.code)) code = body.error.code;
+  } catch { /* Non-JSON service failure; HTTP status still identifies it. */ }
+  console.error(`Graph sendMail (${kind}) failed:`, response.status, code, response.headers.get('request-id') || 'no-request-id');
+}
+
 function json(status: number, body: Record<string, unknown>): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -454,17 +570,20 @@ function json(status: number, body: Record<string, unknown>): Response {
 function sanitizeFilename(raw: string, expectedExtension: string): string {
   const leaf = String(raw || '').split(/[\\/]/).pop()?.trim() || '';
   const cleaned = leaf
-    .replace(/[ -]/g, '')
-    .replace(/["<>:|?*]/g, '_')
-    .slice(0, MAX_FILENAME_LENGTH);
-  if (!cleaned) return '';
-  return cleaned.toLowerCase().endsWith(expectedExtension) ? cleaned : `${cleaned}${expectedExtension}`;
+    .replace(/[\u0000-\u001f\u007f]/g, '')
+    .replace(/["<>:|?*]/g, '_');
+  if (!cleaned || !cleaned.toLowerCase().endsWith(expectedExtension)) return '';
+  const stem = cleaned.slice(0, -expectedExtension.length).trim();
+  if (!stem || /^\.+$/.test(stem)) return '';
+  return `${stem.slice(0, MAX_FILENAME_LENGTH - expectedExtension.length)}${expectedExtension}`;
 }
 
 function base64ToUint8Array(base64: string): Uint8Array {
-  // Handle data URL prefix if present
-  const clean = base64.includes(',') ? base64.split(',')[1] : base64;
-  const binary = atob(clean);
+  // Data URL prefixes were normalized at the boundary; reject malformed base64.
+  if (!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(base64)) {
+    throw new Error('Invalid base64');
+  }
+  const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
     bytes[i] = binary.charCodeAt(i);
@@ -472,7 +591,13 @@ function base64ToUint8Array(base64: string): Uint8Array {
   return bytes;
 }
 
+function phoneLink(raw: string): string {
+  const [number, extension] = raw.split(/\s*(?:ext\.?|x|#)\s*/i);
+  return `${number.trim().startsWith('+') ? '+' : ''}${number.replace(/\D/g, '')}${extension ? `;ext=${extension}` : ''}`;
+}
+
 function formatPhone(raw: string): string {
+  if (/(?:ext\.?|x|#)/i.test(raw) || (raw.startsWith('+') && !raw.startsWith('+1'))) return raw;
   const digits = raw.replace(/\D/g, '');
   if (digits.length === 10) {
     return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
@@ -498,6 +623,9 @@ interface NotificationData {
   budget: string;
   timing: string;
   howHeard: string;
+  careerPosition: string;
+  careerAvailability: string;
+  referredBy: string;
   message: string;
   submittedAt: string;
   isCareer: boolean;
@@ -526,7 +654,7 @@ function buildNotificationEmail(data: NotificationData): string {
 
   const attributionHtml = data.attribution.length
     ? `<tr><td colspan="2" style="padding:20px 0 8px;">
-         <span style="font-size:12px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:1px;">Where this lead came from</span>
+         <span style="font-size:12px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:1px;">${data.isCareer ? 'Acquisition attribution' : 'Where this lead came from'}</span>
        </td></tr>` +
       data.attribution.map(([label, value]) => row(label, `<span style="color:#555;">${esc(value)}</span>`)).join('')
     : '';
@@ -550,16 +678,23 @@ function buildNotificationEmail(data: NotificationData): string {
     <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;color:#333;">
       ${row('Name', `<strong>${esc(data.firstName)} ${esc(data.lastName)}</strong>`)}
       ${data.company ? row('Company', `<strong>${esc(data.company)}</strong>`) : ''}
-      ${row('Email', `<a href="mailto:${esc(data.email)}" style="color:#00863F;">${esc(data.email)}</a>`)}
-      ${row('Phone', data.phone ? `<a href="tel:${esc(data.phone.replace(/\D/g, ''))}" style="color:#00863F;">${esc(data.phone)}</a>` : notProvided)}
+      ${row('Email', data.email ? `<a href="mailto:${esc(encodeURIComponent(data.email))}" style="color:#00863F;">${esc(data.email)}</a>` : notProvided)}
+      ${row('Phone', data.phone ? `<a href="tel:${esc(phoneLink(data.phone))}" style="color:#00863F;">${esc(data.phone)}</a>` : notProvided)}
       ${row('Prefers', data.contactPreference ? esc(data.contactPreference) : notProvided)}
-      ${row('Address', data.address ? esc(data.address) : notProvided)}
-      ${row('ZIP', data.zip ? esc(data.zip) : notProvided)}
-      ${row('Service', esc(data.service))}
+      ${data.isCareer ? [
+        row('Position', data.careerPosition ? esc(data.careerPosition) : notProvided),
+        row('Availability', data.careerAvailability ? esc(data.careerAvailability).replace(/\n/g, '<br>') : notProvided),
+        row('Referred By', data.referredBy ? esc(data.referredBy) : notProvided),
+      ].join('') : [
+        row('Address', data.address ? esc(data.address) : notProvided),
+        row('ZIP', data.zip ? esc(data.zip) : notProvided),
+        row('Service', esc(data.service)),
+      ].join('')}
       ${projectRows}
       ${row('How Heard', esc(data.howHeard))}
-      <tr><td style="padding:8px 0;color:#666;vertical-align:top;">Message</td>
-          <td style="padding:8px 0;">${messageHtml}</td></tr>
+      <tr><td style="padding:8px 0;color:#666;vertical-align:top;">${data.isCareer ? 'Relevant Experience' : 'Message'}</td>
+          <td style="padding:8px 0;">${messageHtml || notProvided}</td></tr>
+      ${data.isCareer ? row('Resume', data.hasResume ? 'Attached to this email' : notProvided) : ''}
       ${attributionHtml}
     </table>
   </td></tr>
@@ -583,7 +718,7 @@ function buildConfirmationEmail(data: ConfirmationData): string {
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
   const bodyText = data.isCareer
-    ? `Thank you for your interest in joining the Westside team! We've received your application and will review it shortly.`
+    ? `Thank you for your interest in joining the Westside team. We've received your application. This email confirms receipt only; it does not guarantee an interview or a job offer.`
     : `Thank you for reaching out about <strong>${esc(data.service)}</strong>. We've received your request. A member of our team will review the details and contact you about the next step.`;
 
   return `<!DOCTYPE html>
