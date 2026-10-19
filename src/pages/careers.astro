@@ -1,85 +1,71 @@
 ---
-/**
- * Careers page — general interest CTA (no specific listings).
- */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
-import { company } from '@data/company';
+import CareerForm from '@components/CareerForm.astro';
+import { careerRoles, formatCareerPay } from '@data/careers';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
 
 const breadcrumbJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
-    { '@type': 'ListItem', position: 2, name: 'Careers', item: siteUrl('/careers') },
+    { '@type': 'ListItem', position: 2, name: 'Careers', item: siteUrl('/careers/') },
   ],
 };
 ---
 
 <BaseLayout
-  title="Careers at Westside Professional Landscape | Rochester, NY"
-  description="Explore landscaping careers with Westside Professional Landscape in Rochester, NY. We welcome dependable people who take pride in outdoor work."
+  title="Landscaping & Snow Jobs in Rochester, NY | Westside Careers"
+  description="Explore Plant Health, landscape design, construction and commercial snow opportunities at Westside in Rochester, NY. View pay, schedules and requirements, then apply."
   jsonLd={breadcrumbJsonLd}
 >
   <Hero
-    label="Join Our Team"
-    heading="BUILD YOUR CAREER IN LANDSCAPING"
-    intro="We're a locally owned landscape company that's been growing since 2000, and we're always glad to meet dependable people who take pride in outdoor work."
+    label="Careers at Westside"
+    heading="GOOD WORK STARTS WITH GOOD PEOPLE"
+    intro="Healthy lawns, thoughtfully built landscapes and safer winter properties all depend on the people doing the work. Find your place at our locally owned Rochester company, growing since 2000."
     image={getPhoto('hero-about.webp')}
+    buttons={[
+      { text: 'Explore Openings', href: '#openings', style: 'primary' },
+      { text: 'Apply Now', href: '#apply', style: 'outline' },
+    ]}
   />
 
-  <!-- Why Westside -->
-  <section class="py-24 section-dark-alt">
+  <section id="openings" class="py-20 section-dark-alt scroll-mt-24" aria-labelledby="openings-heading">
     <div class="site-container">
-      <div class="text-center mb-16 fade-in">
-        <p class="section-label">Why Westside</p>
-        <h2 class="section-title">WORK YOU CAN TAKE <span class="text-green">PRIDE IN</span></h2>
-        <p class="section-subtitle mx-auto">
-          At <strong>Westside</strong>, your work is visible. You join a crew that cares about doing the job right.
-        </p>
+      <div class="max-w-3xl mb-10">
+        <p class="section-label">Current opportunities</p>
+        <h2 id="openings-heading" class="section-title">FIND YOUR <span class="text-green">NEXT ROLE</span></h2>
+        <p class="section-subtitle mt-5">Read the pay range, schedule and qualifications for each opening. Year-round positions and seasonal snow work have different schedules and benefit eligibility.</p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
-        {[
-          { title: 'Competitive Pay', desc: '<strong>Competitive wages</strong> based on your experience and role.' },
-          { title: 'Year-Round Work', desc: 'Landscaping from spring through fall, then snow management in winter for <strong>steady, year-round work</strong>.' },
-          { title: 'Growth Opportunities', desc: 'Room to advance as you build your skills and take on more responsibility.' },
-          { title: 'Invest in Your Skills', desc: 'We support professional development and help team members build their expertise.' },
-          { title: 'Team Culture', desc: 'A supportive, respectful workplace where <em>your work matters</em> and your voice is heard.' },
-          { title: 'Quality Equipment', desc: 'Professional-grade equipment maintained to high standards. We provide what you need to do the job right.' },
-        ].map((benefit) => (
-          <div class="p-8 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
-            <h3 class="text-base mb-3">{benefit.title}</h3>
-            <p class="text-sm" style="color: var(--color-text-muted);" set:html={benefit.desc} />
-          </div>
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {careerRoles.map((role) => (
+          <article class="p-7 rounded-xl flex flex-col" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+            <p class="text-xs uppercase tracking-wider font-semibold mb-3" style="color: var(--color-green-bright);">{role.category}</p>
+            <h3 class="text-xl leading-snug" style="font-family: var(--font-body); text-transform: none;">{role.title}</h3>
+            <p class="font-semibold mt-4">{formatCareerPay(role.pay)}</p>
+            <p class="text-sm mt-1" style="color: var(--color-text-muted);">{role.employmentLabel}</p>
+            <p class="text-sm leading-relaxed mt-5 mb-6" style="color: var(--color-text-muted);">{role.summary}</p>
+            <a href={url(`/careers/${role.slug}/`)} class="btn btn-outline btn-sm mt-auto self-start" aria-label={`View ${role.title} details and apply`}>View Role &amp; Apply</a>
+          </article>
         ))}
       </div>
+      <p class="text-sm mt-7" style="color: var(--color-text-muted);">Not sure which opening fits? Use the general-interest option below and tell us about your experience.</p>
     </div>
   </section>
 
-  <!-- General Interest -->
-  <section class="py-24 section-white">
+  <section class="py-20 section-dark" aria-labelledby="working-here-heading">
     <div class="site-container">
-      <div class="max-w-2xl mx-auto text-center fade-in">
-        <p class="section-label">Opportunities</p>
-        <h2 class="section-title">LOOKING FOR YOUR NEXT <span class="text-green">CREW?</span></h2>
-        <p class="mt-6 mb-4" style="color: var(--color-text-body-dark); line-height: 1.8;">
-          Whether you're an experienced landscaper, a certified applicator, or ready to learn and work hard outdoors, we'd like to hear from you.
-        </p>
-        <p class="mb-8" style="color: var(--color-text-body-dark); line-height: 1.8;">
-          Send us your resume and a few words about yourself. We'll reach out if there's a fit.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href={url('/contact/?service=careers')} class="btn btn-primary btn-lg">Send Us Your Resume</a>
-          <a href={company.phoneHref} class="btn btn-outline btn-md">
-            Or Call {company.phone}
-          </a>
-        </div>
+      <p class="section-label">Working here</p>
+      <h2 id="working-here-heading" class="section-title mb-10">LOCAL ROOTS. <span class="text-green">HANDS-ON WORK.</span></h2>
+      <div class="grid md:grid-cols-3 gap-9">
+        <div><h3 class="text-lg mb-3">A range of skills</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Our work includes Plant Health and lawn care, landscape design and construction, maintenance, and commercial snow and ice management.</p></div>
+        <div><h3 class="text-lg mb-3">Know the terms</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Each listing explains its base pay and work schedule. Benefits depend on the role, service requirements and plan eligibility. The hiring team can walk you through the details.</p></div>
+        <div><h3 class="text-lg mb-3">A straightforward start</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Apply with your name and a phone number or email. A résumé is welcome, not required. Tell us what you do well and when you are available.</p></div>
       </div>
     </div>
   </section>
 
+  <CareerForm />
 </BaseLayout>

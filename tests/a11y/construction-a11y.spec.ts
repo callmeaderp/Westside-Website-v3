@@ -7,6 +7,9 @@ import { expect, test } from '@playwright/test';
  * of the site was built against.
  */
 
+// Audit final rendered colors rather than an arbitrary point in the entrance fade.
+test.beforeEach(async ({ page }) => { await page.emulateMedia({ reducedMotion: 'reduce' }); });
+
 const PAGES = [
   '/',
   '/services/',
@@ -30,7 +33,7 @@ for (const path of PAGES) {
       .analyze();
 
     expect(
-      results.violations.map((v) => `${v.id}: ${v.nodes.length} node(s) — ${v.help}`)
+      results.violations.map((v) => ({ id: v.id, help: v.help, nodes: v.nodes.map((node) => ({ target: node.target, explanation: node.failureSummary })) }))
     ).toEqual([]);
   });
 }

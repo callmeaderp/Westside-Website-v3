@@ -14,7 +14,7 @@ Browser-side analytics and conversion wiring live in `src/components/TrackingScr
 
 ## Runtime bindings
 
-Verified 2026-08-30 against the production Pages project's secret inventory and current Function interfaces:
+Runtime secret names rechecked 2026-10-19; values are never recorded here:
 
 | Binding | Requirement | Used by |
 |---|---|---|
@@ -51,6 +51,6 @@ Career submissions exit before any Meta user-data hashing or `Lead` CAPI, includ
 
 `tests/contact-function.spec.ts` calls the contact handler directly with every outbound service stubbed, so the subject line, email rows, recipient choice, and CAPI payload are covered without sending anything.
 
-For an end-to-end check, deploy a preview branch and submit the real form there. Preview deployments carry `CONTACT_TEST_RECIPIENT`, so the notification reaches only the test mailbox. It is set with `wrangler pages secret put CONTACT_TEST_RECIPIENT --project-name=westside-website --env preview`. Without `--env preview`, Wrangler writes to production, where the setting would send every live inquiry to the test mailbox instead of the office after the next deploy; the flag works but is missing from `wrangler pages secret put --help`. Confirm with `wrangler pages secret list --project-name=westside-website` (production) that it is absent. Set the `_wpl_internal=1` cookie on the preview origin first; it blocks the browser-side Google Ads, Meta, and Microsoft conversion tags and tags GA4 traffic as internal.
+For an end-to-end check, deploy a preview branch and submit the real form there. Preview deployments carry `CONTACT_TEST_RECIPIENT`, so the notification reaches only the test mailbox. It is set with `wrangler pages secret put CONTACT_TEST_RECIPIENT --project-name=westside-website --env preview`. Without `--env preview`, Wrangler writes to production, where the setting would send every live inquiry to the test mailbox instead of the office after the next deploy; the flag works but is missing from `wrangler pages secret put --help`. Confirm with `wrangler pages secret list --project-name=westside-website` (production) that it is absent. Browser analytics are runtime-host-gated, so preview hosts load no GA4 or advertising tags. Automated browsers may fail real Turnstile challenges; Cloudflare recommends its [official dummy credentials](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) for automation. If used for runtime verification, temporarily change **preview only**, keep all mail recipients controlled, restore the real preview secret, deploy a restored preview and delete the temporary dummy-secret deployment afterward. Never put test credentials into production, disable verification there or present a dummy-key test as proof that a real human challenge passed.
 
 For local Function integration work, build first and run `npx wrangler pages dev dist` with deliberate local bindings/secrets. Do not send real mail or production analytics events merely to prove local routing. Before production publication of a Function change, deploy a Cloudflare preview, exercise the affected endpoint there with test-safe inputs, inspect Function logs/errors, and verify the observable response. Production deployment remains an explicit external action governed by `.claude/skills/deploy/SKILL.md`.

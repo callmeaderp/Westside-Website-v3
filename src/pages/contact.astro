@@ -5,6 +5,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
+import { MAX_RESUME_MB } from '@data/form-limits';
 import { budgetOptions, projectTypeOptions, timingOptions } from '@data/investment';
 import { propertyTypes } from '@data/property-types';
 import { services } from '@data/services';
@@ -87,6 +88,16 @@ const jsonLd = [
   description="Get a free estimate from Westside Professional Landscape. Patios, retaining walls, walkways, drainage, landscape design, lawn care, and more in Rochester NY."
   jsonLd={jsonLd}
 >
+  <script is:inline>
+    // Only redirect inbound legacy career URLs, never a visitor's in-progress form.
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      if (['career', 'careers', 'career inquiry', 'career-inquiry'].includes((params.get('service') || '').toLowerCase())) {
+        params.delete('service');
+        window.location.replace('/careers/' + (params.size ? '?' + params.toString() : '') + '#apply');
+      }
+    })();
+  </script>
   <Hero
     label="Get in Touch"
     heading="REQUEST A FREE ESTIMATE IN ROCHESTER, NY"
@@ -278,7 +289,7 @@ const jsonLd = [
                 class="w-full px-4 py-3 rounded-lg text-white text-sm cursor-pointer"
                 style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
               />
-              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX, up to 5 MB</p>
+              <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX, up to {MAX_RESUME_MB} MB</p>
             </div>
 
             <div>
@@ -403,6 +414,7 @@ const jsonLd = [
 </style>
 
 <script>
+  import { MAX_RESUME_BYTES, MAX_RESUME_MB } from '@data/form-limits';
   import { COMMERCIAL_PROPERTY_TYPE, RESIDENTIAL_PROPERTY_TYPE } from '@data/property-types';
 
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
@@ -425,6 +437,10 @@ const jsonLd = [
     resumeGroup?.classList.toggle('hidden', !isCareer);
     // Project type / budget / timing are meaningless on a job application.
     projectFields?.classList.toggle('hidden', isCareer);
+    for (const id of ['email', 'phone', 'message']) {
+      const field = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+      if (field) field.required = !isCareer;
+    }
   }
 
   serviceSelect?.addEventListener('change', syncCareerFields);
@@ -596,6 +612,15 @@ const jsonLd = [
       const originalText = btn.textContent;
       const turnstileWidget = form.querySelector('.cf-turnstile') as HTMLElement | null;
 
+      // The legacy manual career option remains usable without both contact methods.
+      if (serviceSelect?.value === 'Career Inquiry' &&
+          !form.querySelector<HTMLInputElement>('[name="email"]')?.value.trim() &&
+          !form.querySelector<HTMLInputElement>('[name="phone"]')?.value.trim()) {
+        if (formStatus) formStatus.textContent = 'Please provide an email address or phone number.';
+        form.querySelector<HTMLInputElement>('[name="email"]')?.focus();
+        return;
+      }
+
       // Client-side Turnstile gate
       const turnstileToken = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value || '';
       if (turnstileWidget && !turnstileToken) {
@@ -608,10 +633,10 @@ const jsonLd = [
 
       // Client-side file size check
       const fileInput = form.querySelector<HTMLInputElement>('[name="attachment"]');
-      const file = fileInput?.files?.[0] && fileInput.files[0].size > 0 ? fileInput.files[0] : null;
-      if (file && file.size > 5 * 1024 * 1024) {
+      const file = serviceSelect?.value === 'Career Inquiry' && fileInput?.files?.[0] && fileInput.files[0].size > 0 ? fileInput.files[0] : null;
+      if (file && file.size > MAX_RESUME_BYTES) {
         if (formStatus) {
-          formStatus.textContent = 'Resume is too large. Please upload a file under 5 MB.';
+          formStatus.textContent = `Resume is too large. Please upload a file of ${MAX_RESUME_MB} MB or less.`;
           formStatus.style.color = '#e67e22';
         }
         return;
@@ -676,57 +701,8 @@ const jsonLd = [
         const result = await response.json();
 
         if (result.success) {
-          const attribution = (payload.attribution || {}) as Record<string, string>;
-          // GA4 form_submit always fires (internal traffic filtered via data filter).
-          // Keep these parameter names aligned with GA4 custom dimensions.
-          if (typeof (window as any).gtag === 'function') {
-            const serviceInterest = String(payload.service || 'Not specified');
-            const howHeard = String(payload.howHeard || 'Not specified');
-            const formType = serviceInterest === 'Career Inquiry' ? 'career_inquiry' : 'estimate_request';
-            (window as any).gtag('event', 'form_submit', {
-              event_category: 'engagement',
-              form_name: 'contact',
-              form_type: formType,
-              service_interest: serviceInterest,
-              how_heard: howHeard,
-              property_type: String(payload.propertyType || 'Not specified'),
-              project_type: String(payload.projectType || 'Not specified'),
-              budget_band: String(payload.budget || 'Not specified'),
-              project_timing: String(payload.timing || 'Not specified'),
-              lead_utm_source: attribution.utm_source || 'direct',
-              lead_utm_medium: attribution.utm_medium || 'none',
-              lead_utm_campaign: attribution.utm_campaign || 'none',
-            });
-            // Microsoft Ads primary lead event — only after the server accepts
-            // the inquiry, and never for internal traffic.
-            if ((window as any).uetq && !(window as any).__wplInternal) {
-              (window as any).uetq.push('event', 'request_quote', {
-                event_category: 'lead',
-                event_label: formType,
-                event_value: 50,
-                revenue_value: 50,
-                currency: 'USD',
-              });
-            }
-            // Google Ads conversion — blocked for internal traffic
-            const sendTo = form.dataset.adsSendTo;
-            if (sendTo && !(window as any).__wplInternal) (window as any).gtag('event', 'conversion', { send_to: sendTo, value: 50.0, currency: 'USD' });
-          }
-          // Meta event — blocked for internal traffic.
-          // eventID matches the server-side CAPI Lead payload for dedup.
-          if (typeof (window as any).fbq === 'function' && !(window as any).__wplInternal) {
-            (window as any).fbq(
-              'track',
-              'Lead',
-              {
-                service_interest: String(payload.service || 'Not specified'),
-                property_type: String(payload.propertyType || 'Not specified'),
-                project_type: String(payload.projectType || 'Not specified'),
-                budget_band: String(payload.budget || 'Not specified'),
-              },
-              { eventID: leadEventId },
-            );
-          }
+          // Tracking is centralized; career inquiries cannot enter customer goals.
+          try { (window as any).__wplTrackFormSuccess?.(payload, leadEventId); } catch { /* Delivery already succeeded. */ }
           btn.textContent = '\u2713 Message Sent!';
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Message sent. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }

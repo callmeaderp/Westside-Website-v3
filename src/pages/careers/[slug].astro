@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CareerForm from '@components/CareerForm.astro';
+import { careerRoles, careerJobPosting, formatCareerPay, type CareerRole } from '@data/careers';
+import { siteUrl } from '@lib/site';
+import { url } from '@lib/utils';
+
+export function getStaticPaths() {
+  return careerRoles.map((role) => ({ params: { slug: role.slug }, props: { role } }));
+}
+interface Props { role: CareerRole }
+const { role } = Astro.props;
+const sections = [
+  { title: 'What you will do', items: role.responsibilities },
+  { title: 'What the role requires', items: role.requirements },
+  ...(role.helpful?.length ? [{ title: 'Helpful experience', items: role.helpful }] : []),
+  ...(role.benefits.length ? [{ title: 'Benefits and eligibility', items: role.benefits }] : []),
+];
+const jsonLd = [careerJobPosting(role), {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl('/') },
+    { '@type': 'ListItem', position: 2, name: 'Careers', item: siteUrl('/careers/') },
+    { '@type': 'ListItem', position: 3, name: role.title, item: siteUrl(`/careers/${role.slug}/`) },
+  ],
+}];
+---
+
+<BaseLayout title={`${role.title} | Rochester, NY | Westside Careers`} description={`${formatCareerPay(role.pay)}. ${role.employmentLabel}. ${role.summary}`} jsonLd={jsonLd}>
+  <Hero label={role.category} heading={role.title} intro={role.summary} variant="utility" buttons={[
+    { text: 'Apply for This Role', href: '#apply', style: 'primary' },
+    { text: 'All Openings', href: '/careers/#openings', style: 'outline' },
+  ]} />
+  <section class="py-16 section-dark" aria-label="Position details">
+    <div class="site-container max-w-4xl">
+      <a href={url('/careers/#openings')} class="text-sm underline underline-offset-4" style="color: var(--color-green-bright);">All openings</a>
+      <div class="grid sm:grid-cols-2 gap-6 mt-7 mb-10 p-7 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+        <div><h2 class="text-sm mb-2">Base pay</h2><p class="text-xl font-semibold" style="color: var(--color-green-bright);">{formatCareerPay(role.pay)}</p>{role.pay.note && <p class="text-sm leading-relaxed mt-3" style="color: var(--color-text-muted);">{role.pay.note}</p>}</div>
+        <div><h2 class="text-sm mb-2">Schedule and location</h2><p class="font-semibold">{role.employmentLabel}</p><p class="text-sm mt-3 leading-relaxed" style="color: var(--color-text-muted);">{role.schedule}</p><p class="text-sm mt-3" style="color: var(--color-text-muted);">{role.location}</p></div>
+      </div>
+      {role.description.map((text) => <p class="text-lg leading-relaxed mb-5" style="color: var(--color-text-muted);">{text}</p>)}
+      <div class="grid md:grid-cols-2 gap-x-12 gap-y-9 mt-10">
+        {sections.map((section) => <div><h2 class="text-lg mb-4" style="font-family: var(--font-body); text-transform: none;">{section.title}</h2><ul class="list-disc pl-5 space-y-3 leading-relaxed" style="color: var(--color-text-muted);">{section.items.map((item) => <li>{item}</li>)}</ul></div>)}
+      </div>
+      <p class="text-sm mt-10 leading-relaxed" style="color: var(--color-text-muted);">Westside considers applicants without regard to legally protected characteristics. If you need assistance with the application process or a reasonable accommodation, please contact our office.</p>
+    </div>
+  </section>
+  <CareerForm selectedRole={role.slug} />
+</BaseLayout>

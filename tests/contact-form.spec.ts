@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { mockProductionSite } from './mock-production-site';
 
 /**
  * Contact-form coverage. The form is the only conversion surface on the site,
@@ -92,9 +93,11 @@ test.describe('property type and company', () => {
     await expect(page.locator('#company')).toBeHidden();
   });
 
-  test('career inquiries hide the property fields', async ({ page }) => {
+  test('legacy career links lead to the application without property fields', async ({ page }) => {
     await page.goto('/contact/?service=careers');
-    await expect(page.locator('#property-type')).toBeHidden();
+    await expect(page).toHaveURL(/\/careers\/#apply/);
+    await expect(page.locator('#career-form')).toBeVisible();
+    await expect(page.locator('#property-type')).toHaveCount(0);
   });
 
   test('submission sends the property type and company only while it applies', async ({ page }) => {
@@ -144,15 +147,19 @@ test.describe('service preselection', () => {
     await expect(page.locator('#service')).toHaveValue('Retaining & Seat Walls');
   });
 
-  test('career inquiry swaps project fields for the resume upload', async ({ page }) => {
-    await page.goto('/contact/?service=careers');
+  test('manual career selection preserves entered details and swaps fields', async ({ page }) => {
+    await page.goto('/contact/');
+    await page.fill('#first-name', 'Pat');
+    await page.selectOption('#service', 'Career Inquiry');
+    await expect(page.locator('#first-name')).toHaveValue('Pat');
     await expect(page.locator('#service')).toHaveValue('Career Inquiry');
     await expect(page.locator('#resume-upload-group')).not.toHaveClass(/hidden/);
     await expect(page.locator('#project-fields')).toHaveClass(/hidden/);
   });
 
   test('switching away from careers restores project fields', async ({ page }) => {
-    await page.goto('/contact/?service=careers');
+    await page.goto('/contact/');
+    await page.selectOption('#service', 'Career Inquiry');
     await page.locator('#service').selectOption('Hardscaping & Outdoor Living');
     await expect(page.locator('#project-fields')).not.toHaveClass(/hidden/);
     await expect(page.locator('#resume-upload-group')).toHaveClass(/hidden/);
@@ -202,6 +209,8 @@ test.describe('acquisition attribution', () => {
 });
 
 test.describe('conversion wiring is preserved', () => {
+  test.use({ baseURL: 'https://westsideprolandscape.com' });
+  test.beforeEach(async ({ page }) => { await mockProductionSite(page); });
   test('Microsoft UET initializes with the configured tag and page-load event', async ({ page }) => {
     await page.route('https://bat.bing.com/bat.js', async (route) => {
       await route.fulfill({
@@ -337,6 +346,7 @@ test.describe('conversion wiring is preserved', () => {
     });
     await page.locator('#contact-form button[type="submit"]').click();
     await expect.poll(() => body).not.toBeNull();
+    await expect(page.locator('#form-status')).toContainText('Message sent');
 
     expect(await page.evaluate(() => (window as any).uetq.events)).toEqual([
       ['event', 'request_quote', {

@@ -1,0 +1,153 @@
+---
+import { careerRoles, generalCareerInterest } from '@data/careers';
+import { company } from '@data/company';
+import { MAX_RESUME_MB } from '@data/form-limits';
+import { url } from '@lib/utils';
+
+interface Props { selectedRole?: string }
+const { selectedRole = 'general-interest' } = Astro.props;
+const selected = careerRoles.some((role) => role.slug === selectedRole) ? selectedRole : 'general-interest';
+---
+
+<section id="apply" class="py-20 section-dark-alt scroll-mt-24" aria-labelledby="application-heading">
+  <div class="site-container">
+    <div class="grid lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start">
+      <div>
+        <p class="section-label">Start a conversation</p>
+        <h2 id="application-heading" class="section-title">TELL US WHERE <span class="text-green">YOU FIT</span></h2>
+        <p class="mt-6 leading-relaxed" style="color: var(--color-text-muted);">
+          Share your contact details and the kind of work that interests you. A résumé is optional.
+          We’ll review your information and contact you if there is a suitable next step.
+        </p>
+        <div class="mt-8 p-6 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+          <h3 class="text-base mb-3">Prefer to talk?</h3>
+          <a href={company.phoneHref} data-contact-purpose="career" class="text-lg font-semibold" style="color: var(--color-green-bright);">{company.phone}</a>
+          <p class="text-sm mt-2" style="color: var(--color-text-muted);">Office hours: Monday–Friday, 8:30 AM–4:00 PM.</p>
+          <p class="text-sm mt-4" style="color: var(--color-text-muted);">Based at {company.address.street}, {company.address.city}, {company.address.state} {company.address.zip}.</p>
+        </div>
+      </div>
+      <form id="career-form" method="post" action="/api/contact/" class="career-form flex flex-col gap-5" data-selected-role={selected}>
+        <noscript><p>Please call the office to apply, or enable JavaScript to use this form.</p></noscript>
+        <p class="text-sm" style="color: var(--color-text-muted);">
+          Your name and a phone number or email are all you need to start. Extra details help us find the right fit.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="career-first-name">First name <span aria-hidden="true">*</span></label>
+            <input id="career-first-name" name="first_name" autocomplete="given-name" maxlength="100" required />
+          </div>
+          <div>
+            <label for="career-last-name">Last name <span aria-hidden="true">*</span></label>
+            <input id="career-last-name" name="last_name" autocomplete="family-name" maxlength="100" required />
+          </div>
+        </div>
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="career-label">How can we reach you? <span aria-hidden="true">*</span></legend>
+          <p id="career-contact-help" class="text-sm mb-3" style="color: var(--color-text-muted);">Please provide a phone number, an email address, or both.</p>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label for="career-phone">Phone</label>
+              <input id="career-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" aria-describedby="career-contact-help" />
+            </div>
+            <div>
+              <label for="career-email">Email</label>
+              <input id="career-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" aria-describedby="career-contact-help" />
+            </div>
+          </div>
+        </fieldset>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="career-position">Position of interest <span aria-hidden="true">*</span></label>
+            <select id="career-position" name="career_position" required>
+              {careerRoles.map((role) => <option value={role.slug} selected={selected === role.slug}>{role.title}</option>)}
+              <option value="general-interest" selected={selected === 'general-interest'}>{generalCareerInterest}</option>
+            </select>
+          </div>
+          <div>
+            <label for="career-contact-preference">Preferred contact method</label>
+            <select id="career-contact-preference" name="contact_preference">
+              <option value="Either phone or email">Either phone or email</option>
+              <option value="Phone call">Phone call</option>
+              <option value="Email">Email</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="career-availability">When could you start, and what hours can you work?</label>
+          <input id="career-availability" name="career_availability" maxlength="500" placeholder="Start date, daytime or overnight availability, or other schedule details" />
+        </div>
+        <div>
+          <label for="career-experience">Relevant experience</label>
+          <textarea id="career-experience" name="message" rows="4" maxlength="5000" placeholder="A few lines about your experience, equipment skills, training or interests. For design roles, you can include a portfolio link."></textarea>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="career-how-heard">How did you first hear about Westside?</label>
+            <select id="career-how-heard" name="how_heard">
+              <option value="">Select if you know</option>
+              <option>Westside employee referral</option>
+              <option>Friend or word of mouth</option>
+              <option>Indeed</option>
+              <option>Facebook / Instagram</option>
+              <option>Google Search</option>
+              <option>RochesterWorks / NYS Job Bank</option>
+              <option>GreaterROC Careers</option>
+              <option>Landscape Industry Careers / NALP</option>
+              <option>School / career services</option>
+              <option>Saw a Westside truck or job site</option>
+              <option>Previously worked at Westside</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="career-referred-by">Referred by someone? Their name</label>
+            <input id="career-referred-by" name="referred_by" maxlength="120" placeholder="Optional" />
+          </div>
+        </div>
+        <div>
+          <label for="career-resume">Résumé <span class="font-normal">(optional)</span></label>
+          <input id="career-resume" name="resume" type="file" accept=".pdf,.doc,.docx" aria-describedby="career-resume-help" />
+          <p id="career-resume-help" class="text-sm mt-2" style="color: var(--color-text-muted);">PDF, DOC or DOCX, up to {MAX_RESUME_MB} MB. You can apply without an attachment.</p>
+        </div>
+        <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">
+          Your details go to Westside’s hiring team for recruiting and follow-up. Please leave out Social Security numbers,
+          banking details and identity documents. <a href={url('/privacy/')} class="underline underline-offset-4" style="color: var(--color-green-bright);">Privacy policy</a>
+        </p>
+        {company.tracking.turnstileSiteKey && (
+          <div class="cf-turnstile" data-sitekey={company.tracking.turnstileSiteKey} data-theme="dark"></div>
+        )}
+        <button type="submit" class="btn btn-primary btn-lg self-start">Send My Application</button>
+        <div id="career-form-status" role="status" aria-live="polite" tabindex="-1" class="text-sm min-h-6"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{company.tracking.turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+<script src="../scripts/career-form.ts"></script>
+
+<style>
+  .career-form label, .career-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .career-form input, .career-form select, .career-form textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    color: var(--color-text-light);
+    background: var(--color-bg-dark-elevated);
+    border: 1px solid var(--color-border-dark);
+    border-radius: 0.5rem;
+    font: inherit;
+    font-size: 1rem;
+  }
+  .career-form textarea { resize: vertical; }
+  .career-form input:focus-visible, .career-form select:focus-visible, .career-form textarea:focus-visible {
+    outline: 2px solid var(--color-green-bright);
+    outline-offset: 3px;
+  }
+  .career-form [aria-hidden='true'] { color: var(--color-green-bright); }
+</style>
