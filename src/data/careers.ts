@@ -31,7 +31,7 @@ export const careerRoles: CareerRole[] = [
     employmentType: ['FULL_TIME'],
     schedule: 'Full-time, year-round work with seasonal scheduling. Overtime and winter assignments will be discussed during hiring; snow hours are not guaranteed.',
     location: 'Rochester and surrounding communities; based in Gates, NY',
-    pay: { min: 20, max: 25, unit: 'HOUR', note: 'Base hourly pay depends on relevant experience and qualifications. Overtime, when applicable, is separate.' },
+    pay: { min: 21, max: 32, unit: 'HOUR', note: 'Base hourly pay depends on relevant experience and qualifications. Overtime, when applicable, is separate.' },
     description: ['Help customers keep their lawns and landscapes healthy. This is a field role for someone who notices problems, works carefully and can explain what a property needs.'],
     responsibilities: [
       'Perform lawn-care and Plant Health work using appropriate application rates and company procedures.',
@@ -59,7 +59,7 @@ export const careerRoles: CareerRole[] = [
     employmentLabel: 'Full-time', employmentType: ['FULL_TIME'],
     schedule: 'Full-time, with office work, local site visits and customer appointments. Scheduling varies with project and seasonal needs.',
     location: 'Gates, NY office and customer properties in the Rochester area',
-    pay: { min: 65000, max: 80000, unit: 'YEAR', note: 'Base annual pay depends on relevant design, estimating and consultative sales experience.' },
+    pay: { min: 65000, max: 95000, unit: 'YEAR', note: 'Base annual pay depends on relevant design, estimating and consultative sales experience.' },
     description: ['Work with homeowners and property managers to understand their goals, develop landscape solutions and carry the project from consultation through a clear handoff to our field team.'],
     responsibilities: [
       'Meet with customers, assess sites, take measurements and discuss goals, budget and timing.',
@@ -111,7 +111,7 @@ export const careerRoles: CareerRole[] = [
     employmentLabel: 'Seasonal, part-time and on call', employmentType: ['PART_TIME', 'TEMPORARY'],
     schedule: 'Winter 2026–27. Weather-driven callouts may include overnight shifts, weekends and holidays. Hours vary with conditions; no weekly minimum or seasonal earnings are guaranteed.',
     location: 'Commercial properties in the Rochester area',
-    pay: { min: 30, max: 40, unit: 'HOUR', note: 'Base hourly pay depends on relevant equipment and snow-removal experience. Overtime, when applicable, is separate.' },
+    pay: { min: 35, max: 50, unit: 'HOUR', note: 'Base hourly pay depends on experience and assignment. Overtime, when applicable, is separate.' },
     description: ['Help keep commercial properties accessible through winter storms. We are looking for operators who can work carefully around buildings, parked vehicles, pedestrians and other crews.'],
     responsibilities: [
       'Operate assigned loaders, skid steers or other snow equipment safely.',
@@ -136,7 +136,7 @@ export const careerRoles: CareerRole[] = [
     employmentLabel: 'Seasonal, part-time and on call', employmentType: ['PART_TIME', 'TEMPORARY'],
     schedule: 'Winter 2026–27. Weather-driven callouts may include overnight shifts, weekends and holidays. Hours vary with conditions; no weekly minimum or seasonal earnings are guaranteed.',
     location: 'Commercial properties in the Rochester area',
-    pay: { min: 30, max: 35, unit: 'HOUR', note: 'Base hourly pay depends on relevant plowing and driving experience. Overtime, when applicable, is separate.' },
+    pay: { min: 30, max: 45, unit: 'HOUR', note: 'Base hourly pay depends on relevant plowing and driving experience. Overtime, when applicable, is separate.' },
     description: ['Join our commercial snow team for the winter season. Work with other drivers, equipment operators and sidewalk crews to keep assigned properties accessible.'],
     responsibilities: [
       'Operate an assigned plow truck and follow the property’s snow plan.',
@@ -160,7 +160,7 @@ export const careerRoles: CareerRole[] = [
     employmentLabel: 'Seasonal, part-time and on call', employmentType: ['PART_TIME', 'TEMPORARY'],
     schedule: 'Winter 2026–27. Weather-driven callouts may include overnight shifts, weekends and holidays. Hours vary with conditions; no weekly minimum or seasonal earnings are guaranteed.',
     location: 'Commercial properties in the Rochester area',
-    pay: { min: 24, max: 30, unit: 'HOUR', note: 'Base hourly pay depends on relevant experience and assigned responsibilities. Overtime, when applicable, is separate.' },
+    pay: { min: 24, max: 35, unit: 'HOUR', note: 'Base hourly pay depends on relevant experience and assigned responsibilities. Overtime, when applicable, is separate.' },
     description: ['Dependable people make a difference when winter weather arrives. Work with a crew to clear pedestrian routes and apply deicing material using the tools and procedures appropriate to each site.'],
     responsibilities: [
       'Clear sidewalks, entrances and other pedestrian areas using shovels and assigned snow equipment.',
