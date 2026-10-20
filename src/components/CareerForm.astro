@@ -7,6 +7,12 @@ import { url } from '@lib/utils';
 interface Props { selectedRole?: string }
 const { selectedRole = 'general-interest' } = Astro.props;
 const selected = careerRoles.some((role) => role.slug === selectedRole) ? selectedRole : 'general-interest';
+// Hints follow the selected role so a designer is not asked about overnight shifts or a plow driver about portfolios.
+const selectedCategory = careerRoles.find((role) => role.slug === selected)?.category;
+const isDesign = selectedCategory === 'Design';
+const availabilityPlaceholder = selectedCategory === 'Snow & ice' ? 'e.g. Can start now; nights and weekends OK'
+  : selectedCategory ? 'e.g. Can start in two weeks' : 'e.g. Can start now; days, nights or weekends';
+const experiencePlaceholder = `A few lines about your experience, equipment skills, training or interests.${isDesign ? ' Add a link to your portfolio.' : ''}`;
 ---
 
 <section id="apply" class="py-20 section-dark-alt scroll-mt-24" aria-labelledby="application-heading">
@@ -16,8 +22,7 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
         <p class="section-label">Start a conversation</p>
         <h2 id="application-heading" class="section-title">TELL US WHERE <span class="text-green">YOU FIT</span></h2>
         <p class="mt-6 leading-relaxed" style="color: var(--color-text-muted);">
-          Share your contact details and the kind of work that interests you. A résumé is optional.
-          We’ll review your information and contact you if there is a suitable next step.
+          Tell us how to reach you and what kind of work you’re looking for. We’ll look over your information and get in touch if it’s a good fit.
         </p>
         <div class="mt-8 p-6 rounded-xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
           <h3 class="text-base mb-3">Prefer to talk?</h3>
@@ -74,11 +79,11 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
         </div>
         <div>
           <label for="career-availability">When could you start, and what hours can you work?</label>
-          <input id="career-availability" name="career_availability" maxlength="500" placeholder="Start date, daytime or overnight availability, or other schedule details" />
+          <input id="career-availability" name="career_availability" maxlength="500" placeholder={availabilityPlaceholder} />
         </div>
         <div>
           <label for="career-experience">Relevant experience</label>
-          <textarea id="career-experience" name="message" rows="4" maxlength="5000" placeholder="A few lines about your experience, equipment skills, training or interests. For design roles, you can include a portfolio link."></textarea>
+          <textarea id="career-experience" name="message" rows="4" maxlength="5000" placeholder={experiencePlaceholder}></textarea>
         </div>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
@@ -88,6 +93,7 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
               <option>Westside employee referral</option>
               <option>Friend or word of mouth</option>
               <option>Indeed</option>
+              <option>LinkedIn</option>
               <option>Facebook / Instagram</option>
               <option>Google Search</option>
               <option>RochesterWorks / NYS Job Bank</option>
@@ -107,11 +113,10 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
         <div>
           <label for="career-resume">Résumé <span class="font-normal">(optional)</span></label>
           <input id="career-resume" name="resume" type="file" accept=".pdf,.doc,.docx" aria-describedby="career-resume-help" />
-          <p id="career-resume-help" class="text-sm mt-2" style="color: var(--color-text-muted);">PDF, DOC or DOCX, up to {MAX_RESUME_MB} MB. You can apply without an attachment.</p>
+          <p id="career-resume-help" class="text-sm mt-2" style="color: var(--color-text-muted);">PDF, DOC or DOCX, up to {MAX_RESUME_MB} MB. You can apply without an attachment.{isDesign && ' For a portfolio, paste a link in the experience box above.'}</p>
         </div>
         <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">
-          Your details go to Westside’s hiring team for recruiting and follow-up. Please leave out Social Security numbers,
-          banking details and identity documents. <a href={url('/privacy/')} class="underline underline-offset-4" style="color: var(--color-green-bright);">Privacy policy</a>
+          Your details go to Westside’s hiring team. Please leave out Social Security numbers, bank details and ID documents. <a href={url('/privacy/')} class="underline underline-offset-4" style="color: var(--color-green-bright);">Privacy policy</a>
         </p>
         {company.tracking.turnstileSiteKey && (
           <div class="cf-turnstile" data-sitekey={company.tracking.turnstileSiteKey} data-theme="dark"></div>

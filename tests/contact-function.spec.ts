@@ -210,6 +210,10 @@ test.describe('contact Function: recruiting intake', () => {
     expect(mails()).toHaveLength(2);
     expect(mails()[1].subject).not.toContain('—');
     expect(mails()[1].body.content).not.toContain('shortly');
+    // The applicant's acknowledgement thanks them plainly; no legal-sounding disclaimer or dangling "sooner".
+    expect(mails()[1].body.content).toContain('Thanks for applying to Westside Professional Landscape.');
+    expect(mails()[1].body.content).toContain('Have a question in the meantime?');
+    expect(mails()[1].body.content).not.toMatch(/guarantee|sooner/i);
     noCapi();
   });
 

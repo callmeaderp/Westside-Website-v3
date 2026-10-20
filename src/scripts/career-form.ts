@@ -1,3 +1,4 @@
+import { company } from '@data/company';
 import { MAX_RESUME_BYTES, MAX_RESUME_MB } from '@data/form-limits';
 
 interface TrackingWindow extends Window {
@@ -7,6 +8,7 @@ interface TrackingWindow extends Window {
 }
 const tracking = window as TrackingWindow;
 const form = document.querySelector<HTMLFormElement>('#career-form');
+const unconfirmed = `We couldn’t confirm that your application went through. Please try again, or call us at ${company.phone}.`;
 
 if (form) {
   const status = document.querySelector<HTMLElement>('#career-form-status')!;
@@ -52,7 +54,7 @@ if (form) {
     };
     const extension = file?.name.split('.').pop()?.toLowerCase() || '';
     if (file && (!mimeTypes[extension] || !file.size || file.size > MAX_RESUME_BYTES)) {
-      showStatus(`Please choose a nonempty PDF, DOC or DOCX file of ${MAX_RESUME_MB} MB or less, or apply without a résumé.`, true);
+      showStatus(`Please choose a PDF, DOC or DOCX file up to ${MAX_RESUME_MB} MB, or apply without a résumé.`, true);
       return;
     }
 
@@ -97,18 +99,18 @@ if (form) {
       });
       const result = await response.json();
       if (!response.ok || result.success !== true) {
-        throw new Error(typeof result.message === 'string' ? result.message : 'We could not confirm your submission. Please call the office before trying again.');
+        throw new Error(typeof result.message === 'string' ? result.message : unconfirmed);
       }
       accepted = true;
       // Analytics must never turn an accepted application into a reported failure.
       try { tracking.__wplTrackFormSuccess?.({ service: 'Career Inquiry' }); } catch { /* Delivery succeeded. */ }
       form.reset();
       button.textContent = 'Application received';
-      showStatus('Your application has been received. We’ll review your information and contact you if there is a suitable next step.');
+      showStatus('Thanks! Your application is in. We’ll look it over and get in touch if it’s a good fit.');
     } catch (error) {
       showStatus(error instanceof Error && error.name !== 'TypeError' && error.name !== 'SyntaxError'
         ? error.message
-        : 'We could not confirm your submission. Please call the office before trying again.', true);
+        : unconfirmed, true);
       button.textContent = 'Send My Application';
     } finally {
       sending = false;

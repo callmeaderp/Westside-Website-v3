@@ -720,7 +720,7 @@ function buildConfirmationEmail(data: ConfirmationData): string {
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
   const bodyText = data.isCareer
-    ? `Thank you for your interest in joining the Westside team. We've received your application. This email confirms receipt only; it does not guarantee an interview or a job offer.`
+    ? `Thanks for applying to Westside Professional Landscape. We've received your application, and our hiring team will look it over. If it's a good fit, we'll be in touch about next steps.`
     : `Thank you for reaching out about <strong>${esc(data.service)}</strong>. We've received your request. A member of our team will review the details and contact you about the next step.`;
 
   return `<!DOCTYPE html>
@@ -739,7 +739,7 @@ function buildConfirmationEmail(data: ConfirmationData): string {
     <span style="font-size:14px;color:#333;line-height:1.7;">${bodyText}</span>
   </td></tr>
   <tr><td style="padding:0 32px 24px;">
-    <span style="font-size:14px;color:#333;line-height:1.7;">If you need to reach us sooner, don't hesitate to call:</span><br>
+    <span style="font-size:14px;color:#333;line-height:1.7;">${data.isCareer ? 'Have a question in the meantime? Give us a call:' : "If you need to reach us sooner, don't hesitate to call:"}</span><br>
     <a href="tel:+15855948420" style="font-size:16px;font-weight:700;color:#00863F;text-decoration:none;">(585) 594-8420</a><br>
     <span style="font-size:13px;color:#666;">Monday – Friday, 8:30 AM – 4:00 PM</span>
   </td></tr>

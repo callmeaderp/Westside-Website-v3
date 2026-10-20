@@ -32,15 +32,29 @@ test('referral bonus appears with its conditions and only for referred hires', a
     await page.goto(path);
     const box = page.locator('[data-referral-bonus]');
     await expect(box).toHaveCount(1);
-    await expect(box).toContainText('Referred new hires earn a $300 bonus after 30 days of continuous employment and at least 128 hours worked.');
-    await expect(box).toContainText('up to $900');
+    await expect(box).toContainText(`${referralBonus.lead} ${referralBonus.howTo}`);
+    await expect(box).toContainText(`${referralBonus.newHire} ${referralBonus.referrer}`);
   }
+  // The memo pays the $300 once both thresholds are met; hours may take longer than 30 days for snow hires.
+  for (const text of [referralBonus.newHire, referralBonus.incentive]) {
+    expect(text).toMatch(/\$300 bonus once .+ 30 days and worked at least 128 hours\.$/);
+  }
+  // Only referred hires are offered the $300; never word it as a bonus for every new hire.
+  expect(referralBonus.incentive).toMatch(/^Hires referred by a Westside employee/);
   for (const role of careerRoles) {
     const schema = careerJobPosting(role);
-    expect(schema.incentiveCompensation).toBe(referralBonus.newHire);
-    expect(schema.description).toContain(`<h3>Referral bonus</h3><p>${referralBonus.newHire} ${referralBonus.howTo}</p>`);
+    expect(schema.incentiveCompensation).toBe(referralBonus.incentive);
+    expect(schema.description).toContain(`<h3>Referral bonus</h3><p>Referred by a Westside employee? ${referralBonus.howTo} ${referralBonus.newHire}</p>`);
   }
-  expect(referralBonus.newHire).toMatch(/^Referred new hires/);
+});
+
+test('job-board descriptions state the pay range and read as plain language', () => {
+  for (const role of careerRoles) {
+    const { description } = careerJobPosting(role);
+    expect(description).toContain(`<h3>Pay</h3><p>${formatCareerPay(role.pay)}.`);
+    // Phrases from earlier drafts that read as internal or legal fine print to applicants.
+    expect(description).not.toMatch(/applicable New York requirements|benefit eligibility|company driving|reporting location|when applicable|subject to (plan terms|service requirements)/);
+  }
 });
 
 test('invalid pay cannot generate a public JobPosting', () => {
@@ -61,7 +75,7 @@ for (const contact of ['phone', 'email'] as const) {
     await page.fill('#career-referred-by', 'A colleague');
     await page.fill('#career-availability', 'Weekdays');
     await page.locator('#career-form button[type="submit"]').click();
-    await expect(page.locator('#career-form-status')).toContainText('has been received');
+    await expect(page.locator('#career-form-status')).toContainText('application is in');
     expect(bodies).toHaveLength(1);
     expect(bodies[0]).toMatchObject({ service: 'Career Inquiry', careerPosition: careerRoles[0].title, message: '', referredBy: 'A colleague', careerAvailability: 'Weekdays', attribution: { utm_source: 'nalp' } });
     expect(bodies[0].resume).toBeUndefined();
@@ -133,7 +147,7 @@ test.describe('production recruiting conversion separation', () => {
     await applicant(page);
     await page.fill('#career-experience', 'PRIVATE applicant experience');
     await page.locator('#career-form button[type="submit"]').click();
-    await expect(page.locator('#career-form-status')).toContainText('has been received');
+    await expect(page.locator('#career-form-status')).toContainText('application is in');
     await page.locator('[data-contact-purpose="career"]').click();
     const events = await page.evaluate(() => ({
       ga: (window as any).dataLayer.map((args: any) => Array.from(args)),

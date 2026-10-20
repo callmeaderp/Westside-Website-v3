@@ -20,74 +20,16 @@ export interface CareerRole {
 }
 
 /** Published openings need currently authorized, good-faith base-pay ranges.
- * Keep private evidence and personnel context outside this public repository. */
+ * Keep private evidence and personnel context outside this public repository.
+ * Order is display order (careers page, form and job-board packet): snow first while it is the biggest need. */
 export const careerRoles: CareerRole[] = [
-  {
-    slug: 'lawn-care-technician',
-    title: 'Plant Health / Lawn Care Technician',
-    category: 'Plant Health',
-    summary: 'Care for lawns and landscapes across the Rochester area with accurate applications, careful observations and clear customer communication.',
-    employmentLabel: 'Full-time, year-round',
-    employmentType: ['FULL_TIME'],
-    schedule: 'Full-time, year-round work with seasonal scheduling. Overtime and winter assignments will be discussed during hiring; snow hours are not guaranteed.',
-    location: 'Rochester and surrounding communities; based in Gates, NY',
-    pay: { min: 21, max: 32, unit: 'HOUR', note: 'Base hourly pay depends on relevant experience and qualifications. Overtime, when applicable, is separate.' },
-    description: ['Help customers keep their lawns and landscapes healthy. This is a field role for someone who notices problems, works carefully and can explain what a property needs.'],
-    responsibilities: [
-      'Perform lawn-care and Plant Health work using appropriate application rates and company procedures.',
-      'Recognize turf, weed, disease and other landscape-health issues and communicate observations.',
-      'Keep accurate work records, maintain a clean truck and work safely around customers and coworkers.',
-    ],
-    requirements: [
-      'At least one year of relevant fertilization or lawn-care experience.',
-      'A valid driver’s license and ability to meet company driving requirements.',
-      'NYS DEC certification appropriate to the work, or willingness to work toward it. Trainees must work within the required training and supervision rules.',
-      'Attention to detail, dependable attendance and clear communication.',
-      'Ability to perform outdoor field work safely in changing weather, with reasonable accommodation where applicable.',
-    ],
-    benefits: [
-      'Paid vacation and six paid holidays for eligible full-time, year-round employees, subject to service requirements.',
-      'SIMPLE IRA with employer matching for eligible employees, subject to plan terms.',
-      'Paid sick leave under applicable New York requirements.',
-      'Company-provided uniforms and safety glasses.',
-    ],
-    datePosted: '2026-10-19',
-  },
-  {
-    slug: 'landscape-design-consultant', title: 'Landscape Design Consultant', category: 'Design',
-    summary: 'Turn a customer’s ideas into a practical landscape plan, a clear proposal and a well-coordinated project.',
-    employmentLabel: 'Full-time', employmentType: ['FULL_TIME'],
-    schedule: 'Full-time, with office work, local site visits and customer appointments. Scheduling varies with project and seasonal needs.',
-    location: 'Gates, NY office and customer properties in the Rochester area',
-    pay: { min: 65000, max: 95000, unit: 'YEAR', note: 'Base annual pay depends on relevant design, estimating and consultative sales experience.' },
-    description: ['Work with homeowners and property managers to understand their goals, develop landscape solutions and carry the project from consultation through a clear handoff to our field team.'],
-    responsibilities: [
-      'Meet with customers, assess sites, take measurements and discuss goals, budget and timing.',
-      'Develop landscape concepts, prepare scopes and estimates, and present proposals.',
-      'Follow up with prospective customers and keep project and communication records organized.',
-      'Coordinate plans, materials and project details with the construction and operations team.',
-    ],
-    requirements: [
-      'Demonstrated landscape design/build or consultative project-sales ability, with examples of your work.',
-      'Working knowledge of landscape materials, planting and outdoor construction.',
-      'Ability to create and explain designs, estimates and proposals using appropriate design and office tools.',
-      'Clear communication, follow-through and the ability to manage several customer projects.',
-      'A valid driver’s license and ability to travel to local customer sites.',
-    ],
-    helpful: ['Approximately three years of relevant experience is preferred.', 'A portfolio showing landscape plans or completed project work.'],
-    benefits: [
-      'SIMPLE IRA with employer matching for eligible employees, subject to plan terms.',
-      'Paid vacation and holidays for eligible full-time, year-round employees, subject to service requirements.',
-      'Paid sick leave under applicable New York requirements.',
-    ], datePosted: '2026-10-19',
-  },
   {
     slug: 'snow-equipment-operator', title: 'Loader / Snow Equipment Operator', category: 'Snow & ice',
     summary: 'Put your loader or skid-steer skills to work clearing and stacking snow at commercial properties.',
     employmentLabel: 'Seasonal, part-time and on call', employmentType: ['PART_TIME', 'TEMPORARY'],
-    schedule: 'Winter 2026–27. Weather-driven callouts may include overnight shifts, weekends and holidays. Hours vary with conditions; no weekly minimum or seasonal earnings are guaranteed.',
+    schedule: 'Winter 2026–27. We call crews out when it snows, which can mean overnight, weekend and holiday shifts. Your hours depend on the weather, so they change from week to week and aren’t guaranteed.',
     location: 'Commercial properties in the Rochester area',
-    pay: { min: 35, max: 50, unit: 'HOUR', note: 'Base hourly pay depends on experience and assignment. Overtime, when applicable, is separate.' },
+    pay: { min: 35, max: 50, unit: 'HOUR', note: 'Where you start in this range depends on your experience and your assignment. Hours over 40 in a week are paid at time and a half.' },
     description: ['Help keep commercial properties accessible through winter storms. We are looking for operators who can work carefully around buildings, parked vehicles, pedestrians and other crews.'],
     responsibilities: [
       'Operate assigned loaders, skid steers or other snow equipment safely.',
@@ -96,24 +38,24 @@ export const careerRoles: CareerRole[] = [
       'Coordinate with plow and sidewalk crews and assist with related snow or deicing tasks as assigned.',
     ],
     requirements: [
-      'Demonstrated safe operation of loaders, skid steers or comparable equipment.',
-      'Reliable transportation to the assigned reporting location.',
-      'Availability for weather-driven callouts, including overnight, weekend and holiday work.',
+      'Experience running loaders, skid steers or similar equipment safely.',
+      'Reliable transportation, day or night.',
+      'Available when it snows, including overnight, weekends and holidays.',
       'Clear communication and the ability to work safely in cold, snowy conditions.',
-      'Any driving assignment requires the appropriate license and company driving eligibility.',
+      'If your assignment includes driving a company vehicle, the right license and a driving record that qualifies you to drive it.',
     ],
     helpful: ['Commercial snow-removal experience and familiarity with snow pushers or containment boxes.'],
-    benefits: ['Paid sick leave under applicable New York requirements.', 'Seasonal employment has different benefit eligibility from full-time, year-round work.'],
+    benefits: ['Paid sick leave.'],
     datePosted: '2026-10-19', validThrough: '2027-03-31T23:59:59-04:00',
   },
   {
     slug: 'snow-plow-driver', title: 'Snow Plow Truck Driver', category: 'Snow & ice',
-    summary: 'Clear commercial parking areas and access routes with a focus on safe driving, dependable callout response and careful work.',
+    summary: 'Plow commercial parking lots and access drives this winter. We need careful drivers who show up when it snows.',
     employmentLabel: 'Seasonal, part-time and on call', employmentType: ['PART_TIME', 'TEMPORARY'],
-    schedule: 'Winter 2026–27. Weather-driven callouts may include overnight shifts, weekends and holidays. Hours vary with conditions; no weekly minimum or seasonal earnings are guaranteed.',
+    schedule: 'Winter 2026–27. We call crews out when it snows, which can mean overnight, weekend and holiday shifts. Your hours depend on the weather, so they change from week to week and aren’t guaranteed.',
     location: 'Commercial properties in the Rochester area',
-    pay: { min: 30, max: 45, unit: 'HOUR', note: 'Base hourly pay depends on relevant plowing and driving experience. Overtime, when applicable, is separate.' },
-    description: ['Join our commercial snow team for the winter season. Work with other drivers, equipment operators and sidewalk crews to keep assigned properties accessible.'],
+    pay: { min: 30, max: 45, unit: 'HOUR', note: 'Where you start in this range depends on your plowing and driving experience. Hours over 40 in a week are paid at time and a half.' },
+    description: ['Join our commercial snow team for the winter season. Work with other drivers, equipment operators and sidewalk crews to keep our customers’ properties open and safe.'],
     responsibilities: [
       'Operate an assigned plow truck and follow the property’s snow plan.',
       'Inspect the vehicle and equipment, identify hazards and report damage or mechanical concerns.',
@@ -121,52 +63,115 @@ export const careerRoles: CareerRole[] = [
       'Assist with deicing and related snow work as assigned.',
     ],
     requirements: [
-      'A valid driver’s license appropriate to the assigned vehicle and ability to meet company driving requirements.',
-      'Relevant plowing or comparable vehicle-operation experience and the ability to demonstrate safe operation.',
-      'Reliable transportation to the reporting location and availability for weather-driven callouts.',
-      'Ability to work overnight, weekend and holiday shifts in winter conditions.',
+      'A valid driver’s license for the truck you’re assigned, and a driving record that qualifies you to drive it.',
+      'Plowing experience, or similar experience driving and operating equipment, and the ability to show us you work safely.',
+      'Reliable transportation, day or night.',
+      'Available when it snows, including overnight, weekend and holiday shifts.',
     ],
     helpful: ['At least one winter of commercial plowing experience.'],
-    benefits: ['Paid sick leave under applicable New York requirements.', 'Seasonal employment has different benefit eligibility from full-time, year-round work.'],
+    benefits: ['Paid sick leave.'],
     datePosted: '2026-10-19', validThrough: '2027-03-31T23:59:59-04:00',
   },
   {
     slug: 'sidewalk-snow-crew', title: 'Sidewalk Snow Crew', category: 'Snow & ice',
     summary: 'Help clear walkways, entrances and pedestrian areas at commercial properties. Snow experience is helpful, but not required.',
     employmentLabel: 'Seasonal, part-time and on call', employmentType: ['PART_TIME', 'TEMPORARY'],
-    schedule: 'Winter 2026–27. Weather-driven callouts may include overnight shifts, weekends and holidays. Hours vary with conditions; no weekly minimum or seasonal earnings are guaranteed.',
+    schedule: 'Winter 2026–27. We call crews out when it snows, which can mean overnight, weekend and holiday shifts. Your hours depend on the weather, so they change from week to week and aren’t guaranteed.',
     location: 'Commercial properties in the Rochester area',
-    pay: { min: 24, max: 35, unit: 'HOUR', note: 'Base hourly pay depends on relevant experience and assigned responsibilities. Overtime, when applicable, is separate.' },
-    description: ['Dependable people make a difference when winter weather arrives. Work with a crew to clear pedestrian routes and apply deicing material using the tools and procedures appropriate to each site.'],
+    pay: { min: 24, max: 35, unit: 'HOUR', note: 'Where you start in this range depends on your experience and responsibilities. Hours over 40 in a week are paid at time and a half.' },
+    description: ['Dependable people make a big difference when winter weather arrives. Work with a crew to clear walkways and entrances and spread ice melt so people can come and go safely.'],
     responsibilities: [
-      'Clear sidewalks, entrances and other pedestrian areas using shovels and assigned snow equipment.',
-      'Apply deicing materials as directed and keep access routes clear.',
+      'Clear sidewalks, entrances and other walkways with shovels and other snow equipment.',
+      'Spread salt or ice melt as directed and keep paths clear.',
       'Handle tools and materials safely, follow site instructions and report hazards.',
       'Communicate with the crew and record work as directed.',
     ],
     requirements: [
-      'Dependability and reliable transportation to the assigned reporting location.',
-      'Availability for weather-driven callouts, including overnight, weekend and holiday work.',
-      'Ability to safely perform physical outdoor work in snow and cold, with reasonable accommodation where applicable.',
-      'Willingness to learn safe tool use and follow crew instructions. A driver’s license is required only for an assigned driving role.',
+      'Dependability and reliable transportation, day or night.',
+      'Available when it snows, including overnight, weekends and holidays.',
+      'Able to do physical outdoor work safely in snow and cold, with or without reasonable accommodation.',
+      'Willingness to learn and follow your crew’s safety practices. You only need a driver’s license if you’re assigned to drive.',
     ],
     helpful: ['Prior snow removal, landscaping or other outdoor work. Newcomers willing to learn are welcome.'],
-    benefits: ['Paid sick leave under applicable New York requirements.', 'Seasonal employment has different benefit eligibility from full-time, year-round work.'],
+    benefits: ['Paid sick leave.'],
     datePosted: '2026-10-19', validThrough: '2027-03-31T23:59:59-04:00',
+  },
+  {
+    slug: 'lawn-care-technician',
+    title: 'Plant Health / Lawn Care Technician',
+    category: 'Plant Health',
+    summary: 'Treat lawns and landscapes across the Rochester area, from fertilizing and weed control to spotting problems before they spread.',
+    employmentLabel: 'Full-time, year-round',
+    employmentType: ['FULL_TIME'],
+    schedule: 'Hours follow the seasons, with the busiest stretch from spring through fall. We’ll go over overtime and winter work when we talk.',
+    location: 'Rochester and surrounding communities; based in Gates, NY',
+    pay: { min: 21, max: 32, unit: 'HOUR', note: 'Where you start in this range depends on your experience and qualifications. Hours over 40 in a week are paid at time and a half.' },
+    description: ['Help customers keep their lawns and landscapes healthy. This is a field role for someone who notices problems, works carefully and can explain what a property needs.'],
+    responsibilities: [
+      'Apply fertilizer, weed control and other Plant Health treatments at the right rates, following our procedures.',
+      'Spot turf, weed, insect and disease problems, and explain what you find.',
+      'Keep accurate work records, maintain a clean truck and work safely around customers and coworkers.',
+    ],
+    requirements: [
+      'At least one year of relevant fertilization or lawn-care experience.',
+      'A valid driver’s license and a driving record that qualifies you to drive company vehicles.',
+      'A NYS DEC pesticide technician or applicator certification, or willingness to work toward one. Until you’re certified, you’ll train under a certified applicator, as state rules require.',
+      'Attention to detail, dependable attendance and clear communication.',
+      'Able to do physical outdoor work safely in all kinds of weather, with or without reasonable accommodation.',
+    ],
+    benefits: [
+      'Paid vacation and six paid holidays, after an initial waiting period.',
+      'SIMPLE IRA retirement plan with a company match, once you meet the plan’s eligibility rules.',
+      'Paid sick leave.',
+      'Company-provided uniforms and safety glasses.',
+    ],
+    datePosted: '2026-10-19',
+  },
+  {
+    slug: 'landscape-design-consultant', title: 'Landscape Design Consultant', category: 'Design',
+    summary: 'Turn a customer’s ideas into a practical landscape plan, a clear proposal and a well-coordinated project.',
+    employmentLabel: 'Full-time', employmentType: ['FULL_TIME'],
+    schedule: 'Your week mixes office work, site visits and customer appointments, and it shifts with projects and the season.',
+    location: 'Gates, NY office and customer properties in the Rochester area',
+    pay: { min: 65000, max: 95000, unit: 'YEAR', note: 'Where you start in this range depends on your design, estimating and sales experience.' },
+    description: ['This role combines design and sales. You’ll meet homeowners and property managers, design a landscape that fits what they want, price it, present the proposal and hand the sold project off cleanly to our crews.'],
+    responsibilities: [
+      'Meet with customers, assess sites, take measurements and discuss goals, budget and timing.',
+      'Develop landscape concepts, prepare scopes and estimates, and present proposals.',
+      'Follow up with prospective customers and keep project and communication records organized.',
+      'Coordinate plans, materials and project details with the construction and operations team.',
+    ],
+    requirements: [
+      'Experience designing or selling landscape projects, with examples of your work to share.',
+      'Working knowledge of landscape materials, planting and outdoor construction.',
+      'Comfort creating and presenting designs, estimates and proposals with design software and everyday office tools.',
+      'Clear communication, follow-through and the ability to manage several customer projects.',
+      'A valid driver’s license and ability to travel to local customer sites.',
+    ],
+    helpful: ['About three years of relevant experience.'],
+    benefits: [
+      'SIMPLE IRA retirement plan with a company match, once you meet the plan’s eligibility rules.',
+      'Paid vacation and six paid holidays, after an initial waiting period.',
+      'Paid sick leave.',
+    ], datePosted: '2026-10-19',
   },
 ];
 
 export const generalCareerInterest = 'General interest / future opportunities';
 
-/** Westside's employee-referral program as given to staff in October 2026 (company memo). Only a hire
- * referred by a current employee qualifies, so never word it as a bonus for every new hire. Shown on the
- * careers page, each role page and each JobPosting; keep it in step with the program. */
+/** Westside's employee-referral program, from the company's October 2026 memo and the owner's explanation of it
+ * to staff: the referring employee can earn $900 and the person they refer $300. The public copy offers the $300
+ * only to referred hires, so never word it as a bonus for every new hire; the memo says "new successful hires",
+ * so do not claim unreferred hires are excluded either. Shown on the careers page, each role page and each
+ * JobPosting; keep it in step with the program. */
 export const referralBonus = {
-  newHire: 'Referred new hires earn a $300 bonus after 30 days of continuous employment and at least 128 hours worked.',
-  /** Follows a sentence that names the referring employee ("someone who works here"). */
-  referrer: 'Name them on your application, and they can earn up to $900 for referring you.',
-  /** Standalone wording for the JobPosting description. */
-  howTo: 'If a Westside employee referred you, include their name on your application.',
+  /** Lead-in on the careers page and role pages. */
+  lead: 'Know someone who works here?',
+  howTo: 'Put their name on your application.',
+  newHire: 'If you’re hired, you’ll earn a $300 bonus once you’ve been with us 30 days and worked at least 128 hours.',
+  referrer: 'They’ll earn a referral bonus too.',
+  /** Standalone statement for the JobPosting incentiveCompensation field. */
+  incentive: 'Hires referred by a Westside employee earn a $300 bonus once they’ve been with the company 30 days and worked at least 128 hours.',
 };
 
 export function formatCareerPay(pay: CareerRole['pay']): string {
@@ -192,14 +197,16 @@ export function careerJobPosting(role: CareerRole) {
   const list = (items: string[]) => `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
   const description = [
     ...role.description.map((text) => `<p>${escapeHtml(text)}</p>`),
-    `<p>${escapeHtml(role.schedule)}</p>`,
+    `<p>${escapeHtml(`${role.employmentLabel}. ${role.schedule}`)}</p>`,
+    // Job boards often show only this text, so it states the range that the page shows beside the note.
+    '<h3>Pay</h3>',
+    `<p>${escapeHtml([`${formatCareerPay(role.pay)}.`, role.pay.note].filter(Boolean).join(' '))}</p>`,
     '<h3>What you will do</h3>', list(role.responsibilities),
     '<h3>What the role requires</h3>', list(role.requirements),
     ...(role.helpful?.length ? ['<h3>Helpful experience</h3>', list(role.helpful)] : []),
-    ...(role.benefits.length ? ['<h3>Pay and benefits</h3>', list(role.benefits)] : []),
-    ...(role.pay.note ? [`<p>${escapeHtml(role.pay.note)}</p>`] : []),
+    ...(role.benefits.length ? ['<h3>Benefits</h3>', list(role.benefits)] : []),
     '<h3>Referral bonus</h3>',
-    `<p>${escapeHtml(`${referralBonus.newHire} ${referralBonus.howTo}`)}</p>`,
+    `<p>${escapeHtml(`Referred by a Westside employee? ${referralBonus.howTo} ${referralBonus.newHire}`)}</p>`,
   ].join('');
   return {
     '@context': 'https://schema.org',
@@ -234,7 +241,7 @@ export function careerJobPosting(role: CareerRole) {
         unitText: role.pay.unit,
       },
     },
-    incentiveCompensation: referralBonus.newHire,
+    incentiveCompensation: referralBonus.incentive,
     directApply: true,
     url: `${company.url}/careers/${role.slug}/`,
   };

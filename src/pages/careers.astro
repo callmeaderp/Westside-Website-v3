@@ -18,13 +18,13 @@ const breadcrumbJsonLd = {
 
 <BaseLayout
   title="Landscaping & Snow Jobs in Rochester, NY | Westside Careers"
-  description="Explore Plant Health, landscape design and commercial snow opportunities at Westside in Rochester, NY. View pay, schedules and requirements, then apply."
+  description="Commercial snow, Plant Health and landscape design jobs at Westside in Rochester, NY. See the pay, schedule and requirements for each, then apply."
   jsonLd={breadcrumbJsonLd}
 >
   <Hero
     label="Careers at Westside"
     heading="GOOD WORK STARTS WITH GOOD PEOPLE"
-    intro="Healthy lawns, thoughtfully built landscapes and safer winter properties all depend on the people doing the work. Find your place at our locally owned Rochester company, growing since 2000."
+    intro="Healthy lawns, well-built landscapes and safe, clear properties in winter all come down to the people doing the work. Find your place at a locally owned Rochester company that has served the area since 2000."
     image={getPhoto('hero-about.webp')}
     buttons={[
       { text: 'Explore Openings', href: '#openings', style: 'primary' },
@@ -37,7 +37,7 @@ const breadcrumbJsonLd = {
       <div class="max-w-3xl mb-10">
         <p class="section-label">Current opportunities</p>
         <h2 id="openings-heading" class="section-title">FIND YOUR <span class="text-green">NEXT ROLE</span></h2>
-        <p class="section-subtitle mt-5">Read the pay range, schedule and qualifications for each opening. Year-round positions and seasonal snow work have different schedules and benefit eligibility.</p>
+        <p class="section-subtitle mt-5">Pick a role to see the schedule, the day-to-day work and what it takes.</p>
       </div>
       <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         {careerRoles.map((role) => (
@@ -52,10 +52,10 @@ const breadcrumbJsonLd = {
         ))}
       </div>
       <div class="mt-8 p-7 rounded-xl max-w-3xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);" data-referral-bonus>
-        <h3 class="text-lg mb-3" style="font-family: var(--font-body); text-transform: none;">Know someone who works here?</h3>
-        <p class="leading-relaxed" style="color: var(--color-text-muted);">Ask them to refer you. {referralBonus.newHire} {referralBonus.referrer}</p>
+        <h3 class="text-lg mb-3" style="font-family: var(--font-body); text-transform: none;">{referralBonus.lead}</h3>
+        <p class="leading-relaxed" style="color: var(--color-text-muted);">{referralBonus.howTo} {referralBonus.newHire} {referralBonus.referrer}</p>
       </div>
-      <p class="text-sm mt-7" style="color: var(--color-text-muted);">We’re always looking for good people. Not sure which opening fits? Use the general-interest option below and tell us about your experience.</p>
+      <p class="text-sm mt-7" style="color: var(--color-text-muted);">Not sure which opening fits? We’re always looking for good people. Choose “General interest” on the form below and tell us about your experience.</p>
     </div>
   </section>
 
@@ -65,9 +65,9 @@ const breadcrumbJsonLd = {
       <h2 id="working-here-heading" class="section-title mb-10">LOCAL ROOTS. <span class="text-green">HANDS-ON WORK.</span></h2>
       <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-9">
         <div><h3 class="text-lg mb-3">A range of skills</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Our work includes Plant Health and lawn care, landscape design and construction, maintenance, and commercial snow and ice management.</p></div>
-        <div><h3 class="text-lg mb-3">Room to grow</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">We’re still growing, and we would rather promote from within. When a foreman spot opens, we look first to the people already on our crews.</p></div>
-        <div><h3 class="text-lg mb-3">Know the terms</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Each listing explains its base pay and work schedule. Benefits depend on the role, service requirements and plan eligibility. The hiring team can walk you through the details.</p></div>
-        <div><h3 class="text-lg mb-3">A straightforward start</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Apply with your name and a phone number or email. A résumé is welcome, not required. Tell us what you do well and when you are available.</p></div>
+        <div><h3 class="text-lg mb-3">Room to grow</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">We’re growing, and when leadership roles open up, we look to our own people first.</p></div>
+        <div><h3 class="text-lg mb-3">Pay up front</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Every listing shows its pay range and schedule before you apply. Our hiring team is happy to answer questions about benefits and anything else.</p></div>
+        <div><h3 class="text-lg mb-3">A straightforward start</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Apply with your name and a phone number or email. A résumé is welcome, not required. Tell us what you do well and when you’re available.</p></div>
       </div>
     </div>
   </section>
