@@ -7,7 +7,7 @@
  * 1. Validates Turnstile server-side
  * 2. Validates resume file if present (magic bytes, size, type)
  * 3. Exchanges Azure AD client credentials for Graph token
- * 4. Sends HTML notification to office@ + brad@; careers CC Joshua for launch coordination
+ * 4. Sends HTML notification to office@ + brad@ (careers also jeff@); careers CC Joshua
  * 5. Sends a branded acknowledgement when an email address was supplied
  * 6. Sends customer-only Meta CAPI `Lead` events on production hosts, using the
  *    browser's shared event_id for deduplication. Careers exit before hashing.
@@ -254,6 +254,8 @@ const NOTIFY = [
   'office@westsideprolandscape.com',  // Heather
   'brad@westsideprolandscape.com',    // Brad
 ];
+// Job applications also reach Jeff, who takes part in hiring.
+const CAREER_NOTIFY = [...NOTIFY, 'jeff@westsideprolandscape.com'];
 // Customer confirmation replies go to the monitored office mailbox. The website
 // sender account is intentionally disabled for interactive use and is not an inbox.
 const REPLY_TO = 'office@westsideprolandscape.com';
@@ -393,7 +395,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
   const graphToken = tokenData.access_token;
   const previewRecipient = testRecipient(env);
-  const notifyRecipients = previewRecipient ? [previewRecipient] : NOTIFY;
+  const notifyRecipients = previewRecipient ? [previewRecipient] : isCareer ? CAREER_NOTIFY : NOTIFY;
 
   const inquiryType = isCareer ? 'Career Inquiry' : 'Estimate Request';
   // Property type, company, and budget in the subject line let the office triage

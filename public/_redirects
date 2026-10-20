@@ -28,6 +28,11 @@
 /about-us               /about/         301
 /contact-us/            /contact/       301
 /contact-us             /contact/       301
+
+# Closed recruiting openings: send shared links to the current openings.
+# Temporary (302) because a role can reopen at the same address.
+/careers/landscape-construction-foreman   /careers/  302
+/careers/landscape-construction-foreman/  /careers/  302
 /portfolio/             /gallery/       301
 /portfolio              /gallery/       301
 /our-work/              /gallery/       301
