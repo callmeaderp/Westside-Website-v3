@@ -2,7 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import CareerForm from '@components/CareerForm.astro';
-import { careerRoles, formatCareerPay } from '@data/careers';
+import { careerRoles, formatCareerPay, referralBonus } from '@data/careers';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
@@ -51,7 +51,11 @@ const breadcrumbJsonLd = {
           </article>
         ))}
       </div>
-      <p class="text-sm mt-7" style="color: var(--color-text-muted);">Not sure which opening fits? Use the general-interest option below and tell us about your experience.</p>
+      <div class="mt-8 p-7 rounded-xl max-w-3xl" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);" data-referral-bonus>
+        <h3 class="text-lg mb-3" style="font-family: var(--font-body); text-transform: none;">Know someone who works here?</h3>
+        <p class="leading-relaxed" style="color: var(--color-text-muted);">Ask them to refer you. {referralBonus.newHire} {referralBonus.referrer}</p>
+      </div>
+      <p class="text-sm mt-7" style="color: var(--color-text-muted);">We’re always looking for good people. Not sure which opening fits? Use the general-interest option below and tell us about your experience.</p>
     </div>
   </section>
 
@@ -59,8 +63,9 @@ const breadcrumbJsonLd = {
     <div class="site-container">
       <p class="section-label">Working here</p>
       <h2 id="working-here-heading" class="section-title mb-10">LOCAL ROOTS. <span class="text-green">HANDS-ON WORK.</span></h2>
-      <div class="grid md:grid-cols-3 gap-9">
+      <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-9">
         <div><h3 class="text-lg mb-3">A range of skills</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Our work includes Plant Health and lawn care, landscape design and construction, maintenance, and commercial snow and ice management.</p></div>
+        <div><h3 class="text-lg mb-3">Room to grow</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">We’re still growing, and we would rather promote from within. When a foreman spot opens, we look first to the people already on our crews.</p></div>
         <div><h3 class="text-lg mb-3">Know the terms</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Each listing explains its base pay and work schedule. Benefits depend on the role, service requirements and plan eligibility. The hiring team can walk you through the details.</p></div>
         <div><h3 class="text-lg mb-3">A straightforward start</h3><p class="leading-relaxed" style="color: var(--color-text-muted);">Apply with your name and a phone number or email. A résumé is welcome, not required. Tell us what you do well and when you are available.</p></div>
       </div>

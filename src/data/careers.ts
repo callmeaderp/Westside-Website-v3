@@ -158,6 +158,17 @@ export const careerRoles: CareerRole[] = [
 
 export const generalCareerInterest = 'General interest / future opportunities';
 
+/** Westside's employee-referral program as given to staff in October 2026 (company memo). Only a hire
+ * referred by a current employee qualifies, so never word it as a bonus for every new hire. Shown on the
+ * careers page, each role page and each JobPosting; keep it in step with the program. */
+export const referralBonus = {
+  newHire: 'Referred new hires earn a $300 bonus after 30 days of continuous employment and at least 128 hours worked.',
+  /** Follows a sentence that names the referring employee ("someone who works here"). */
+  referrer: 'Name them on your application, and they can earn up to $900 for referring you.',
+  /** Standalone wording for the JobPosting description. */
+  howTo: 'If a Westside employee referred you, include their name on your application.',
+};
+
 export function formatCareerPay(pay: CareerRole['pay']): string {
   const format = (amount: number) =>
     new Intl.NumberFormat('en-US', {
@@ -187,6 +198,8 @@ export function careerJobPosting(role: CareerRole) {
     ...(role.helpful?.length ? ['<h3>Helpful experience</h3>', list(role.helpful)] : []),
     ...(role.benefits.length ? ['<h3>Pay and benefits</h3>', list(role.benefits)] : []),
     ...(role.pay.note ? [`<p>${escapeHtml(role.pay.note)}</p>`] : []),
+    '<h3>Referral bonus</h3>',
+    `<p>${escapeHtml(`${referralBonus.newHire} ${referralBonus.howTo}`)}</p>`,
   ].join('');
   return {
     '@context': 'https://schema.org',
@@ -221,6 +234,7 @@ export function careerJobPosting(role: CareerRole) {
         unitText: role.pay.unit,
       },
     },
+    incentiveCompensation: referralBonus.newHire,
     directApply: true,
     url: `${company.url}/careers/${role.slug}/`,
   };

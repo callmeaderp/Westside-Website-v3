@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { careerRoles, careerJobPosting, formatCareerPay } from '../src/data/careers';
+import { careerRoles, careerJobPosting, formatCareerPay, referralBonus } from '../src/data/careers';
 import { mockProductionSite } from './mock-production-site';
 
 async function applicant(page: Page, contact: 'phone' | 'email' = 'phone') {
@@ -25,6 +25,22 @@ test('all published roles show their own pay, description, schema and selected a
     expect(schema.baseSalary.value.unitText).toBe(role.pay.unit);
     expect(schema.hiringOrganization.logo).toContain('/sig/westside-logo.png');
   }
+});
+
+test('referral bonus appears with its conditions and only for referred hires', async ({ page }) => {
+  for (const path of ['/careers/', ...careerRoles.map((role) => `/careers/${role.slug}/`)]) {
+    await page.goto(path);
+    const box = page.locator('[data-referral-bonus]');
+    await expect(box).toHaveCount(1);
+    await expect(box).toContainText('Referred new hires earn a $300 bonus after 30 days of continuous employment and at least 128 hours worked.');
+    await expect(box).toContainText('up to $900');
+  }
+  for (const role of careerRoles) {
+    const schema = careerJobPosting(role);
+    expect(schema.incentiveCompensation).toBe(referralBonus.newHire);
+    expect(schema.description).toContain(`<h3>Referral bonus</h3><p>${referralBonus.newHire} ${referralBonus.howTo}</p>`);
+  }
+  expect(referralBonus.newHire).toMatch(/^Referred new hires/);
 });
 
 test('invalid pay cannot generate a public JobPosting', () => {
