@@ -151,7 +151,8 @@ export const careerRoles: CareerRole[] = [
     helpful: ['About three years of relevant experience.'],
     benefits: [
       'SIMPLE IRA retirement plan with a company match, once you meet the plan’s eligibility rules.',
-      'Paid vacation and six paid holidays, after an initial waiting period.',
+      // Vacation and holidays are tied to full-time, year-round status, and this role is not confirmed as year-round, so keep that condition.
+      'Paid vacation and holidays for full-time, year-round staff, after an initial waiting period.',
       'Paid sick leave.',
     ], datePosted: '2026-10-19',
   },
