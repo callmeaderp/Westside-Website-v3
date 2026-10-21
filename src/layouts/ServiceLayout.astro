@@ -86,6 +86,7 @@ const serviceJsonLd = { '@context': 'https://schema.org', '@graph': schemaGraph 
     heading={service.heroHeading}
     intro={service.heroIntro}
     image={getPhoto(service.heroImage)}
+    imagePosition={service.heroImagePosition}
     buttons={heroButtons ?? [
       { text: service.cta, href: `/contact/?service=${service.slug}`, style: 'primary' },
       { text: `Call ${company.phone}`, href: company.phoneHref, style: 'outline' },

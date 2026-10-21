@@ -36,6 +36,8 @@ const ServiceSchema = z.object({
   heroHeading: z.string(),
   heroIntro: z.string(),
   heroImage: z.string(),
+  /** CSS object-position for the hero photo when its subject sits off-center or high in the frame. */
+  heroImagePosition: z.string().optional(),
   cardImage: z.string(),
   /** Describes what the card photo shows — not a repeat of the service name. */
   cardImageAlt: z.string(),
@@ -445,9 +447,13 @@ export const services: Service[] = [
     heroHeading: 'HOLIDAY DECORATING & LIGHTING IN ROCHESTER, NY',
     heroIntro:
       'We design, install, maintain, and remove your holiday display, so you can enjoy the lights without the ladders or tangled boxes.',
-    heroImage: 'svc-holiday-lighting.webp',
-    cardImage: 'svc-holiday-lighting.webp',
-    cardImageAlt: 'Large columned house at night outlined in warm white holiday lights, with every surrounding shrub and tree wrapped in lights',
+    // Real photos of our holiday team's past installs; use rights confirmed 2026-10-21.
+    // Provenance lives in the private operations workspace, not this public repo.
+    heroImage: 'svc-holiday-lighting-brick-wreath.webp',
+    // The rooflines sit high in this frame; keep them below the sticky header on wide screens.
+    heroImagePosition: '35% 28%',
+    cardImage: 'svc-holiday-lighting-ranch-trees.webp',
+    cardImageAlt: 'Brick ranch home at dusk with warm white lights along every roofline and two front-yard trees wrapped in lights',
     icon: 'Sparkles',
     features: [
       'Custom lighting design',

@@ -14,6 +14,9 @@
  *    the newer drone and field sets was checked against Jobber job records on
  *    2026-10-02 (local/marketing/website-media-refresh-2026-10-02/).
  *  - Public filenames stay neutral: no client names or street addresses.
+ *  - The holiday page's hero and card photos are our holiday team's installs
+ *    from before it joined Westside. They stay out of this gallery of Westside
+ *    jobs; add holiday items once this season's installs are photographed.
  *
  * Array order is display order on /gallery/ and priority order for the
  * service-page strips, so keep the strongest and most varied items early.
@@ -602,9 +605,9 @@ export const gallery: GalleryItem[] = [
 ];
 
 /**
- * Verified stock derivatives (Corbis originals, confirmed 2026-09-27). The
- * gallery is presented as Westside's own work, so these may never appear in it.
- * svc-holiday-lighting.webp is still the holiday page hero pending real photos.
+ * Verified stock derivatives (Corbis originals, confirmed 2026-09-27). All three
+ * files have been removed from the site; the names stay listed so they cannot
+ * return through the gallery.
  */
 const KNOWN_STOCK = ['svc-holiday-lighting.webp', 'svc-snow.webp', 'gallery-holiday-festive.webp'];
 
