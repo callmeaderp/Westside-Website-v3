@@ -4,9 +4,9 @@ Current-state list of unpublished content, missing approvals, and the safe fallb
 
 ## Real holiday lighting photos
 
-**Current published fallback:** the Holiday Decorating page hero and its homepage/service cards still use `svc-holiday-lighting.webp`, a generative re-render of a verified Corbis stock photo (September 27, 2026 audit). Its license position is unknown, and it is deliberately excluded from the gallery, which is presented as Westside's own work.
+**Current published state (October 21, 2026):** the Holiday Decorating hero (also its og:image) and its homepage/service card show two real photos of our holiday team's installs from before it joined Westside: `svc-holiday-lighting-brick-wreath.webp` and `svc-holiday-lighting-ranch-trees.webp`. Their use was approved on October 21, 2026; provenance is kept in the private operations workspace. The Corbis-derived `svc-holiday-lighting.webp` was deleted. The holiday page has no "From our work" strip, because those earlier installs stay out of the gallery of Westside jobs.
 
-**What's needed:** photos of real Westside holiday installs (rooflines, wrapped trees, wreaths, commercial entrances). This season's installs are the easiest source. Once they exist, add them to the media library, replace the hero/card image in `src/data/services.ts`, add them to `src/data/gallery.ts`, and delete the stock-derived file.
+**What's needed:** night photos of this season's Westside installs (rooflines, wrapped trees, wreaths, commercial entrances). Once they exist, add them to the media library, add a holiday category and at least three holiday items to `src/data/gallery.ts` so the page gets its strip, and consider whether one should replace the current hero or card.
 
 ---
 

@@ -1047,11 +1047,15 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'When should I book holiday lighting installation?',
-        answer: "Earlier is better because the schedule fills quickly. Consultations begin in September, and installations start in late October through early November. Booking by mid-October gives us time to design the display, source materials, and hold your preferred installation window. We take later requests when the schedule allows.",
+        answer: "The sooner the better. Consultations begin in September and installations start in late October, so early requests get the widest choice of dates. We take later requests whenever the schedule allows.",
       },
       {
         question: 'Do you provide the lights or do I supply them?',
         answer: "We provide the commercial-grade LED lights, extension cords, clips, timers, wreaths, garland, and hardware included in your design. You do not need to buy, store, or maintain the equipment.",
+      },
+      {
+        question: 'Do you install permanent lighting?',
+        answer: "Not at this time. Our displays are seasonal: we put them up in the fall and take them down after the holidays.",
       },
       {
         question: 'What happens if a light burns out during the season?',
