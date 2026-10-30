@@ -254,8 +254,9 @@ const NOTIFY = [
   'office@westsideprolandscape.com',  // Heather
   'brad@westsideprolandscape.com',    // Brad
 ];
-// Job applications also reach Jeff, who takes part in hiring.
-const CAREER_NOTIFY = [...NOTIFY, 'jeff@westsideprolandscape.com'];
+// Job applications also reach Jeff, who takes part in hiring, and Katrina
+// (admin@), who phone-screens applicants for him.
+const CAREER_NOTIFY = [...NOTIFY, 'jeff@westsideprolandscape.com', 'admin@westsideprolandscape.com'];
 // Customer confirmation replies go to the monitored office mailbox. The website
 // sender account is intentionally disabled for interactive use and is not an inbox.
 const REPLY_TO = 'office@westsideprolandscape.com';
