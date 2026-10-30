@@ -204,7 +204,7 @@ const noCapi = () => {
 test.describe('contact Function: recruiting intake', () => {
   test('email-only with no message, default recipients and career-only CC', async () => {
     expect((await career({ email: 'candidate@example.com' })).status).toBe(200);
-    expect(mails()[0].toRecipients.map((r) => r.emailAddress.address)).toEqual(['office@westsideprolandscape.com', 'brad@westsideprolandscape.com', 'jeff@westsideprolandscape.com']);
+    expect(mails()[0].toRecipients.map((r) => r.emailAddress.address)).toEqual(['office@westsideprolandscape.com', 'brad@westsideprolandscape.com', 'jeff@westsideprolandscape.com', 'admin@westsideprolandscape.com']);
     expect(mails()[0].ccRecipients?.map((r) => r.emailAddress.address)).toEqual(['joshuabeldue@westsideprolandscape.com']);
     expect(mails()[0].body.content).toContain('Relevant Experience');
     expect(mails()).toHaveLength(2);
