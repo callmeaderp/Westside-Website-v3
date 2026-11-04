@@ -103,7 +103,8 @@ export const careerRoles: CareerRole[] = [
     summary: 'Treat lawns and landscapes across the Rochester area, from fertilizing and weed control to spotting problems before they spread.',
     employmentLabel: 'Full-time, year-round',
     employmentType: ['FULL_TIME'],
-    schedule: 'Hours follow the seasons, with the busiest stretch from spring through fall. We’ll go over overtime and winter work when we talk.',
+    // The published terms say snow hours are not guaranteed; keep that until Brad confirms the real winter arrangement.
+    schedule: 'Hours follow the seasons, with the busiest stretch from spring through fall. We’ll go over overtime and winter work when we talk. Snow hours aren’t guaranteed.',
     location: 'Rochester and surrounding communities; based in Gates, NY',
     pay: { min: 21, max: 32, unit: 'HOUR', note: 'Where you start in this range depends on your experience and qualifications. Hours over 40 in a week are paid at time and a half.' },
     description: ['Help customers keep their lawns and landscapes healthy. This is a field role for someone who notices problems, works carefully and can explain what a property needs.'],
