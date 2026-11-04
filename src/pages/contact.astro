@@ -6,12 +6,11 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
 import { MAX_RESUME_MB } from '@data/form-limits';
-import { budgetOptions, projectTypeOptions, timingOptions } from '@data/investment';
+import { budgetOptions, projectTypeOptions, timingOptions } from '@data/inquiry-options';
 import { propertyTypes } from '@data/property-types';
 import { services } from '@data/services';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
-import { url } from '@lib/utils';
 
 const adsFormSendTo = company.tracking.googleAdsId && company.tracking.googleAdsFormLabel
   ? `${company.tracking.googleAdsId}/${company.tracking.googleAdsFormLabel}`
@@ -42,7 +41,7 @@ const faqItems: { question: string; answer: string }[] = [
   },
   {
     question: 'Why do you ask for a budget range?',
-    answer: "So we can design something you'll actually build. A patio can be a $9,000 project or a $45,000 project depending on size, walls, lighting, and materials. Knowing your range up front helps the first proposal land somewhere realistic. \"Not sure yet\" is a completely valid answer; we'll help you scope it on site.",
+    answer: "So we can design something you'll actually build. The same patio idea can be a modest project or a major one depending on size, walls, lighting, and materials. Knowing your range up front helps the first proposal land somewhere realistic. \"Not sure yet\" is a completely valid answer; we'll help you scope it on site.",
   },
   {
     question: 'What areas do you serve?',
@@ -105,7 +104,7 @@ const jsonLd = [
     image={getPhoto('hero-contact.webp')}
     buttons={[
       { text: `Call ${company.phone}`, href: company.phoneHref, style: 'primary' },
-      { text: 'See Project Ranges', href: '/services/hardscaping/#investment', style: 'outline' },
+      { text: 'See Our Projects', href: '/projects/', style: 'outline' },
     ]}
   />
 
@@ -266,7 +265,6 @@ const jsonLd = [
                   </select>
                   <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">
                     Optional, but it helps us design something you'll actually build.
-                    <a href={url('/services/hardscaping/#investment')} style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 2px;">See typical ranges</a>.
                   </p>
                 </div>
                 <div>

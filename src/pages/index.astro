@@ -6,14 +6,10 @@ import FinancingBanner from '@components/FinancingBanner.astro';
 import { Image } from 'astro:assets';
 import { company } from '@data/company';
 import { constructionServices, coreServices, services } from '@data/services';
-import { formatBand, getBands } from '@data/investment';
 import { testimonials } from '@data/testimonials';
 import { getPhoto } from '@lib/images';
 import { siteUrl } from '@lib/site';
 import { url } from '@lib/utils';
-
-/** Headline construction ranges shown on the homepage teaser. */
-const homeBands = getBands(['patio-small', 'walkway-entry', 'retaining-wall']);
 
 // Build homepage JSON-LD (LocalBusiness + reviews + offer catalog)
 const homepageJsonLd = {
@@ -91,7 +87,7 @@ const homepageJsonLd = {
         <p class="section-label">Design & Build</p>
         <h2 class="section-title">OUTDOOR SPACES BUILT TO <span class="text-green">LAST</span></h2>
         <p class="section-subtitle mx-auto">
-          Construction is where a property really changes. Every build page shows what that scope typically costs before you have to call anyone.
+          Construction is where a property really changes. Each build page walks through how we do the work and shows real projects we have finished.
         </p>
       </div>
 
@@ -123,23 +119,13 @@ const homepageJsonLd = {
       <div class="rounded-xl p-8 fade-in" style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
         <div class="flex flex-col lg:flex-row items-center gap-8">
           <div class="flex-1">
-            <h3 class="text-lg mb-3">STRAIGHT ANSWERS ON <span class="text-green">COST</span></h3>
-            <div class="flex flex-col sm:flex-row gap-6 mb-4">
-              {homeBands.map((band) => (
-                <div>
-                  <p style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--color-green-bright); line-height: 1.2;">
-                    {formatBand(band)}
-                  </p>
-                  <p class="text-xs uppercase tracking-widest mt-1" style="color: var(--color-text-muted);">{band.label}</p>
-                </div>
-              ))}
-            </div>
+            <h3 class="text-lg mb-3">PLANNING A <span class="text-green">PROJECT?</span></h3>
             <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.7;">
-              These are broad Greater Rochester planning ranges, not quotes or promises. Site conditions, materials, access, and design all affect the final number.
+              Every property is different, so we price construction after we see it. We walk the space with you, talk through the options, and follow up with a free written estimate.
             </p>
           </div>
           <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
-            <a href={url('/services/hardscaping/#investment')} class="btn btn-primary btn-md">See All Ranges</a>
+            <a href={url('/contact/')} class="btn btn-primary btn-md">Get a Free Estimate</a>
             <a href={url('/projects/')} class="btn btn-outline btn-md">View Projects</a>
           </div>
         </div>

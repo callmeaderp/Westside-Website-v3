@@ -47,10 +47,6 @@ export interface ServiceContent {
    * one — the single biggest funnel leak on the construction pages.
    */
   heroButtons?: Array<{ text: string; href: string; style: 'primary' | 'dark' | 'outline' }>;
-  /** Investment-band ids (src/data/investment.ts) to publish on this page. */
-  investmentBandIds?: string[];
-  investmentTitle?: string;
-  investmentIntro?: string;
   /** Project slugs (src/data/projects.ts) to feature as proof. */
   featuredProjectSlugs?: string[];
 }
@@ -101,7 +97,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does landscape design cost in Rochester?',
-        answer: 'It depends on scope. A targeted front-entry redesign and a full property transformation are very different projects. The ranges above cover the renovation work we do most often in Greater Rochester. Design is developed as part of the proposal for the projects we build. Every number remains a planning figure until we walk the property; you receive a written, itemized estimate before work begins.',
+        answer: 'It depends on scope. A targeted front-entry redesign and a full property transformation are very different projects. Design is developed as part of the proposal for the projects we build, so after we walk the property, you receive a written, itemized estimate before any work begins.',
       },
       {
         question: 'Do you have a licensed landscape architect on staff?',
@@ -122,11 +118,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Start Your Design', href: '/contact/?service=landscape-design', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['landscape-renovation', 'walkway-entry', 'full-backyard'],
-    investmentIntro:
-      'Design and installation scope varies more than any other service we offer. These are the ranges renovation projects in Greater Rochester typically land in.',
     featuredProjectSlugs: [
       'estate-landscape-installation',
       'front-walkway-planting-beds',
@@ -227,7 +220,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         title: 'FERTILIZATION & WEED CONTROL',
-        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is timed for Western New York\'s climate and soils. NYS DEC certified technicians apply balanced fertilizer, pre- and post-emergent weed control, and an included grub-control application. <strong>Your first treatment is $58, half the usual $116 price for the average Rochester lawn.</strong> See the full schedule on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
+        text: 'Our <strong>5-Step Fertilization & Weed Control Program</strong> is timed for Western New York\'s climate and soils. NYS DEC certified technicians apply balanced fertilizer, pre- and post-emergent weed control, and an included grub-control application. <strong>Pricing is based on your lawn\'s square footage, and your first treatment is half price.</strong> See the full schedule on our <a href="/services/plant-health/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">5-step program page</a>.',
         features: ['5 precisely timed visits', 'Crabgrass & broadleaf weed control', 'Grub prevention included'],
       },
       {
@@ -263,7 +256,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does professional lawn care cost in Rochester?',
-        answer: "It depends on lawn size and the services you choose. Weekly mowing typically has a flat seasonal or per-visit rate based on the property. The 5-Step Fertilization & Weed Control program averages $116 per treatment for a typical Rochester lawn, and your <strong>first treatment is $58, half the usual price</strong>. Aeration, overseeding, and repair are quoted separately. After a <strong>free on-site estimate</strong>, you will see itemized pricing before work starts.",
+        answer: "It depends on lawn size and the services you choose. Weekly mowing typically has a flat seasonal or per-visit rate based on the property. The 5-Step Fertilization & Weed Control program is priced by your lawn's square footage, and your <strong>first treatment is half price</strong>. Aeration, overseeding, and repair are quoted separately. After a <strong>free on-site estimate</strong>, you will see itemized pricing before work starts.",
       },
       {
         question: 'Do I need to sign up for every service, or can I pick and choose?',
@@ -352,7 +345,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does a paver patio cost in Rochester?',
-        answer: "It depends on size, access, excavation, disposal, and the features you build into it. As a planning figure, compact seating patios in Greater Rochester typically begin around <strong>$9,000</strong>. Full outdoor rooms with seat walls, steps, a fire feature, or lighting commonly run <strong>$18,000 to $45,000</strong>. The ranges on this page reflect our usual project mix. They are not quotes; your written estimate comes after we walk the property.",
+        answer: "It depends on size, access, excavation, disposal, and the features you build into it. A compact seating patio and a full outdoor room with seat walls, steps, a fire feature, or lighting are very different projects. We walk the property with you before we put a number on it, and the estimate is free.",
       },
       {
         question: 'Why is one contractor thousands cheaper than another for the same patio?',
@@ -385,12 +378,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Start Your Project', href: '/contact/?service=hardscaping', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['patio-small', 'patio-outdoor-room', 'outdoor-kitchen', 'retaining-wall', 'walkway-entry', 'full-backyard'],
-    investmentTitle: 'WHAT PROJECTS LIKE YOURS <span class="text-green">TYPICALLY RUN</span>',
-    investmentIntro:
-      'Most contractors make you book an appointment just to learn whether you are in the right ballpark. These broad Greater Rochester planning ranges let you decide whether the conversation makes sense before you pick up the phone.',
     featuredProjectSlugs: [
       'lit-bar-patio-outdoor-room',
       'circular-brick-patio-seat-wall',
@@ -447,7 +436,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does a new front walkway cost in Rochester?',
-        answer: 'Front walkway and entry projects in Greater Rochester typically begin around <strong>$7,500</strong> and run to roughly <strong>$16,000</strong> when they include steps, a wider landing, a retaining element, and rebuilt planting beds. That is a planning range, not a quote. Length, material, removal, and access all affect the number.',
+        answer: 'Length, material, removal of the old walk, and access all affect the number, and so does what you add: steps, a wider landing, a retaining element, or rebuilt planting beds. We price it after seeing the entry in person.',
       },
       {
         question: 'Why do my front steps keep settling?',
@@ -468,11 +457,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Get a Free Estimate', href: '/contact/?service=walkways-steps', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['walkway-entry', 'landscape-renovation'],
-    investmentIntro:
-      'Entry projects are the most predictable construction work we do, which is why we can publish a fairly tight range for them.',
     featuredProjectSlugs: ['front-entry-steps-wall-rebuild', 'front-walkway-planting-beds'],
     relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
     ctaHeading: 'FIX THE FIRST THING EVERYONE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEES</span>',
@@ -535,7 +521,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does a retaining wall cost in Rochester?',
-        answer: 'Retaining wall projects here typically run <strong>$12,000 to $65,000</strong>. That is a wide range because height drives it non-linearly: a 3-foot garden wall and a 6-foot structural wall of the same length are different projects with different excavation, different units, and sometimes an engineering requirement. Square face footage, access for equipment, and material choice set where you land. It is a planning range, not a quote.',
+        answer: 'Height drives it more than anything else. A 3-foot garden wall and a 6-foot structural wall of the same length are different projects, with different excavation, different units, and sometimes an engineering requirement. Square face footage, equipment access, and material choice matter too. We measure the site and see what the wall has to hold back before we price it.',
       },
       {
         question: 'Why is my retaining wall leaning?',
@@ -556,11 +542,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Get a Free Estimate', href: '/contact/?service=retaining-walls', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['retaining-wall', 'patio-outdoor-room'],
-    investmentIntro:
-      'Wall pricing depends on square face footage, height, and what the wall holds back. The honest range stays wide until we see the site.',
     featuredProjectSlugs: [
       'stone-retaining-wall-shade-garden',
       'front-entry-steps-wall-rebuild',
@@ -617,7 +600,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does an outdoor kitchen cost in Rochester?',
-        answer: 'A stone bar and counter run with a built-in grill typically begins around <strong>$15,000</strong>. Larger cooking-and-gathering builds with more appliances, a fireplace, or granite counters go well beyond that. A simple masonry fire pit in an existing patio is a much smaller project. These are planning figures; appliance selection alone can move a kitchen budget by five figures.',
+        answer: 'It depends on what you build. A simple masonry fire pit in an existing patio is a small project. A stone bar and counter with a built-in grill is a bigger one, and a full cooking-and-gathering space with more appliances, a fireplace, or granite counters goes further still. Appliance choices alone can change the budget a lot, so we price from your actual layout and appliance list.',
       },
       {
         question: 'Gas or wood-burning fire pit?',
@@ -638,11 +621,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Get a Free Estimate', href: '/contact/?service=outdoor-kitchens', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['outdoor-kitchen', 'patio-outdoor-room'],
-    investmentIntro:
-      'Fire and kitchen features are usually built with a patio, so these ranges assume the surface is part of the project or already exists.',
     featuredProjectSlugs: ['stone-outdoor-kitchen-bar', 'circular-brick-patio-seat-wall', 'lit-bar-patio-outdoor-room'],
     relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
     ctaHeading: 'EXTEND YOUR OUTDOOR <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">SEASON</span>',
@@ -705,7 +685,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     faqs: [
       {
         question: 'How much does yard drainage cost in Rochester?',
-        answer: 'Drainage projects commonly begin around <strong>$1,800</strong> for a focused correction and can exceed <strong>$12,000</strong> for a full-property solution with multiple basins, long pipe runs, and regrading. Run length, depth, obstructions, and especially a usable outlet drive the number. This is a broad market-based planning range, not a quote.',
+        answer: 'A focused correction, like tying in a downspout or regrading one low spot, is a much smaller job than a full-property solution with multiple basins, long pipe runs, and regrading. Run length, depth, obstructions, and especially a usable outlet drive the number. We find the cause on site first, then price the fix.',
       },
       {
         question: 'Why does water pool in the same spot every spring?',
@@ -726,11 +706,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Get a Free Estimate', href: '/contact/?service=drainage-grading', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['drainage-grading', 'landscape-renovation'],
-    investmentIntro:
-      'Drainage pricing depends almost entirely on run length and whether the site has a usable outlet, so treat these as planning figures only.',
     featuredProjectSlugs: ['stone-retaining-wall-shade-garden', 'multi-level-patio-seat-wall'],
     relatedSlugs: ['hardscaping', 'retaining-walls', 'landscape-design'],
     ctaHeading: 'STOP FIGHTING THE <span style="text-decoration: underline; text-decoration-color: rgba(255,255,255,0.4); text-underline-offset: 6px;">WATER</span>',
@@ -919,11 +896,8 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
     ],
     heroButtons: [
       { text: 'Get a Free Consultation', href: '/contact/?service=artificial-grass', style: 'primary' },
-      { text: 'See Investment Ranges', href: '#investment', style: 'outline' },
+      { text: 'Call (585) 594-8420', href: 'tel:+15855948420', style: 'outline' },
     ],
-    investmentBandIds: ['artificial-turf'],
-    investmentIntro:
-      'Turf pricing depends on square footage, base preparation, and contouring. A flat pet area and a multi-break putting green are very different installations.',
     featuredProjectSlugs: [
       'private-putting-green-complex',
       'backyard-putting-green',

@@ -1,8 +1,8 @@
 ---
 /**
  * Construction project examples — the proof page the service funnels point at.
- * Each entry pairs a real Westside photo with the visible design challenge,
- * finished scope, and the current planning range for comparable work.
+ * Each entry pairs a real Westside photo with the visible design challenge
+ * and the finished scope.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
@@ -10,7 +10,6 @@ import CtaBanner from '@components/CtaBanner.astro';
 import FinancingBanner from '@components/FinancingBanner.astro';
 import { Image } from 'astro:assets';
 import { company } from '@data/company';
-import { formatBand, getBand, INVESTMENT_CAVEAT } from '@data/investment';
 import { projectCategories, projects } from '@data/projects';
 import { services } from '@data/services';
 import { getPhoto } from '@lib/images';
@@ -54,14 +53,14 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 
 <BaseLayout
   title="Hardscape, Landscape & Turf Projects in Rochester, NY | Westside"
-  description="See real patio, wall, walkway, outdoor kitchen, landscape installation, synthetic turf, and commercial projects built by Westside, with scope and planning ranges."
+  description="See real patio, wall, walkway, outdoor kitchen, landscape installation, synthetic turf, and commercial projects built by Westside, and what each one included."
   ogImage={getPhoto('gallery-putting-green-fall-hillside.webp')}
   jsonLd={jsonLd}
 >
   <Hero
     label="Real Completed Work"
     heading="OUR CONSTRUCTION PROJECTS IN ROCHESTER, NY"
-    intro="Every photo below shows work Westside completed. We pair the visible design challenge and finished scope with today's planning range for comparable work, not an invented old contract price."
+    intro="Every photo below shows work Westside completed. Each project lists the scope we built and, where we can document it, the design challenge it solved."
     image={getPhoto('gallery-putting-green-fall-hillside.webp')}
     imagePosition="center 45%"
     buttons={[
@@ -89,94 +88,84 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="project-grid">
-        {projects.map((project) => {
-          const band = project.investmentBandId ? getBand(project.investmentBandId) : undefined;
-          return (
-            <article
-              class="project-card rounded-xl overflow-hidden flex flex-col"
-              data-category={project.category}
-              style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
-            >
-              {project.secondaryImage ? (
-                <div class="grid grid-cols-2">
-                  <figure class="m-0 relative">
-                    <Image
-                      src={getPhoto(project.image)}
-                      alt={project.alt}
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                      widths={[400, 600]}
-                      sizes="(max-width: 1024px) 50vw, 300px"
-                    />
-                    <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,0,0,0.7); color: #fff;">
-                      View One
-                    </figcaption>
-                  </figure>
-                  <figure class="m-0 relative">
-                    <Image
-                      src={getPhoto(project.secondaryImage)}
-                      alt={project.secondaryAlt ?? `Second completed view: ${project.alt}`}
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                      widths={[400, 600]}
-                      sizes="(max-width: 1024px) 50vw, 300px"
-                    />
-                    <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,134,63,0.85); color: #fff;">
-                      View Two
-                    </figcaption>
-                  </figure>
-                </div>
-              ) : (
-                <div class="aspect-[4/3] overflow-hidden">
+        {projects.map((project) => (
+          <article
+            class="project-card rounded-xl overflow-hidden flex flex-col"
+            data-category={project.category}
+            style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);"
+          >
+            {project.secondaryImage ? (
+              <div class="grid grid-cols-2">
+                <figure class="m-0 relative">
                   <Image
                     src={getPhoto(project.image)}
                     alt={project.alt}
                     class="w-full h-full object-cover"
                     loading="lazy"
-                    widths={[600, 900]}
-                    sizes="(max-width: 1024px) 100vw, 600px"
+                    widths={[400, 600]}
+                    sizes="(max-width: 1024px) 50vw, 300px"
                   />
+                  <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,0,0,0.7); color: #fff;">
+                    View One
+                  </figcaption>
+                </figure>
+                <figure class="m-0 relative">
+                  <Image
+                    src={getPhoto(project.secondaryImage)}
+                    alt={project.secondaryAlt ?? `Second completed view: ${project.alt}`}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    widths={[400, 600]}
+                    sizes="(max-width: 1024px) 50vw, 300px"
+                  />
+                  <figcaption class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider" style="background: rgba(0,134,63,0.85); color: #fff;">
+                    View Two
+                  </figcaption>
+                </figure>
+              </div>
+            ) : (
+              <div class="aspect-[4/3] overflow-hidden">
+                <Image
+                  src={getPhoto(project.image)}
+                  alt={project.alt}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                  widths={[600, 900]}
+                  sizes="(max-width: 1024px) 100vw, 600px"
+                />
+              </div>
+            )}
+
+            <div class="p-8 flex flex-col gap-4 flex-1">
+              <div>
+                <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">
+                  {project.categoryLabel}{project.town ? ` · ${project.town}` : ''}{project.year ? ` · ${project.year}` : ''}
+                </p>
+                <h2 class="text-lg" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                  {project.title}
+                </h2>
+              </div>
+
+              {project.problem && (
+                <div>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
+                  <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
                 </div>
               )}
 
-              <div class="p-8 flex flex-col gap-4 flex-1">
-                <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">
-                    {project.categoryLabel}{project.town ? ` · ${project.town}` : ''}{project.year ? ` · ${project.year}` : ''}
-                  </p>
-                  <h2 class="text-lg" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
-                    {project.title}
-                  </h2>
-                </div>
-
-                {project.problem && (
-                  <div>
-                    <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
-                    <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
-                  </div>
-                )}
-
-                <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">What we built</p>
-                  <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>
-                </div>
-
-                <div class="mt-auto pt-4 flex flex-wrap items-center justify-between gap-3" style="border-top: 1px solid var(--color-border-dark);">
-                  <p class="project-pricing text-sm" style="color: var(--color-text-muted);">
-                    {band ? (
-                      <>Current planning range for comparable work: <strong style="color: var(--color-green-bright);">{formatBand(band)}</strong></>
-                    ) : (
-                      project.pricingNote
-                    )}
-                  </p>
-                  <a href={url(`/services/${project.relatedService}/`)} class="text-sm font-semibold" style="color: var(--color-green-bright);">
-                    {serviceName(project.relatedService)} &rarr;
-                  </a>
-                </div>
+              <div>
+                <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">What we built</p>
+                <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>
               </div>
-            </article>
-          );
-        })}
+
+              <div class="mt-auto pt-4 flex flex-wrap items-center justify-end gap-3" style="border-top: 1px solid var(--color-border-dark);">
+                <a href={url(`/services/${project.relatedService}/`)} class="text-sm font-semibold" style="color: var(--color-green-bright);">
+                  {serviceName(project.relatedService)} &rarr;
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
 
       <p id="project-empty" class="text-center text-sm mt-12 hidden" style="color: var(--color-text-muted);">
@@ -185,7 +174,7 @@ const serviceName = (slug: string) => services.find((s) => s.slug === slug)?.sho
 
       <div class="mt-14 p-6 rounded-xl max-w-4xl mx-auto fade-in" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
         <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">
-          <strong style="color: var(--color-text-light);">About these ranges.</strong> {INVESTMENT_CAVEAT}
+          <strong style="color: var(--color-text-light);">About these projects.</strong>
           Photographs are our own completed projects, nearly all of them in Greater Rochester. We identify a municipality only where we can support it, so entries are described by scope rather than by town.
         </p>
       </div>

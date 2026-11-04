@@ -156,7 +156,7 @@ export const services: Service[] = [
     heroLabel: 'Lawn Care Program',
     heroHeading: 'LAWN FERTILIZATION & WEED CONTROL IN ROCHESTER, NY',
     heroIntro:
-      'Five seasonal applications are timed to your lawn, with grub control included. Your first treatment is $58, half the usual $116 price for the average lawn.',
+      'Five seasonal applications are timed to your lawn, with grub control included. Your first treatment is half price.',
     heroImage: 'svc-plant-health-lawn.webp',
     cardImage: 'svc-plant-health-lawn-card.webp',
     cardImageAlt: 'Thick, evenly striped lawn running past a row of blue spruce beside a white home',
@@ -179,13 +179,13 @@ export const services: Service[] = [
     tagline: 'Built to last',
     description:
       'Patios, walls, walkways, fire pits, and outdoor kitchens built on the base and drainage work Rochester weather demands.',
-    metaTitle: 'Paver Patios & Outdoor Living in Rochester, NY | Cost Ranges',
+    metaTitle: 'Paver Patios & Outdoor Living in Rochester, NY | Westside',
     metaDescription:
-      'Paver patios, walkways, retaining walls, fire features & outdoor kitchens in Rochester, NY. See representative project investment ranges. Building since 2000. (585) 594-8420.',
+      'Paver patios, walkways, retaining walls, fire features & outdoor kitchens in Rochester, NY. Free on-site estimates. Building since 2000. (585) 594-8420.',
     heroLabel: 'Built to Last',
     heroHeading: 'HARDSCAPING & OUTDOOR LIVING IN ROCHESTER',
     heroIntro:
-      'Paver patios, retaining walls, walkways, fire features, and outdoor kitchens built for Rochester freeze-thaw cycles. See what projects like yours typically run before you call.',
+      'Paver patios, retaining walls, walkways, fire features, and outdoor kitchens built for Rochester freeze-thaw cycles. Every project starts with a free on-site estimate.',
     heroImage: 'hero-outdoor-living.webp',
     cardImage: 'svc-hardscape.webp',
     cardImageAlt: 'Circular brick paver patio with a stone seat wall and built-in grill counter under a mature tree beside a covered pavilion',
@@ -210,7 +210,7 @@ export const services: Service[] = [
       'Paver and natural-stone walkways, entry landings, and steps rebuilt level on a proper base for Rochester winters.',
     metaTitle: 'Paver Walkways, Steps & Front Entries in Rochester, NY | Westside',
     metaDescription:
-      'Rochester paver walkways, entry landings, and stone steps. Settled or unsafe steps rebuilt on a proper base. Typical projects and cost ranges. Call (585) 594-8420.',
+      'Rochester paver walkways, entry landings, and stone steps. Settled or unsafe steps rebuilt on a proper base. Free on-site estimates. Call (585) 594-8420.',
     heroLabel: 'Curb Appeal & Safety',
     heroHeading: 'WALKWAYS, STEPS & FRONT ENTRIES IN ROCHESTER',
     heroIntro:
@@ -237,9 +237,9 @@ export const services: Service[] = [
     tagline: 'Engineered to hold',
     description:
       'Segmental block, natural stone, and boulder retaining walls with the drainage and backfill that keep them standing.',
-    metaTitle: 'Retaining Wall Contractor in Rochester, NY | Costs & Repair',
+    metaTitle: 'Retaining Wall Contractor in Rochester, NY | Build & Repair',
     metaDescription:
-      'Rochester retaining walls in segmental block, natural stone, and boulders, built with proper drainage and backfill. Failing wall repair and cost ranges. (585) 594-8420.',
+      'Rochester retaining walls in segmental block, natural stone, and boulders, built with proper drainage and backfill. Failing walls repaired or rebuilt. (585) 594-8420.',
     heroLabel: 'Structural Hardscape',
     heroHeading: 'RETAINING & SEAT WALLS IN ROCHESTER, NY',
     heroIntro:
@@ -268,7 +268,7 @@ export const services: Service[] = [
       'Built-in grills, stone bars and counters, fire pits, fire tables, and full outdoor fireplaces built into your patio.',
     metaTitle: 'Outdoor Kitchens, Fire Pits & Fireplaces in Rochester, NY',
     metaDescription:
-      'Rochester outdoor kitchens, stone bars, built-in grills, fire pits, and outdoor fireplaces. Built with your patio or added to one. Cost ranges. Call (585) 594-8420.',
+      'Rochester outdoor kitchens, stone bars, built-in grills, fire pits, and outdoor fireplaces. Built with your patio or added to one. Free estimates. Call (585) 594-8420.',
     heroLabel: 'Outdoor Living',
     heroHeading: 'OUTDOOR KITCHENS & FIRE FEATURES IN ROCHESTER',
     heroIntro:

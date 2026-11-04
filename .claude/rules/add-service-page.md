@@ -3,7 +3,6 @@ paths:
   - "src/data/services.ts"
   - "src/data/service-content.ts"
   - "src/data/navigation.ts"
-  - "src/data/investment.ts"
   - "src/data/projects.ts"
   - "src/pages/services/**"
 ---
@@ -21,8 +20,8 @@ Service pages are data-driven — `/services/[slug]/` routes are generated dynam
 
 2. **`src/data/service-content.ts`**
    - Add a `ServiceContent` entry keyed by slug with intro/detail/process/FAQs/relatedSlugs/CTA.
-   - Add `heroButtons` — without them the hero falls back to a generic estimate/call pair. A construction page should point one button at `#investment`.
-   - Construction services should also set `investmentBandIds` and `featuredProjectSlugs`.
+   - Add `heroButtons` — without them the hero falls back to a generic estimate/call pair.
+   - Construction services should also set `featuredProjectSlugs`.
    - Services without a content entry render a blank body (hero + CTA only) — technically valid, but every production service has content.
 
 3. **`src/data/navigation.ts`**
@@ -31,13 +30,11 @@ Service pages are data-driven — `/services/[slug]/` routes are generated dynam
 `src/pages/contact.astro` no longer needs editing: the service `<select>` and the `?service=<slug>` preselect map are both generated from `services.ts`. Career Inquiry remains a hand-added special case.
 
 `src/pages/services/[slug].astro` usually needs no change — the dynamic route auto-generates from `services.map()`.
-**Exception:** if the service needs a fully custom page (like `plant-health.astro` with its pricing block + upsells), add a standalone `.astro` file AND add the slug to the `.filter()` call in `getStaticPaths` to prevent the dynamic route from shadowing it.
+**Exception:** if the service needs a fully custom page (like `plant-health.astro` with its offer card + upsells), add a standalone `.astro` file AND add the slug to the `.filter()` call in `getStaticPaths` to prevent the dynamic route from shadowing it.
 
-## Publishing prices
+## No published prices
 
-Construction planning bands belong in `src/data/investment.ts`; render them from `InvestmentBand` data rather than independently retyping the same range in templates or content strings. Keep Plant Health's promotional program price separate from these construction bands. Every published construction range must include `INVESTMENT_CAVEAT` in the enclosing section, and ranges must stay internally consistent—a walkway cannot start above a full patio.
-
-`tests/construction.spec.ts` asserts that every construction route publishes a band **and** the caveat.
+Service pages publish no prices or price ranges: they came off the site on 2026-11-04 pending a company review of pricing. Do not add dollar figures to service content, FAQs, metadata, project cards, or the Plant Health page unless Joshua explicitly approves the figures after that review. Percentage offers (50% off the first treatment, 5% prepay) are not prices. `tests/construction.spec.ts` fails if a dollar figure appears on a service page, the homepage, `/services/`, `/projects/`, or `/gallery/`; the README's content conventions say how to recover the removed implementation.
 
 ## Adding a project case study
 
@@ -60,7 +57,7 @@ Service-to-service links inside `detailCards[].text` and `faqs[].answer` render 
 <a href="/services/<slug>/" style="color: var(--color-green-bright); text-decoration: underline; text-underline-offset: 3px;">anchor text</a>
 ```
 
-The trailing slash on internal URLs is required (Astro is configured `trailingSlash: 'always'`). Note that `url()` deliberately does **not** prefix same-page fragments — `url('#investment')` returns `#investment`, not `/#investment`.
+The trailing slash on internal URLs is required (Astro is configured `trailingSlash: 'always'`). Note that `url()` deliberately does **not** prefix same-page fragments — `url('#program-details')` returns `#program-details`, not `/#program-details`.
 
 ## Professional title claims
 

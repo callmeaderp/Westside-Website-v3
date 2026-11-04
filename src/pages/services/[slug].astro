@@ -1,7 +1,6 @@
 ---
 import ServiceLayout from '@layouts/ServiceLayout.astro';
 import FaqSection from '@components/FaqSection.astro';
-import InvestmentRanges from '@components/InvestmentRanges.astro';
 import ProjectProof from '@components/ProjectProof.astro';
 import ServiceGallery from '@components/ServiceGallery.astro';
 import { Image } from 'astro:assets';
@@ -135,15 +134,6 @@ const shownPhotos = [
         </div>
       </div>
     </section>
-  )}
-
-  {content?.investmentBandIds && content.investmentBandIds.length > 0 && (
-    <InvestmentRanges
-      bandIds={content.investmentBandIds}
-      title={content.investmentTitle}
-      intro={content.investmentIntro}
-      serviceSlug={service.slug}
-    />
   )}
 
   {content?.featuredProjectSlugs && content.featuredProjectSlugs.length > 0 && (

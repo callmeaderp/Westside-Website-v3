@@ -1,11 +1,9 @@
 ---
 /**
- * Project proof strip — real completed work with the visible design challenge,
- * finished scope, and current planning range for comparable work. Used on
- * service pages; /projects/ renders the full set.
+ * Project proof strip — real completed work with the visible design challenge
+ * and finished scope. Used on service pages; /projects/ renders the full set.
  */
 import { Image } from 'astro:assets';
-import { formatBand, getBand } from '@data/investment';
 import { projects } from '@data/projects';
 import { getPhoto } from '@lib/images';
 import { url } from '@lib/utils';
@@ -39,53 +37,40 @@ const featured = slugs
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 stagger-children">
-        {featured.map((project) => {
-          const band = project.investmentBandId ? getBand(project.investmentBandId) : undefined;
-          return (
-            <article class="rounded-xl overflow-hidden flex flex-col" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
-              <div class="aspect-[4/3] overflow-hidden">
-                <Image
-                  src={getPhoto(project.image)}
-                  alt={project.alt}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                  widths={[600, 900]}
-                  sizes="(max-width: 1024px) 100vw, 600px"
-                />
-              </div>
-              <div class="p-8 flex flex-col gap-4 flex-1">
-                <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">
-                    {project.categoryLabel}{project.town ? ` · ${project.town}` : ''}
-                  </p>
-                  <h3 class="text-base" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
-                    {project.title}
-                  </h3>
-                </div>
-                {project.problem && (
-                  <div>
-                    <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
-                    <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
-                  </div>
-                )}
-                <div>
-                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">What we built</p>
-                  <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>
-                </div>
-                <p class="text-sm mt-auto pt-2" style="border-top: 1px solid var(--color-border-dark); color: var(--color-text-muted);">
-                  {band ? (
-                    <>
-                      Current planning range for comparable work:
-                      <strong style="color: var(--color-green-bright);"> {formatBand(band)}</strong>
-                    </>
-                  ) : (
-                    project.pricingNote
-                  )}
+        {featured.map((project) => (
+          <article class="rounded-xl overflow-hidden flex flex-col" style="background: var(--color-bg-dark-card); border: 1px solid var(--color-border-dark);">
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image
+                src={getPhoto(project.image)}
+                alt={project.alt}
+                class="w-full h-full object-cover"
+                loading="lazy"
+                widths={[600, 900]}
+                sizes="(max-width: 1024px) 100vw, 600px"
+              />
+            </div>
+            <div class="p-8 flex flex-col gap-4 flex-1">
+              <div>
+                <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color: var(--color-green-bright);">
+                  {project.categoryLabel}{project.town ? ` · ${project.town}` : ''}
                 </p>
+                <h3 class="text-base" style="font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                  {project.title}
+                </h3>
               </div>
-            </article>
-          );
-        })}
+              {project.problem && (
+                <div>
+                  <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">The design challenge</p>
+                  <p class="text-sm" style="color: var(--color-text-muted); line-height: 1.8;">{project.problem}</p>
+                </div>
+              )}
+              <div>
+                <p class="text-xs uppercase tracking-widest font-semibold mb-1" style="color: var(--color-text-muted);">What we built</p>
+                <p class="text-sm" style="color: var(--color-text-light); line-height: 1.8;">{project.solution}</p>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
 
       <div class="text-center mt-12 fade-in">

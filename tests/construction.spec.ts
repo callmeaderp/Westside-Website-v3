@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 
 /**
  * Construction funnel coverage. These assert the properties the overhaul was
- * built to guarantee — every construction page must route, must offer a hero
- * CTA, and must never publish a price band without its caveat.
+ * built to guarantee — every construction page must route and must offer a
+ * hero CTA — and that service pricing stays unpublished.
  */
 
 const CONSTRUCTION_ROUTES = [
@@ -52,49 +52,38 @@ test.describe('hero calls to action', () => {
   }
 });
 
-test.describe('investment ranges', () => {
-  for (const route of CONSTRUCTION_ROUTES) {
-    test(`${route} publishes ranges with the caveat`, async ({ page }) => {
+test.describe('service pricing stays unpublished', () => {
+  // Service prices and price ranges came off the site on 2026-11-04 pending a
+  // company review (README, "Content and asset conventions"). A dollar figure
+  // reappearing on these pages means pricing went back up without sign-off.
+  for (const route of [...ALL_SERVICE_ROUTES, '/', '/services/', '/projects/', '/gallery/']) {
+    test(`${route} publishes no dollar figures`, async ({ page }) => {
       await page.goto(route);
-      const section = page.locator('#investment');
-      await expect(section).toBeAttached();
-      // A published dollar band without its qualifier reads as a quote.
-      await expect(section).toContainText('These are ranges, not quotes.');
-      await expect(section).toContainText(/\$[\d,]+/);
+      const body = await page.locator('#main-content').innerText();
+      expect(body, `${route} shows a dollar figure`).not.toMatch(/\$\s?\d/);
+      const description = await page.locator('meta[name="description"]').getAttribute('content');
+      expect(description ?? '', `${route} meta description shows a dollar figure`).not.toMatch(/\$\s?\d/);
     });
   }
 
-  test('hero range link jumps to the investment section', async ({ page }) => {
-    await page.goto('/services/hardscaping/');
-    await page.locator('section.hero a[href$="#investment"]').click();
-    await expect(page.locator('#investment')).toBeInViewport();
-  });
-
   test('financing link points at the live Wells Fargo application', async ({ page }) => {
     await page.goto('/services/hardscaping/');
-    const financing = page.locator('#investment a[href*="retailservices.wellsfargo.com"]');
+    const financing = page.locator('#main-content a[href*="retailservices.wellsfargo.com"]');
     await expect(financing.first()).toBeVisible();
     await expect(financing.first()).toHaveAttribute('rel', /noopener/);
   });
 });
 
 test.describe('project case studies', () => {
-  test('projects page lists case studies with scope and range', async ({ page }) => {
+  test('projects page lists case studies with their scope', async ({ page }) => {
     await page.goto('/projects/');
     const cards = page.locator('.project-card');
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(6);
 
-    // Every card publishes what was built and either the comparable planning
-    // range or, for commercial/estate-scale scope no band honestly covers, a
-    // note on how that work is priced (src/data/projects.ts pricingNote).
     for (let i = 0; i < count; i++) {
       await expect(cards.nth(i)).toContainText('What we built');
-      await expect(cards.nth(i).locator('.project-pricing')).not.toBeEmpty();
     }
-    await expect(
-      page.locator('.project-card', { hasText: 'Current planning range for comparable work:' }).first()
-    ).toBeVisible();
 
     // "The design challenge" is optional — it renders only for the projects whose
     // original site condition is actually supported (src/data/projects.ts evidence

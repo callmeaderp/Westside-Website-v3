@@ -14,6 +14,7 @@ This is the Astro 7 production website for Westside Professional Landscape. Star
 - Internal links use trailing slashes. Preserve and test legacy redirects when routes change.
 - Keep tracking logic centralized in `TrackingScripts.astro` and preserve form attribution and conversion behavior.
 - Never commit platform credentials or secret API tokens.
+- Publish no service prices or price ranges. They came off the site on 2026-11-04 pending a company review of pricing; putting any figure back needs Joshua's explicit go-ahead after that review. Careers pay ranges are separate and stay. Details are in the README's content conventions.
 - Production deployment is an external side effect and requires Joshua's explicit request.
 
 ## Focused runbooks

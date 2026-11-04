@@ -19,8 +19,8 @@
  *    guess — a wrong town is a trust problem, and the honest alternative
  *    ("Greater Rochester") is already implied site-wide;
  *  - `year` comes from EXIF DateTimeOriginal on the source photo where present;
- *  - `investmentBandId` points at src/data/investment.ts. Never inline a price;
- *    when no band honestly fits, omit it and give a `pricingNote` instead.
+ *  - no prices: service pricing is unpublished (README, "Content and asset
+ *    conventions").
  */
 import type { ServiceSlug } from './services';
 
@@ -45,13 +45,6 @@ export interface Project {
    */
   problem?: string;
   solution: string;
-  /**
-   * Key of an entry in investmentBands. Omit it when no published band honestly
-   * covers the scope (commercial bids, estate-scale builds) and set pricingNote.
-   */
-  investmentBandId?: string;
-  /** Shown instead of a planning range when investmentBandId is omitted. */
-  pricingNote?: string;
   relatedService: ServiceSlug;
 }
 
@@ -76,7 +69,6 @@ export const projects: Project[] = [
     categoryLabel: 'Patio & Outdoor Living',
     solution:
       'The finished project combines a raised paver terrace, curved wall, bar-height counter, stool seating, broad steps, and integrated lighting.',
-    investmentBandId: 'patio-outdoor-room',
     relatedService: 'hardscaping',
   },
   {
@@ -91,7 +83,6 @@ export const projects: Project[] = [
       'The yard needed a permanent cooking and serving area integrated with its patio.',
     solution:
       'A stone-faced kitchen run brings together a built-in grill, prep counter, bar overhang, paver terrace, and warm task and accent lighting.',
-    investmentBandId: 'outdoor-kitchen',
     relatedService: 'hardscaping',
   },
   {
@@ -106,7 +97,6 @@ export const projects: Project[] = [
       'The compact fenced yard called for a gathering space that fit the available geometry without feeling boxed in.',
     solution:
       'A circular brick paver field defines the room, with a curved stone seat wall, built-in grill station, and planted perimeter softening the fence line.',
-    investmentBandId: 'patio-outdoor-room',
     relatedService: 'hardscaping',
   },
   {
@@ -119,7 +109,6 @@ export const projects: Project[] = [
     categoryLabel: 'Patio & Outdoor Living',
     solution:
       'A brick paver patio and grill station anchor the house end, while a curved walk leads to a separate pavilion-covered gathering area.',
-    investmentBandId: 'full-backyard',
     relatedService: 'hardscaping',
   },
   {
@@ -134,7 +123,6 @@ export const projects: Project[] = [
       'The grade changed continuously behind the house, so the design needed usable flat areas without one visually dominant wall.',
     solution:
       'Two paver terraces follow the slope at separate elevations, connected by broad steps and framed by a stone seat wall on the upper level.',
-    investmentBandId: 'patio-outdoor-room',
     relatedService: 'hardscaping',
   },
   {
@@ -149,7 +137,6 @@ export const projects: Project[] = [
       'The wooded setting needed a durable gathering surface where shade made a conventional lawn impractical.',
     solution:
       'A paver terrace fits beneath the tree canopy, with a centered fire feature and room for a full seating circle.',
-    investmentBandId: 'patio-outdoor-room',
     relatedService: 'outdoor-kitchens',
   },
   {
@@ -166,7 +153,6 @@ export const projects: Project[] = [
       'The original entry combined settled steps, uneven edges, and overgrown planting beds in one highly visible area.',
     solution:
       'The rebuilt entry pairs a wider paver landing and broad steps with a low block wall and refreshed foundation planting.',
-    investmentBandId: 'walkway-entry',
     relatedService: 'hardscaping',
   },
   {
@@ -181,7 +167,6 @@ export const projects: Project[] = [
       'The route from the driveway to the front door needed a clearer, wider approach tied into the surrounding landscape.',
     solution:
       'A broad curved paver walk uses a contrasting soldier-course border and follows the foundation beds into the entry.',
-    investmentBandId: 'walkway-entry',
     relatedService: 'hardscaping',
   },
   {
@@ -194,7 +179,6 @@ export const projects: Project[] = [
     categoryLabel: 'Retaining Wall',
     solution:
       'A raised stone wall creates a level planting terrace beneath the mature trees and gives the garden a defined lower edge.',
-    investmentBandId: 'retaining-wall',
     relatedService: 'hardscaping',
   },
   {
@@ -207,7 +191,6 @@ export const projects: Project[] = [
     categoryLabel: 'Landscape Installation',
     solution:
       'New planting beds and trees, about 21,000 square feet of graded sod, irrigation, and low-voltage lighting, followed by ongoing mowing, turf applications, and bed care.',
-    pricingNote: 'Whole-property installations like this are priced from the landscape plan.',
     relatedService: 'landscape-design',
   },
   {
@@ -220,7 +203,6 @@ export const projects: Project[] = [
     categoryLabel: 'Turf & Putting Green',
     solution:
       'About 24,000 square feet of SYNLawn turf covers a contoured green over a ShotStopper base, the bunkers, tee boxes, fairway, and the swale under the stone bridge, with putting turf carried across the bridge deck.',
-    pricingNote: 'Estate-scale turf work like this is priced from the site plan.',
     relatedService: 'artificial-grass',
   },
   {
@@ -233,7 +215,6 @@ export const projects: Project[] = [
     categoryLabel: 'Turf & Putting Green',
     solution:
       'A 15-by-25-foot SYNLawn putting surface with three cups and a shaped fringe, built over a cushioned pad beside the pool patio.',
-    investmentBandId: 'artificial-turf',
     relatedService: 'artificial-grass',
   },
   {
@@ -246,7 +227,6 @@ export const projects: Project[] = [
     categoryLabel: 'Pet Turf',
     solution:
       'SYNLawn turf gives the backyard a mud-free pet area, fitted around the existing tree and bordered by planting beds and fencing.',
-    investmentBandId: 'artificial-turf',
     relatedService: 'artificial-grass',
   },
   {
@@ -259,7 +239,6 @@ export const projects: Project[] = [
     categoryLabel: 'Commercial Synthetic Turf',
     solution:
       'About 3,000 square feet of high-traffic SYNLawn turf with yard-line striping and a custom logo inlay, installed for the general contractor on a new apartment community.',
-    pricingNote: 'Commercial turf work is priced from the site plan and specifications.',
     relatedService: 'commercial-services',
   },
   {
@@ -274,14 +253,6 @@ export const projects: Project[] = [
       'The shared courtyard needed clearer circulation and a more finished place for tenants and visitors to pause.',
     solution:
       'Paver walks organize the routes through the space, while seating, lighting, and layered planting beds complete the courtyard.',
-    pricingNote: 'Commercial site work is priced from the plan and specifications.',
     relatedService: 'commercial-services',
   },
 ];
-
-// A card must show either a planning range or an explanation of why it has none.
-for (const project of projects) {
-  if (!project.investmentBandId && !project.pricingNote) {
-    throw new Error(`Project "${project.slug}" needs an investmentBandId or a pricingNote`);
-  }
-}
