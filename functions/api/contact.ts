@@ -524,6 +524,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       headers: { Authorization: `Bearer ${graphToken}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: {
+          // website@'s inbox rule redirects mail whose subject contains "Application received" to the
+          // hiring list; change that rule too if this subject changes (functions/README.md).
           subject: isCareer
             ? 'Application received - Westside Professional Landscape'
             : 'We received your request — Westside Professional Landscape',
