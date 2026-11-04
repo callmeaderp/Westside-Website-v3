@@ -1,12 +1,19 @@
 ---
 import { careerRoles, generalCareerInterest } from '@data/careers';
 import { company } from '@data/company';
-import { MAX_RESUME_MB } from '@data/form-limits';
+import { MAX_RESUME_FILES, MAX_RESUME_MB } from '@data/form-limits';
 import { url } from '@lib/utils';
 
 interface Props { selectedRole?: string }
 const { selectedRole = 'general-interest' } = Astro.props;
 const selected = careerRoles.some((role) => role.slug === selectedRole) ? selectedRole : 'general-interest';
+// JPEG must be the first MIME type: iOS Safari converts a picked photo whose type is not
+// listed (HEIC) to the first listed image type, so iPhone photos arrive as JPEG.
+const resumeAccept = [
+  'image/jpeg', 'image/png', 'application/pdf', 'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.jpg', '.jpeg', '.png', '.pdf', '.doc', '.docx',
+].join(',');
 ---
 
 <section id="apply" class="py-20 section-dark-alt scroll-mt-24" aria-labelledby="application-heading">
@@ -43,7 +50,7 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
         </div>
         <fieldset class="border-0 p-0 m-0">
           <legend class="career-label">How can we reach you? <span aria-hidden="true">*</span></legend>
-          <p id="career-contact-help" class="text-sm mb-3" style="color: var(--color-text-muted);">Please provide a phone number, an email address, or both.</p>
+          <p id="career-contact-help" class="text-sm mb-3" style="color: var(--color-text-muted);">Please provide a phone number, an email address, or both. For a phone number outside the US, include the country code.</p>
           <div class="grid sm:grid-cols-2 gap-5">
             <div>
               <label for="career-phone">Phone</label>
@@ -68,6 +75,7 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
             <select id="career-contact-preference" name="contact_preference">
               <option value="Either phone or email">Either phone or email</option>
               <option value="Phone call">Phone call</option>
+              <option value="Text message">Text message</option>
               <option value="Email">Email</option>
             </select>
           </div>
@@ -106,8 +114,8 @@ const selected = careerRoles.some((role) => role.slug === selectedRole) ? select
         </div>
         <div>
           <label for="career-resume">Résumé <span class="font-normal">(optional)</span></label>
-          <input id="career-resume" name="resume" type="file" accept=".pdf,.doc,.docx" aria-describedby="career-resume-help" />
-          <p id="career-resume-help" class="text-sm mt-2" style="color: var(--color-text-muted);">PDF, DOC or DOCX, up to {MAX_RESUME_MB} MB. You can apply without an attachment.</p>
+          <input id="career-resume" name="resume" type="file" multiple accept={resumeAccept} aria-describedby="career-resume-help" />
+          <p id="career-resume-help" class="text-sm mt-2" style="color: var(--color-text-muted);">A PDF or Word file, or photos of a paper résumé, up to {MAX_RESUME_FILES} files. We shrink photos for you; PDF and Word files can total {MAX_RESUME_MB} MB. You can also apply without one.</p>
         </div>
         <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">
           Your details go to Westside’s hiring team for recruiting and follow-up. Please leave out Social Security numbers,

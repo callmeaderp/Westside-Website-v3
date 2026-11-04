@@ -3,12 +3,13 @@
  *
  * Replaces Web3Forms + R2 resume pipeline with a single MS Graph sendMail endpoint.
  *
- * Receives JSON body with form fields + optional resume as base64.
+ * Receives JSON body with form fields + optional resume files as base64.
  * 1. Validates Turnstile server-side
- * 2. Validates resume file if present (magic bytes, size, type)
+ * 2. Validates resume files if present (magic bytes, combined size, type)
  * 3. Exchanges Azure AD client credentials for Graph token
- * 4. Sends HTML notification to office@ + brad@ (careers also jeff@); careers CC Joshua
- * 5. Sends a branded acknowledgement when an email address was supplied
+ * 4. Sends HTML notification to office@ + brad@ (careers also jeff@ and admin@); careers CC Joshua
+ * 5. Sends a branded acknowledgement when an email address was supplied. A reply
+ *    to a career acknowledgement goes to the same hiring recipients.
  * 6. Sends customer-only Meta CAPI `Lead` events on production hosts, using the
  *    browser's shared event_id for deduplication. Careers exit before hashing.
  *
@@ -17,7 +18,7 @@
  *   META_ACCESS_TOKEN, CONTACT_TEST_RECIPIENT (preview environment only)
  */
 
-import { MAX_RESUME_BYTES, MAX_RESUME_MB } from '../../src/data/form-limits';
+import { MAX_RESUME_BYTES, MAX_RESUME_FILES, MAX_RESUME_MB } from '../../src/data/form-limits';
 import { isPropertyType, RESIDENTIAL_PROPERTY_TYPE } from '../../src/data/property-types';
 import {
   buildUserData,
@@ -85,11 +86,17 @@ interface ContactPayload {
   turnstileToken?: string;
   /** UUID generated client-side and reused by the browser fbq Lead event for dedup. */
   eventId?: string;
-  resume?: {
-    name: string;
-    type: string;
-    data: string; // base64
-  };
+  /**
+   * Résumé files, normalized at the boundary from either the legacy single
+   * `resume` object (the /contact/ form) or the career form's `resumes` array.
+   */
+  resumes?: ResumeFile[];
+}
+
+interface ResumeFile {
+  name: string;
+  type: string;
+  data: string; // base64
 }
 
 /** Attribution keys we surface, in the order they appear in the notification. */
@@ -126,9 +133,13 @@ function sanitizeAttribution(raw: unknown): Array<[string, string]> {
   return out;
 }
 
-// Base64 for a 2 MiB file plus bounded form metadata fits comfortably in 3 MiB.
+// Base64 for 2 MiB of files plus bounded form metadata fits comfortably in 3 MiB.
 const MAX_REQUEST_BYTES = 3 * 1024 * 1024;
 const MAX_BASE64_LENGTH = 4 * Math.ceil(MAX_RESUME_BYTES / 3);
+// Each file's base64 rounds up separately; the exact combined byte cap is checked after decoding.
+const MAX_COMBINED_BASE64_LENGTH = MAX_BASE64_LENGTH + 4 * MAX_RESUME_FILES;
+const RESUME_TOO_LARGE = `Résumé files must total ${MAX_RESUME_MB} MB or less.`;
+const RESUME_UNSUPPORTED = 'Please attach a PDF, Word (DOC or DOCX), JPG or PNG file, or apply without a résumé.';
 const FIELD_LIMITS = {
   firstName: 100, lastName: 100, email: 254, phone: 80,
   address: 300, zip: 10, contactPreference: 40, service: 160,
@@ -148,7 +159,7 @@ class PayloadError extends Error {
 /** Content-Length is advisory; count the stream too, including chunked requests. */
 async function readPayload(request: Request): Promise<ContactPayload> {
   if (Number(request.headers.get('content-length')) > MAX_REQUEST_BYTES) {
-    throw new PayloadError('Request too large. Please use a resume of 2 MB or less.', 413);
+    throw new PayloadError(`Request too large. ${RESUME_TOO_LARGE}`, 413);
   }
   const reader = request.body?.getReader();
   if (!reader) throw new PayloadError('Invalid request body.');
@@ -160,7 +171,7 @@ async function readPayload(request: Request): Promise<ContactPayload> {
     size += value.byteLength;
     if (size > MAX_REQUEST_BYTES) {
       await reader.cancel();
-      throw new PayloadError('Request too large. Please use a resume of 2 MB or less.', 413);
+      throw new PayloadError(`Request too large. ${RESUME_TOO_LARGE}`, 413);
     }
     chunks.push(value);
   }
@@ -192,16 +203,29 @@ async function readPayload(request: Request): Promise<ContactPayload> {
     }
     fields.attribution = attribution;
   }
-  if (raw.resume !== undefined) {
-    const candidateResume = raw.resume;
-    if (!isRecord(candidateResume) || ['name', 'type', 'data'].some((key) => typeof candidateResume[key] !== 'string')) {
-      throw new PayloadError('Invalid resume. Please attach a PDF, DOC, or DOCX file.');
-    }
-    const resume = raw.resume as { name: string; type: string; data: string };
-    const data = resume.data.startsWith('data:') ? resume.data.slice(resume.data.indexOf(',') + 1) : resume.data;
-    if (data.length > MAX_BASE64_LENGTH) throw new PayloadError(`Resume too large. Maximum ${MAX_RESUME_MB} MB.`);
-    if (resume.name.length > 500 || resume.type.length > 100) throw new PayloadError('Invalid resume file name or type.');
-    fields.resume = { ...resume, data };
+  if (raw.resume !== undefined && raw.resumes !== undefined) {
+    throw new PayloadError('Invalid resume. Please attach each file only once.');
+  }
+  if (raw.resumes !== undefined && (!Array.isArray(raw.resumes) || raw.resumes.length === 0)) {
+    throw new PayloadError(`Invalid resume. ${RESUME_UNSUPPORTED}`);
+  }
+  // The /contact/ form still sends one `resume` object; the career form sends a `resumes` array.
+  const candidates: unknown[] | undefined = raw.resumes !== undefined ? raw.resumes as unknown[]
+    : raw.resume !== undefined ? [raw.resume] : undefined;
+  if (candidates) {
+    if (candidates.length > MAX_RESUME_FILES) throw new PayloadError(`Please attach up to ${MAX_RESUME_FILES} résumé files.`);
+    let base64Total = 0;
+    fields.resumes = candidates.map((candidate) => {
+      if (!isRecord(candidate) || ['name', 'type', 'data'].some((key) => typeof candidate[key] !== 'string')) {
+        throw new PayloadError(`Invalid resume. ${RESUME_UNSUPPORTED}`);
+      }
+      const resume = candidate as unknown as ResumeFile;
+      const data = resume.data.startsWith('data:') ? resume.data.slice(resume.data.indexOf(',') + 1) : resume.data;
+      base64Total += data.length;
+      if (data.length > MAX_BASE64_LENGTH || base64Total > MAX_COMBINED_BASE64_LENGTH) throw new PayloadError(RESUME_TOO_LARGE);
+      if (resume.name.length > 500 || resume.type.length > 100) throw new PayloadError('Invalid resume file name or type.');
+      return { name: resume.name, type: resume.type, data };
+    });
   }
   // These default to empty for the branch-specific required-field checks below.
   return { firstName: '', lastName: '', email: '', message: '', ...fields } as unknown as ContactPayload;
@@ -237,15 +261,22 @@ function isProductionRequest(request: Request): boolean {
 /** Long company names are shortened in the subject only; the body keeps the full name. */
 const MAX_SUBJECT_COMPANY_LENGTH = 60;
 const MAX_FILENAME_LENGTH = 180;
-const ALLOWED_TYPES: Record<string, string> = {
-  'application/pdf': '.pdf',
-  'application/msword': '.doc',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+/** Accepted résumé MIME types and the file extensions that may carry each. */
+const ALLOWED_TYPES: Record<string, string[]> = {
+  'application/pdf': ['.pdf'],
+  'application/msword': ['.doc'],
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+  // Photos of paper résumés. The career form re-encodes every photo as a resized JPEG
+  // (iOS also converts HEIC to JPEG for the form's accept list), so these two suffice.
+  'image/jpeg': ['.jpg', '.jpeg'],
+  'image/png': ['.png'],
 };
 const MAGIC_BYTES: Record<string, number[]> = {
   'application/pdf': [0x25, 0x50, 0x44, 0x46],           // %PDF
   'application/msword': [0xd0, 0xcf, 0x11, 0xe0],         // OLE
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [0x50, 0x4b, 0x03, 0x04], // PK ZIP
+  'image/jpeg': [0xff, 0xd8, 0xff],                       // JPEG SOI + marker
+  'image/png': [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // PNG signature
 };
 
 const SENDER = 'website@westsideprolandscape.com';
@@ -257,9 +288,16 @@ const NOTIFY = [
 // Job applications also reach Jeff, who takes part in hiring, and Katrina
 // (admin@), who phone-screens applicants for him.
 const CAREER_NOTIFY = [...NOTIFY, 'jeff@westsideprolandscape.com', 'admin@westsideprolandscape.com'];
+// Joshua is copied on applications for coordination.
+const CAREER_CC = 'joshuabeldue@westsideprolandscape.com';
 // Customer confirmation replies go to the monitored office mailbox. The website
 // sender account is intentionally disabled for interactive use and is not an inbox.
 const REPLY_TO = 'office@westsideprolandscape.com';
+// A reply to a career acknowledgement (often a résumé the applicant could not
+// attach) goes to everyone who received the application, not only the office.
+// On 2026-11-02 an emailed CV sat unread in office@ alone while the application
+// itself had reached the whole hiring team.
+const CAREER_REPLY_TO = [...CAREER_NOTIFY, CAREER_CC];
 
 /** Preview test mode may only redirect notifications to a company mailbox. */
 function testRecipient(env: Env): string | null {
@@ -323,35 +361,37 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(403, { success: false, message: 'Verification failed.' });
   }
 
-  let resumeBytes: Uint8Array | null = null;
-  let resumeName = '';
-  if (payload.resume) {
-    const { type, data } = payload.resume;
-    if (!Object.hasOwn(ALLOWED_TYPES, type)) {
-      return json(400, { success: false, message: 'Please attach a PDF, DOC, or DOCX resume.' });
+  const resumeFiles: ResumeFile[] = [];
+  let resumeBytesTotal = 0;
+  for (const resume of payload.resumes || []) {
+    if (!Object.hasOwn(ALLOWED_TYPES, resume.type)) {
+      return json(400, { success: false, message: RESUME_UNSUPPORTED });
     }
-    resumeName = sanitizeFilename(payload.resume.name, ALLOWED_TYPES[type]);
-    if (!resumeName) {
-      return json(400, { success: false, message: 'Please use a valid resume file name ending in .pdf, .doc, or .docx that matches its type.' });
+    const name = sanitizeFilename(resume.name, ALLOWED_TYPES[resume.type]);
+    if (!name) {
+      return json(400, { success: false, message: 'Please use a résumé file name ending in .pdf, .doc, .docx, .jpg, .jpeg or .png that matches its type.' });
     }
 
+    let bytes: Uint8Array;
     try {
-      resumeBytes = base64ToUint8Array(data);
+      bytes = base64ToUint8Array(resume.data);
     } catch {
       return json(400, { success: false, message: 'Invalid file data.' });
     }
 
-    if (resumeBytes.byteLength === 0) {
+    if (bytes.byteLength === 0) {
       return json(400, { success: false, message: 'Empty file.' });
     }
-    if (resumeBytes.byteLength > MAX_RESUME_BYTES) {
-      return json(400, { success: false, message: `Resume too large. Maximum ${MAX_RESUME_MB} MB.` });
+    resumeBytesTotal += bytes.byteLength;
+    if (resumeBytesTotal > MAX_RESUME_BYTES) {
+      return json(400, { success: false, message: RESUME_TOO_LARGE });
     }
 
-    const expected = MAGIC_BYTES[type];
-    if (expected && !expected.every((b, i) => resumeBytes![i] === b)) {
+    const expected = MAGIC_BYTES[resume.type];
+    if (expected && !expected.every((b, i) => bytes[i] === b)) {
       return json(400, { success: false, message: 'File content does not match its type.' });
     }
+    resumeFiles.push({ name, type: resume.type, data: resume.data });
   }
 
   const phone = formatPhone(payload.phone || '');
@@ -409,15 +449,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const subjectScope = isCareer ? careerPosition || service : [flaggedPropertyType, projectType || service, budget].filter(Boolean).join(' — ');
   const subject = `[${inquiryType}] ${subjectWho}${isCareer ? ' - ' : ' — '}${subjectScope || service}`.replace(/\s+/g, ' ').trim().slice(0, 400);
 
-  const attachments: Record<string, unknown>[] = [];
-  if (payload.resume && resumeBytes) {
-    attachments.push({
-      '@odata.type': '#microsoft.graph.fileAttachment',
-      name: resumeName,
-      contentType: payload.resume.type,
-      contentBytes: payload.resume.data, // already base64
-    });
-  }
+  const attachments: Record<string, unknown>[] = resumeFiles.map((resume) => ({
+    '@odata.type': '#microsoft.graph.fileAttachment',
+    name: resume.name,
+    contentType: resume.type,
+    contentBytes: resume.data, // already base64
+  }));
 
   const notificationHtml = buildNotificationEmail({
     firstName: firstName.trim(),
@@ -440,7 +477,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     message: message.trim(),
     submittedAt,
     isCareer,
-    hasResume: !!payload.resume,
+    resumeCount: resumeFiles.length,
     attribution,
   });
 
@@ -458,7 +495,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           body: { contentType: 'HTML', content: notificationHtml },
           toRecipients: notifyRecipients.map((addr) => ({ emailAddress: { address: addr } })),
           ccRecipients: isCareer && !previewRecipient
-            ? [{ emailAddress: { address: 'joshuabeldue@westsideprolandscape.com' } }] : [],
+            ? [{ emailAddress: { address: CAREER_CC } }] : [],
           replyTo: email ? [{ emailAddress: { address: email, name: `${firstName} ${lastName}` } }] : [],
           attachments,
           // No Outlook categories: sender-set categories never reached the office
@@ -476,6 +513,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   if (email) {
     const confirmationHtml = buildConfirmationEmail({ firstName, service, isCareer });
+    // Preview test mode keeps replies away from the office as well.
+    const confirmationReplyTo = isCareer
+      ? (previewRecipient ? [previewRecipient] : CAREER_REPLY_TO).map((address) => ({ emailAddress: { address } }))
+      : [{ emailAddress: { address: REPLY_TO, name: 'Westside Professional Landscape' } }];
     // Keep the Worker alive, but never report an accepted notification as failed
     // just because its optional acknowledgement could not be sent.
     const confirmation = fetch(`https://graph.microsoft.com/v1.0/users/${SENDER}/sendMail`, {
@@ -488,7 +529,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             : 'We received your request — Westside Professional Landscape',
           body: { contentType: 'HTML', content: confirmationHtml },
           toRecipients: [{ emailAddress: { address: email, name: `${firstName} ${lastName}` } }],
-          replyTo: [{ emailAddress: { address: REPLY_TO, name: 'Westside Professional Landscape' } }],
+          replyTo: confirmationReplyTo,
         },
         saveToSentItems: false,
       }),
@@ -570,15 +611,16 @@ function json(status: number, body: Record<string, unknown>): Response {
   });
 }
 
-function sanitizeFilename(raw: string, expectedExtension: string): string {
+function sanitizeFilename(raw: string, allowedExtensions: string[]): string {
   const leaf = String(raw || '').split(/[\\/]/).pop()?.trim() || '';
   const cleaned = leaf
     .replace(/[\u0000-\u001f\u007f]/g, '')
     .replace(/["<>:|?*]/g, '_');
-  if (!cleaned || !cleaned.toLowerCase().endsWith(expectedExtension)) return '';
-  const stem = cleaned.slice(0, -expectedExtension.length).trim();
+  const extension = allowedExtensions.find((candidate) => cleaned.toLowerCase().endsWith(candidate));
+  if (!cleaned || !extension) return '';
+  const stem = cleaned.slice(0, -extension.length).trim();
   if (!stem || /^\.+$/.test(stem)) return '';
-  return `${stem.slice(0, MAX_FILENAME_LENGTH - expectedExtension.length)}${expectedExtension}`;
+  return `${stem.slice(0, MAX_FILENAME_LENGTH - extension.length)}${extension}`;
 }
 
 function base64ToUint8Array(base64: string): Uint8Array {
@@ -599,16 +641,29 @@ function phoneLink(raw: string): string {
   return `${number.trim().startsWith('+') ? '+' : ''}${number.replace(/\D/g, '')}${extension ? `;ext=${extension}` : ''}`;
 }
 
-function formatPhone(raw: string): string {
-  if (/(?:ext\.?|x|#)/i.test(raw) || (raw.startsWith('+') && !raw.startsWith('+1'))) return raw;
+/**
+ * North American numbers: area code and exchange both start with 2-9. Anything
+ * else is shown exactly as typed, so a foreign number such as South Africa's
+ * 082 386 9388 is not dressed up as a US number "(082) 386-9388".
+ */
+function usDigits(raw: string): string | null {
+  if (/(?:ext\.?|x|#)/i.test(raw) || (raw.trim().startsWith('+') && !raw.trim().startsWith('+1'))) return null;
   const digits = raw.replace(/\D/g, '');
-  if (digits.length === 10) {
-    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-  }
-  if (digits.length === 11 && digits.startsWith('1')) {
-    return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
-  }
-  return raw.trim(); // return as-is if not a standard US number
+  const national = digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits;
+  return /^[2-9]\d{2}[2-9]\d{6}$/.test(national) ? national : null;
+}
+
+function formatPhone(raw: string): string {
+  const digits = usDigits(raw);
+  return digits ? `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}` : raw.trim();
+}
+
+/** Flags numbers the office should not dial as an ordinary US number. */
+function phoneNote(raw: string): string {
+  const value = raw.trim();
+  if (!value || usDigits(value)) return '';
+  if (/(?:ext\.?|x|#)/i.test(value) && usDigits(value.split(/\s*(?:ext\.?|x|#)\s*/i)[0])) return '';
+  return value.startsWith('+') && !value.startsWith('+1') ? 'International number' : 'Not a standard 10-digit US number';
 }
 
 interface NotificationData {
@@ -632,7 +687,7 @@ interface NotificationData {
   message: string;
   submittedAt: string;
   isCareer: boolean;
-  hasResume: boolean;
+  resumeCount: number;
   attribution: Array<[string, string]>;
 }
 
@@ -640,6 +695,8 @@ function buildNotificationEmail(data: NotificationData): string {
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const messageHtml = esc(data.message).replace(/\n/g, '<br>');
   const notProvided = '<span style="color:#999;">Not provided</span>';
+  const note = phoneNote(data.phone);
+  const resumeText = data.resumeCount === 1 ? 'Attached to this email' : `${data.resumeCount} files attached to this email`;
 
   const row = (label: string, valueHtml: string) =>
     `<tr><td style="padding:8px 0;border-bottom:1px solid #eee;width:150px;color:#666;vertical-align:top;">${esc(label)}</td>
@@ -682,7 +739,9 @@ function buildNotificationEmail(data: NotificationData): string {
       ${row('Name', `<strong>${esc(data.firstName)} ${esc(data.lastName)}</strong>`)}
       ${data.company ? row('Company', `<strong>${esc(data.company)}</strong>`) : ''}
       ${row('Email', data.email ? `<a href="mailto:${esc(encodeURIComponent(data.email))}" style="color:#00863F;">${esc(data.email)}</a>` : notProvided)}
-      ${row('Phone', data.phone ? `<a href="tel:${esc(phoneLink(data.phone))}" style="color:#00863F;">${esc(data.phone)}</a>` : notProvided)}
+      ${row('Phone', data.phone
+        ? `<a href="tel:${esc(phoneLink(data.phone))}" style="color:#00863F;">${esc(data.phone)}</a>${note ? ` <span style="color:#999;">(${esc(note)})</span>` : ''}`
+        : notProvided)}
       ${row('Prefers', data.contactPreference ? esc(data.contactPreference) : notProvided)}
       ${data.isCareer ? [
         row('Position', data.careerPosition ? esc(data.careerPosition) : notProvided),
@@ -697,11 +756,11 @@ function buildNotificationEmail(data: NotificationData): string {
       ${row('How Heard', esc(data.howHeard))}
       <tr><td style="padding:8px 0;color:#666;vertical-align:top;">${data.isCareer ? 'Relevant Experience' : 'Message'}</td>
           <td style="padding:8px 0;">${messageHtml || notProvided}</td></tr>
-      ${data.isCareer ? row('Resume', data.hasResume ? 'Attached to this email' : notProvided) : ''}
+      ${data.isCareer ? row('Resume', data.resumeCount ? resumeText : notProvided) : ''}
       ${attributionHtml}
     </table>
   </td></tr>
-  ${data.hasResume ? '<tr><td style="padding:16px 32px 0;"><span style="font-size:13px;color:#666;">📎 Resume attached to this email</span></td></tr>' : ''}
+  ${data.resumeCount ? `<tr><td style="padding:16px 32px 0;"><span style="font-size:13px;color:#666;">📎 ${data.resumeCount === 1 ? 'Resume attached to this email' : `${data.resumeCount} resume files attached to this email`}</span></td></tr>` : ''}
   <tr><td style="padding:24px 32px;border-top:1px solid #eee;margin-top:16px;">
     <span style="font-size:12px;color:#999;">Submitted ${esc(data.submittedAt)} via westsideprolandscape.com</span>
   </td></tr>
@@ -739,6 +798,9 @@ function buildConfirmationEmail(data: ConfirmationData): string {
   <tr><td style="padding:0 32px 24px;">
     <span style="font-size:14px;color:#333;line-height:1.7;">${bodyText}</span>
   </td></tr>
+  ${data.isCareer ? `<tr><td style="padding:0 32px 24px;">
+    <span style="font-size:14px;color:#333;line-height:1.7;">Want to add a résumé or anything else? Just reply to this email, and it will reach our hiring team.</span>
+  </td></tr>` : ''}
   <tr><td style="padding:0 32px 24px;">
     <span style="font-size:14px;color:#333;line-height:1.7;">If you need to reach us sooner, don't hesitate to call:</span><br>
     <a href="tel:+15855948420" style="font-size:16px;font-weight:700;color:#00863F;text-decoration:none;">(585) 594-8420</a><br>

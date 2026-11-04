@@ -218,7 +218,46 @@ test.describe('contact Function: recruiting intake', () => {
     expect(mails()).toHaveLength(1);
     expect(mails()[0].replyTo).toEqual([]);
     expect(mails()[0].body.content).toContain('+44 (0)20 7946 0958 ext. 12');
+    expect(mails()[0].body.content).toContain('(International number)');
     noCapi();
+  });
+
+  test('only real North American numbers are formatted as US numbers', async () => {
+    // South African mobile from a real Nov 2026 applicant: formerly shown as "(082) 386-9388".
+    await career({ phone: '0823869388' });
+    expect(mails()[0].body.content).toContain('>0823869388</a> <span style="color:#999;">(Not a standard 10-digit US number)</span>');
+    expect(mails()[0].body.content).not.toContain('(082) 386-9388');
+    for (const [typed, shown] of [['585-555-0123', '(585) 555-0123'], ['+1 585 555 0123', '(585) 555-0123'], ['1 (585) 555-0123', '(585) 555-0123']]) {
+      stubFetch();
+      await career({ phone: typed });
+      expect(mails()[0].body.content).toContain(`>${shown}</a>`);
+      expect(mails()[0].body.content).not.toContain('10-digit US number');
+    }
+    stubFetch();
+    await career({ phone: '585-555-0123 ext. 4' });
+    expect(mails()[0].body.content).not.toContain('10-digit US number');
+  });
+
+  test('career acknowledgement replies reach the whole hiring team; customer and preview replies do not', async () => {
+    await career({ email: 'candidate@example.com' });
+    const acknowledgement = mails()[1];
+    expect(acknowledgement.toRecipients.map((r) => r.emailAddress.address)).toEqual(['candidate@example.com']);
+    expect(acknowledgement.replyTo.map((r) => r.emailAddress.address)).toEqual([
+      'office@westsideprolandscape.com', 'brad@westsideprolandscape.com', 'jeff@westsideprolandscape.com',
+      'admin@westsideprolandscape.com', 'joshuabeldue@westsideprolandscape.com',
+    ]);
+    expect(acknowledgement.body.content).toContain('Just reply to this email, and it will reach our hiring team.');
+    // The applicant's own address stays the notification's Reply-To, so staff can answer directly.
+    expect(mails()[0].replyTo.map((r) => r.emailAddress.address)).toEqual(['candidate@example.com']);
+
+    stubFetch();
+    await submit({ service: 'Lawn Care' });
+    expect(mails()[1].replyTo.map((r) => r.emailAddress.address)).toEqual(['office@westsideprolandscape.com']);
+    expect(mails()[1].body.content).not.toContain('reply to this email');
+
+    stubFetch();
+    await career({ email: 'tester@example.com' }, { CONTACT_TEST_RECIPIENT: 'test@westsideprolandscape.com' });
+    expect(mails()[1].replyTo.map((r) => r.emailAddress.address)).toEqual(['test@westsideprolandscape.com']);
   });
 
   for (const fields of [
@@ -316,7 +355,7 @@ test.describe('contact Function: untrusted JSON and attachment bounds', () => {
       expect(captured).toEqual([]);
     });
   }
-  for (const field of ['firstName', 'lastName', 'email', 'phone', 'service', 'message', 'address', 'zip', 'propertyType', 'company', 'projectType', 'budget', 'timing', 'howHeard', 'contactPreference', 'careerPosition', 'careerAvailability', 'referredBy', 'eventId', 'turnstileToken', 'attribution', 'resume']) {
+  for (const field of ['firstName', 'lastName', 'email', 'phone', 'service', 'message', 'address', 'zip', 'propertyType', 'company', 'projectType', 'budget', 'timing', 'howHeard', 'contactPreference', 'careerPosition', 'careerAvailability', 'referredBy', 'eventId', 'turnstileToken', 'attribution', 'resume', 'resumes']) {
     test(`rejects malformed ${field} without throwing or fetching`, async () => {
       const values = [null, [], 42, ...(field === 'attribution' ? [] : [{ invalid: true }])];
       for (const value of values) {
@@ -378,10 +417,43 @@ test.describe('contact Function: untrusted JSON and attachment bounds', () => {
     for (const resume of [file(0), file(16, 'resume.pdf', 'application/pdf', [1, 2, 3, 4]),
       { ...file(16), data: '%%%%' }, file(16, 'resume.exe'), file(16, '.pdf'),
       file(16, 'resume.png', 'image/png'), file(16, 'resume.pdf', 'constructor'),
+      file(16, 'resume.gif', 'image/gif', [0x47, 0x49, 0x46, 0x38]), file(16, 'photo.heic', 'image/heic'),
+      file(16, 'photo.png', 'image/jpeg', [0xff, 0xd8, 0xff]), file(16, 'photo.jpg', 'image/jpeg', [0x89, 0x50, 0x4e, 0x47]),
     ]) {
       expect((await career({ email: 'ok@example.com', resume })).status).toBe(400);
       expect(mails()).toHaveLength(0);
     }
+  });
+
+  const jpeg = (size = 16, name = 'IMG_2387.jpg') => file(size, name, 'image/jpeg', [0xff, 0xd8, 0xff, 0xe0]);
+  const png = (size = 16, name = 'scan.png') => file(size, name, 'image/png', [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
+  test('accepts JPEG and PNG photos and up to three files in one application', async () => {
+    const response = await career({ email: 'ok@example.com', resumes: [jpeg(), png(), file(16)] });
+    expect(response.status).toBe(200);
+    const mail = mails()[0];
+    expect(mail.attachments.map((a) => a.name)).toEqual(['IMG_2387.jpg', 'scan.png', 'resume.pdf']);
+    expect((mail.attachments as Array<{ contentType?: string }>).map((a) => a.contentType)).toEqual(['image/jpeg', 'image/png', 'application/pdf']);
+    expect(mail.body.content).toContain('3 files attached to this email');
+    expect(mail.body.content).toContain('3 resume files attached to this email');
+    stubFetch();
+    expect((await career({ phone: '585-555-0123', resumes: [jpeg(16, 'page one.JPEG')] })).status).toBe(200);
+    expect(mails()[0].attachments[0].name).toBe('page one.jpeg');
+    expect(mails()[0].body.content).toContain('>Attached to this email<');
+  });
+
+  test('rejects a fourth file, files over 2 MiB combined, and mixing resume with resumes', async () => {
+    const fourth = await career({ email: 'ok@example.com', resumes: [jpeg(), jpeg(), jpeg(), jpeg()] });
+    expect(fourth.status).toBe(400);
+    expect((await fourth.json()).message).toContain('up to 3');
+    const half = MAX_RESUME_BYTES / 2;
+    expect((await career({ email: 'ok@example.com', resumes: [file(half), jpeg(half)] })).status).toBe(200);
+    stubFetch();
+    const over = await career({ email: 'ok@example.com', resumes: [file(half), jpeg(half + 1)] });
+    expect(over.status).toBe(400);
+    expect((await over.json()).message).toContain('2 MB');
+    expect((await career({ email: 'ok@example.com', resume: file(16), resumes: [jpeg()] })).status).toBe(400);
+    expect(mails()).toHaveLength(0);
   });
 });
 

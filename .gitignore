@@ -8,3 +8,6 @@ dist/
 test-resumes/
 test-results/
 playwright-report/
+
+# Local Function secrets for `wrangler pages dev` (never commit)
+.dev.vars*
