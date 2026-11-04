@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { careerRoles, careerJobPosting, formatCareerPay, referralBonus } from '../src/data/careers';
+import { MAX_RESUME_BYTES } from '../src/data/form-limits';
 import { mockProductionSite } from './mock-production-site';
 
 async function applicant(page: Page, contact: 'phone' | 'email' = 'phone') {
@@ -78,6 +79,7 @@ for (const contact of ['phone', 'email'] as const) {
     await expect(page.locator('#career-form-status')).toContainText('application is in');
     expect(bodies).toHaveLength(1);
     expect(bodies[0]).toMatchObject({ service: 'Career Inquiry', careerPosition: careerRoles[0].title, message: '', referredBy: 'A colleague', careerAvailability: 'Weekdays', attribution: { utm_source: 'nalp' } });
+    expect(bodies[0].resumes).toBeUndefined();
     expect(bodies[0].resume).toBeUndefined();
     expect(bodies[0][contact === 'phone' ? 'email' : 'phone']).toBe('');
     await expect(page.locator('#career-form button[type="submit"]')).toBeDisabled();
@@ -106,6 +108,101 @@ test('contact requirement, file limits and rejection preserve the application', 
   await expect(page.locator('#career-form-status')).toContainText('check the phone');
   await expect(page.locator('#career-first-name')).toHaveValue('Test');
   await expect(page.locator('#career-form button[type="submit"]')).toBeEnabled();
+});
+
+/** A 3200×2400 PNG "photo" of a résumé page, drawn in the page so no image library is needed. */
+async function resumePhoto(page: Page, width = 3200, height = 2400) {
+  const base64 = await page.evaluate(([w, h]) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const context = canvas.getContext('2d')!;
+    context.fillStyle = '#f7f4ec';
+    context.fillRect(0, 0, w, h);
+    context.fillStyle = '#222';
+    context.font = '64px serif';
+    for (let line = 0; line < 20; line++) context.fillText(`Experience line ${line + 1}: loader, plow truck, crew lead`, 120, 180 + line * 105);
+    return canvas.toDataURL('image/png').split(',')[1];
+  }, [width, height]);
+  return { name: 'IMG_2387.PNG', mimeType: 'image/png', buffer: Buffer.from(base64, 'base64') };
+}
+
+test('résumé input offers photos first so iPhones send JPEG, and the form offers text messages', async ({ page }) => {
+  await page.goto('/careers/');
+  const input = page.locator('#career-resume');
+  await expect(input).toHaveAttribute('multiple', '');
+  const accept = (await input.getAttribute('accept')) || '';
+  expect(accept.split(',')[0]).toBe('image/jpeg');
+  for (const type of ['image/png', 'application/pdf', '.doc', '.docx']) expect(accept.split(',')).toContain(type);
+  expect(accept).not.toContain('heic');
+  await expect(page.locator('#career-resume-help')).toContainText('photos of a paper résumé');
+  await expect(page.locator('#career-contact-preference option[value="Text message"]')).toHaveCount(1);
+});
+
+test('a photo is resized to a JPEG and sent alongside a document', async ({ page }) => {
+  await page.goto(`/careers/${careerRoles[0].slug}/`);
+  const bodies: Record<string, any>[] = [];
+  await page.route('**/api/contact/', async (route) => {
+    bodies.push(route.request().postDataJSON());
+    await route.fulfill({ json: { success: true } });
+  });
+  await applicant(page, 'email');
+  await page.locator('#career-resume').setInputFiles([
+    await resumePhoto(page),
+    { name: 'resume.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4\n test') },
+  ]);
+  await page.locator('#career-form button[type="submit"]').click();
+  await expect(page.locator('#career-form-status')).toContainText('application is in');
+  expect(bodies).toHaveLength(1);
+  const [photo, pdf] = bodies[0].resumes;
+  expect(bodies[0].resume).toBeUndefined();
+  expect(pdf).toMatchObject({ name: 'resume.pdf', type: 'application/pdf', data: Buffer.from('%PDF-1.4\n test').toString('base64') });
+  expect(photo).toMatchObject({ name: 'IMG_2387.jpg', type: 'image/jpeg' });
+  const jpeg = Buffer.from(photo.data, 'base64');
+  expect([...jpeg.subarray(0, 3)]).toEqual([0xff, 0xd8, 0xff]);
+  expect(jpeg.byteLength + 15).toBeLessThanOrEqual(MAX_RESUME_BYTES);
+  const size = await page.evaluate(async (data) => {
+    const image = new Image();
+    image.src = `data:image/jpeg;base64,${data}`;
+    await image.decode();
+    return [image.naturalWidth, image.naturalHeight];
+  }, photo.data);
+  expect(size).toEqual([2400, 1800]);
+});
+
+test('file problems are explained before anything is sent', async ({ page }) => {
+  await page.goto('/careers/');
+  let requests = 0;
+  await page.route('**/api/contact/', async (route) => {
+    requests++;
+    await route.fulfill({ json: { success: true } });
+  });
+  await applicant(page, 'email');
+  const submit = page.locator('#career-form button[type="submit"]');
+  const status = page.locator('#career-form-status');
+  const pdf = (name: string, bytes = 32) => ({ name, mimeType: 'application/pdf', buffer: Buffer.alloc(bytes, 0x25) });
+
+  await page.locator('#career-resume').setInputFiles([pdf('a.pdf'), pdf('b.pdf'), pdf('c.pdf'), pdf('d.pdf')]);
+  await submit.click();
+  await expect(status).toContainText('up to 3 files');
+
+  await page.locator('#career-resume').setInputFiles({ name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('hello') });
+  await submit.click();
+  await expect(status).toContainText('isn’t a PDF, Word file or photo');
+
+  await page.locator('#career-resume').setInputFiles({ name: 'broken.jpg', mimeType: 'image/jpeg', buffer: Buffer.from('not really a photo') });
+  await submit.click();
+  await expect(status).toContainText('couldn’t open the photo “broken.jpg”');
+
+  // A full-size document leaves no room for a photo, which cannot shrink to zero bytes.
+  await page.locator('#career-resume').setInputFiles([pdf('resume.pdf', MAX_RESUME_BYTES), await resumePhoto(page, 800, 600)]);
+  await submit.click();
+  await expect(status).toContainText('more than 2 MB');
+  await expect(status).toContainText('replying to our confirmation email');
+
+  expect(requests).toBe(0);
+  await expect(submit).toBeEnabled();
+  await expect(page.locator('#career-first-name')).toHaveValue('Test');
 });
 
 test('legacy redirect retains acquisition attribution', async ({ page }) => {
