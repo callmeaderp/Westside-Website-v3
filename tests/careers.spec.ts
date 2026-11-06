@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { careerRoles, careerJobPosting, formatCareerPay, referralBonus } from '../src/data/careers';
+import { company } from '../src/data/company';
 import { MAX_RESUME_BYTES } from '../src/data/form-limits';
 import { mockProductionSite } from './mock-production-site';
 
@@ -25,6 +26,17 @@ test('all published roles show their own pay, description, schema and selected a
     expect(schema).toEqual(careerJobPosting(role));
     expect(schema.baseSalary.value.unitText).toBe(role.pay.unit);
     expect(schema.hiringOrganization.logo).toContain('/sig/westside-logo.png');
+    // Google's job search flags postings without these (Search Console, 2026-10-29 and 2026-11-06).
+    expect(schema.validThrough).toBe(role.validThrough);
+    expect(schema.jobLocation.address).toMatchObject({ streetAddress: company.address.street, postalCode: company.address.zip });
+  }
+});
+
+test('every published role is still within its posting expiry', () => {
+  for (const role of careerRoles) {
+    const expires = Date.parse(role.validThrough);
+    expect(Number.isNaN(expires), `${role.slug}: validThrough "${role.validThrough}" is not an ISO 8601 date`).toBe(false);
+    expect(expires, `${role.slug}: posting expired ${role.validThrough}. If the role is still open, move validThrough in src/data/careers.ts to a new review date; otherwise remove the role (README, Careers).`).toBeGreaterThan(Date.now());
   }
 });
 

@@ -16,7 +16,11 @@ export interface CareerRole {
   helpful?: string[];
   benefits: string[];
   datePosted: string;
-  validThrough?: string;
+  /** When the listing expires in Google's job search (JobPosting `validThrough`). It is a review date for the
+   * posting, not an employment end date or a guarantee of work: snow roles end with the season, year-round roles
+   * get a date to re-check that they are still open. Before it passes, extend it for a role that is still open or
+   * remove the role (README, Careers). tests/careers.spec.ts fails once a published role's date has passed. */
+  validThrough: string;
 }
 
 /** Published openings need currently authorized, good-faith base-pay ranges.
@@ -126,7 +130,8 @@ export const careerRoles: CareerRole[] = [
       'Paid sick leave.',
       'Company-provided uniforms and safety glasses.',
     ],
-    datePosted: '2026-10-19',
+    // Year-round roles stay listed through spring hiring; the design role uses the same date.
+    datePosted: '2026-10-19', validThrough: '2027-05-31T23:59:59-04:00',
   },
   {
     slug: 'landscape-design-consultant', title: 'Landscape Design Consultant', category: 'Design',
@@ -155,7 +160,7 @@ export const careerRoles: CareerRole[] = [
       // Vacation and holidays are tied to full-time, year-round status, and this role is not confirmed as year-round, so keep that condition.
       'Paid vacation and holidays for full-time, year-round staff, after an initial waiting period.',
       'Paid sick leave.',
-    ], datePosted: '2026-10-19',
+    ], datePosted: '2026-10-19', validThrough: '2027-05-31T23:59:59-04:00',
   },
 ];
 
@@ -217,7 +222,7 @@ export function careerJobPosting(role: CareerRole) {
     description,
     identifier: { '@type': 'PropertyValue', name: company.legalName, value: role.slug },
     datePosted: role.datePosted,
-    ...(role.validThrough ? { validThrough: role.validThrough } : {}),
+    validThrough: role.validThrough,
     employmentType: role.employmentType,
     hiringOrganization: {
       '@type': 'Organization',
@@ -225,12 +230,16 @@ export function careerJobPosting(role: CareerRole) {
       sameAs: company.url,
       logo: `${company.url}/sig/westside-logo.png`,
     },
+    // The Buffalo Road shop is every role's base, and the Indeed listings use the same address. The role's
+    // `location` text on the page says where the work itself happens.
     jobLocation: {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
+        streetAddress: company.address.street,
         addressLocality: company.address.city,
         addressRegion: company.address.state,
+        postalCode: company.address.zip,
         addressCountry: company.address.country,
       },
     },
