@@ -278,7 +278,7 @@ test.describe('production recruiting conversion separation', () => {
     await page.selectOption('#service', 'Career Inquiry');
     await page.fill('#phone', '5855550123');
     await page.evaluate(() => document.querySelector('.cf-turnstile')?.remove());
-    await page.locator('a[href^="tel:"]').first().click();
+    await page.locator('#main-content a[href^="tel:"]:visible').first().click();
     await page.locator('#contact-form button[type="submit"]').click();
     await expect(page.locator('#form-status')).toContainText('Message sent');
     const events = await page.evaluate(() => (window as any).dataLayer.map((args: any) => Array.from(args)));

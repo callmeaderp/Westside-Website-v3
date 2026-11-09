@@ -171,6 +171,119 @@ test.describe('service preselection', () => {
     await expect(page).toHaveURL(/\/contact\/\?service=outdoor-kitchens/);
     await expect(page.locator('#service')).toHaveValue('Outdoor Kitchens & Fire Features');
   });
+
+  test('estimate buttons further down a service page keep the service too', async ({ page }) => {
+    await page.goto('/services/holiday-lighting/');
+    await expect(page.locator('#main-content a', { hasText: 'Request Free Estimate' }))
+      .toHaveAttribute('href', '/contact/?service=holiday-lighting');
+    await page.goto('/services/drainage-grading/');
+    for (const link of await page.locator('#main-content a[href^="/contact/"]').all()) {
+      await expect(link).toHaveAttribute('href', '/contact/?service=drainage-grading');
+    }
+  });
+});
+
+test.describe('holiday lighting request', () => {
+  // 2026-11-09 review: holiday visitors were asked what they wanted to build,
+  // offered construction budget ranges and prompted about drainage.
+  const label = (text: string) => `label[for="message"] span:text-is("${text}")`;
+
+  test('a holiday link opens a short form without the construction questions', async ({ page }) => {
+    await page.goto('/contact/?service=holiday-lighting');
+    await expect(page.locator('#service')).toHaveValue('Holiday Decorating & Lighting');
+    for (const id of ['project-type', 'budget', 'timing']) {
+      await expect(page.locator(`#${id}`)).toBeHidden();
+    }
+    await expect(page.locator(label('What Would You Like Lit?'))).toBeVisible();
+    await expect(page.locator(label('Tell Us About It'))).toBeHidden();
+    await expect(page.locator('#message')).toHaveAttribute('required', '');
+    await expect(page.locator('#message')).toHaveAttribute('placeholder', /roofline/);
+    for (const id of ['first-name', 'phone', 'email', 'address', 'property-type', 'how-heard']) {
+      await expect(page.locator(`#${id}`)).toBeVisible();
+    }
+  });
+
+  test('choosing holiday lighting by hand swaps the questions both ways', async ({ page }) => {
+    await page.goto('/contact/');
+    await expect(page.locator('#budget')).toBeVisible();
+    await page.selectOption('#service', 'Holiday Decorating & Lighting');
+    await expect(page.locator('#budget')).toBeHidden();
+    await expect(page.locator(label('What Would You Like Lit?'))).toBeVisible();
+    await page.selectOption('#service', 'Drainage & Grading');
+    await expect(page.locator('#budget')).toBeVisible();
+    await expect(page.locator('#project-type')).toBeVisible();
+    await expect(page.locator(label('Tell Us About It'))).toBeVisible();
+    await expect(page.locator('#message')).toHaveAttribute('placeholder', /drainage, settling/);
+  });
+
+  test('a holiday request never sends construction answers chosen earlier', async ({ page }) => {
+    await page.goto('/contact/');
+    const bodies: Record<string, unknown>[] = [];
+    await page.route('**/api/contact/', async (route) => {
+      bodies.push(JSON.parse(route.request().postData() || '{}'));
+      await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+    });
+    await page.evaluate(() => document.querySelector('.cf-turnstile')?.remove());
+
+    await page.selectOption('#project-type', 'Paver patio');
+    await page.selectOption('#budget', '$25,000 – $50,000');
+    await page.selectOption('#timing', 'As soon as possible');
+    await page.selectOption('#service', 'Holiday Decorating & Lighting');
+    await page.fill('#first-name', 'Test');
+    await page.fill('#last-name', 'Homeowner');
+    await page.fill('#email', 'test@example.com');
+    await page.fill('#phone', '5855550123');
+    await page.fill('#message', 'Roofline and the two front maples.');
+    await page.locator('#contact-form button[type="submit"]').click();
+
+    await expect.poll(() => bodies.length).toBe(1);
+    expect(bodies[0]).toMatchObject({
+      service: 'Holiday Decorating & Lighting',
+      projectType: '',
+      budget: '',
+      timing: '',
+      message: 'Roofline and the two front maples.',
+    });
+  });
+
+  test('after a holiday request is sent, the form stays a holiday form', async ({ page }) => {
+    await page.goto('/contact/?service=holiday-lighting');
+    await page.route('**/api/contact/', (route) => route.fulfill({ json: { success: true } }));
+    await page.evaluate(() => document.querySelector('.cf-turnstile')?.remove());
+    await page.fill('#first-name', 'Test');
+    await page.fill('#last-name', 'Homeowner');
+    await page.fill('#email', 'test@example.com');
+    await page.fill('#phone', '5855550123');
+    await page.fill('#message', 'Just the roofline.');
+    await page.locator('#contact-form button[type="submit"]').click();
+    await expect(page.locator('#form-status')).toContainText('Message sent');
+    await expect(page.locator('#service')).toHaveValue('Holiday Decorating & Lighting');
+    await expect(page.locator('#budget')).toBeHidden();
+  });
+});
+
+test.describe('phone layout', () => {
+  test('the form starts on the first screen of a phone', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile', 'phone layout only');
+    // The 2026-11-09 review measured the first field at y≈894 on a 390×844 phone.
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const path of ['/contact/', '/contact/?service=holiday-lighting']) {
+      await page.goto(path);
+      const box = await page.locator('#first-name').boundingBox();
+      expect(box, path).not.toBeNull();
+      expect(box!.y + box!.height, `${path} first field bottom`).toBeLessThanOrEqual(844);
+      await expect(page.locator('#main-content a[href^="tel:"]:visible').first()).toBeInViewport();
+    }
+  });
+
+  test('form fields use 16px text so iOS does not zoom on focus', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile', 'phone layout only');
+    await page.goto('/contact/');
+    for (const id of ['first-name', 'email', 'phone', 'address', 'zip', 'service', 'message']) {
+      const size = await page.locator(`#${id}`).evaluate((el) => getComputedStyle(el).fontSize);
+      expect(size, id).toBe('16px');
+    }
+  });
 });
 
 test.describe('acquisition attribution', () => {
@@ -301,7 +414,7 @@ test.describe('conversion wiring is preserved', () => {
       };
     });
 
-    await page.locator('a[href^="tel:"]').first().click();
+    await page.locator('#main-content a[href^="tel:"]:visible').first().click();
     expect(await page.evaluate(() => (window as any).uetq.events)).toEqual([
       ['event', 'contact', {
         event_category: 'phone_click',

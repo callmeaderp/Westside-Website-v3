@@ -20,6 +20,9 @@ const PAGES = [
   '/services/drainage-grading/',
   '/projects/',
   '/contact/',
+  // The holiday form profile hides questions and swaps the message label.
+  '/contact/?service=holiday-lighting',
+  '/services/holiday-lighting/',
   '/gallery/',
   '/services/commercial-services/',
   '/services/artificial-grass/',

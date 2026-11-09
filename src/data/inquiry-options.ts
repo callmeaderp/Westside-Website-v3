@@ -41,3 +41,32 @@ export const projectTypeOptions = [
   'Repair or restoration of existing hardscape',
   'Something else',
 ] as const;
+
+/**
+ * Services whose contact form swaps the construction questions for a simpler
+ * request. The 2026-11-09 review found holiday-lighting visitors being asked
+ * what they wanted to build, offered budget ranges from under $10,000 to over
+ * $100,000 and prompted about drainage. A profile hides the project type, budget and
+ * timing questions (fields marked `data-hide-for="<id>"` in contact.astro) and
+ * replaces the message label and prompt. The message stays required, because
+ * the contact Function requires one for every customer request.
+ *
+ * Keys are service slugs from services.ts.
+ */
+export interface ServiceFormProfile {
+  /**
+   * Set on <html data-contact-profile>. contact.astro's global CSS keys its
+   * hide/show rules to each id, so a new id needs matching rules there.
+   */
+  id: 'holiday';
+  messageLabel: string;
+  messagePlaceholder: string;
+}
+
+export const serviceFormProfiles: Record<string, ServiceFormProfile> = {
+  'holiday-lighting': {
+    id: 'holiday',
+    messageLabel: 'What Would You Like Lit?',
+    messagePlaceholder: 'The roofline, a few front trees, a wreath on the door? Tell us what you have in mind.',
+  },
+};

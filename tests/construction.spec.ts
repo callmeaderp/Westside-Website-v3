@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { holidayLightingPromo, isInSeason } from '../src/data/seasonal';
 
 /**
  * Construction funnel coverage. These assert the properties the overhaul was
@@ -192,6 +193,56 @@ test.describe('structured data', () => {
     const itemList = blocks.map((raw) => JSON.parse(raw)).find((n) => n['@type'] === 'ItemList');
     expect(itemList).toBeTruthy();
     expect(itemList.itemListElement.length).toBeGreaterThanOrEqual(6);
+  });
+});
+
+test.describe('service scope statements', () => {
+  // textContent rather than innerText: FAQ answers count even if collapsed.
+  test('the snow page does not offer residential snow removal', async ({ page }) => {
+    await page.goto('/services/snow-ice-management/');
+    const text = (await page.locator('#main-content').textContent()) ?? '';
+    expect(text).not.toMatch(/residential estates/i);
+    expect(text).toContain('Not for individual homes');
+  });
+
+  test('the holiday page does not tell new customers there is nothing to buy', async ({ page }) => {
+    // New customers buy their lights through Westside in the first season.
+    await page.goto('/services/holiday-lighting/');
+    const text = ((await page.locator('#main-content').textContent()) ?? '').toLowerCase();
+    expect(text).not.toMatch(/nothing to buy|need to buy|have to buy/);
+  });
+});
+
+test.describe('seasonal homepage callout', () => {
+  test('the holiday callout follows its season window', async ({ page }) => {
+    await page.goto('/');
+    const promo = page.locator('#holiday-promo');
+    if (isInSeason(holidayLightingPromo.window)) {
+      await expect(promo).toBeVisible();
+      await expect(promo.locator('a.btn-primary')).toHaveAttribute('href', '/contact/?service=holiday-lighting');
+      await expect(promo.locator('a.btn-outline')).toHaveAttribute('href', '/services/holiday-lighting/');
+    } else {
+      await expect(promo).toHaveCount(0);
+    }
+  });
+
+  test('a live in-season build drops the callout once the season ends', async ({ page }) => {
+    test.skip(!isInSeason(holidayLightingPromo.window), 'an out-of-season build renders no callout');
+    await page.clock.setFixedTime(new Date('2027-01-05T12:00:00-05:00'));
+    await page.goto('/');
+    await expect(page.locator('#holiday-promo')).toHaveCount(0);
+  });
+
+  test('season windows are judged in Rochester time and may cross New Year', () => {
+    const holiday = { start: '09-15', end: '12-12' };
+    expect(isInSeason(holiday, new Date('2026-11-09T12:00:00-05:00'))).toBe(true);
+    // Already December 13 in UTC, still the 12th in Rochester.
+    expect(isInSeason(holiday, new Date('2026-12-13T04:30:00Z'))).toBe(true);
+    expect(isInSeason(holiday, new Date('2026-12-13T05:30:00Z'))).toBe(false);
+    // Already September 15 in UTC, still the 14th in Rochester.
+    expect(isInSeason(holiday, new Date('2026-09-15T03:30:00Z'))).toBe(false);
+    expect(isInSeason({ start: '12-01', end: '01-15' }, new Date('2027-01-10T12:00:00-05:00'))).toBe(true);
+    expect(isInSeason({ start: '12-01', end: '01-15' }, new Date('2027-02-10T12:00:00-05:00'))).toBe(false);
   });
 });
 

@@ -58,7 +58,7 @@ const shownPhotos = [
               <p class="mb-6" style="color: var(--color-text-muted); line-height: 1.8;" set:html={para} />
             ))}
             {content.introCta && (
-              <a href={url('/contact')} class="btn btn-primary btn-md">{content.introCta}</a>
+              <a href={url(`/contact/?service=${service.slug}`)} class="btn btn-primary btn-md">{content.introCta}</a>
             )}
           </div>
           <div style="border-radius: var(--radius-lg, 12px); overflow: hidden; aspect-ratio: 4/3;">

@@ -6,7 +6,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import { company } from '@data/company';
 import { MAX_RESUME_MB } from '@data/form-limits';
-import { budgetOptions, projectTypeOptions, timingOptions } from '@data/inquiry-options';
+import { budgetOptions, projectTypeOptions, serviceFormProfiles, timingOptions } from '@data/inquiry-options';
 import { propertyTypes } from '@data/property-types';
 import { services } from '@data/services';
 import { getPhoto } from '@lib/images';
@@ -25,6 +25,26 @@ const turnstileSiteKey = company.tracking.turnstileSiteKey || '';
  */
 const serviceOptions = services.map((s) => ({ slug: s.slug, label: s.name }));
 const serviceSlugMap = Object.fromEntries(serviceOptions.map((o) => [o.slug, o.label]));
+
+/**
+ * Per-service form profiles (inquiry-options.ts). The inline script below maps
+ * the ?service= slug to a profile before the page renders, so a holiday visitor
+ * never sees the construction questions flash; the form script maps the
+ * dropdown's label when the visitor changes it.
+ */
+const profileIdBySlug = Object.fromEntries(
+  Object.entries(serviceFormProfiles).map(([slug, profile]) => [slug, profile.id]),
+);
+const profileByLabel = Object.fromEntries(
+  Object.entries(serviceFormProfiles)
+    .filter(([slug]) => serviceSlugMap[slug])
+    .map(([slug, profile]) => [serviceSlugMap[slug], profile]),
+);
+const formProfiles = Object.values(serviceFormProfiles);
+/** Space-separated profile ids for data-hide-for (CSS matches with ~=). */
+const profileIds = formProfiles.map((profile) => profile.id).join(' ');
+const defaultMessagePlaceholder =
+  "What's the space like today, what would you like it to do, and is there anything giving you trouble (drainage, settling, access)?";
 
 /** Format 24h "HH:MM" to "H:MM AM/PM" */
 function formatTime(t: string): string {
@@ -87,14 +107,18 @@ const jsonLd = [
   description="Get a free estimate from Westside Professional Landscape. Patios, retaining walls, walkways, drainage, landscape design, lawn care, and more in Rochester NY."
   jsonLd={jsonLd}
 >
-  <script is:inline>
+  <script is:inline define:vars={{ profileIdBySlug }}>
     // Only redirect inbound legacy career URLs, never a visitor's in-progress form.
     (function () {
       var params = new URLSearchParams(window.location.search);
-      if (['career', 'careers', 'career inquiry', 'career-inquiry'].includes((params.get('service') || '').toLowerCase())) {
+      var service = (params.get('service') || '').toLowerCase();
+      if (['career', 'careers', 'career inquiry', 'career-inquiry'].includes(service)) {
         params.delete('service');
         window.location.replace('/careers/' + (params.size ? '?' + params.toString() : '') + '#apply');
+        return;
       }
+      // Runs before the form is parsed, so the matching fields are hidden on first paint.
+      if (profileIdBySlug[service]) document.documentElement.setAttribute('data-contact-profile', profileIdBySlug[service]);
     })();
   </script>
   <Hero
@@ -102,29 +126,36 @@ const jsonLd = [
     heading="REQUEST A FREE ESTIMATE IN ROCHESTER, NY"
     intro="Tell us about your project and roughly what you'd like to spend. We'll walk the property and give you a free, written, itemized estimate."
     image={getPhoto('hero-contact.webp')}
+    variant="form"
     buttons={[
       { text: `Call ${company.phone}`, href: company.phoneHref, style: 'primary' },
       { text: 'See Our Projects', href: '/projects/', style: 'outline' },
     ]}
-  />
+  >
+    <p class="md:hidden mt-3 text-sm" style="color: var(--color-text-light);">
+      Prefer to talk? <a href={company.phoneHref} class="inline-block py-2.5 font-semibold underline underline-offset-4" style="color: var(--color-green-bright);">Call {company.phone}</a>
+    </p>
+  </Hero>
 
-  <section class="py-24 section-dark-alt">
+  <section class="pt-8 pb-24 md:py-24 section-dark-alt">
     <div class="site-container">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Contact Form -->
         <div class="lg:col-span-2">
           <form
             id="contact-form"
-            class="flex flex-col gap-6"
+            class="flex flex-col gap-5 md:gap-6"
             data-ads-send-to={adsFormSendTo}
             data-service-map={JSON.stringify(serviceSlugMap)}
+            data-service-profiles={JSON.stringify(profileByLabel)}
+            data-default-message-placeholder={defaultMessagePlaceholder}
           >
 
             <p class="text-sm" style="color: var(--color-text-muted);">
               Fields marked <span style="color: var(--color-green-bright);">*</span> are required. Everything else just helps us prepare before we arrive.
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-2 gap-3 md:gap-6">
               <div>
                 <label for="first-name" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">First Name <span style="color: var(--color-green-bright);">*</span></label>
                 <input type="text" id="first-name" name="first_name" required autocomplete="given-name"
@@ -141,7 +172,7 @@ const jsonLd = [
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
               <div>
                 <label for="email" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Email <span style="color: var(--color-green-bright);">*</span></label>
                 <input type="email" id="email" name="email" required autocomplete="email" inputmode="email"
@@ -177,7 +208,7 @@ const jsonLd = [
               </div>
             </fieldset>
 
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_160px] gap-6">
+            <div class="grid grid-cols-[1fr_6.5rem] gap-3 md:grid-cols-[1fr_160px] md:gap-6">
               <div class="relative">
                 <label for="address" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Property Address</label>
                 <input type="text" id="address" name="address" autocomplete="off"
@@ -218,9 +249,11 @@ const jsonLd = [
               </select>
             </div>
 
-            <!-- Project detail fields — hidden for career inquiries, where none apply. -->
-            <div id="project-fields" class="flex flex-col gap-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Project detail fields — hidden for career inquiries, where none apply.
+                 The construction questions also hide under a service form profile
+                 (data-hide-for), such as holiday lighting. -->
+            <div id="project-fields" class="flex flex-col gap-5 md:gap-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                 <div>
                   <label for="property-type" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Property Type</label>
                   <select id="property-type" name="property_type"
@@ -242,7 +275,7 @@ const jsonLd = [
                 </div>
               </div>
 
-              <div>
+              <div id="project-type-group" data-hide-for={profileIds}>
                 <label for="project-type" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">What Are You Looking to Build or Fix?</label>
                 <select id="project-type" name="project_type"
                   class="w-full px-4 py-3 rounded-lg text-white text-sm"
@@ -253,7 +286,7 @@ const jsonLd = [
                 </select>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div id="budget-timing-group" class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6" data-hide-for={profileIds}>
                 <div>
                   <label for="budget" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Approximate Budget</label>
                   <select id="budget" name="budget"
@@ -290,6 +323,19 @@ const jsonLd = [
               <p class="text-xs mt-1.5" style="color: var(--color-text-muted);">PDF, DOC, or DOCX, up to {MAX_RESUME_MB} MB</p>
             </div>
 
+            <div id="message-group">
+              <label for="message" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">
+                <span data-hide-for={profileIds}>Tell Us About It</span>
+                {formProfiles.map((profile) => <span data-show-for={profile.id}>{profile.messageLabel}</span>)}
+                <span style="color: var(--color-green-bright);">*</span>
+              </label>
+              <textarea id="message" name="message" rows="5" required
+                class="w-full px-4 py-3 rounded-lg text-white text-sm resize-y"
+                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
+                placeholder={defaultMessagePlaceholder}
+              ></textarea>
+            </div>
+
             <div>
               <label for="how-heard" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">How Did You Hear About Us?</label>
               <select id="how-heard" name="how_heard"
@@ -308,15 +354,6 @@ const jsonLd = [
                 <option>Returning Customer</option>
                 <option>Other</option>
               </select>
-            </div>
-
-            <div>
-              <label for="message" class="block text-sm font-semibold mb-2" style="color: var(--color-text-light);">Tell Us About It <span style="color: var(--color-green-bright);">*</span></label>
-              <textarea id="message" name="message" rows="5" required
-                class="w-full px-4 py-3 rounded-lg text-white text-sm resize-y"
-                style="background: var(--color-bg-dark-elevated); border: 1px solid var(--color-border-dark);"
-                placeholder="What's the space like today, what would you like it to do, and is there anything giving you trouble (drainage, settling, access)?"
-              ></textarea>
             </div>
 
             {turnstileSiteKey && (
@@ -409,10 +446,39 @@ const jsonLd = [
   #address-suggestions li[aria-selected="true"] {
     background: var(--color-bg-dark-card);
   }
+
+  /* iOS Safari zooms the page into any focused field under 16px. */
+  @media (max-width: 767px) {
+    #contact-form input:not([type="radio"]):not([type="file"]),
+    #contact-form select,
+    #contact-form textarea {
+      font-size: 16px;
+    }
+  }
+
+  /*
+   * Service form profiles (inquiry-options.ts). <html data-contact-profile> is
+   * set before first paint from ?service= and updated when the dropdown
+   * changes. These selectors are unlayered on purpose: they must beat Tailwind
+   * display utilities on the same elements.
+   */
+  #contact-form [data-show-for] {
+    display: none;
+  }
+  html[data-contact-profile="holiday"] #contact-form [data-show-for~="holiday"] {
+    display: inline;
+  }
+  html[data-contact-profile="holiday"] #contact-form [data-hide-for~="holiday"] {
+    display: none;
+  }
+  html[data-contact-profile="holiday"] #contact-form #message {
+    height: 7.5rem;
+  }
 </style>
 
 <script>
   import { MAX_RESUME_BYTES, MAX_RESUME_MB } from '@data/form-limits';
+  import type { ServiceFormProfile } from '@data/inquiry-options';
   import { COMMERCIAL_PROPERTY_TYPE, RESIDENTIAL_PROPERTY_TYPE } from '@data/property-types';
 
   const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
@@ -429,9 +495,32 @@ const jsonLd = [
 
   propertySelect?.addEventListener('change', syncCompanyField);
 
-  function syncCareerFields() {
+  const formEl = document.getElementById('contact-form') as HTMLFormElement | null;
+  const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
+  const defaultMessagePlaceholder = formEl?.dataset.defaultMessagePlaceholder || messageEl?.placeholder || '';
+
+  // Service label -> form profile, serialized from inquiry-options.ts.
+  let profileByLabel: Record<string, ServiceFormProfile> = {};
+  try {
+    profileByLabel = JSON.parse(formEl?.dataset.serviceProfiles || '{}');
+  } catch {
+    profileByLabel = {};
+  }
+
+  /** The chosen service's simplified form profile, if it has one. */
+  function activeProfile(): ServiceFormProfile | null {
+    return profileByLabel[serviceSelect?.value || ''] || null;
+  }
+
+  function syncServiceFields() {
     if (!serviceSelect) return;
     const isCareer = serviceSelect.value === 'Career Inquiry';
+    const profile = activeProfile();
+    // The page CSS hides the construction questions and swaps the message
+    // label for this attribute; the inline script set it on load from ?service=.
+    if (profile) document.documentElement.setAttribute('data-contact-profile', profile.id);
+    else document.documentElement.removeAttribute('data-contact-profile');
+    if (messageEl) messageEl.placeholder = profile?.messagePlaceholder || defaultMessagePlaceholder;
     resumeGroup?.classList.toggle('hidden', !isCareer);
     // Project type / budget / timing are meaningless on a job application.
     projectFields?.classList.toggle('hidden', isCareer);
@@ -441,45 +530,43 @@ const jsonLd = [
     }
   }
 
-  serviceSelect?.addEventListener('change', syncCareerFields);
+  serviceSelect?.addEventListener('change', syncServiceFields);
 
   // Pre-select Service Interest based on ?service=<slug> URL param. Slugs come
   // from internal links (service hero CTAs, careers page) and external paid-ad
   // destination URLs (Meta/Google ads point to /contact/?service=hardscaping
   // etc.). The slug\u2192label map is serialized onto the form from services.ts, so
-  // adding a service no longer requires editing this script.
-  if (serviceSelect) {
-    const formEl = document.getElementById('contact-form') as HTMLFormElement | null;
+  // adding a service no longer requires editing this script. Also re-run after
+  // a successful send resets the form, so the page stays on the same request.
+  function applyServiceParam() {
+    if (!serviceSelect) return;
     const params = new URLSearchParams(window.location.search);
     const serviceParam = params.get('service');
-    if (serviceParam) {
-      let slugToOption: Record<string, string> = {};
-      try {
-        slugToOption = JSON.parse(formEl?.dataset.serviceMap || '{}');
-      } catch {
-        slugToOption = {};
-      }
-      slugToOption.careers = 'Career Inquiry';
+    if (!serviceParam) return;
+    let slugToOption: Record<string, string> = {};
+    try {
+      slugToOption = JSON.parse(formEl?.dataset.serviceMap || '{}');
+    } catch {
+      slugToOption = {};
+    }
+    slugToOption.careers = 'Career Inquiry';
 
-      const targetOption = slugToOption[serviceParam];
-      if (targetOption) {
-        serviceSelect.value = targetOption;
-        syncCareerFields();
-        // "Request a Commercial Proposal" lands here; start that visitor on the
-        // business property type so the company field is already showing.
-        if (serviceParam === 'commercial-services' && propertySelect && !propertySelect.value) {
-          propertySelect.value = COMMERCIAL_PROPERTY_TYPE;
-          syncCompanyField();
-        }
-        if (serviceParam === 'careers') {
-          const messageEl = document.getElementById('message') as HTMLTextAreaElement | null;
-          if (messageEl && !messageEl.value) {
-            messageEl.placeholder = 'Tell us a bit about yourself, your experience, and what kind of role you\u2019re interested in...';
-          }
-        }
-      }
+    const targetOption = slugToOption[serviceParam];
+    if (!targetOption) return;
+    serviceSelect.value = targetOption;
+    syncServiceFields();
+    // "Request a Commercial Proposal" lands here; start that visitor on the
+    // business property type so the company field is already showing.
+    if (serviceParam === 'commercial-services' && propertySelect && !propertySelect.value) {
+      propertySelect.value = COMMERCIAL_PROPERTY_TYPE;
+      syncCompanyField();
+    }
+    if (serviceParam === 'careers' && messageEl && !messageEl.value) {
+      messageEl.placeholder = 'Tell us a bit about yourself, your experience, and what kind of role you\u2019re interested in...';
     }
   }
+
+  applyServiceParam();
 
   const addressInput = document.getElementById('address') as HTMLInputElement | null;
   const suggestionsEl = document.getElementById('address-suggestions') as HTMLUListElement | null;
@@ -652,6 +739,8 @@ const jsonLd = [
       try {
         const isCareerSubmit =
           (form.querySelector<HTMLSelectElement>('[name="service_interest"]')?.value || '') === 'Career Inquiry';
+        // Hidden questions never send a value left over from an earlier selection.
+        const skipProjectQuestions = isCareerSubmit || Boolean(activeProfile());
 
         const payload: Record<string, unknown> = {
           firstName: (form.querySelector<HTMLInputElement>('[name="first_name"]')?.value || '').trim(),
@@ -669,9 +758,9 @@ const jsonLd = [
           company: isCareerSubmit || companyGroup?.classList.contains('hidden')
             ? ''
             : (form.querySelector<HTMLInputElement>('[name="company"]')?.value || '').trim(),
-          projectType: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="project_type"]')?.value || '').trim(),
-          budget: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="budget"]')?.value || '').trim(),
-          timing: isCareerSubmit ? '' : (form.querySelector<HTMLSelectElement>('[name="timing"]')?.value || '').trim(),
+          projectType: skipProjectQuestions ? '' : (form.querySelector<HTMLSelectElement>('[name="project_type"]')?.value || '').trim(),
+          budget: skipProjectQuestions ? '' : (form.querySelector<HTMLSelectElement>('[name="budget"]')?.value || '').trim(),
+          timing: skipProjectQuestions ? '' : (form.querySelector<HTMLSelectElement>('[name="timing"]')?.value || '').trim(),
           howHeard: (form.querySelector<HTMLSelectElement>('[name="how_heard"]')?.value || '').trim(),
           message: (form.querySelector<HTMLTextAreaElement>('[name="message"]')?.value || '').trim(),
           // First-touch campaign parameters captured by TrackingScripts on the
@@ -705,8 +794,9 @@ const jsonLd = [
           btn.style.background = 'var(--color-green-primary)';
           if (formStatus) { formStatus.textContent = 'Message sent. We\u2019ll be in touch soon!'; formStatus.style.color = 'var(--color-green-bright)'; }
           form.reset();
-          syncCareerFields();
+          syncServiceFields();
           syncCompanyField();
+          applyServiceParam();
           if (typeof (window as any).__resetAddressAutocomplete === 'function') (window as any).__resetAddressAutocomplete();
           if (turnstileWidget && typeof (window as any).turnstile?.reset === 'function') {
             (window as any).turnstile.reset(turnstileWidget);

@@ -26,6 +26,8 @@
 /landscape-services     /services/      301
 /about-us/              /about/         301
 /about-us               /about/         301
+/team/                  /about/         301
+/team                   /about/         301
 /contact-us/            /contact/       301
 /contact-us             /contact/       301
 
@@ -87,6 +89,8 @@
 /maintenance            /services/landscape-maintenance/ 301
 /services/professional-maintenance /services/landscape-maintenance/ 301
 /services/professional-maintenance/ /services/landscape-maintenance/ 301
+/professional-maintenance /services/landscape-maintenance/ 301
+/professional-maintenance/ /services/landscape-maintenance/ 301
 /spring-maintenance     /services/landscape-maintenance/ 301
 /spring-maintenance/    /services/landscape-maintenance/ 301
 /fall-cleanup           /services/landscape-maintenance/ 301
@@ -171,6 +175,8 @@
 /blog/winterize/                    /services/plant-health/          301
 /blog/spring-garden-ideas           /services/landscape-design/      301
 /blog/spring-garden-ideas/          /services/landscape-design/      301
+/spring-garden-ideas                /services/landscape-design/      301
+/spring-garden-ideas/               /services/landscape-design/      301
 /blog/summer-landscaping-ideas      /services/landscape-maintenance/ 301
 /blog/summer-landscaping-ideas/     /services/landscape-maintenance/ 301
 /blog/nightscapes                   /services/landscape-design/      301

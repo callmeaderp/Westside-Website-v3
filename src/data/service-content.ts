@@ -814,7 +814,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Do you offer residential snow removal?',
-        answer: "Our snow and ice management services are focused on commercial properties, HOAs, and multi-unit residential complexes where liability and access are critical. For large residential estates or properties with specific needs, contact us to discuss options.",
+        answer: "Not for individual homes. Our snow and ice management serves commercial properties, HOAs, and multi-unit residential complexes, where safe access and liability matter most.",
       },
       {
         question: 'How does a seasonal snow contract work?',
@@ -1025,7 +1025,7 @@ export const serviceContent: Partial<Record<ServiceSlug, ServiceContent>> = {
       },
       {
         question: 'Do you provide the lights or do I supply them?',
-        answer: "We provide the commercial-grade LED lights, extension cords, clips, timers, wreaths, garland, and hardware included in your design. You do not need to buy, store, or maintain the equipment.",
+        answer: "We supply the commercial-grade LED lights, extension cords, clips, timers, wreaths, garland, and hardware included in your design. After the holidays we take the display down and store the lights for you until next season.",
       },
       {
         question: 'Do you install permanent lighting?',

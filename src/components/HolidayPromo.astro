@@ -1,0 +1,62 @@
+---
+/**
+ * In-season holiday lighting callout, placed directly under the homepage hero.
+ * On phones the holiday card in the services grid sat about eight screens down
+ * (2026-11-09 review). Shows only inside holidayLightingPromo's window
+ * (src/data/seasonal.ts); the inline script removes it once the window closes
+ * on a build that is still live.
+ */
+import { Image } from 'astro:assets';
+import { holidayLightingPromo, isInSeason } from '@data/seasonal';
+import { getServiceBySlug } from '@data/services';
+import { getPhoto } from '@lib/images';
+import { url } from '@lib/utils';
+
+const service = getServiceBySlug(holidayLightingPromo.serviceSlug);
+const { start, end } = holidayLightingPromo.window;
+const show = Boolean(service) && isInSeason(holidayLightingPromo.window);
+---
+
+{show && service && (
+  <>
+  <section id="holiday-promo" class="py-16 md:py-20 section-dark-alt" data-season-start={start} data-season-end={end}>
+    <div class="site-container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 rounded-xl overflow-hidden fade-in" style="background: var(--color-bg-accent-card); border: 1px solid var(--color-border-accent);">
+        <div class="aspect-[16/10] lg:aspect-auto overflow-hidden">
+          <Image
+            src={getPhoto(service.cardImage)}
+            alt={service.cardImageAlt}
+            class="w-full h-full object-cover"
+            loading="lazy"
+            widths={[600, 900]}
+            sizes="(max-width: 1024px) 100vw, 600px"
+          />
+        </div>
+        <div class="p-6 md:p-10 lg:p-12 flex flex-col justify-center">
+          <p class="section-label">This Season</p>
+          <h2 class="section-title">HOLIDAY LIGHTING, <span class="text-green">HANDLED</span></h2>
+          <p class="mb-8" style="color: var(--color-text-muted); line-height: 1.8;">
+            Skip the ladder this year. We design the display, put it up, keep it shining all season, then take it down and store the lights for next year.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href={url(`/contact/?service=${service.slug}`)} class="btn btn-primary btn-md">Book Holiday Lighting</a>
+            <a href={url(`/services/${service.slug}/`)} class="btn btn-outline btn-md">See How It Works</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script is:inline>
+    (function () {
+      var promo = document.getElementById('holiday-promo');
+      if (!promo) return;
+      var parts = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+      var get = function (type) { return (parts.find(function (p) { return p.type === type; }) || {}).value || ''; };
+      var today = get('month') + '-' + get('day');
+      var start = promo.dataset.seasonStart, end = promo.dataset.seasonEnd;
+      var inSeason = start <= end ? today >= start && today <= end : today >= start || today <= end;
+      if (!inSeason) promo.remove();
+    })();
+  </script>
+  </>
+)}

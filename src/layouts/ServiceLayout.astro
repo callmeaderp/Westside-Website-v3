@@ -95,5 +95,5 @@ const serviceJsonLd = { '@context': 'https://schema.org', '@graph': schemaGraph 
 
   <slot />
 
-  <CtaBanner heading={ctaHeading} text={ctaText} />
+  <CtaBanner heading={ctaHeading} text={ctaText} href={`/contact/?service=${service.slug}`} />
 </BaseLayout>
